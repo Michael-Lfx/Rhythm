@@ -6,8 +6,8 @@
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
-#import "BTBaseViewController.h"
+#import "BTSwipeViewController.h"
 
-@interface BTTempoViewController : BTBaseViewController
+@interface BTTempoViewController : BTSwipeViewController
 
 @end

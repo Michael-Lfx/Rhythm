@@ -1,18 +1,18 @@
 //
-//  BTPlayViewController.m
+//  BTCommonViewController.m
 //  SmartBat
 //
 //  Created by kaka' on 13-6-4.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
-#import "BTPlayViewController.h"
+#import "BTCommonViewController.h"
 
-@interface BTPlayViewController ()
+@interface BTCommonViewController ()
 
 @end
 
-@implementation BTPlayViewController
+@implementation BTCommonViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    originX = -[[UIScreen mainScreen] applicationFrame].size.width;
 }
 
 - (void)didReceiveMemoryWarning

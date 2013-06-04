@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BTSwipeViewController.h"
 
-@interface BTMainViewController : UIBaseViewController
+@interface BTMainViewController : BTSwipeViewController{
+    UIView* tempoView;
+}
 
 @end
