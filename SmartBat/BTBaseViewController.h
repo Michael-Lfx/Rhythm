@@ -1,5 +1,5 @@
 //
-//  BTViewController.h
+//  BTBaseViewController.h
 //  SmartBat
 //
 //  Created by kaka' on 13-6-4.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BTViewController : UIViewController
+@interface BTBaseViewController : UIViewController
 
 @end
