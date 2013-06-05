@@ -30,6 +30,7 @@
 		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
 		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
 		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
+		F49E6D07175F15D400E2EDCB /* testgit.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F49E6D06175F15D400E2EDCB /* testgit.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		72B45B36175DDA840071A082 /* BTSwipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSwipeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72B45B38175DDD110071A082 /* BTCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTCommonViewController.h; path = ../BTCommonViewController.h; sourceTree = "<group>"; };
 		72B45B39175DDD110071A082 /* BTCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCommonViewController.m; path = ../BTCommonViewController.m; sourceTree = "<group>"; };
+		F49E6D06175F15D400E2EDCB /* testgit.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = testgit.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				72893580175DA9E900EED04E /* Globals */,
 				72893560175DA8D900EED04E /* Supporting Files */,
 				72893584175DAA9B00EED04E /* Views */,
+				F49E6D06175F15D400E2EDCB /* testgit.rtf */,
 			);
 			path = SmartBat;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */,
 				723FA135175E0B0300DEF5E0 /* Default.png in Resources */,
 				723FA13A175E49DC00DEF5E0 /* band.png in Resources */,
+				F49E6D07175F15D400E2EDCB /* testgit.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
