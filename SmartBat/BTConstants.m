@@ -16,10 +16,14 @@ int const MAIN_VIEW = 1;
 int const TEMPO_VIEW = 2;
 int const COMMON_VIEW = 3;
 int const NO_BAND_VIEW = 4;
+int const PAGE_CONTROL_VIEW = 5;
 
 float const BPM_CHANGE_INTERVAL = 0.2f;
 float const BPM_CHANGE_INTERVAL_FASTER = 0.05f;
-float const BPM_CHANGE_FASTER_COUNT = 5;
+int const BPM_CHANGE_FASTER_COUNT = 5;
+
+int const BPM_MIN = 5;
+int const BPM_MAX = 5;
 
 NSString* const BPM_PLUS = @"plus";
 NSString* const BPM_MINUS = @"minus";

@@ -13,7 +13,21 @@
 		723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA132175E0AC600DEF5E0 /* Default@2x.png */; };
 		723FA135175E0B0300DEF5E0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA134175E0B0300DEF5E0 /* Default.png */; };
 		723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */; };
-		723FA13A175E49DC00DEF5E0 /* band.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA139175E49DC00DEF5E0 /* band.png */; };
+		723FA13E175F15A700DEF5E0 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA13C175F15A700DEF5E0 /* minus@2x.png */; };
+		723FA140175F185A00DEF5E0 /* main_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA13F175F185A00DEF5E0 /* main_bg.png */; };
+		723FA142175F196600DEF5E0 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA141175F196600DEF5E0 /* plus@2x.png */; };
+		723FA148175F1C7500DEF5E0 /* band@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA147175F1C7500DEF5E0 /* band@2x.png */; };
+		723FA14B175F1E0D00DEF5E0 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA149175F1E0D00DEF5E0 /* plus.png */; };
+		723FA14C175F1E0D00DEF5E0 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA14A175F1E0D00DEF5E0 /* minus.png */; };
+		723FA14F175F228F00DEF5E0 /* common@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA14E175F228F00DEF5E0 /* common@2x.png */; };
+		723FA151175F25B200DEF5E0 /* tempo_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA150175F25B200DEF5E0 /* tempo_bg.png */; };
+		723FA153175F286700DEF5E0 /* tap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA152175F286700DEF5E0 /* tap@2x.png */; };
+		723FA155175F287200DEF5E0 /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA154175F287200DEF5E0 /* play@2x.png */; };
+		723FA15B175F289100DEF5E0 /* bit_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA156175F289000DEF5E0 /* bit_plus@2x.png */; };
+		723FA15C175F289100DEF5E0 /* bit_minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA157175F289000DEF5E0 /* bit_minus@2x.png */; };
+		723FA15D175F289100DEF5E0 /* timer_deep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA158175F289000DEF5E0 /* timer_deep@2x.png */; };
+		723FA15E175F289100DEF5E0 /* timer_light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA159175F289000DEF5E0 /* timer_light@2x.png */; };
+		723FA15F175F289100DEF5E0 /* timer_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA15A175F289000DEF5E0 /* timer_delete@2x.png */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -42,7 +56,21 @@
 		723FA134175E0B0300DEF5E0 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTNoBandViewController.h; sourceTree = "<group>"; };
 		723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTNoBandViewController.m; sourceTree = "<group>"; };
-		723FA139175E49DC00DEF5E0 /* band.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = band.png; sourceTree = "<group>"; };
+		723FA13C175F15A700DEF5E0 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@2x.png"; sourceTree = "<group>"; };
+		723FA13F175F185A00DEF5E0 /* main_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_bg.png; sourceTree = "<group>"; };
+		723FA141175F196600DEF5E0 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		723FA147175F1C7500DEF5E0 /* band@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "band@2x.png"; sourceTree = "<group>"; };
+		723FA149175F1E0D00DEF5E0 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		723FA14A175F1E0D00DEF5E0 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
+		723FA14E175F228F00DEF5E0 /* common@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common@2x.png"; sourceTree = "<group>"; };
+		723FA150175F25B200DEF5E0 /* tempo_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tempo_bg.png; sourceTree = "<group>"; };
+		723FA152175F286700DEF5E0 /* tap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tap@2x.png"; sourceTree = "<group>"; };
+		723FA154175F287200DEF5E0 /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
+		723FA156175F289000DEF5E0 /* bit_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bit_plus@2x.png"; sourceTree = "<group>"; };
+		723FA157175F289000DEF5E0 /* bit_minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bit_minus@2x.png"; sourceTree = "<group>"; };
+		723FA158175F289000DEF5E0 /* timer_deep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer_deep@2x.png"; sourceTree = "<group>"; };
+		723FA159175F289000DEF5E0 /* timer_light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer_light@2x.png"; sourceTree = "<group>"; };
+		723FA15A175F289000DEF5E0 /* timer_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer_delete@2x.png"; sourceTree = "<group>"; };
 		72893556175DA8D900EED04E /* SmartBat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartBat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -86,6 +114,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		723FA14D175F209800DEF5E0 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				723FA152175F286700DEF5E0 /* tap@2x.png */,
+				723FA154175F287200DEF5E0 /* play@2x.png */,
+				723FA147175F1C7500DEF5E0 /* band@2x.png */,
+				723FA156175F289000DEF5E0 /* bit_plus@2x.png */,
+				723FA157175F289000DEF5E0 /* bit_minus@2x.png */,
+				723FA158175F289000DEF5E0 /* timer_deep@2x.png */,
+				723FA159175F289000DEF5E0 /* timer_light@2x.png */,
+				723FA15A175F289000DEF5E0 /* timer_delete@2x.png */,
+				72B45B2F175DC0FD0071A082 /* main.png */,
+				723FA13F175F185A00DEF5E0 /* main_bg.png */,
+				723FA150175F25B200DEF5E0 /* tempo_bg.png */,
+				723FA14A175F1E0D00DEF5E0 /* minus.png */,
+				723FA13C175F15A700DEF5E0 /* minus@2x.png */,
+				723FA149175F1E0D00DEF5E0 /* plus.png */,
+				723FA14E175F228F00DEF5E0 /* common@2x.png */,
+				723FA141175F196600DEF5E0 /* plus@2x.png */,
+				72B45B2E175DC0FD0071A082 /* tempo.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		7289354D175DA8D900EED04E = {
 			isa = PBXGroup;
 			children = (
@@ -118,7 +170,6 @@
 			children = (
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
 				72893569175DA8D900EED04E /* BTAppDelegate.m */,
-				7289357F175DA97700EED04E /* Base Class */,
 				72893580175DA9E900EED04E /* Globals */,
 				72893560175DA8D900EED04E /* Supporting Files */,
 				72893584175DAA9B00EED04E /* Views */,
@@ -129,15 +180,13 @@
 		72893560175DA8D900EED04E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				723FA139175E49DC00DEF5E0 /* band.png */,
+				723FA14D175F209800DEF5E0 /* Images */,
 				72893565175DA8D900EED04E /* main.m */,
 				72893567175DA8D900EED04E /* SmartBat-Prefix.pch */,
 				72893561175DA8D900EED04E /* SmartBat-Info.plist */,
 				723FA130175E0A6500DEF5E0 /* Default-568h@2x.png */,
 				723FA134175E0B0300DEF5E0 /* Default.png */,
 				723FA132175E0AC600DEF5E0 /* Default@2x.png */,
-				72B45B2F175DC0FD0071A082 /* main.png */,
-				72B45B2E175DC0FD0071A082 /* tempo.png */,
 				72893562175DA8D900EED04E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -171,6 +220,7 @@
 		72893584175DAA9B00EED04E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7289357F175DA97700EED04E /* Base Class */,
 				72B45B38175DDD110071A082 /* BTCommonViewController.h */,
 				72893574175DA8D900EED04E /* BTMainViewController.h */,
 				723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */,
@@ -245,7 +295,21 @@
 				723FA131175E0A6600DEF5E0 /* Default-568h@2x.png in Resources */,
 				723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */,
 				723FA135175E0B0300DEF5E0 /* Default.png in Resources */,
-				723FA13A175E49DC00DEF5E0 /* band.png in Resources */,
+				723FA13E175F15A700DEF5E0 /* minus@2x.png in Resources */,
+				723FA140175F185A00DEF5E0 /* main_bg.png in Resources */,
+				723FA142175F196600DEF5E0 /* plus@2x.png in Resources */,
+				723FA148175F1C7500DEF5E0 /* band@2x.png in Resources */,
+				723FA14B175F1E0D00DEF5E0 /* plus.png in Resources */,
+				723FA14C175F1E0D00DEF5E0 /* minus.png in Resources */,
+				723FA14F175F228F00DEF5E0 /* common@2x.png in Resources */,
+				723FA151175F25B200DEF5E0 /* tempo_bg.png in Resources */,
+				723FA153175F286700DEF5E0 /* tap@2x.png in Resources */,
+				723FA155175F287200DEF5E0 /* play@2x.png in Resources */,
+				723FA15B175F289100DEF5E0 /* bit_plus@2x.png in Resources */,
+				723FA15C175F289100DEF5E0 /* bit_minus@2x.png in Resources */,
+				723FA15D175F289100DEF5E0 /* timer_deep@2x.png in Resources */,
+				723FA15E175F289100DEF5E0 /* timer_light@2x.png in Resources */,
+				723FA15F175F289100DEF5E0 /* timer_delete@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

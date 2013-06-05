@@ -16,10 +16,14 @@ extern int const MAIN_VIEW;
 extern int const TEMPO_VIEW;
 extern int const COMMON_VIEW;
 extern int const NO_BAND_VIEW;
+extern int const PAGE_CONTROL_VIEW;
 
 extern float const BPM_CHANGE_INTERVAL;
 extern float const BPM_CHANGE_INTERVAL_FASTER;
-extern float const BPM_CHANGE_FASTER_COUNT;
+extern int const BPM_CHANGE_FASTER_COUNT;
+
+extern int const BPM_MIN;
+extern int const BPM_MAX;
 
 extern NSString* const BPM_PLUS;
 extern NSString* const BPM_MINUS;

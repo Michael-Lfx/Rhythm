@@ -29,13 +29,13 @@
 	// Do any additional setup after loading the view.
     
     UIButton *settingsBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [settingsBtn setFrame:CGRectMake(240, 30, 24, 24)];
-    [settingsBtn setBackgroundImage:[UIImage imageNamed:@"band.png"] forState:UIControlStateNormal];
+    [settingsBtn setFrame:CGRectMake(266, 20, 44, 34)];
+    [settingsBtn setBackgroundImage:[UIImage imageNamed:@"common.png"] forState:UIControlStateNormal];
     [settingsBtn addTarget:self action:@selector(callCommonSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:settingsBtn];
     
     UIButton *bandBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [bandBtn setFrame:CGRectMake(20, 30, 24, 24)];
+    [bandBtn setFrame:CGRectMake(10, 20, 44, 34)];
     [bandBtn setBackgroundImage:[UIImage imageNamed:@"band.png"] forState:UIControlStateNormal];
     [bandBtn addTarget:self action:@selector(callBandSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:bandBtn];

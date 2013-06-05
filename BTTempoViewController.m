@@ -36,8 +36,8 @@
 }
 
 -(void)swipe:(int)dis{
-    NSLog(@"%d", dis);
-    if(dis < 0){
+    
+    if(dis > 0){
         [self setViewX:dis];
     }else{
         [self setViewX:0];
@@ -47,8 +47,8 @@
 -(void)swipeEnded{
     int final = (int)self.view.frame.origin.x, move2;
     
-    if(final < THRESHOLD_2_COMPLETE * -_viewX){
-        move2 = -_viewX;
+    if(final > THRESHOLD_2_COMPLETE * _viewX){
+        move2 = _viewX;
     }else{
         move2 = 0;
     }

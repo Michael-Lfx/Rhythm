@@ -49,6 +49,12 @@
     [self setViewX:screenWidth who:_noBandViewCtrl.view];
     [self.view addSubview:_noBandViewCtrl.view];
     
+    UIPageControl* pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(100, 400, 40, 20)];
+    pageControl.tag = PAGE_CONTROL_VIEW;
+    pageControl.numberOfPages = 2;
+    pageControl.currentPage = 0;
+    [self.view addSubview:pageControl];
+    
     NSLog(@"%@", self.view.subviews);
 }
 

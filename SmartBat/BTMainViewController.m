@@ -35,21 +35,21 @@
 }
 
 -(void)swipe:(int)dis{
-    
-    if(dis > 0){
-        [self setViewX:(-_viewX + dis) who:_tempoView];
+    NSLog(@"%d", dis);
+    if(dis < 0){
+        [self setViewX:(_viewX + dis) who:_tempoView];
     }else{
-        [self setViewX:-_viewX who:_tempoView];
+        [self setViewX:_viewX who:_tempoView];
     }
 }
 
 -(void)swipeEnded{
     int final = (int)_tempoView.frame.origin.x, move2;
     
-    if(final > (1 - THRESHOLD_2_COMPLETE) * -_viewX){
+    if(final < (1 - THRESHOLD_2_COMPLETE) * _viewX){
         move2 = 0;
     }else{
-        move2 = -_viewX;
+        move2 = _viewX;
     }
     
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
