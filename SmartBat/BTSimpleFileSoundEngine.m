@@ -15,7 +15,7 @@
     self = [super init];
     
     if (self) {
-        soundPool = [NSMutableDictionary dictionary];
+        _soundPool = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -52,14 +52,14 @@
     
     //save soundFileObject to map
     NSNumber *soundIdNumber = [NSNumber numberWithInt:soundFileObject];
-    [soundPool setObject: soundIdNumber forKey:key];
+    [_soundPool setObject: soundIdNumber forKey:key];
 
 }
 
 //play sound
 - (void)playSoundForKey: (NSString *) key{
     
-    NSNumber *soundIdNumber = [soundPool objectForKey:key];
+    NSNumber *soundIdNumber = [_soundPool objectForKey:key];
     
     if(soundIdNumber)
     {
@@ -72,11 +72,11 @@
 //remove sound file
 - (void)clearSoundForKey: (NSString *) key{
     
-    NSNumber *soundIdNumber = [soundPool objectForKey:key];
+    NSNumber *soundIdNumber = [_soundPool objectForKey:key];
     
     if(soundIdNumber)
     {
-        [soundPool removeObjectForKey:key];
+        [_soundPool removeObjectForKey:key];
     }
 }
 

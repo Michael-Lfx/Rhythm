@@ -12,7 +12,7 @@
 
 @interface BTSimpleFileSoundEngine : NSObject
 {
-    NSMutableDictionary * soundPool;
+    NSMutableDictionary * _soundPool;
 }
 
 

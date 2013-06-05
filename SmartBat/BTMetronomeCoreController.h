@@ -12,15 +12,16 @@
 
 @interface BTMetronomeCoreController : NSObject<BeatOnDelegate>
 {
-    BTSimpleFileSoundEngine *simpleFileSoundEngine;
-    BTClock *clock;
+    BTSimpleFileSoundEngine *_simpleFileSoundEngine;
+    BTClock *_clock;
 }
+
+
++(BTMetronomeCoreController *) getController;
 
 -(void) start;
 -(void) stop;
 -(void) pause;
-
-@property BTSimpleFileSoundEngine * simpleFileSoundEngine;
-@property (nonatomic, retain) BTClock * clock;
+-(void) setBpm:(int)bpm;
 
 @end

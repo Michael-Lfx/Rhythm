@@ -9,38 +9,45 @@
 #import "BTMetronomeCoreController.h"
 
 @implementation BTMetronomeCoreController
-@synthesize simpleFileSoundEngine, clock;
 
 #define TICK_SOUND_KEY @"P"
+#define DEFAULT_P_SOUND_FILE @"tick"
+#define DEFAULT_SOUND_FILE_EXT @"aif"
 
 -(id)init
 {
     self = [super init];
     
     
-    self.simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
+    _simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
     
-    self.clock = [[BTClock alloc]init];
-    self.clock.delegate = self;
+    _clock = [[BTClock alloc]init];
+    _clock.delegate = self;
     
     return self;
 }
 
++(BTMetronomeCoreController *)getController
+{
+    static BTMetronomeCoreController *sharedMetronomeCoreController = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        sharedMetronomeCoreController = [[self alloc] init];
+    });
+    return sharedMetronomeCoreController;
+}
+
 -(void)start
 {
-    
-    //test simpldFileSoundEngine! --poppy
-    
-    [self.simpleFileSoundEngine loadSoundFileForKey:@"tick" withExtension:@"aif" forKey:TICK_SOUND_KEY];
-    
-        
-    [self.clock startDriverThread];
+
+    [_simpleFileSoundEngine loadSoundFileForKey:DEFAULT_P_SOUND_FILE withExtension:DEFAULT_SOUND_FILE_EXT forKey:TICK_SOUND_KEY];
+    [_clock startDriverThread];
     
 }
 
 -(void)stop
 {
-    [self.clock stopDriverThread];
+    [_clock stopDriverThread];
 }
 
 -(void)pause
@@ -48,10 +55,15 @@
     //todo
 }
 
+-(void)setBpm:(int)bpm
+{
+    [_clock setBpm:bpm];
+}
+
 -(void)beatOnHandler:(int)beatCount
 {
     NSLog(@"beat! %d", beatCount);
-    [self.simpleFileSoundEngine playSoundForKey:TICK_SOUND_KEY];
+    [_simpleFileSoundEngine playSoundForKey:TICK_SOUND_KEY];
     
 }
 

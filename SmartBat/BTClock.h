@@ -18,19 +18,16 @@
 
 @interface BTClock : NSObject
 {
-    CGFloat duration;
-    NSUInteger beatNumber;
-    BOOL tempoChangeInProgress;
-    NSThread *soundPlayerThread;
-    id<BeatOnDelegate> delegate;
+    CGFloat _duration;
+    NSUInteger _beatNumber;
+    BOOL _tempoChangeInProgress;
+    NSThread *_soundPlayerThread;
 
 }
 
 @property (nonatomic, retain) id<BeatOnDelegate> delegate;
-
 @property NSUInteger bpm;
-@property CGFloat duration;
-@property (nonatomic, retain) NSThread *soundPlayerThread;
+
 -(void)startDriverThread;
 -(void)stopDriverThread;
 

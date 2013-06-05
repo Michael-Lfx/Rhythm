@@ -14,6 +14,7 @@
 
 @implementation BTMainViewController
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -25,6 +26,7 @@
 
     
     //test by poppy
+    self.metronomeCoreController = [BTMetronomeCoreController getController];
     
     
 }
@@ -86,6 +88,13 @@
     _intervalCount = 0;
 }
 
+- (IBAction)playPressed:(UIButton *)sender {
+    
+    [self.metronomeCoreController start] ;
+    
+}
+
+
 -(void)setBPMDisplay{
     _mainNumber.text = [NSString stringWithFormat:@"%d", _globals.bitPerMinute];
 }
@@ -98,6 +107,9 @@
     }
     
     [self setBPMDisplay];
+    
+    [self.metronomeCoreController setBpm:_globals.bitPerMinute];
+    
     
     _intervalCount++;
     

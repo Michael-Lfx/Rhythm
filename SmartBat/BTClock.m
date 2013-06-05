@@ -14,24 +14,15 @@
 
 @implementation BTClock
 
-@synthesize duration, soundPlayerThread, delegate;
-
 -(id)init
 {
     self = [super init];
-    
-    
-    
+        
     [self setBpm:kDefaultBPM];
     
     return self;
 }
 
-- (void)playSound
-{
-    NSLog(@"playSound %@", [NSDate date]);
-    
-}
 
 - (void)startDriverTimer:(id)info {
     
@@ -41,16 +32,15 @@
     
     while (continuePlaying) {
         
-        [self playSound];
         [self.delegate beatOnHandler:1];
         
         
-        NSDate *curtainTime = [[NSDate alloc] initWithTimeIntervalSinceNow:self.duration];
+        NSDate *curtainTime = [[NSDate alloc] initWithTimeIntervalSinceNow:_duration];
         NSDate *currentTime = [[NSDate alloc] init];
         
         // Wake up periodically to see if we've been cancelled.
         while (continuePlaying && ([currentTime compare:curtainTime] != NSOrderedDescending)) {
-            if ([soundPlayerThread isCancelled] == YES) {
+            if ([_soundPlayerThread isCancelled] == YES) {
                 continuePlaying = NO;
             }
             [NSThread sleepForTimeInterval:0.01];
@@ -60,33 +50,33 @@
 }
 
 - (void)waitForSoundDriverThreadToFinish {
-    while (soundPlayerThread && ![soundPlayerThread isFinished]) { // Wait for the thread to finish.
+    while (_soundPlayerThread && ![_soundPlayerThread isFinished]) { // Wait for the thread to finish.
         [NSThread sleepForTimeInterval:0.1];
     }
 }
 
 
 - (void)startDriverThread {
-    if (soundPlayerThread != nil) {
-        [soundPlayerThread cancel];
+    if (_soundPlayerThread != nil) {
+        [_soundPlayerThread cancel];
         [self waitForSoundDriverThreadToFinish];
     }
     
     NSThread *driverThread = [[NSThread alloc] initWithTarget:self selector:@selector(startDriverTimer:) object:nil];
-    self.soundPlayerThread = driverThread;
+    _soundPlayerThread = driverThread;
     
-    [self.soundPlayerThread start];
+    [_soundPlayerThread start];
 }
 
 
 - (void)stopDriverThread {
-    [self.soundPlayerThread cancel];
+    [_soundPlayerThread cancel];
     [self waitForSoundDriverThreadToFinish];
-    self.soundPlayerThread = nil;
+    _soundPlayerThread = nil;
 }
 
 - (NSUInteger)bpm {
-    return lrint(ceil(60.0 / (self.duration)));
+    return lrint(ceil(60.0 / (_duration)));
 }
 
 
@@ -96,7 +86,7 @@
     } else if (bpm <= kMinBPM) {
         bpm = kMinBPM;
     }
-    self.duration = (60.0 / bpm);
+    _duration = (60.0 / bpm);
 }
 
 @end
