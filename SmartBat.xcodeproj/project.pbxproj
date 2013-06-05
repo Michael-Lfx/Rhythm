@@ -30,6 +30,9 @@
 		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
 		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
 		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
+		F49E6D0B175F220000E2EDCB /* SimpleFileSoundEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D0A175F220000E2EDCB /* SimpleFileSoundEngine.m */; };
+		F49E6D0D175F222800E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D0C175F222800E2EDCB /* AudioToolbox.framework */; };
+		F49E6D10175F35EA00E2EDCB /* tick.aif in Resources */ = {isa = PBXBuildFile; fileRef = F49E6D0F175F35EA00E2EDCB /* tick.aif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +73,10 @@
 		72B45B36175DDA840071A082 /* BTSwipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSwipeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72B45B38175DDD110071A082 /* BTCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTCommonViewController.h; path = ../BTCommonViewController.h; sourceTree = "<group>"; };
 		72B45B39175DDD110071A082 /* BTCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCommonViewController.m; path = ../BTCommonViewController.m; sourceTree = "<group>"; };
+		F49E6D09175F220000E2EDCB /* SimpleFileSoundEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFileSoundEngine.h; sourceTree = "<group>"; };
+		F49E6D0A175F220000E2EDCB /* SimpleFileSoundEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleFileSoundEngine.m; sourceTree = "<group>"; };
+		F49E6D0C175F222800E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F49E6D0F175F35EA00E2EDCB /* tick.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = tick.aif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F49E6D0D175F222800E2EDCB /* AudioToolbox.framework in Frameworks */,
 				7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */,
 				7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */,
 				7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */,
@@ -89,6 +97,7 @@
 		7289354D175DA8D900EED04E = {
 			isa = PBXGroup;
 			children = (
+				F49E6D0C175F222800E2EDCB /* AudioToolbox.framework */,
 				72893558175DA8D900EED04E /* Frameworks */,
 				72893557175DA8D900EED04E /* Products */,
 				7289355F175DA8D900EED04E /* SmartBat */,
@@ -116,7 +125,7 @@
 		7289355F175DA8D900EED04E /* SmartBat */ = {
 			isa = PBXGroup;
 			children = (
-				F49E6D08175F1FBB00E2EDCB /* AudioEngine */,
+				F49E6D08175F1FBB00E2EDCB /* MetronomeCore */,
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
 				72893569175DA8D900EED04E /* BTAppDelegate.m */,
 				7289357F175DA97700EED04E /* Base Class */,
@@ -130,6 +139,7 @@
 		72893560175DA8D900EED04E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F49E6D0E175F35D300E2EDCB /* Sounds */,
 				723FA139175E49DC00DEF5E0 /* band.png */,
 				72893565175DA8D900EED04E /* main.m */,
 				72893567175DA8D900EED04E /* SmartBat-Prefix.pch */,
@@ -187,11 +197,21 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		F49E6D08175F1FBB00E2EDCB /* AudioEngine */ = {
+		F49E6D08175F1FBB00E2EDCB /* MetronomeCore */ = {
 			isa = PBXGroup;
 			children = (
+				F49E6D09175F220000E2EDCB /* SimpleFileSoundEngine.h */,
+				F49E6D0A175F220000E2EDCB /* SimpleFileSoundEngine.m */,
 			);
-			name = AudioEngine;
+			name = MetronomeCore;
+			sourceTree = "<group>";
+		};
+		F49E6D0E175F35D300E2EDCB /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F49E6D0F175F35EA00E2EDCB /* tick.aif */,
+			);
+			name = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,6 +274,7 @@
 				723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */,
 				723FA135175E0B0300DEF5E0 /* Default.png in Resources */,
 				723FA13A175E49DC00DEF5E0 /* band.png in Resources */,
+				F49E6D10175F35EA00E2EDCB /* tick.aif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +297,7 @@
 				723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */,
 				723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */,
 				723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */,
+				F49E6D0B175F220000E2EDCB /* SimpleFileSoundEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
