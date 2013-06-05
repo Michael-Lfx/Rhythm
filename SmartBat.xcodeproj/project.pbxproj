@@ -116,6 +116,7 @@
 		7289355F175DA8D900EED04E /* SmartBat */ = {
 			isa = PBXGroup;
 			children = (
+				F49E6D08175F1FBB00E2EDCB /* AudioEngine */,
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
 				72893569175DA8D900EED04E /* BTAppDelegate.m */,
 				7289357F175DA97700EED04E /* Base Class */,
@@ -184,6 +185,13 @@
 				72893571175DA8D900EED04E /* MainStoryboard.storyboard */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		F49E6D08175F1FBB00E2EDCB /* AudioEngine */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = AudioEngine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
