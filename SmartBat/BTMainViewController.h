@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BTSwipeViewController.h"
+#import "SimpleFileSoundEngine.h"
 
 
 @interface BTMainViewController : BTSwipeViewController{

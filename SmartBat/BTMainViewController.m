@@ -22,6 +22,13 @@
     _globals = [BTGlobals sharedGlobals];
     [self setBPMDisplay];
     _intervalCount = 0;
+    
+    
+    //test simpldFileSoundEngine! --poppy
+    SimpleFileSoundEngine * simpleFileSoundEngine = [SimpleFileSoundEngine getEngine];
+    [simpleFileSoundEngine loadSoundFileForKey:@"tick" withExtension:@"aif" forKey:@"P"];
+    [simpleFileSoundEngine playSoundForKey:@"P"];
+    
 }
 
 - (void)didReceiveMemoryWarning
