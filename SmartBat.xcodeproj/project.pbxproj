@@ -14,7 +14,6 @@
 		723FA135175E0B0300DEF5E0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA134175E0B0300DEF5E0 /* Default.png */; };
 		723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */; };
 		723FA13E175F15A700DEF5E0 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA13C175F15A700DEF5E0 /* minus@2x.png */; };
-		723FA140175F185A00DEF5E0 /* main_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA13F175F185A00DEF5E0 /* main_bg.png */; };
 		723FA142175F196600DEF5E0 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA141175F196600DEF5E0 /* plus@2x.png */; };
 		723FA148175F1C7500DEF5E0 /* band@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA147175F1C7500DEF5E0 /* band@2x.png */; };
 		723FA14B175F1E0D00DEF5E0 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA149175F1E0D00DEF5E0 /* plus.png */; };
@@ -28,6 +27,7 @@
 		723FA15D175F289100DEF5E0 /* timer_deep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA158175F289000DEF5E0 /* timer_deep@2x.png */; };
 		723FA15E175F289100DEF5E0 /* timer_light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA159175F289000DEF5E0 /* timer_light@2x.png */; };
 		723FA15F175F289100DEF5E0 /* timer_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA15A175F289000DEF5E0 /* timer_delete@2x.png */; };
+		72582066175F7CB70027FD6A /* main_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72582065175F7CB70027FD6A /* main_bg.png */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -40,7 +40,6 @@
 		72893583175DAA7400EED04E /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893582175DAA7400EED04E /* BTGlobals.m */; };
 		7289358A175DAC9900EED04E /* BTTempoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893589175DAC9900EED04E /* BTTempoViewController.m */; };
 		72B45B30175DC0FD0071A082 /* tempo.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B45B2E175DC0FD0071A082 /* tempo.png */; };
-		72B45B31175DC0FD0071A082 /* main.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B45B2F175DC0FD0071A082 /* main.png */; };
 		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
 		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
 		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
@@ -60,7 +59,6 @@
 		723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTNoBandViewController.h; sourceTree = "<group>"; };
 		723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTNoBandViewController.m; sourceTree = "<group>"; };
 		723FA13C175F15A700DEF5E0 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@2x.png"; sourceTree = "<group>"; };
-		723FA13F175F185A00DEF5E0 /* main_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_bg.png; sourceTree = "<group>"; };
 		723FA141175F196600DEF5E0 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
 		723FA147175F1C7500DEF5E0 /* band@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "band@2x.png"; sourceTree = "<group>"; };
 		723FA149175F1E0D00DEF5E0 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
@@ -74,6 +72,7 @@
 		723FA158175F289000DEF5E0 /* timer_deep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer_deep@2x.png"; sourceTree = "<group>"; };
 		723FA159175F289000DEF5E0 /* timer_light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer_light@2x.png"; sourceTree = "<group>"; };
 		723FA15A175F289000DEF5E0 /* timer_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer_delete@2x.png"; sourceTree = "<group>"; };
+		72582065175F7CB70027FD6A /* main_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_bg.png; sourceTree = "<group>"; };
 		72893556175DA8D900EED04E /* SmartBat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartBat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -94,7 +93,6 @@
 		72893588175DAC9900EED04E /* BTTempoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTTempoViewController.h; path = ../BTTempoViewController.h; sourceTree = "<group>"; };
 		72893589175DAC9900EED04E /* BTTempoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTTempoViewController.m; path = ../BTTempoViewController.m; sourceTree = "<group>"; };
 		72B45B2E175DC0FD0071A082 /* tempo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tempo.png; path = ../tempo.png; sourceTree = "<group>"; };
-		72B45B2F175DC0FD0071A082 /* main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = main.png; path = ../main.png; sourceTree = "<group>"; };
 		72B45B32175DD7DC0071A082 /* BTSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSettingsViewController.h; sourceTree = "<group>"; };
 		72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSettingsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72B45B35175DDA840071A082 /* BTSwipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSwipeViewController.h; sourceTree = "<group>"; };
@@ -132,9 +130,8 @@
 				723FA157175F289000DEF5E0 /* bit_minus@2x.png */,
 				723FA158175F289000DEF5E0 /* timer_deep@2x.png */,
 				723FA159175F289000DEF5E0 /* timer_light@2x.png */,
+				72582065175F7CB70027FD6A /* main_bg.png */,
 				723FA15A175F289000DEF5E0 /* timer_delete@2x.png */,
-				72B45B2F175DC0FD0071A082 /* main.png */,
-				723FA13F175F185A00DEF5E0 /* main_bg.png */,
 				723FA150175F25B200DEF5E0 /* tempo_bg.png */,
 				723FA14A175F1E0D00DEF5E0 /* minus.png */,
 				723FA13C175F15A700DEF5E0 /* minus@2x.png */,
@@ -319,12 +316,10 @@
 				72893564175DA8D900EED04E /* InfoPlist.strings in Resources */,
 				72893573175DA8D900EED04E /* MainStoryboard.storyboard in Resources */,
 				72B45B30175DC0FD0071A082 /* tempo.png in Resources */,
-				72B45B31175DC0FD0071A082 /* main.png in Resources */,
 				723FA131175E0A6600DEF5E0 /* Default-568h@2x.png in Resources */,
 				723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */,
 				723FA135175E0B0300DEF5E0 /* Default.png in Resources */,
 				723FA13E175F15A700DEF5E0 /* minus@2x.png in Resources */,
-				723FA140175F185A00DEF5E0 /* main_bg.png in Resources */,
 				723FA142175F196600DEF5E0 /* plus@2x.png in Resources */,
 				723FA148175F1C7500DEF5E0 /* band@2x.png in Resources */,
 				723FA14B175F1E0D00DEF5E0 /* plus.png in Resources */,
@@ -339,6 +334,7 @@
 				723FA15E175F289100DEF5E0 /* timer_light@2x.png in Resources */,
 				723FA15F175F289100DEF5E0 /* timer_delete@2x.png in Resources */,
 				F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */,
+				72582066175F7CB70027FD6A /* main_bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

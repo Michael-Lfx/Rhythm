@@ -47,28 +47,28 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch* one = [touches anyObject];
-    _originPoint = [one locationInView:self.view.superview];
-    
-    [self swipeBegan];
-}
-
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch* one = [touches anyObject];
-    CGPoint now = [one locationInView:self.view.superview];
-    
-    int dis = now.x - _originPoint.x;
-    
-    [self swipe:dis];
-}
-
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self swipeEnded];
-    
-    CGPoint origin = CGPointMake(0.0f, 0.0f);
-    _originPoint = origin;
-}
+//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+////    UITouch* one = [touches anyObject];
+////    _originPoint = [one locationInView:self.view.superview];
+////    
+////    [self swipeBegan];
+//}
+//
+//-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+////    UITouch* one = [touches anyObject];
+////    CGPoint now = [one locationInView:self.view.superview];
+////    
+////    int dis = now.x - _originPoint.x;
+////    
+////    [self swipe:dis];
+//}
+//
+//-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+////    [self swipeEnded];
+////    
+////    CGPoint origin = CGPointMake(0.0f, 0.0f);
+////    _originPoint = origin;
+//}
 
 -(void)swipeBegan{
     

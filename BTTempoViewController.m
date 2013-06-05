@@ -49,6 +49,8 @@
     
     if(final > THRESHOLD_2_COMPLETE * _viewX){
         move2 = _viewX;
+        
+        _globals.pageControl.currentPage = 0;
     }else{
         move2 = 0;
     }

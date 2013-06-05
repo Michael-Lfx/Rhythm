@@ -13,7 +13,6 @@
 
 @interface BTMainViewController : BTSwipeViewController{
     UIView* _tempoView;
-    BTGlobals* _globals;
     
     NSTimer* _changeBPMTimer;
     int _intervalCount;

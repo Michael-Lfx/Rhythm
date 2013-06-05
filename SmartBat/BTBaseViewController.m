@@ -34,9 +34,9 @@
 	// Do any additional setup after loading the view.
     
     [self clearXY];
+    _globals = [BTGlobals sharedGlobals];
     
-    CGRect f = [self.view frame];
-    _viewX = f.size.width;
+    _viewX = [UIScreen mainScreen].applicationFrame.size.width;
 
 }
 

@@ -13,12 +13,15 @@
 #import "BTCommonViewController.h"
 #import "BTConstants.h"
 #import "BTNoBandViewController.h"
+#import "BTGlobals.h"
 
-@interface BTRootViewController : BTBaseViewController{
+@interface BTRootViewController : BTBaseViewController <UIScrollViewDelegate>{
     BTTempoViewController* _tempViewCtrl;
     BTMainViewController* _mainViewCtrl;
     BTCommonViewController* _commonViewCtrl;
     BTNoBandViewController* _noBandViewCtrl;
+    UIScrollView* _scrollView;
+    UIPageControl* _pageControl;
 }
 
 @end

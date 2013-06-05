@@ -11,6 +11,7 @@
 @interface BTGlobals : NSObject
 
 @property(assign, nonatomic) int bitPerMinute;
+@property(retain, nonatomic) UIPageControl* pageControl;
 
 +(BTGlobals*)sharedGlobals;
 

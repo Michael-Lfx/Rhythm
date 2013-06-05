@@ -12,6 +12,7 @@
 
 @interface BTBaseViewController : UIViewController{
     int _viewX;
+    BTGlobals* _globals;
 }
 
 -(void)clearXY;

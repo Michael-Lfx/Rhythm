@@ -55,6 +55,8 @@
     
     if(final < (1 - THRESHOLD_2_COMPLETE) * _viewX){
         move2 = 0;
+        
+        [_globals.pageControl setCurrentPage:1];
     }else{
         move2 = _viewX;
     }

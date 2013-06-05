@@ -29,15 +29,7 @@
 	// Do any additional setup after loading the view.
     
     int screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
-    
-    _mainViewCtrl = [BTMainViewController buildView];
-    _mainViewCtrl.view.tag = MAIN_VIEW;
-    [self.view addSubview:_mainViewCtrl.view];
-    
-    _tempViewCtrl = [BTTempoViewController buildView];
-    _tempViewCtrl.view.tag = TEMPO_VIEW;
-    [self setViewX:-screenWidth who:_tempViewCtrl.view];
-    [self.view addSubview:_tempViewCtrl.view];
+    int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
     
     _commonViewCtrl = [BTCommonViewController buildView];
     _commonViewCtrl.view.tag = COMMON_VIEW;
@@ -49,14 +41,39 @@
     [self setViewX:screenWidth who:_noBandViewCtrl.view];
     [self.view addSubview:_noBandViewCtrl.view];
     
-    UIPageControl* pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(100, 400, 40, 20)];
-    pageControl.tag = PAGE_CONTROL_VIEW;
-    pageControl.numberOfPages = 2;
-    pageControl.currentPage = 0;
-    [self.view addSubview:pageControl];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
+    _scrollView.pagingEnabled = YES;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.bounces = YES;
+    _scrollView.delegate = self;
+    [self.view addSubview:_scrollView];
     
-    NSLog(@"%@", self.view.subviews);
+    _mainViewCtrl = [BTMainViewController buildView];
+    _mainViewCtrl.view.tag = MAIN_VIEW;
+    [_scrollView addSubview:_mainViewCtrl.view];
+    
+    _tempViewCtrl = [BTTempoViewController buildView];
+    _tempViewCtrl.view.tag = TEMPO_VIEW;
+    [self setViewX:screenWidth who:_tempViewCtrl.view];
+    [_scrollView addSubview:_tempViewCtrl.view];
+    
+    _scrollView.contentSize = CGSizeMake(screenWidth * 2, screenWidth);
+    
+    _pageControl = (UIPageControl*)[self.view viewWithTag:PAGE_CONTROL_VIEW];
+    [self.view bringSubviewToFront:_pageControl];
+    
+    NSLog(@"%@", _scrollView.subviews);
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    CGFloat pageWidth = _scrollView.frame.size.width;
+    int page = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pageControl.currentPage = page;
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
