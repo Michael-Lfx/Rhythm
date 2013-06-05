@@ -9,8 +9,27 @@
 #import <UIKit/UIKit.h>
 #import "BTSwipeViewController.h"
 
+
 @interface BTMainViewController : BTSwipeViewController{
-    UIView* tempoView;
+    UIView* _tempoView;
+    BTGlobals* _globals;
+    
+    NSTimer* _changeBPMTimer;
+    int _intervalCount;
 }
+
+@property (weak, nonatomic) IBOutlet UILabel *mainNumber;
+@property (weak, nonatomic) IBOutlet UIButton *plus;
+@property (weak, nonatomic) IBOutlet UIButton *minus;
+
+- (IBAction)minusPressed:(UIButton *)sender;
+- (IBAction)plusPressed:(UIButton *)sender;
+- (IBAction)plusEnded:(UIButton *)sender;
+- (IBAction)minusEnded:(UIButton *)sender;
+
+-(void)changeBPM:(NSTimer*)timer;
+-(void)setBPMDisplay;
+-(void)startChangeBPMTimer:(NSString*)operation interval:(float)duration;
+-(void)stopChangeBPMTImer;
 
 @end

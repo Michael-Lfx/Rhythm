@@ -37,7 +37,7 @@
 
 -(IBAction)pickupSettings:(id)sender{
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
-        [self setViewX:originX];
+        [self setViewX:_originX];
     } completion:^(BOOL finished) {
         
     }];

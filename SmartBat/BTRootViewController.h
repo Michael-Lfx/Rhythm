@@ -12,11 +12,13 @@
 #import "BTTempoViewController.h"
 #import "BTCommonViewController.h"
 #import "BTConstants.h"
+#import "BTNoBandViewController.h"
 
 @interface BTRootViewController : BTBaseViewController{
-    BTTempoViewController* tempViewCtl;
-    BTMainViewController* mainViewCtl;
-    BTCommonViewController* commonViewCtl;
+    BTTempoViewController* _tempViewCtrl;
+    BTMainViewController* _mainViewCtrl;
+    BTCommonViewController* _commonViewCtrl;
+    BTNoBandViewController* _noBandViewCtrl;
 }
 
 @end

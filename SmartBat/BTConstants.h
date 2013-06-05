@@ -15,6 +15,14 @@ extern float const THRESHOLD_2_COMPLETE_DURETION;
 extern int const MAIN_VIEW;
 extern int const TEMPO_VIEW;
 extern int const COMMON_VIEW;
+extern int const NO_BAND_VIEW;
+
+extern float const BPM_CHANGE_INTERVAL;
+extern float const BPM_CHANGE_INTERVAL_FASTER;
+extern float const BPM_CHANGE_FASTER_COUNT;
+
+extern NSString* const BPM_PLUS;
+extern NSString* const BPM_MINUS;
 
 @interface BTConstants : NSObject
 

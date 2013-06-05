@@ -30,19 +30,24 @@
     
     int screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
     
-    mainViewCtl = [BTMainViewController buildView];
-    mainViewCtl.view.tag = MAIN_VIEW;
-    [self.view addSubview:mainViewCtl.view];
+    _mainViewCtrl = [BTMainViewController buildView];
+    _mainViewCtrl.view.tag = MAIN_VIEW;
+    [self.view addSubview:_mainViewCtrl.view];
     
-    tempViewCtl = [BTTempoViewController buildView];
-    tempViewCtl.view.tag = TEMPO_VIEW;
-    [self setViewX:-screenWidth who:tempViewCtl.view];
-    [self.view addSubview:tempViewCtl.view];
+    _tempViewCtrl = [BTTempoViewController buildView];
+    _tempViewCtrl.view.tag = TEMPO_VIEW;
+    [self setViewX:-screenWidth who:_tempViewCtrl.view];
+    [self.view addSubview:_tempViewCtrl.view];
     
-    commonViewCtl = [BTCommonViewController buildView];
-    commonViewCtl.view.tag = COMMON_VIEW;
-    [self setViewX:-screenWidth who:commonViewCtl.view];
-    [self.view addSubview:commonViewCtl.view];
+    _commonViewCtrl = [BTCommonViewController buildView];
+    _commonViewCtrl.view.tag = COMMON_VIEW;
+    [self setViewX:-screenWidth who:_commonViewCtrl.view];
+    [self.view addSubview:_commonViewCtrl.view];
+    
+    _noBandViewCtrl = [BTNoBandViewController buildView];
+    _noBandViewCtrl.view.tag = NO_BAND_VIEW;
+    [self setViewX:screenWidth who:_noBandViewCtrl.view];
+    [self.view addSubview:_noBandViewCtrl.view];
     
     NSLog(@"%@", self.view.subviews);
 }

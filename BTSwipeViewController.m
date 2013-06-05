@@ -29,10 +29,16 @@
 	// Do any additional setup after loading the view.
     
     UIButton *settingsBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [settingsBtn setFrame:CGRectMake(200, 30, 100, 30)];
-    [settingsBtn setTitle:@"settings" forState:UIControlStateNormal];
-    [settingsBtn addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
+    [settingsBtn setFrame:CGRectMake(240, 30, 24, 24)];
+    [settingsBtn setBackgroundImage:[UIImage imageNamed:@"band.png"] forState:UIControlStateNormal];
+    [settingsBtn addTarget:self action:@selector(callCommonSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:settingsBtn];
+    
+    UIButton *bandBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [bandBtn setFrame:CGRectMake(20, 30, 24, 24)];
+    [bandBtn setBackgroundImage:[UIImage imageNamed:@"band.png"] forState:UIControlStateNormal];
+    [bandBtn addTarget:self action:@selector(callBandSettings:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:bandBtn];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,14 +82,24 @@
     
 }
 
--(IBAction)callSettings:(UIButton*)sender{
-    UIView* commonView = [self.view.superview viewWithTag:COMMON_VIEW];
-    
+-(void)slideIn:(UIView *)view{
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
-        [self setViewX:0 who:commonView];
+        [self setViewX:0 who:view];
     } completion:^(BOOL finished) {
         
     }];
+}
+
+-(IBAction)callCommonSettings:(UIButton*)sender{
+    UIView* commonView = [self.view.superview viewWithTag:COMMON_VIEW];
+    
+    [self slideIn:commonView];
+}
+
+-(IBAction)callBandSettings:(UIButton *)sender{
+    UIView* noBandView = [self.view.superview viewWithTag:NO_BAND_VIEW];
+    
+    [self slideIn:noBandView];
 }
 
 @end

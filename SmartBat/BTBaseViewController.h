@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BTConstants.h"
+#import "BTGlobals.h"
 
 @interface BTBaseViewController : UIViewController{
     int _viewX;

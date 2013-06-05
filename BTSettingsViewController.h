@@ -10,7 +10,7 @@
 #import "BTBaseViewController.h"
 
 @interface BTSettingsViewController : BTBaseViewController{
-    int originX;
+    int _originX;
 }
 
 -(IBAction)pickupSettings:(id)sender;

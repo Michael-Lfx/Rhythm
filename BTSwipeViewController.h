@@ -10,7 +10,6 @@
 #import "BTSettingsViewController.h"
 
 @interface BTSwipeViewController : BTBaseViewController{
-    BTSettingsViewController* settingsViewCtl;
     CGPoint _originPoint;
 }
 
@@ -18,6 +17,9 @@
 -(void)swipe:(int)dis;
 -(void)swipeEnded;
 
--(IBAction)callSettings:(UIButton*)sender;
+-(IBAction)callCommonSettings:(UIButton*)sender;
+-(IBAction)callBandSettings:(UIButton*)sender;
+
+-(void)slideIn:(UIView*)view;
 
 @end
