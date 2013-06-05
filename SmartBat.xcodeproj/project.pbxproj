@@ -46,6 +46,10 @@
 		F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */ = {isa = PBXBuildFile; fileRef = F49E6D18175F3DE100E2EDCB /* tick.aif */; };
+		F49E6D1C175F6C3500E2EDCB /* BTClock.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D1B175F6C3500E2EDCB /* BTClock.m */; };
+		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
+		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
+		F49E6D23175F7ECF00E2EDCB /* BTMetronomeCoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D22175F7ECF00E2EDCB /* BTMetronomeCoreController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +107,12 @@
 		F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSimpleFileSoundEngine.m; sourceTree = "<group>"; };
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F49E6D18175F3DE100E2EDCB /* tick.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = tick.aif; sourceTree = "<group>"; };
+		F49E6D1A175F6C3500E2EDCB /* BTClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTClock.h; sourceTree = "<group>"; };
+		F49E6D1B175F6C3500E2EDCB /* BTClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClock.m; sourceTree = "<group>"; };
+		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F49E6D21175F7ECF00E2EDCB /* BTMetronomeCoreController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTMetronomeCoreController.h; sourceTree = "<group>"; };
+		F49E6D22175F7ECF00E2EDCB /* BTMetronomeCoreController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTMetronomeCoreController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +120,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */,
+				F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */,
 				F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */,
 				7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */,
 				7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */,
@@ -146,6 +158,8 @@
 		7289354D175DA8D900EED04E = {
 			isa = PBXGroup;
 			children = (
+				F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */,
+				F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */,
 				F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */,
 				72893558175DA8D900EED04E /* Frameworks */,
 				72893557175DA8D900EED04E /* Products */,
@@ -249,6 +263,10 @@
 			children = (
 				F49E6D12175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.h */,
 				F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */,
+				F49E6D1A175F6C3500E2EDCB /* BTClock.h */,
+				F49E6D1B175F6C3500E2EDCB /* BTClock.m */,
+				F49E6D21175F7ECF00E2EDCB /* BTMetronomeCoreController.h */,
+				F49E6D22175F7ECF00E2EDCB /* BTMetronomeCoreController.m */,
 			);
 			name = "Metronome Core";
 			sourceTree = "<group>";
@@ -358,6 +376,8 @@
 				723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */,
 				723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */,
 				F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m in Sources */,
+				F49E6D1C175F6C3500E2EDCB /* BTClock.m in Sources */,
+				F49E6D23175F7ECF00E2EDCB /* BTMetronomeCoreController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

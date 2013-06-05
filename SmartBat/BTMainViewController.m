@@ -22,12 +22,10 @@
     _globals = [BTGlobals sharedGlobals];
     [self setBPMDisplay];
     _intervalCount = 0;
+
     
+    //test by poppy
     
-    //test simpldFileSoundEngine! --poppy
-    BTSimpleFileSoundEngine * simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
-    [simpleFileSoundEngine loadSoundFileForKey:@"tick" withExtension:@"aif" forKey:@"P"];
-    [simpleFileSoundEngine playSoundForKey:@"P"];
     
 }
 
