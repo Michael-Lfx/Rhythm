@@ -25,7 +25,7 @@
     
     
     //test simpldFileSoundEngine! --poppy
-    SimpleFileSoundEngine * simpleFileSoundEngine = [SimpleFileSoundEngine getEngine];
+    BTSimpleFileSoundEngine * simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
     [simpleFileSoundEngine loadSoundFileForKey:@"tick" withExtension:@"aif" forKey:@"P"];
     [simpleFileSoundEngine playSoundForKey:@"P"];
     

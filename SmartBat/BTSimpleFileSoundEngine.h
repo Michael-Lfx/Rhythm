@@ -10,13 +10,13 @@
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface SimpleFileSoundEngine : NSObject
+@interface BTSimpleFileSoundEngine : NSObject
 {
     NSMutableDictionary * soundPool;
 }
 
 
-+(SimpleFileSoundEngine *)getEngine;
++(BTSimpleFileSoundEngine *)getEngine;
 -(void)loadSoundFileForKey: (NSString *) soundFileName withExtension:(NSString *) soundFileExtension forKey:(NSString *) key;
 -(void)playSoundForKey: (NSString *)key;
 -(void)clearSoundForKey: (NSString *)key;

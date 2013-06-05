@@ -6,12 +6,12 @@
 //  Copyright (c) 2013年 sensor-music.com. All rights reserved.
 //
 
-#import "SimpleFileSoundEngine.h"
+#import "BTSimpleFileSoundEngine.h"
 
-@implementation SimpleFileSoundEngine
+@implementation BTSimpleFileSoundEngine
 
 
--(SimpleFileSoundEngine *)init{
+-(BTSimpleFileSoundEngine *)init{
     self = [super init];
     
     if (self) {
@@ -21,9 +21,9 @@
     return self;
 }
 
-+(SimpleFileSoundEngine *)getEngine
++(BTSimpleFileSoundEngine *)getEngine
 {
-    static SimpleFileSoundEngine *sharedEngine = nil;
+    static BTSimpleFileSoundEngine *sharedEngine = nil;
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
         sharedEngine = [[self alloc] init];
