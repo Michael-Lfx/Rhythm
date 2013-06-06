@@ -25,7 +25,7 @@
 
     
     //test by poppy
-//    self.metronomeCoreController = [BTMetronomeCoreController getController];
+    self.metronomeCoreController = [BTMetronomeCoreController getController];
     
     [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
@@ -60,6 +60,11 @@
     
     [self.metronomeCoreController start] ;
     
+}
+
+
+- (IBAction)tapPressed:(UIButton *)sender {
+    [self.metronomeCoreController stop] ;
 }
 
 //私有方法

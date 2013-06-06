@@ -10,6 +10,15 @@
 
 @implementation BTTimeToBeatTransmitter
 
+-(id)init
+{
+    self = [super init];
+    
+    _timeLineHitCount = 0;
+    
+    return self;
+}
+
 -(void) updateBPM:(NSUInteger) bpm
 {
     
@@ -25,15 +34,23 @@
 -(void) bindTimeLine:(BTTimeLine *) timeLine
 {
     _timeLine = timeLine;
-    
     _timeLine.timeLineDelegate = self;
 }
 
 
 //implement of TimeLineDelegate
--(void)onTimeInvokeHandler:(NSTimeInterval) interval
+-(void)onTimeInvokeHandler: (NSDate *) time
 {
-    NSLog(@"timeline invoke with interval!");
+    _timeLineHitCount ++;
+    
+    if(_timeLineHitCount % 100 ==0)
+    {
+        NSLog(@"[%d]timeline invoke with interval! %@",_timeLineHitCount, time);
+        
+        [self.timeToBeatTransmitterBeatDelegate onBeatHandler:nil ofMeasure:nil withBPM:nil];
+
+    }
+    
 }
 
 @end

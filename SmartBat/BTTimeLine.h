@@ -10,7 +10,7 @@
 
 @protocol TimeLineDelegate <NSObject>
 
--(void) onTimeInvokeHandler:(NSTimeInterval ) interval;
+-(void) onTimeInvokeHandler:(NSDate *) time;
 
 @end
 
@@ -30,5 +30,8 @@
 
 @property NSTimeInterval * interval;
 @property(nonatomic, retain) id<TimeLineDelegate> timeLineDelegate;
+
+-(void)startLoop;
+-(void)stopLoop;
 
 @end

@@ -368,6 +368,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="tapPressed:" destination="2" eventType="touchDown" id="iWJ-FB-eqj"/>
+                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="228" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="as2-QD-hbk">
                                 <constraints>
@@ -563,6 +566,7 @@
                 <relationship kind="action" name="playPressed:" candidateClass="UIButton"/>
                 <relationship kind="action" name="plusEnded:" candidateClass="UIButton"/>
                 <relationship kind="action" name="plusPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="tapPressed:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="mainNumber" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="minus" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="plus" candidateClass="UIButton"/>

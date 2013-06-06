@@ -25,10 +25,12 @@
 @interface BTTimeToBeatTransmitter : NSObject<TimeLineDelegate>{
     
     BTTimeLine * _timeLine;
+    NSUInteger _timeLineHitCount;
 }
 
 
 @property NSUInteger bpm;
+@property(nonatomic, retain) id<BTTimeToBeatTransmitterBeatDelegate>timeToBeatTransmitterBeatDelegate;
 
 -(void) updateBPM:(NSUInteger) bpm;
 -(void) updateMeasureTemplate:(BTMeasure *) measure;

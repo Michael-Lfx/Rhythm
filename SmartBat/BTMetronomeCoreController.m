@@ -42,13 +42,13 @@
     [_timeToBeatTransmitter bindTimeLine:_timeLine];
     [_timeToBeatTransmitter updateBPM:DEFAULT_BPM];
     [_timeToBeatTransmitter updateMeasureTemplate:measure];
-    
-    _timeLine.timeLineDelegate = _timeToBeatTransmitter;
-    
+    _timeToBeatTransmitter.timeToBeatTransmitterBeatDelegate = self;
     
     
-    _clock = [[BTClock alloc]init];
-    _clock.beatDelegate = self;
+    
+    
+//    _clock = [[BTClock alloc]init];
+//    _clock.beatDelegate = self;
     
     
     return self;
@@ -67,13 +67,17 @@
 -(void)start
 {
     
-    [_clock startDriverThread];
+    //start loop
+    [_timeLine startLoop] ;
+    
+    //[_clock startDriverThread];
     
 }
 
 -(void)stop
 {
-    [_clock stopDriverThread];
+//    [_clock stopDriverThread];
+    [_timeLine stopLoop] ;
 }
 
 -(void)pause
@@ -83,19 +87,20 @@
 
 -(void)setBpm:(int)bpm
 {
-    [_clock setBpm:bpm];
+//    [_clock setBpm:bpm];
 }
 
 -(void)onBeatHandler:(int)beatCount
 {
     NSLog(@"beat! %d", beatCount);
-    [_simpleFileSoundEngine playSoundForKey:TICK_SOUND_KEY];
+//    
     
 }
 
 -(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(NSUInteger)bpm
 {
     NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, beat.indexOfMeasure);
+    [_simpleFileSoundEngine playSoundForKey:TICK_SOUND_KEY];
 }
 
 @end
