@@ -27,9 +27,4 @@
 - (IBAction)minusEnded:(UIButton *)sender;
 - (IBAction)playPressed:(UIButton *)sender;
 
--(void)changeBPM:(NSTimer*)timer;
--(void)setBPMDisplay;
--(void)startChangeBPMTimer:(NSString*)operation interval:(float)duration;
--(void)stopChangeBPMTImer;
-
 @end

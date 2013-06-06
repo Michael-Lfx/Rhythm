@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BTAppDelegate.h"
+#import "BTEntity.h"
 
-@interface BTGlobals : NSObject
+@interface BTGlobals : NSObject{
+    NSManagedObjectContext* _context;
+    BTEntity* _globalsInEntity;
+}
 
-@property(assign, nonatomic) int bitPerMinute;
-@property(retain, nonatomic) UIPageControl* pageControl;
+@property(assign, nonatomic) NSInteger beatPerMinute;
 
 +(BTGlobals*)sharedGlobals;
+-(void)applicationWillResignActive:(NSNotification*) notification;
 
 @end

@@ -20,15 +20,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    _globals = [BTGlobals sharedGlobals];
-    [self setBPMDisplay];
+    [self updateBPMDisplay];
     _intervalCount = 0;
 
     
     //test by poppy
     self.metronomeCoreController = [BTMetronomeCoreController getController];
     
-    
+    [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,28 +62,40 @@
     
 }
 
+//私有方法
 
--(void)setBPMDisplay{
-    _mainNumber.text = [NSString stringWithFormat:@"%d", _globals.bitPerMinute];
+//更新BPM显示
+-(void)updateBPMDisplay{
+    _mainNumber.text = [NSString stringWithFormat:@"%d", _globals.beatPerMinute];
 }
 
+//修改BPM
+//用于定时器
 -(void)changeBPM:(NSTimer*)timer{
     if([[timer userInfo] isEqual: BPM_PLUS]){
-        _globals.bitPerMinute++;
+        _globals.beatPerMinute++;
     }else{
-        _globals.bitPerMinute--;
+        _globals.beatPerMinute--;
     }
     
-    [self setBPMDisplay];
+    if (_globals.beatPerMinute > BPM_MAX) {
+        _globals.beatPerMinute = BPM_MAX;
+    }
     
-    [self.metronomeCoreController setBpm:_globals.bitPerMinute];
+    if (_globals.beatPerMinute < BPM_MIN) {
+        _globals.beatPerMinute = BPM_MIN;
+    }
     
+//    [self updateBPMDisplay];
+    [self.metronomeCoreController setBpm:_globals.beatPerMinute];
     
+    //执行n次，减小定时器间隔时间
     _intervalCount++;
     
-    NSString* op = [timer userInfo];
-    
     if(_intervalCount > BPM_CHANGE_FASTER_COUNT){
+        //句柄要被消除，缓存userinfo
+        NSString* op = [timer userInfo];
+        
         [self stopChangeBPMTImer];
         [self startChangeBPMTimer:op interval:BPM_CHANGE_INTERVAL_FASTER];
     }
@@ -101,6 +112,14 @@
 -(void)stopChangeBPMTImer{
     [_changeBPMTimer invalidate];
     _changeBPMTimer = nil;
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"beatPerMinute"])
+    {
+        [self updateBPMDisplay];
+    }
 }
 
 @end
