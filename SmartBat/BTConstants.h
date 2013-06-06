@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#define IS_IP5 (([UIScreen mainScreen].applicationFrame.size.height == 548) ? YES : NO)
+#define IP4_HEIGHT 460
+#define IP5_Y_FIXED 40
+
 #define SWIPE_2_MOVE_TIMES 1.2f
 #define THRESHOLD_2_COMPLETE 0.3f
 #define THRESHOLD_2_COMPLETE_DURETION 0.2f

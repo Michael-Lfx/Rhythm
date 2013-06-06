@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12B175DEDFD00DEF5E0 /* BTConstants.m */; };
 		723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */; };
-		723FA131175E0A6600DEF5E0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA130175E0A6500DEF5E0 /* Default-568h@2x.png */; };
-		723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA132175E0AC600DEF5E0 /* Default@2x.png */; };
-		723FA135175E0B0300DEF5E0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 723FA134175E0B0300DEF5E0 /* Default.png */; };
 		723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */; };
 		725CB58C1760A4780020FC78 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 725CB58A1760A4780020FC78 /* Model.xcdatamodeld */; };
 		725CB5931760A4D70020FC78 /* band-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5901760A4D70020FC78 /* band-button.png */; };
@@ -83,6 +80,9 @@
 		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
+		72F805AC1760CE3900776D95 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805AB1760CE3900776D95 /* Default.png */; };
+		72F805AF1760CE5700776D95 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805AD1760CE5600776D95 /* Default@2x.png */; };
+		72F805B01760CE5700776D95 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805AE1760CE5600776D95 /* Default-568h@2x.png */; };
 		F47E9D12176039D400C42899 /* BTTimeToBeatTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */; };
 		F47E9D1517603B0F00C42899 /* BTBeat.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1417603B0F00C42899 /* BTBeat.m */; };
 		F47E9D1817603D7600C42899 /* BTMeasure.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1717603D7500C42899 /* BTMeasure.m */; };
@@ -101,9 +101,6 @@
 		723FA12B175DEDFD00DEF5E0 /* BTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConstants.m; sourceTree = "<group>"; };
 		723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTRootViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTRootViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		723FA130175E0A6500DEF5E0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		723FA132175E0AC600DEF5E0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		723FA134175E0B0300DEF5E0 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTNoBandViewController.h; sourceTree = "<group>"; };
 		723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTNoBandViewController.m; sourceTree = "<group>"; };
 		725CB58B1760A4780020FC78 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -189,6 +186,9 @@
 		72B45B39175DDD110071A082 /* BTCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCommonViewController.m; path = ../BTCommonViewController.m; sourceTree = "<group>"; };
 		72F805A11760C16E00776D95 /* beat-note-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beat-note-minus-button.png"; sourceTree = "<group>"; };
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
+		72F805AB1760CE3900776D95 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		72F805AD1760CE5600776D95 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		72F805AE1760CE5600776D95 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F47E9D10176039D400C42899 /* BTTimeToBeatTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTimeToBeatTransmitter.h; sourceTree = "<group>"; };
 		F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTimeToBeatTransmitter.m; sourceTree = "<group>"; };
 		F47E9D1317603B0F00C42899 /* BTBeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBeat.h; sourceTree = "<group>"; };
@@ -230,12 +230,8 @@
 		723FA14D175F209800DEF5E0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				725CB5B41760AD1C0020FC78 /* subnote */,
 				725CB5901760A4D70020FC78 /* band-button.png */,
-				725CB5FB1760AFAD0020FC78 /* root-bg.png */,
-				725CB5FC1760AFB10020FC78 /* small-line.png */,
 				72F805A11760C16E00776D95 /* beat-note-minus-button.png */,
-				72F805A21760C16E00776D95 /* subdivision-minus-button.png */,
 				725CB5911760A4D70020FC78 /* beat-note-plus-button.png */,
 				725CB5921760A4D70020FC78 /* common-button.png */,
 				725CB5961760A4F60020FC78 /* main-bg.png */,
@@ -244,12 +240,16 @@
 				725CB5991760A4F60020FC78 /* play-bg.png */,
 				725CB59A1760A4F60020FC78 /* play-button.png */,
 				725CB59B1760A4F60020FC78 /* plus-button.png */,
+				725CB5FB1760AFAD0020FC78 /* root-bg.png */,
+				725CB5FC1760AFB10020FC78 /* small-line.png */,
 				725CB59C1760A4F60020FC78 /* stop-button.png */,
+				72F805A21760C16E00776D95 /* subdivision-minus-button.png */,
 				725CB59D1760A4F60020FC78 /* subdivision-plus-button.png */,
 				725CB59E1760A4F60020FC78 /* tap-button.png */,
 				725CB59F1760A4F60020FC78 /* tempo-bg.png */,
 				725CB5A01760A4F60020FC78 /* timer1-bg.png */,
 				725CB5B21760AB1B0020FC78 /* timer2-bg.png */,
+				725CB5B41760AD1C0020FC78 /* subnote */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -354,14 +354,14 @@
 		72893560175DA8D900EED04E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				72F805AD1760CE5600776D95 /* Default@2x.png */,
+				72F805AE1760CE5600776D95 /* Default-568h@2x.png */,
+				72F805AB1760CE3900776D95 /* Default.png */,
 				F49E6D17175F3DD600E2EDCB /* Sounds */,
 				723FA14D175F209800DEF5E0 /* Images */,
 				72893565175DA8D900EED04E /* main.m */,
 				72893567175DA8D900EED04E /* SmartBat-Prefix.pch */,
 				72893561175DA8D900EED04E /* SmartBat-Info.plist */,
-				723FA130175E0A6500DEF5E0 /* Default-568h@2x.png */,
-				723FA134175E0B0300DEF5E0 /* Default.png */,
-				723FA132175E0AC600DEF5E0 /* Default@2x.png */,
 				72893562175DA8D900EED04E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -494,9 +494,6 @@
 			files = (
 				72893564175DA8D900EED04E /* InfoPlist.strings in Resources */,
 				72893573175DA8D900EED04E /* MainStoryboard.storyboard in Resources */,
-				723FA131175E0A6600DEF5E0 /* Default-568h@2x.png in Resources */,
-				723FA133175E0AC600DEF5E0 /* Default@2x.png in Resources */,
-				723FA135175E0B0300DEF5E0 /* Default.png in Resources */,
 				F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */,
 				725CB5931760A4D70020FC78 /* band-button.png in Resources */,
 				725CB5941760A4D70020FC78 /* beat-note-plus-button.png in Resources */,
@@ -552,6 +549,9 @@
 				725CB5FE1760AFB40020FC78 /* small-line.png in Resources */,
 				72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */,
 				72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */,
+				72F805AC1760CE3900776D95 /* Default.png in Resources */,
+				72F805AF1760CE5700776D95 /* Default@2x.png in Resources */,
+				72F805B01760CE5700776D95 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

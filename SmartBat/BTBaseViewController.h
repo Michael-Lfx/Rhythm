@@ -17,6 +17,7 @@
 
 -(void)setViewX:(int)x who:(UIView*)view;
 -(void)setViewX:(int)x;
+-(void)setViewHeight:(int)h;
 
 +(id)buildView;
 

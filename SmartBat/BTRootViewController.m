@@ -30,12 +30,21 @@
     
     int screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
     int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
+    int scrollY, scrollHeight;
+    
+    if(IS_IP5){
+        scrollY = IP5_Y_FIXED;
+        scrollHeight = screenHeight - IP5_Y_FIXED;
+    }else{
+        scrollY = 0;
+        scrollHeight = screenHeight;
+    }
     
     _pageControl = (UIPageControl*)[self.view viewWithTag:PAGE_CONTROL_TAG];
     
     //初始化滚屏view
     //init时设置一屏的尺寸，这尼玛是大坑啊
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, scrollY, screenWidth, scrollHeight)];
     //一屏一屏的滚
     _scrollView.pagingEnabled = YES;
     //不要滚动条
@@ -49,15 +58,17 @@
     
     _mainViewCtrl = [BTMainViewController buildView];
     _mainViewCtrl.view.tag = MAIN_VIEW_TAG;
+    [_mainViewCtrl setViewHeight:IP4_HEIGHT];
     [_scrollView addSubview:_mainViewCtrl.view];
     
     _tempViewCtrl = [BTTempoViewController buildView];
     _tempViewCtrl.view.tag = TEMPO_VIEW_TAG;
     [self setViewX:screenWidth who:_tempViewCtrl.view];
+    [_tempViewCtrl setViewHeight:IP4_HEIGHT];
     [_scrollView addSubview:_tempViewCtrl.view];
     
     //这里设置n个屏的总长度
-    _scrollView.contentSize = CGSizeMake(screenWidth * 2, screenWidth);
+    _scrollView.contentSize = CGSizeMake(screenWidth * 2, scrollHeight);
     
     //初始化设置页view
     //放到最上面，出现时遮住分页符、设置按钮神马的

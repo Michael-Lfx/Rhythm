@@ -62,4 +62,10 @@
     self.view.frame = f;
 }
 
+-(void)setViewHeight:(int)h{
+    CGRect f = self.view.frame;
+    f.size.height = h;
+    self.view.frame = f;
+}
+
 @end
