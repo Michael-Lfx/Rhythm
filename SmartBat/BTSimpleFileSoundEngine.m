@@ -44,27 +44,33 @@
     NSLog(@"sound url: %@", soundURL);
     
     
-    //bind sound file object.
-    CFURLRef soundFileURLRef ;
-    SystemSoundID soundFileObject;
-    soundFileURLRef = (__bridge CFURLRef) soundURL;
-    AudioServicesCreateSystemSoundID (soundFileURLRef, &soundFileObject);
+    
+    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:soundURL error:nil] ;
+    
+                                  
+    
+    
+//    //bind sound file object.
+//    CFURLRef soundFileURLRef ;
+//    SystemSoundID soundFileObject;
+//    soundFileURLRef = (__bridge CFURLRef) soundURL;
+//    AudioServicesCreateSystemSoundID (soundFileURLRef, &soundFileObject);
     
     //save soundFileObject to map
-    NSNumber *soundIdNumber = [NSNumber numberWithInt:soundFileObject];
-    [_soundPool setObject: soundIdNumber forKey:key];
+//    NSNumber *soundIdNumber = [NSNumber numberWithInt:soundFileObject];
+    [_soundPool setObject: audioPlayer forKey:key];
+
 
 }
 
 //play sound
 - (void)playSoundForKey: (NSString *) key{
     
-    NSNumber *soundIdNumber = [_soundPool objectForKey:key];
+    AVAudioPlayer *audioPlayer = [_soundPool objectForKey:key];
     
-    if(soundIdNumber)
+    if(audioPlayer)
     {
-        SystemSoundID soundFileObject = [soundIdNumber intValue];
-        AudioServicesPlaySystemSound(soundFileObject);
+        [audioPlayer play];
     }
 }
 
@@ -72,9 +78,9 @@
 //remove sound file
 - (void)clearSoundForKey: (NSString *) key{
     
-    NSNumber *soundIdNumber = [_soundPool objectForKey:key];
+    AVAudioPlayer *audioPlayer = [_soundPool objectForKey:key];
     
-    if(soundIdNumber)
+    if(audioPlayer)
     {
         [_soundPool removeObjectForKey:key];
     }

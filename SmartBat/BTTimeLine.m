@@ -23,6 +23,11 @@
 
 - (void)startLoop
 {
+    if(_timeLineThread)
+    {
+        return;
+    }
+    
     _isStop = false;
     
     _timeLineThread = [[NSThread alloc] initWithTarget:self selector:@selector(loop:) object:nil];
