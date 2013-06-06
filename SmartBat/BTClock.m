@@ -32,7 +32,7 @@
     
     while (continuePlaying) {
         
-        [self.delegate beatOnHandler:1];
+        [self.beatDelegate onBeatHandler:1];
         
         
         NSDate *curtainTime = [[NSDate alloc] initWithTimeIntervalSinceNow:_duration];

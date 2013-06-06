@@ -10,7 +10,7 @@
 #import "BTSimpleFileSoundEngine.h"
 #import "BTClock.h"
 
-@interface BTMetronomeCoreController : NSObject<BeatOnDelegate>
+@interface BTMetronomeCoreController : NSObject<ClockBeatDelegate>
 {
     BTSimpleFileSoundEngine *_simpleFileSoundEngine;
     BTClock *_clock;

@@ -43,6 +43,9 @@
 		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
 		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
 		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
+		F47E9D12176039D400C42899 /* BTTimeToBeatTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */; };
+		F47E9D1517603B0F00C42899 /* BTBeat.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1417603B0F00C42899 /* BTBeat.m */; };
+		F47E9D1817603D7600C42899 /* BTMeasure.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1717603D7500C42899 /* BTMeasure.m */; };
 		F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */ = {isa = PBXBuildFile; fileRef = F49E6D18175F3DE100E2EDCB /* tick.aif */; };
@@ -103,6 +106,12 @@
 		72B45B36175DDA840071A082 /* BTSwipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSwipeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72B45B38175DDD110071A082 /* BTCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTCommonViewController.h; path = ../BTCommonViewController.h; sourceTree = "<group>"; };
 		72B45B39175DDD110071A082 /* BTCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCommonViewController.m; path = ../BTCommonViewController.m; sourceTree = "<group>"; };
+		F47E9D10176039D400C42899 /* BTTimeToBeatTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTimeToBeatTransmitter.h; sourceTree = "<group>"; };
+		F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTimeToBeatTransmitter.m; sourceTree = "<group>"; };
+		F47E9D1317603B0F00C42899 /* BTBeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBeat.h; sourceTree = "<group>"; };
+		F47E9D1417603B0F00C42899 /* BTBeat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBeat.m; sourceTree = "<group>"; };
+		F47E9D1617603D7500C42899 /* BTMeasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTMeasure.h; sourceTree = "<group>"; };
+		F47E9D1717603D7500C42899 /* BTMeasure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTMeasure.m; sourceTree = "<group>"; };
 		F49E6D12175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSimpleFileSoundEngine.h; sourceTree = "<group>"; };
 		F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSimpleFileSoundEngine.m; sourceTree = "<group>"; };
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -267,6 +276,12 @@
 				F49E6D1B175F6C3500E2EDCB /* BTClock.m */,
 				F49E6D21175F7ECF00E2EDCB /* BTMetronomeCoreController.h */,
 				F49E6D22175F7ECF00E2EDCB /* BTMetronomeCoreController.m */,
+				F47E9D10176039D400C42899 /* BTTimeToBeatTransmitter.h */,
+				F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */,
+				F47E9D1317603B0F00C42899 /* BTBeat.h */,
+				F47E9D1417603B0F00C42899 /* BTBeat.m */,
+				F47E9D1617603D7500C42899 /* BTMeasure.h */,
+				F47E9D1717603D7500C42899 /* BTMeasure.m */,
 			);
 			name = "Metronome Core";
 			sourceTree = "<group>";
@@ -378,6 +393,9 @@
 				F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m in Sources */,
 				F49E6D1C175F6C3500E2EDCB /* BTClock.m in Sources */,
 				F49E6D23175F7ECF00E2EDCB /* BTMetronomeCoreController.m in Sources */,
+				F47E9D12176039D400C42899 /* BTTimeToBeatTransmitter.m in Sources */,
+				F47E9D1517603B0F00C42899 /* BTBeat.m in Sources */,
+				F47E9D1817603D7600C42899 /* BTMeasure.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

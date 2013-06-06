@@ -11,8 +11,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
 
-@protocol BeatOnDelegate
--(void)beatOnHandler:(int)beatCount;
+@protocol ClockBeatDelegate
+-(void)onBeatHandler:(int)beatCount;
 @end
 
 
@@ -25,7 +25,7 @@
 
 }
 
-@property (nonatomic, retain) id<BeatOnDelegate> delegate;
+@property (nonatomic, retain) id<ClockBeatDelegate> beatDelegate;
 @property NSUInteger bpm;
 
 -(void)startDriverThread;
