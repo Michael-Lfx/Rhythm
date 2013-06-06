@@ -10,4 +10,6 @@
 
 @interface BTBeat : NSObject
 
+@property NSUInteger indexOfMeasure;
+
 @end

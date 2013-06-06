@@ -10,6 +10,17 @@
 
 @implementation BTMeasure
 
-@synthesize noteCount, noteLength;
+@synthesize note, beat;
+
+-(BTMeasure *) initWithBeatAndNote: (NSUInteger) beat withNote:(NSUInteger) note
+{
+    
+    self = [super init];
+    
+    [self setBeat:beat];
+    [self setNote:note];
+    
+    return self;
+}
 
 @end

@@ -9,10 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "BTSimpleFileSoundEngine.h"
 #import "BTClock.h"
+#import "BTTimeToBeatTransmitter.h"
+#import "BTTimeLine.h"
 
-@interface BTMetronomeCoreController : NSObject<ClockBeatDelegate>
+@interface BTMetronomeCoreController : NSObject<ClockBeatDelegate, BTTimeToBeatTransmitterBeatDelegate>
 {
     BTSimpleFileSoundEngine *_simpleFileSoundEngine;
+    BTTimeToBeatTransmitter * _timeToBeatTransmitter;
+    BTTimeLine * _timeLine;
     BTClock *_clock;
 }
 

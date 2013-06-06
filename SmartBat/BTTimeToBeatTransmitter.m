@@ -10,4 +10,30 @@
 
 @implementation BTTimeToBeatTransmitter
 
+-(void) updateBPM:(NSUInteger) bpm
+{
+    
+}
+
+
+-(void) updateMeasureTemplate:(BTMeasure *) measure
+{
+    
+}
+
+
+-(void) bindTimeLine:(BTTimeLine *) timeLine
+{
+    _timeLine = timeLine;
+    
+    _timeLine.timeLineDelegate = self;
+}
+
+
+//implement of TimeLineDelegate
+-(void)onTimeInvokeHandler:(NSTimeInterval) interval
+{
+    NSLog(@"timeline invoke with interval!");
+}
+
 @end

@@ -8,21 +8,30 @@
 
 #import <Foundation/Foundation.h>
 #import "BTMeasure.h"
+#import "BTTimeLine.h"
+
+
 
 @protocol  BTTimeToBeatTransmitterBeatDelegate<NSObject>
 
--(void) onBeatHandler: (BTBeat *) beat;
+-(void) onBeatHandler: (BTBeat *) beat ofMeasure:(BTMeasure *) measure withBPM:(NSUInteger)bpm;
 
 @end
 
-@interface BTTimeToBeatTransmitter : NSObject
+
+
+
+
+@interface BTTimeToBeatTransmitter : NSObject<TimeLineDelegate>{
+    
+    BTTimeLine * _timeLine;
+}
+
 
 @property NSUInteger bpm;
 
-
-
 -(void) updateBPM:(NSUInteger) bpm;
--(void) updateMeasure:(BTMeasure *) measure;
-
+-(void) updateMeasureTemplate:(BTMeasure *) measure;
+-(void) bindTimeLine:(BTTimeLine *) timeLine;
 
 @end

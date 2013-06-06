@@ -10,4 +10,6 @@
 
 @implementation BTBeat
 
+@synthesize indexOfMeasure;
+
 @end
