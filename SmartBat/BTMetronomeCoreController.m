@@ -22,7 +22,7 @@
     _simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
     
     _clock = [[BTClock alloc]init];
-    _clock.delegate = self;
+    _clock.beatDelegate = self;
     
     return self;
 }
@@ -60,7 +60,7 @@
     [_clock setBpm:bpm];
 }
 
--(void)beatOnHandler:(int)beatCount
+-(void)onBeatHandler:(int)beatCount
 {
     NSLog(@"beat! %d", beatCount);
     [_simpleFileSoundEngine playSoundForKey:TICK_SOUND_KEY];
