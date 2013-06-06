@@ -46,7 +46,7 @@
     
     
     AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:soundURL error:nil] ;
-    
+    [audioPlayer setVolume:10];
                                   
     
     
