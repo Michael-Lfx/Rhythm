@@ -43,9 +43,16 @@
 {
     _timeLineHitCount ++;
     
+    
+    
     if(_timeLineHitCount % 100 ==0)
     {
-        NSLog(@"[%d]timeline invoke with interval! %@",_timeLineHitCount, time);
+        
+        NSTimeInterval point = [time timeIntervalSince1970];
+        
+        long long dTime = [[NSNumber numberWithDouble:point] longLongValue]; // 将double转为long long型
+        
+        NSLog(@"[%llu][%d]timeline invoke with interval! %@", dTime ,_timeLineHitCount, time);
         
         [self.timeToBeatTransmitterBeatDelegate onBeatHandler:nil ofMeasure:nil withBPM:nil];
 
