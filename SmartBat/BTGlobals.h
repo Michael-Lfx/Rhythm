@@ -15,7 +15,7 @@
     BTEntity* _globalsInEntity;
 }
 
-@property(assign, nonatomic) NSInteger beatPerMinute;
+@property(assign, nonatomic) int beatPerMinute;
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;
