@@ -8,27 +8,27 @@
 
 #import <Foundation/Foundation.h>
 
-extern float const SWIPE_2_MOVE_TIMES;
-extern float const THRESHOLD_2_COMPLETE;
-extern float const THRESHOLD_2_COMPLETE_DURETION;
+#define SWIPE_2_MOVE_TIMES 1.2f
+#define THRESHOLD_2_COMPLETE 0.3f
+#define THRESHOLD_2_COMPLETE_DURETION 0.2f
 
-extern int const MAIN_VIEW_TAG;
-extern int const TEMPO_VIEW_TAG;
-extern int const COMMON_VIEW_TAG;
-extern int const NO_BAND_VIEW_TAG;
-extern int const PAGE_CONTROL_TAG;
-extern int const COMMON_BUTTON_TAG;
-extern int const BAND_BUTTON_TAG;
+#define MAIN_VIEW_TAG 11
+#define TEMPO_VIEW_TAG  12
+#define COMMON_VIEW_TAG  13
+#define NO_BAND_VIEW_TAG  14
+#define PAGE_CONTROL_TAG  1
+#define COMMON_BUTTON_TAG  2
+#define BAND_BUTTON_TAG  3
 
-extern float const BPM_CHANGE_INTERVAL;
-extern float const BPM_CHANGE_INTERVAL_FASTER;
-extern int const BPM_CHANGE_FASTER_COUNT;
+#define BPM_CHANGE_INTERVAL  0.2f
+#define BPM_CHANGE_INTERVAL_FASTER  0.02f
+#define BPM_CHANGE_FASTER_COUNT  5
 
-extern int const BPM_MIN;
-extern int const BPM_MAX;
+#define BPM_MIN  30
+#define BPM_MAX  220
 
-extern NSString* const BPM_PLUS;
-extern NSString* const BPM_MINUS;
+#define BPM_PLUS  @"plus"
+#define BPM_MINUS  @"minus"
 
 @interface BTConstants : NSObject
 
