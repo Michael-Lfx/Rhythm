@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *mainNumber;
 @property (weak, nonatomic) IBOutlet UIButton *plus;
 @property (weak, nonatomic) IBOutlet UIButton *minus;
+
 @property (nonatomic, retain) BTMetronomeCoreController * metronomeCoreController;
 
 - (IBAction)minusPressed:(UIButton *)sender;
@@ -26,5 +27,6 @@
 - (IBAction)plusEnded:(UIButton *)sender;
 - (IBAction)minusEnded:(UIButton *)sender;
 - (IBAction)playPressed:(UIButton *)sender;
+- (IBAction)tapPressed:(UIButton *)sender;
 
 @end

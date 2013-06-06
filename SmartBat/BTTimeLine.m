@@ -8,7 +8,7 @@
 
 #import "BTTimeLine.h"
 
-#define DEFAULT_INTERVAL 1
+#define DEFAULT_INTERVAL 0.01
 
 @implementation BTTimeLine
 
@@ -16,7 +16,9 @@
 
 -(id)init
 {
+    self = [super init];
     _isStop = true;
+    return self;
 }
 
 -(void) setupClock {
@@ -25,15 +27,18 @@
 }
 
 
--(void) loop
+-(void) loop:(id) info
 {
     
     // Loop until the program terminates
     while (!_isStop) {
         
         // Update the midi clock every loop
-        [self.timeLineDelegate onTimeInvokeHandler: * self.interval];
         
+        [NSThread setThreadPriority:1.0];
+        
+        [self performSelectorOnMainThread:@selector(invokeDelegate:) withObject:nil waitUntilDone:YES];
+
         [NSThread sleepForTimeInterval: DEFAULT_INTERVAL];
         
         // Only check for events if the required number of ticks
@@ -50,6 +55,11 @@
 //            
 //        }
     }
+}
+
+-(void)invokeDelegate:(id)info
+{
+    [self.timeLineDelegate onTimeInvokeHandler:[NSDate date]];
 }
 
 - (void)startLoop {
