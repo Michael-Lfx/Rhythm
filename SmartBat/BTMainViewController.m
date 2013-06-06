@@ -37,37 +37,6 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)swipeBegan{
-    _tempoView = [self.view.superview viewWithTag:TEMPO_VIEW];
-}
-
--(void)swipe:(int)dis{
-    NSLog(@"%d", dis);
-    if(dis < 0){
-        [self setViewX:(_viewX + dis) who:_tempoView];
-    }else{
-        [self setViewX:_viewX who:_tempoView];
-    }
-}
-
--(void)swipeEnded{
-    int final = (int)_tempoView.frame.origin.x, move2;
-    
-    if(final < (1 - THRESHOLD_2_COMPLETE) * _viewX){
-        move2 = 0;
-        
-        [_globals.pageControl setCurrentPage:1];
-    }else{
-        move2 = _viewX;
-    }
-    
-    [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
-        [self setViewX:move2 who:_tempoView];
-    } completion:^(BOOL finished) {
-        
-    }];
-}
-
 - (IBAction)plusPressed:(UIButton *)sender {
     [self startChangeBPMTimer:BPM_PLUS interval:BPM_CHANGE_INTERVAL];
     [_changeBPMTimer fire];

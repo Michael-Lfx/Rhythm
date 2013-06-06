@@ -31,37 +31,45 @@
     int screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
     int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
     
+    _pageControl = (UIPageControl*)[self.view viewWithTag:PAGE_CONTROL_TAG];
+    
+    //初始化滚屏view
+    //init时设置一屏的尺寸，这尼玛是大坑啊
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
+    //一屏一屏的滚
+    _scrollView.pagingEnabled = YES;
+    //不要滚动条
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    //有回弹效果
+    _scrollView.bounces = YES;
+    _scrollView.delegate = self;
+    //把丫放到分页符下面
+    [self.view insertSubview:_scrollView belowSubview:_pageControl];
+    
+    _mainViewCtrl = [BTMainViewController buildView];
+    _mainViewCtrl.view.tag = MAIN_VIEW_TAG;
+    [_scrollView addSubview:_mainViewCtrl.view];
+    
+    _tempViewCtrl = [BTTempoViewController buildView];
+    _tempViewCtrl.view.tag = TEMPO_VIEW_TAG;
+    [self setViewX:screenWidth who:_tempViewCtrl.view];
+    [_scrollView addSubview:_tempViewCtrl.view];
+    
+    //这里设置n个屏的总长度
+    _scrollView.contentSize = CGSizeMake(screenWidth * 2, screenWidth);
+    
+    //初始化设置页view
+    //放到最上面，出现时遮住分页符、设置按钮神马的
     _commonViewCtrl = [BTCommonViewController buildView];
-    _commonViewCtrl.view.tag = COMMON_VIEW;
+    _commonViewCtrl.view.tag = COMMON_VIEW_TAG;
     [self setViewX:-screenWidth who:_commonViewCtrl.view];
     [self.view addSubview:_commonViewCtrl.view];
     
     _noBandViewCtrl = [BTNoBandViewController buildView];
-    _noBandViewCtrl.view.tag = NO_BAND_VIEW;
+    _noBandViewCtrl.view.tag = NO_BAND_VIEW_TAG;
     [self setViewX:screenWidth who:_noBandViewCtrl.view];
     [self.view addSubview:_noBandViewCtrl.view];
-    
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
-    _scrollView.pagingEnabled = YES;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.bounces = YES;
-    _scrollView.delegate = self;
-    [self.view addSubview:_scrollView];
-    
-    _mainViewCtrl = [BTMainViewController buildView];
-    _mainViewCtrl.view.tag = MAIN_VIEW;
-    [_scrollView addSubview:_mainViewCtrl.view];
-    
-    _tempViewCtrl = [BTTempoViewController buildView];
-    _tempViewCtrl.view.tag = TEMPO_VIEW;
-    [self setViewX:screenWidth who:_tempViewCtrl.view];
-    [_scrollView addSubview:_tempViewCtrl.view];
-    
-    _scrollView.contentSize = CGSizeMake(screenWidth * 2, screenWidth);
-    
-    _pageControl = (UIPageControl*)[self.view viewWithTag:PAGE_CONTROL_VIEW];
-    [self.view bringSubviewToFront:_pageControl];
     
     NSLog(@"%@", _scrollView.subviews);
 }
@@ -81,4 +89,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)callSettings:(UIButton *)sender {
+    if(sender.tag == COMMON_BUTTON_TAG){
+        [_commonViewCtrl callMeDisplay];
+    }else{
+        [_noBandViewCtrl callMeDisplay];
+    }
+}
 @end

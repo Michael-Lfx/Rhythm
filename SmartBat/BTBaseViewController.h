@@ -15,7 +15,6 @@
     BTGlobals* _globals;
 }
 
--(void)clearXY;
 -(void)setViewX:(int)x who:(UIView*)view;
 -(void)setViewX:(int)x;
 

@@ -12,11 +12,13 @@ extern float const SWIPE_2_MOVE_TIMES;
 extern float const THRESHOLD_2_COMPLETE;
 extern float const THRESHOLD_2_COMPLETE_DURETION;
 
-extern int const MAIN_VIEW;
-extern int const TEMPO_VIEW;
-extern int const COMMON_VIEW;
-extern int const NO_BAND_VIEW;
-extern int const PAGE_CONTROL_VIEW;
+extern int const MAIN_VIEW_TAG;
+extern int const TEMPO_VIEW_TAG;
+extern int const COMMON_VIEW_TAG;
+extern int const NO_BAND_VIEW_TAG;
+extern int const PAGE_CONTROL_TAG;
+extern int const COMMON_BUTTON_TAG;
+extern int const BAND_BUTTON_TAG;
 
 extern float const BPM_CHANGE_INTERVAL;
 extern float const BPM_CHANGE_INTERVAL_FASTER;

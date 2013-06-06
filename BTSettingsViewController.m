@@ -43,6 +43,14 @@
     }];
 }
 
+-(void)callMeDisplay{
+    [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
+        [self setViewX:0];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -24,4 +24,6 @@
     UIPageControl* _pageControl;
 }
 
+- (IBAction)callSettings:(UIButton *)sender;
+
 @end

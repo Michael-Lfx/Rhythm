@@ -15,4 +15,6 @@
 
 -(IBAction)pickupSettings:(id)sender;
 
+-(void)callMeDisplay;
+
 @end

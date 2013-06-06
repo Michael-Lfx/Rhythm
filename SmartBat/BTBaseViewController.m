@@ -33,9 +33,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [self clearXY];
-    _globals = [BTGlobals sharedGlobals];
+    //加载时把view重置到原点0,0
+    CGRect f = [self.view frame];
+    f.origin.y = 0.0f;
+    f.origin.x = 0.0f;
+    self.view.frame = f;
     
+    _globals = [BTGlobals sharedGlobals];
     _viewX = [UIScreen mainScreen].applicationFrame.size.width;
 
 }
@@ -44,13 +48,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)clearXY{
-    CGRect f = [self.view frame];
-    f.origin.y = 0.0f;
-    f.origin.x = 0.0f;
-    self.view.frame = f;
 }
 
 -(void)setViewX:(int)x who:(UIView*)view{

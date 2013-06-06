@@ -12,11 +12,8 @@
 
 
 @interface BTMainViewController : BTSwipeViewController{
-    UIView* _tempoView;
-    
     NSTimer* _changeBPMTimer;
     int _intervalCount;
-
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *mainNumber;
