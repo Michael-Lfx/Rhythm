@@ -338,10 +338,10 @@
 		7289355F175DA8D900EED04E /* SmartBat */ = {
 			isa = PBXGroup;
 			children = (
-				F49E6D11175F3CEB00E2EDCB /* Metronome Core */,
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
 				72893569175DA8D900EED04E /* BTAppDelegate.m */,
 				72893580175DA9E900EED04E /* Globals */,
+				F49E6D11175F3CEB00E2EDCB /* Metronome Core */,
 				72893560175DA8D900EED04E /* Supporting Files */,
 				72893584175DAA9B00EED04E /* Views */,
 			);
