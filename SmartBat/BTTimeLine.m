@@ -17,11 +17,14 @@
 -(id)init
 {
     self = [super init];
+    
+    self.interval = DEFAULT_INTERVAL;
     _isStop = true;
+    
     return self;
 }
 
-- (void)startLoop
+- (void)startLoopWithTimeInterval:(NSTimeInterval) timeInterval
 {
     if(_timeLineThread)
     {
@@ -30,7 +33,10 @@
     
     _isStop = false;
     
-    _timeLineThread = [[NSThread alloc] initWithTarget:self selector:@selector(loop:) object:nil];
+    
+    NSNumber * number = [[NSNumber alloc]initWithDouble:timeInterval];
+    
+    _timeLineThread = [[NSThread alloc] initWithTarget:self selector:@selector(loop:) object:number];
     [_timeLineThread start];
     
 }
@@ -44,17 +50,32 @@
     
 }
 
-
--(void) loop:(id) info
+-(void)updateSleepInterval:(NSTimeInterval) sleepInterval
 {
+    self.interval  = sleepInterval;
+}
+
+
+-(void) loop:(NSNumber *) timeIntervalNumber
+{
+    
+    if(timeIntervalNumber){
+        self.interval = [timeIntervalNumber doubleValue];
+    }
+    
     while (!_isStop) {
+        
+        _previousTime = [[NSDate date] timeIntervalSince1970];
+        
+        NSLog(@"%f", _previousTime);
         
         [NSThread setThreadPriority:1.0];
         
         [self performSelectorOnMainThread:@selector(invokeDelegate:) withObject:nil waitUntilDone:YES];
-
-        [NSThread sleepForTimeInterval: DEFAULT_INTERVAL];
-    
+        
+        [NSThread sleepForTimeInterval: self.interval];
+        
+        
     }
 }
 

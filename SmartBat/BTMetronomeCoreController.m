@@ -8,7 +8,9 @@
 
 #import "BTMetronomeCoreController.h"
 
+
 @implementation BTMetronomeCoreController
+
 
 #define TICK_SOUND_KEY @"P"
 #define DEFAULT_P_SOUND_FILE @"tick"
@@ -21,6 +23,10 @@
 -(id)init
 {
     self = [super init];
+    
+    _globals = [BTGlobals sharedGlobals];
+    [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
     
     //init sound engine;
     _simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
@@ -44,13 +50,6 @@
     [_timeToBeatTransmitter updateMeasureTemplate:measure];
     _timeToBeatTransmitter.timeToBeatTransmitterBeatDelegate = self;
     
-    
-    
-    
-//    _clock = [[BTClock alloc]init];
-//    _clock.beatDelegate = self;
-    
-    
     return self;
 }
 
@@ -66,18 +65,13 @@
 
 -(void)start
 {
-    
-    //start loop
-    [_timeLine startLoop] ;
-    
-    //[_clock startDriverThread];
-    
+    [_timeToBeatTransmitter startWithBPM:_globals.beatPerMinute andNote:4];
 }
+
 
 -(void)stop
 {
-//    [_clock stopDriverThread];
-    [_timeLine stopLoop] ;
+    [_timeToBeatTransmitter stop] ;
 }
 
 -(void)pause
@@ -85,18 +79,26 @@
     //todo
 }
 
--(void)setBpm:(int)bpm
+-(void)setBPM:(int)bpm
 {
-//    [_clock setBpm:bpm];
+    [_timeToBeatTransmitter updateBPM:bpm];
 }
 
--(void)onBeatHandler:(int)beatCount
+
+
+//global observer
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    NSLog(@"beat! %d", beatCount);
-//    
-    
+    if([keyPath isEqualToString:@"beatPerMinute"])
+    {
+        [self setBPM: _globals.beatPerMinute];
+    }
 }
 
+
+
+
+//delegate
 -(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(NSUInteger)bpm
 {
     NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, beat.indexOfMeasure);

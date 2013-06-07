@@ -8,16 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "BTSimpleFileSoundEngine.h"
-#import "BTClock.h"
 #import "BTTimeToBeatTransmitter.h"
 #import "BTTimeLine.h"
+#import "BTConstants.h"
+#import "BTGlobals.h"
 
-@interface BTMetronomeCoreController : NSObject<ClockBeatDelegate, BTTimeToBeatTransmitterBeatDelegate>
+@interface BTMetronomeCoreController : NSObject<BTTimeToBeatTransmitterBeatDelegate>
 {
     BTSimpleFileSoundEngine *_simpleFileSoundEngine;
     BTTimeToBeatTransmitter * _timeToBeatTransmitter;
     BTTimeLine * _timeLine;
-    BTClock *_clock;
+    BTGlobals* _globals;
 }
 
 
@@ -26,6 +27,6 @@
 -(void) start;
 -(void) stop;
 -(void) pause;
--(void) setBpm:(int)bpm;
+-(void) setBPM:(int)bpm;
 
 @end

@@ -20,18 +20,19 @@
 {
     NSUInteger _isStop;
     NSDate * _startTime;
-    NSTimeInterval * _previousTime;
-    NSTimeInterval * _distanceTime;
+    NSTimeInterval _previousTime;
+    NSTimeInterval _distanceTime;
     
     NSUInteger _beatsElapsed;
     NSUInteger _beatsCount;
     NSThread *_timeLineThread;
 }
 
-@property NSTimeInterval * interval;
+@property NSTimeInterval interval;
 @property(nonatomic, retain) id<TimeLineDelegate> timeLineDelegate;
 
--(void)startLoop;
+-(void)startLoopWithTimeInterval:(NSTimeInterval) timeInterval;
 -(void)stopLoop;
+-(void)updateSleepInterval:(NSTimeInterval) sleepInterval;
 
 @end

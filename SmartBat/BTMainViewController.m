@@ -92,7 +92,6 @@
     }
     
 //    [self updateBPMDisplay];
-    [self.metronomeCoreController setBpm:_globals.beatPerMinute];
     
     //执行n次，减小定时器间隔时间
     _intervalCount++;
