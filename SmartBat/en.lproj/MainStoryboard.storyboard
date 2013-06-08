@@ -551,6 +551,52 @@
         <image name="timer1-bg.png" width="290" height="236"/>
         <image name="timer2-bg.png" width="290" height="236"/>
     </resources>
+    <classes>
+        <class className="BTBaseViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTBaseViewController.h"/>
+        </class>
+        <class className="BTCommonViewController" superclassName="BTSettingsViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTCommonViewController.h"/>
+        </class>
+        <class className="BTMainViewController" superclassName="BTSwipeViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTMainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="minusEnded:" candidateClass="UIButton"/>
+                <relationship kind="action" name="minusPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="playPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="plusEnded:" candidateClass="UIButton"/>
+                <relationship kind="action" name="plusPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="tapPressed:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="mainNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="minus" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="plus" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="BTNoBandViewController" superclassName="BTSettingsViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTNoBandViewController.h"/>
+        </class>
+        <class className="BTRootViewController" superclassName="BTBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTRootViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="callSettings:" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="BTSettingsViewController" superclassName="BTBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTSettingsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="pickupSettings:"/>
+            </relationships>
+        </class>
+        <class className="BTSwipeViewController" superclassName="BTBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTSwipeViewController.h"/>
+        </class>
+        <class className="BTTempoViewController" superclassName="BTSwipeViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTTempoViewController.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
