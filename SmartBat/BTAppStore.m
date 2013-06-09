@@ -43,7 +43,7 @@
     }else{
         [BTGlobals sharedGlobals].lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
         
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"发现新版本！"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New Version!", @"")
                                                       message:@""
                                                      delegate:self
                                             cancelButtonTitle:@"以后再说"

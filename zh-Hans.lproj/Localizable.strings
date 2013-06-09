@@ -1,0 +1,13 @@
+/* 
+  localizable.strings
+  SmartBat
+
+  Created by kaka' on 13-6-9.
+  Copyright (c) 2013年 kaka'. All rights reserved.
+*/
+
+//中文
+
+"New Version!" = "发现新版本!";
+"Later" = "以后再说";
+"Update" = "马上更新";
