@@ -6,8 +6,12 @@
   Copyright (c) 2013年 kaka'. All rights reserved.
 */
 
-//中文
+//英文
 
-"New Version!" = "发现新版本!";
-"Later" = "以后再说";
-"Update" = "马上更新";
+"New Version!" = "New Version!";
+"Later" = "Later";
+"Update" = "Update";
+
+"Please give me a rate" = "Please give me a rate";
+"No" = "No";
+"Let's go" = "Let's go";

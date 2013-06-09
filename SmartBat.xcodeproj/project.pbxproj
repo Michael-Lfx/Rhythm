@@ -23,7 +23,9 @@
 		7232FB07176340310097CA34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB06176340300097CA34 /* SystemConfiguration.framework */; };
 		7232FB091763403A0097CA34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB081763403A0097CA34 /* MobileCoreServices.framework */; };
 		7232FB0B1763405A0097CA34 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */; };
-		7232FB11176377720097CA34 /* TPPreciseTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7232FB10176377710097CA34 /* TPPreciseTimer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		7232FB37176447D60097CA34 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7232FB31176447D50097CA34 /* InfoPlist.strings */; };
+		7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7232FB35176447D50097CA34 /* MainStoryboard.storyboard */; };
+		7232FB4317644B270097CA34 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7232FB4117644B260097CA34 /* Localizable.strings */; };
 		723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12B175DEDFD00DEF5E0 /* BTConstants.m */; };
 		723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */; };
 		723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */; };
@@ -84,10 +86,8 @@
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
-		72893564175DA8D900EED04E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 72893562175DA8D900EED04E /* InfoPlist.strings */; };
 		72893566175DA8D900EED04E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893565175DA8D900EED04E /* main.m */; };
 		7289356A175DA8D900EED04E /* BTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893569175DA8D900EED04E /* BTAppDelegate.m */; };
-		72893573175DA8D900EED04E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72893571175DA8D900EED04E /* MainStoryboard.storyboard */; };
 		72893576175DA8D900EED04E /* BTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893575175DA8D900EED04E /* BTMainViewController.m */; };
 		7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7289357D175DA97100EED04E /* BTBaseViewController.m */; };
 		72893583175DAA7400EED04E /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893582175DAA7400EED04E /* BTGlobals.m */; };
@@ -143,8 +143,13 @@
 		7232FB06176340300097CA34 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7232FB081763403A0097CA34 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
-		7232FB0F176377710097CA34 /* TPPreciseTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPPreciseTimer.h; sourceTree = "<group>"; };
-		7232FB10176377710097CA34 /* TPPreciseTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPPreciseTimer.m; sourceTree = "<group>"; };
+		7232FB4C176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7232FB4D176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7232FB4E176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		7232FB4F176457730097CA34 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		7232FB50176457730097CA34 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		7232FB51176458F30097CA34 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		7232FB52176458F30097CA34 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		723FA12A175DEDFD00DEF5E0 /* BTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTConstants.h; sourceTree = "<group>"; };
 		723FA12B175DEDFD00DEF5E0 /* BTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConstants.m; sourceTree = "<group>"; };
 		723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTRootViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -212,12 +217,10 @@
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7289355D175DA8D900EED04E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		72893561175DA8D900EED04E /* SmartBat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SmartBat-Info.plist"; sourceTree = "<group>"; };
-		72893563175DA8D900EED04E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		72893565175DA8D900EED04E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		72893567175DA8D900EED04E /* SmartBat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SmartBat-Prefix.pch"; sourceTree = "<group>"; };
 		72893568175DA8D900EED04E /* BTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppDelegate.h; sourceTree = "<group>"; };
 		72893569175DA8D900EED04E /* BTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppDelegate.m; sourceTree = "<group>"; };
-		72893572175DA8D900EED04E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		72893574175DA8D900EED04E /* BTMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMainViewController.h; sourceTree = "<group>"; };
 		72893575175DA8D900EED04E /* BTMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTMainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7289357C175DA97100EED04E /* BTBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BTBaseViewController.h; path = SmartBat/BTBaseViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -399,8 +402,9 @@
 		7289354D175DA8D900EED04E = {
 			isa = PBXGroup;
 			children = (
-				7232FB0F176377710097CA34 /* TPPreciseTimer.h */,
-				7232FB10176377710097CA34 /* TPPreciseTimer.m */,
+				7232FB4117644B260097CA34 /* Localizable.strings */,
+				7232FB31176447D50097CA34 /* InfoPlist.strings */,
+				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
 				725CB58D1760A48F0020FC78 /* Model */,
 				72893558175DA8D900EED04E /* Frameworks */,
 				72893557175DA8D900EED04E /* Products */,
@@ -462,7 +466,6 @@
 				72893565175DA8D900EED04E /* main.m */,
 				72893567175DA8D900EED04E /* SmartBat-Prefix.pch */,
 				72893561175DA8D900EED04E /* SmartBat-Info.plist */,
-				72893562175DA8D900EED04E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -506,7 +509,6 @@
 				723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */,
 				723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */,
 				72893589175DAC9900EED04E /* BTTempoViewController.m */,
-				72893571175DA8D900EED04E /* MainStoryboard.storyboard */,
 				72FAC805176326C100A6DAE0 /* BTAppStore.h */,
 				72FAC806176326C100A6DAE0 /* BTAppStore.m */,
 			);
@@ -576,6 +578,11 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				cn,
+				zh,
+				"zh-Hans",
+				Base,
+				"zh-Hant",
 			);
 			mainGroup = 7289354D175DA8D900EED04E;
 			productRefGroup = 72893557175DA8D900EED04E /* Products */;
@@ -592,8 +599,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72893564175DA8D900EED04E /* InfoPlist.strings in Resources */,
-				72893573175DA8D900EED04E /* MainStoryboard.storyboard in Resources */,
 				F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */,
 				725CB5931760A4D70020FC78 /* band-button.png in Resources */,
 				725CB5941760A4D70020FC78 /* beat-note-plus-button.png in Resources */,
@@ -655,6 +660,9 @@
 				3F58AB491761EAF000A55317 /* Icon.png in Resources */,
 				3F58AB4A1761EAF000A55317 /* Icon@2x.png in Resources */,
 				3F58AB4B1761EAF000A55317 /* iTunesArtwork.png in Resources */,
+				7232FB37176447D60097CA34 /* InfoPlist.strings in Resources */,
+				7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */,
+				7232FB4317644B270097CA34 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,27 +702,38 @@
 				7232FAFF17633ED90097CA34 /* ASIInputStream.m in Sources */,
 				7232FB0017633ED90097CA34 /* ASINetworkQueue.m in Sources */,
 				7232FB0317633FE40097CA34 /* Reachability.m in Sources */,
-				7232FB11176377720097CA34 /* TPPreciseTimer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		72893562175DA8D900EED04E /* InfoPlist.strings */ = {
+		7232FB31176447D50097CA34 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				72893563175DA8D900EED04E /* en */,
+				7232FB4D176457360097CA34 /* en */,
+				7232FB50176457730097CA34 /* zh-Hans */,
+				7232FB52176458F30097CA34 /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		72893571175DA8D900EED04E /* MainStoryboard.storyboard */ = {
+		7232FB35176447D50097CA34 /* MainStoryboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				72893572175DA8D900EED04E /* en */,
+				7232FB4E176457360097CA34 /* en */,
 			);
 			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		7232FB4117644B260097CA34 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7232FB4C176457360097CA34 /* en */,
+				7232FB4F176457730097CA34 /* zh-Hans */,
+				7232FB51176458F30097CA34 /* zh-Hant */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

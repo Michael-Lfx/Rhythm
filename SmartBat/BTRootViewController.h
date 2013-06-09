@@ -15,8 +15,6 @@
 #import "BTNoBandViewController.h"
 #import "BTGlobals.h"
 #import "BTAppStore.h"
-#import "TPPreciseTimer.h"
-#import <mach/mach_time.h>
 
 @interface BTRootViewController : BTBaseViewController <UIScrollViewDelegate>{
     BTTempoViewController* _tempViewCtrl;

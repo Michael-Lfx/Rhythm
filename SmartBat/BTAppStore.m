@@ -43,11 +43,11 @@
     }else{
         [BTGlobals sharedGlobals].lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
         
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New Version!", @"")
-                                                      message:@""
-                                                     delegate:self
-                                            cancelButtonTitle:@"以后再说"
-                                            otherButtonTitles:@"马上更新",nil];
+        NSLocale* local = [NSLocale currentLocale];
+        
+        NSLog(@"%@", [local localeIdentifier]);
+        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New Version!", nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Later", nil) otherButtonTitles:NSLocalizedString(@"Update", nil), nil];
         av.tag = 1;
         [av show];
     }
@@ -69,16 +69,12 @@
 -(BOOL)askGraed{
     if(((int)[[NSDate date] timeIntervalSince1970] - [BTGlobals sharedGlobals].installDate < ASK_GRADE_DURATION) || [BTGlobals sharedGlobals].hasAskGrade == 1){
         
-        return NO;
+//        return NO;
     }
     
     [BTGlobals sharedGlobals].hasAskGrade = 1;
     
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"来都来了，评个分吧！"
-                                                 message:@""
-                                                delegate:self
-                                       cancelButtonTitle:@"不了"
-                                       otherButtonTitles:@"马上去",nil];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Please give me a rate", nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"No", nil) otherButtonTitles:NSLocalizedString(@"Let's go", nil), nil];
     av.tag = 2;
     [av show];
 
