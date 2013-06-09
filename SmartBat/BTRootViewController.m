@@ -32,6 +32,7 @@
     int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
     int scrollY, scrollHeight;
     
+    //如果是ip5的话，scrollview上面少40像素，里面的子view保持460高度不变
     if(IS_IP5){
         scrollY = IP5_Y_FIXED;
         scrollHeight = screenHeight - IP5_Y_FIXED;
@@ -63,7 +64,7 @@
     
     _tempViewCtrl = [BTTempoViewController buildView];
     _tempViewCtrl.view.tag = TEMPO_VIEW_TAG;
-    [self setViewX:screenWidth who:_tempViewCtrl.view];
+    [_tempViewCtrl setViewX:screenWidth];
     [_tempViewCtrl setViewHeight:IP4_HEIGHT];
     [_scrollView addSubview:_tempViewCtrl.view];
     
@@ -74,12 +75,12 @@
     //放到最上面，出现时遮住分页符、设置按钮神马的
     _commonViewCtrl = [BTCommonViewController buildView];
     _commonViewCtrl.view.tag = COMMON_VIEW_TAG;
-    [self setViewX:-screenWidth who:_commonViewCtrl.view];
+    [_commonViewCtrl setViewX:-screenWidth];
     [self.view addSubview:_commonViewCtrl.view];
     
     _noBandViewCtrl = [BTNoBandViewController buildView];
     _noBandViewCtrl.view.tag = NO_BAND_VIEW_TAG;
-    [self setViewX:screenWidth who:_noBandViewCtrl.view];
+    [_noBandViewCtrl setViewX:screenWidth];
     [self.view addSubview:_noBandViewCtrl.view];
     
     NSLog(@"%@", _scrollView.subviews);
@@ -88,11 +89,12 @@
     _appStore = [[BTAppStore alloc] init];
     [_appStore checkVersion];
     
-    //去评分
+    //请求给评个分
     [_appStore askGraed];
     
 }
 
+//滚动结束时调用
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
     CGFloat pageWidth = _scrollView.frame.size.width;
@@ -100,14 +102,13 @@
     _pageControl.currentPage = page;
 }
 
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+//调用设置页面
 - (IBAction)callSettings:(UIButton *)sender {
     if(sender.tag == COMMON_BUTTON_TAG){
         [_commonViewCtrl callMeDisplay];

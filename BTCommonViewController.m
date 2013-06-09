@@ -28,6 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //设置common设置页屏幕右侧隐藏
     _originX = -[[UIScreen mainScreen] applicationFrame].size.width;
 }
 

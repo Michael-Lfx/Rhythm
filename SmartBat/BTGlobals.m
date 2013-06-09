@@ -55,6 +55,7 @@ int const kBeatPerMinuteInit = 150;
                 NSLog(@"%@", [error localizedDescription]);
             }
         }else{
+            //数据库里有数据
             _globalsInEntity = [globalFromModel objectAtIndex:0];
             
             //从数据库数据来初始化该实例的全局变量

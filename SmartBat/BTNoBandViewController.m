@@ -28,6 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //设置手环设置页在屏幕左侧隐藏
     _originX = [[UIScreen mainScreen] applicationFrame].size.width;
 }
 

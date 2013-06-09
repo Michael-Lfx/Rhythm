@@ -28,6 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //初始化关闭按钮
     UIButton *pickupBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [pickupBtn setFrame:CGRectMake(200, 30, 100, 30)];
     [pickupBtn setTitle:@"pickup" forState:UIControlStateNormal];
@@ -37,6 +38,7 @@
 
 -(IBAction)pickupSettings:(id)sender{
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
+        //回到子类的原点
         [self setViewX:_originX];
     } completion:^(BOOL finished) {
         

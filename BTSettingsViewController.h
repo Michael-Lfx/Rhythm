@@ -10,6 +10,7 @@
 #import "BTBaseViewController.h"
 
 @interface BTSettingsViewController : BTBaseViewController{
+    //不同的子类，设置不同的原始x点
     int _originX;
 }
 

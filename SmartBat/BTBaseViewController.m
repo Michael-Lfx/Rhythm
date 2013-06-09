@@ -19,6 +19,7 @@
     if (self) {
         UIStoryboard *storyBoard=[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
         
+        //根据自己的类名在stroyboard里找视图实例
         self = [storyBoard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     }
     return self;
@@ -39,9 +40,8 @@
     f.origin.x = 0.0f;
     self.view.frame = f;
     
+    //初始化全局变量为私有对象，供子类使用
     _globals = [BTGlobals sharedGlobals];
-    _viewX = [UIScreen mainScreen].applicationFrame.size.width;
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,18 +50,14 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)setViewX:(int)x who:(UIView*)view{
-    CGRect f = view.frame;
-    f.origin.x = x;
-    view.frame = f;
-}
-
+//设置水平位置
 -(void)setViewX:(int)x{    
     CGRect f = self.view.frame;
     f.origin.x = x;
     self.view.frame = f;
 }
 
+//设置高度
 -(void)setViewHeight:(int)h{
     CGRect f = self.view.frame;
     f.size.height = h;
