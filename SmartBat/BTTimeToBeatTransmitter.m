@@ -16,22 +16,47 @@
 {
     self = [super init];
     
-    _timeLineHitCount = 0;
+    _beatCount = 0;
     
     return self;
 }
 
--(void) updateBPM:(NSUInteger) bpm
+
+//bpm
+-(void) updateBPM:(int) bpm
 {
-    NSTimeInterval interval = [self getIntervalByBPM:bpm andNote:4];
-    [_timeLine updateSleepInterval:interval];
+    _bpm = bpm;
+    
+    _noteDuration = [self getNoteDurationByBPM:bpm andNote:_note];
+    
+    [_timeLine updateClockDuration:_noteDuration];
 }
 
 
+
+//measure template
 -(void) updateMeasureTemplate:(BTMeasure *) measure
 {
-    //todo
+    if(_measureTemplate)
+    {
+        if(measure.note && _measureTemplate.note != measure.note)
+        {
+            _measureTemplate.note = measure.note;
+        }
+    
+        if(measure.beat && _measureTemplate.beat != measure.beat)
+        {
+            _measureTemplate.beat = measure.beat;
+        }
+    }
 }
+
+-(BTMeasure *)getMeasureTemplate
+{
+    return _measureTemplate;
+}
+
+
 
 
 -(void) bindTimeLine:(BTTimeLine *) timeLine
@@ -40,12 +65,22 @@
     _timeLine.timeLineDelegate = self;
 }
 
--(void) startWithBPM:(int)BPM andNote:(int)note
+-(void) startWithBPM:(int)bpm andMeasureTemplate:(BTMeasure *)measureTemplate
 {
+    
+    _bpm = bpm;
+    _note = measureTemplate.note;    
+    _noteDuration = [self getNoteDurationByBPM:bpm andNote:_note];
+    
     if(_timeLine)
     {
-        NSTimeInterval interval = [self getIntervalByBPM:BPM andNote:note];
-        [_timeLine startLoopWithTimeInterval:interval];
+        
+        if(!_startTime)
+        {
+            _startTime = [self getNowTime];
+        }
+
+        [_timeLine startLoopWithDuration:_noteDuration];
     }
 }
 
@@ -58,35 +93,66 @@
 }
 
 
--(NSTimeInterval)getIntervalByBPM:(int)bpm andNote:(int)note
+-(NSTimeInterval)getIntervalByBPM:(int)bpm andNote:(double)note
 {
-    NSTimeInterval timeInterval;
+    NSTimeInterval duration = _noteDuration;
     
-    timeInterval = 60.0 / bpm;
+    duration = [self accurateTimeInterval:duration];
     
-    //todo 
+    NSLog(@"getIntervalByBPMAndNote: %f", duration);
     
-    NSLog(@"getIntervalByBPMAndNote: %f", timeInterval);
-    
-    return timeInterval;
+    return duration;
 }
 
+-(NSTimeInterval)accurateTimeInterval:(NSTimeInterval) duration
+{
+    if(_startTime)
+    {
+        NSTimeInterval targetTime = _noteDuration + (_startTime + _noteDuration * (_beatCount) - _previousTime);
+        
+        NSLog(@"actully target duration: %f, beatCount: %d", targetTime, _beatCount);
+        
+        return targetTime;
+    }
+    else
+    {
+        return duration;
+    }
+}
+
+-(double)getNoteDurationByBPM:(int) bpm andNote:(double)note
+{
+    double duration = 60.0/(bpm/(note*4));
+    return duration;
+}
+
+-(double) getNowTime
+{
+    return [[NSDate date] timeIntervalSince1970];
+}
 
 //implement of TimeLineDelegate
--(void)onTimeInvokeHandler: (NSDate *) time
+-(void)onTimeInvokeHandler: (uint64_t) time
 {
-    _timeLineHitCount ++;
     
-    
-        
-        NSTimeInterval point = [time timeIntervalSince1970];
-        
-        long long dTime = [[NSNumber numberWithDouble:point] longLongValue]; // 将double转为long long型
-        
-        NSLog(@"[%llu][%d]timeline invoke with interval! %@", dTime ,_timeLineHitCount, time);
-        
-        [self.timeToBeatTransmitterBeatDelegate onBeatHandler:nil ofMeasure:nil withBPM:nil];
 
+    NSTimeInterval point = mach_absolute_time();
+
+    NSLog(@"distance: %f", (point - _previousTime)*1.0e-9);
+    
+    _previousTime = point;
+    _beatCount ++;
+
+//    [_timeLine updateSleepInterval:[self getIntervalByBPM:_bpm andNote:_note ]];
+    
+//    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//    dispatch_async(mainQueue, ^{
+    
+        [self.timeToBeatTransmitterBeatDelegate onBeatHandler:nil ofMeasure:nil withBPM:_bpm];
+        
+//    });
+
+    
     
 }
 

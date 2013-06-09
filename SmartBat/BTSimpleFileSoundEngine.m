@@ -34,83 +34,15 @@
 
 
 // prepare sound file from APP resource
--(void)loadSoundFileForKey: (NSString *) soundFileName withExtension:(NSString *) soundFileExtension forKey:(NSString *) key
+-(void)loadSoundFile: (NSString *) soundFileName
 {
-    
-    NSLog(@"loadSoundFileForKey\nfile:%@ , ext: %@, key: %@", soundFileName, soundFileExtension, key);
-    
-    //get the sound url
-    NSURL *soundURL   = [[NSBundle mainBundle] URLForResource: soundFileName withExtension: soundFileExtension];
-    NSLog(@"sound url: %@", soundURL);
-    
-    
-    
-    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:soundURL error:nil] ;
-    [audioPlayer setVolume:10];
-                                  
-    
-    
-//    //bind sound file object.
-//    CFURLRef soundFileURLRef ;
-//    SystemSoundID soundFileObject;
-//    soundFileURLRef = (__bridge CFURLRef) soundURL;
-//    AudioServicesCreateSystemSoundID (soundFileURLRef, &soundFileObject);
-    
-    //save soundFileObject to map
-//    NSNumber *soundIdNumber = [NSNumber numberWithInt:soundFileObject];
-    [_soundPool setObject: audioPlayer forKey:key];
-
-
+    [[OALSimpleAudio sharedInstance] preloadEffect:soundFileName];
 }
 
 //play sound
-- (void)playSoundForKey: (NSString *) key{
-    
-    AVAudioPlayer *audioPlayer = [_soundPool objectForKey:key];
-    
-    if(audioPlayer)
-    {
-        [audioPlayer play];
-    }
+- (void)playSound: (NSString *) soundFileName{
+    [[OALSimpleAudio sharedInstance] playEffect:soundFileName];
 }
-
-
-//remove sound file
-- (void)clearSoundForKey: (NSString *) key{
-    
-    AVAudioPlayer *audioPlayer = [_soundPool objectForKey:key];
-    
-    if(audioPlayer)
-    {
-        [_soundPool removeObjectForKey:key];
-    }
-}
-
-
-
-
-
-//
-//-(void)start
-//{
-//    if (!self.timer)
-//    {
-//
-//        self.bpm = [NSNumber numberWithInt:120];
-//        // Calculate the timer interval based on the tempo in beats per minute
-//        double interval = 60.0 / [self.bpm doubleValue];
-//        
-//        NSLog(@"interval: %a", interval);
-//        
-//        // Start the repeating timer that counts the beats.
-//        self.timer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(playSound:) userInfo:[NSNumber numberWithDouble:interval * ([self.meter doubleValue] / 2)] repeats:YES];
-//    }
-//    else
-//    {
-//        //todo else
-//    }
-//}
-
 
 
 @end

@@ -12,6 +12,8 @@
 #import "BTTimeLine.h"
 #import "BTConstants.h"
 #import "BTGlobals.h"
+#import "TheAmazingAudioEngine.h"
+#import <mach/mach_time.h>
 
 @interface BTMetronomeCoreController : NSObject<BTTimeToBeatTransmitterBeatDelegate>
 {
@@ -23,6 +25,8 @@
 
 
 +(BTMetronomeCoreController *) getController;
+
+@property(nonatomic, retain) AEAudioController * audioController;
 
 -(void) start;
 -(void) stop;

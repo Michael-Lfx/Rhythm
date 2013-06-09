@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+#import "TheAmazingAudioEngine.h"
+#import "OALSimpleAudio.h"
 
 @interface BTSimpleFileSoundEngine : NSObject
 {
@@ -18,8 +20,7 @@
 
 
 +(BTSimpleFileSoundEngine *)getEngine;
--(void)loadSoundFileForKey: (NSString *) soundFileName withExtension:(NSString *) soundFileExtension forKey:(NSString *) key;
--(void)playSoundForKey: (NSString *)key;
--(void)clearSoundForKey: (NSString *)key;
+-(void)loadSoundFile: (NSString *) soundFileName;
+-(void)playSound: (NSString *)soundFileName;
 
 @end

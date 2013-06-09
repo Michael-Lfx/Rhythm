@@ -11,9 +11,9 @@
 
 @interface BTMeasure : NSObject
 
-@property NSUInteger beat;
-@property NSUInteger note;
+@property int beat;
+@property double note;
 
--(BTMeasure *) initWithBeatAndNote: (NSUInteger) beat withNote:(NSUInteger) note;
+-(BTMeasure *) initWithBeat: (int) beat andNote:(double) note;
 
 @end

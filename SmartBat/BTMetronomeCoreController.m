@@ -13,7 +13,7 @@
 
 
 #define TICK_SOUND_KEY @"P"
-#define DEFAULT_P_SOUND_FILE @"tick"
+#define DEFAULT_P_SOUND_FILENAME @"tick.aif"
 #define DEFAULT_SOUND_FILE_EXT @"aif"
 
 #define DEFAULT_BPM 120
@@ -30,7 +30,7 @@
     
     //init sound engine;
     _simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
-    [_simpleFileSoundEngine loadSoundFileForKey:DEFAULT_P_SOUND_FILE withExtension:DEFAULT_SOUND_FILE_EXT forKey:TICK_SOUND_KEY];
+    [_simpleFileSoundEngine loadSoundFile:DEFAULT_P_SOUND_FILENAME];
 
     
     //init timeLine
@@ -39,16 +39,19 @@
     
     
     //init a measure for template which would be used for a transmiter
-    BTMeasure * measure = [[BTMeasure alloc]initWithBeatAndNote:DEFAULT_BEAT withNote:DEFAULT_NOTE];
+    //BTMeasure * measure = [[BTMeasure alloc]initWithBeatAndNote:DEFAULT_BEAT withNote:DEFAULT_NOTE];
     
     
     
     //init transmitter
     _timeToBeatTransmitter = [[BTTimeToBeatTransmitter alloc]init];
     [_timeToBeatTransmitter bindTimeLine:_timeLine];
-    [_timeToBeatTransmitter updateBPM:DEFAULT_BPM];
-    [_timeToBeatTransmitter updateMeasureTemplate:measure];
+    //[_timeToBeatTransmitter updateMeasureTemplate:measure];
     _timeToBeatTransmitter.timeToBeatTransmitterBeatDelegate = self;
+    
+    
+    
+    
     
     return self;
 }
@@ -65,7 +68,9 @@
 
 -(void)start
 {
-    [_timeToBeatTransmitter startWithBPM:_globals.beatPerMinute andNote:4];
+    BTMeasure * _measureTemplate = [[BTMeasure alloc]initWithBeat:4 andNote:0.25];
+    
+    [_timeToBeatTransmitter startWithBPM:_globals.beatPerMinute andMeasureTemplate:_measureTemplate];
 }
 
 
@@ -99,10 +104,10 @@
 
 
 //delegate
--(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(NSUInteger)bpm
+-(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(int)bpm
 {
     NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, beat.indexOfMeasure);
-    [_simpleFileSoundEngine playSoundForKey:TICK_SOUND_KEY];
+    [_simpleFileSoundEngine playSound:DEFAULT_P_SOUND_FILENAME];
 }
 
 @end

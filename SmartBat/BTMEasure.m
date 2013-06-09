@@ -12,13 +12,13 @@
 
 @synthesize note, beat;
 
--(BTMeasure *) initWithBeatAndNote: (NSUInteger) beat withNote:(NSUInteger) note
+-(BTMeasure *) initWithBeat: (int) _beat andNote:(double) _note
 {
     
     self = [super init];
     
-    [self setBeat:beat];
-    [self setNote:note];
+    self.beat = _beat;
+    self.note = _note;
     
     return self;
 }

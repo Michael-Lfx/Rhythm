@@ -14,7 +14,7 @@
 //protocal
 @protocol  BTTimeToBeatTransmitterBeatDelegate<NSObject>
 
--(void) onBeatHandler: (BTBeat *) beat ofMeasure:(BTMeasure *) measure withBPM:(NSUInteger)bpm;
+-(void) onBeatHandler: (BTBeat *) beat ofMeasure:(BTMeasure *) measure withBPM:(int)bpm;
 
 @end
 
@@ -25,16 +25,28 @@
 @interface BTTimeToBeatTransmitter : NSObject<TimeLineDelegate>{
     
     BTTimeLine * _timeLine;
-    NSUInteger _timeLineHitCount;
+    
+    NSTimeInterval _startTime;
+    NSTimeInterval _previousTime;
+    NSTimeInterval _distanceTime;
+    
+    double _noteDuration;
+    int _beatCount;
+
+    double _note;
+    int _bpm;
+    
+    BTMeasure * _measureTemplate;
 }
 
-@property NSUInteger bpm;
+@property int bpm;
 @property(nonatomic, retain) id<BTTimeToBeatTransmitterBeatDelegate>timeToBeatTransmitterBeatDelegate;
 
--(void) updateBPM:(NSUInteger) bpm;
+-(void) updateBPM:(int) bpm;
 -(void) updateMeasureTemplate:(BTMeasure *) measure;
+-(BTMeasure *)getMeasureTemplate;
 -(void) bindTimeLine:(BTTimeLine *) timeLine;
--(void) startWithBPM:(int)BPM andNote:(int)note;
+-(void) startWithBPM:(int)BPM andMeasureTemplate:(BTMeasure *) measureTemplate;
 -(void) stop;
 
 @end
