@@ -426,7 +426,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Er-Vd-nFV">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="118" id="PI5-KX-O3j"/>
-                                    <constraint firstAttribute="width" constant="300" id="S1o-1m-Kxq"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="play-bg.png">
@@ -475,26 +474,35 @@
                                     <action selector="playPressed:" destination="2" eventType="touchDown" id="es4-ND-RlA"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="SubnoteSmall_26.png" translatesAutoresizingMaskIntoConstraints="NO" id="XlY-2j-H5Y">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="13" id="H5Y-aE-akq"/>
+                                    <constraint firstAttribute="width" constant="36" id="L1k-KD-f3D"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mXi-RJ-8nL" firstAttribute="bottom" secondItem="b2V-zD-jLl" secondAttribute="bottom" type="default" id="0el-97-ay6"/>
-                            <constraint firstItem="as2-QD-hbk" firstAttribute="top" secondItem="3" secondAttribute="top" constant="110" id="3Fd-kQ-KD9"/>
+                            <constraint firstItem="as2-QD-hbk" firstAttribute="top" secondItem="3" secondAttribute="top" constant="113" id="2CH-Vp-MDE"/>
                             <constraint firstItem="b2V-zD-jLl" firstAttribute="leading" secondItem="2lm-s7-uRU" secondAttribute="leading" type="default" id="4vc-ld-CZ2"/>
                             <constraint firstItem="b2V-zD-jLl" firstAttribute="trailing" secondItem="5Er-Vd-nFV" secondAttribute="trailing" type="default" id="6eZ-3s-bm0"/>
                             <constraint firstItem="5Er-Vd-nFV" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="9v8-9o-V5B"/>
-                            <constraint firstItem="as2-QD-hbk" firstAttribute="trailing" secondItem="5ix-nk-nwD" secondAttribute="trailing" type="default" id="Ha5-ay-fM8"/>
+                            <constraint firstItem="c3u-HF-j9t" firstAttribute="top" secondItem="3" secondAttribute="top" constant="73" id="APL-2I-EV6"/>
                             <constraint firstItem="5ix-nk-nwD" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="15" id="IHM-oU-w6c"/>
-                            <constraint firstItem="c3u-HF-j9t" firstAttribute="top" secondItem="3" secondAttribute="top" constant="75" id="T5i-jX-9go"/>
+                            <constraint firstItem="XlY-2j-H5Y" firstAttribute="top" secondItem="3" secondAttribute="top" constant="99" id="V2Q-wy-guR"/>
                             <constraint firstAttribute="bottom" secondItem="5Er-Vd-nFV" secondAttribute="bottom" constant="32" id="dXU-2N-tpY"/>
                             <constraint firstItem="mXi-RJ-8nL" firstAttribute="top" secondItem="3" secondAttribute="top" constant="54" id="eiq-K5-Cc9"/>
                             <constraint firstItem="5ix-nk-nwD" firstAttribute="top" secondItem="3" secondAttribute="top" constant="56" id="fS8-in-cZs"/>
                             <constraint firstItem="NY2-dN-F10" firstAttribute="centerY" secondItem="5Er-Vd-nFV" secondAttribute="centerY" type="default" id="ips-1H-31f"/>
                             <constraint firstItem="NY2-dN-F10" firstAttribute="centerX" secondItem="5Er-Vd-nFV" secondAttribute="centerX" type="default" id="l94-rT-l6x"/>
+                            <constraint firstItem="as2-QD-hbk" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="17" id="nvN-uR-oLT"/>
                             <constraint firstItem="5Er-Vd-nFV" firstAttribute="leading" secondItem="mXi-RJ-8nL" secondAttribute="leading" type="default" id="sHX-MT-zPB"/>
+                            <constraint firstItem="XlY-2j-H5Y" firstAttribute="leading" secondItem="c3u-HF-j9t" secondAttribute="leading" type="default" id="sOa-cZ-jd8"/>
                             <constraint firstItem="b2V-zD-jLl" firstAttribute="trailing" secondItem="2lm-s7-uRU" secondAttribute="trailing" type="default" id="tIK-CK-3T1"/>
                             <constraint firstItem="5ix-nk-nwD" firstAttribute="leading" secondItem="c3u-HF-j9t" secondAttribute="leading" type="default" id="wVd-Ky-dgp"/>
                             <constraint firstItem="mXi-RJ-8nL" firstAttribute="top" secondItem="2lm-s7-uRU" secondAttribute="top" type="default" id="xT9-OW-wJf"/>
+                            <constraint firstItem="as2-QD-hbk" firstAttribute="centerX" secondItem="mXi-RJ-8nL" secondAttribute="centerX" type="default" id="ype-BV-bc8"/>
                         </constraints>
                     </view>
                     <connections>
@@ -535,6 +543,7 @@
     </scenes>
     <resources>
         <image name="SubnoteBig_41.png" width="240" height="236"/>
+        <image name="SubnoteSmall_26.png" width="72" height="26"/>
         <image name="band-button.png" width="108" height="108"/>
         <image name="beat-note-minus-button.png" width="160" height="118"/>
         <image name="beat-note-plus-button.png" width="160" height="118"/>
@@ -551,6 +560,52 @@
         <image name="timer1-bg.png" width="290" height="236"/>
         <image name="timer2-bg.png" width="290" height="236"/>
     </resources>
+    <classes>
+        <class className="BTBaseViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTBaseViewController.h"/>
+        </class>
+        <class className="BTCommonViewController" superclassName="BTSettingsViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTCommonViewController.h"/>
+        </class>
+        <class className="BTMainViewController" superclassName="BTSwipeViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTMainViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="minusEnded:" candidateClass="UIButton"/>
+                <relationship kind="action" name="minusPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="playPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="plusEnded:" candidateClass="UIButton"/>
+                <relationship kind="action" name="plusPressed:" candidateClass="UIButton"/>
+                <relationship kind="action" name="tapPressed:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="mainNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="minus" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="plus" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="BTNoBandViewController" superclassName="BTSettingsViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTNoBandViewController.h"/>
+        </class>
+        <class className="BTRootViewController" superclassName="BTBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTRootViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="callSettings:" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="BTSettingsViewController" superclassName="BTBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTSettingsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="pickupSettings:"/>
+            </relationships>
+        </class>
+        <class className="BTSwipeViewController" superclassName="BTBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTSwipeViewController.h"/>
+        </class>
+        <class className="BTTempoViewController" superclassName="BTSwipeViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTTempoViewController.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
