@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		3F58AB491761EAF000A55317 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F58AB461761EAF000A55317 /* Icon.png */; };
 		3F58AB4A1761EAF000A55317 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F58AB471761EAF000A55317 /* Icon@2x.png */; };
-		3F58AB4B1761EAF000A55317 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F58AB481761EAF000A55317 /* iTunesArtwork.png */; };
+		3F58AB4B1761EAF000A55317 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 3F58AB481761EAF000A55317 /* iTunesArtwork */; };
 		7232FAF917633ED90097CA34 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7232FAE617633ED90097CA34 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7232FAE917633ED90097CA34 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7232FAFB17633ED90097CA34 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7232FAEB17633ED90097CA34 /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -144,7 +144,7 @@
 /* Begin PBXFileReference section */
 		3F58AB461761EAF000A55317 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		3F58AB471761EAF000A55317 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		3F58AB481761EAF000A55317 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
+		3F58AB481761EAF000A55317 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		7232FAE517633ED90097CA34 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		7232FAE617633ED90097CA34 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		7232FAE717633ED90097CA34 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -549,7 +549,7 @@
 				72ED3B931764D96D00C810AC /* Default@2x.png */,
 				3F58AB461761EAF000A55317 /* Icon.png */,
 				3F58AB471761EAF000A55317 /* Icon@2x.png */,
-				3F58AB481761EAF000A55317 /* iTunesArtwork.png */,
+				3F58AB481761EAF000A55317 /* iTunesArtwork */,
 				723FA14D175F209800DEF5E0 /* Images */,
 				F49E6D17175F3DD600E2EDCB /* Sounds */,
 			);
@@ -871,7 +871,7 @@
 				72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */,
 				3F58AB491761EAF000A55317 /* Icon.png in Resources */,
 				3F58AB4A1761EAF000A55317 /* Icon@2x.png in Resources */,
-				3F58AB4B1761EAF000A55317 /* iTunesArtwork.png in Resources */,
+				3F58AB4B1761EAF000A55317 /* iTunesArtwork in Resources */,
 				7232FB37176447D60097CA34 /* InfoPlist.strings in Resources */,
 				7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */,
 				7232FB4317644B270097CA34 /* Localizable.strings in Resources */,
