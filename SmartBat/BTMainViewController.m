@@ -27,6 +27,7 @@
     //test by poppy
     self.metronomeCoreController = [BTMetronomeCoreController getController];
     
+    //监控全局变量beatPerMinute的变化
     [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
@@ -83,6 +84,7 @@
         _globals.beatPerMinute--;
     }
     
+    //检查是否越界
     if (_globals.beatPerMinute > BPM_MAX) {
         _globals.beatPerMinute = BPM_MAX;
     }
@@ -91,8 +93,6 @@
         _globals.beatPerMinute = BPM_MIN;
     }
     
-//    [self updateBPMDisplay];
-    
     //执行n次，减小定时器间隔时间
     _intervalCount++;
     
@@ -100,11 +100,13 @@
         //句柄要被消除，缓存userinfo
         NSString* op = [timer userInfo];
         
+        //换成快速的间隔
         [self stopChangeBPMTImer];
         [self startChangeBPMTimer:op interval:BPM_CHANGE_INTERVAL_FASTER];
     }
 }
 
+//启动、停止定时器
 -(void)startChangeBPMTimer:(NSString*)operation interval:(float)duration{
     if(_changeBPMTimer != nil) {
         _changeBPMTimer = nil;
@@ -118,6 +120,7 @@
     _changeBPMTimer = nil;
 }
 
+//监控参数，更新显示
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if([keyPath isEqualToString:@"beatPerMinute"])

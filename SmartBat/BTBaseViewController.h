@@ -11,11 +11,9 @@
 #import "BTGlobals.h"
 
 @interface BTBaseViewController : UIViewController{
-    int _viewX;
     BTGlobals* _globals;
 }
 
--(void)setViewX:(int)x who:(UIView*)view;
 -(void)setViewX:(int)x;
 -(void)setViewHeight:(int)h;
 
