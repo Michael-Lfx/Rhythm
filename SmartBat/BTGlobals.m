@@ -34,6 +34,7 @@ int const kBeatPerMinuteInit = 150;
         NSError* error;
         NSArray *globalFromModel = [_context executeFetchRequest:request error:&error];
         
+        //看看数据里是不是空的
         if (globalFromModel.count == 0) {
             //如果发现数据库为空
             _globalsInEntity = [NSEntityDescription insertNewObjectForEntityForName:@"BTEntity" inManagedObjectContext:_context];

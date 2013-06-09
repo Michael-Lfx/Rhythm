@@ -36,6 +36,7 @@
     [self.view addSubview:pickupBtn];
 }
 
+//回到不可见位置
 -(IBAction)pickupSettings:(id)sender{
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
         //回到子类的原点
@@ -45,6 +46,7 @@
     }];
 }
 
+//从不可见位置显示出来
 -(void)callMeDisplay{
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
         [self setViewX:0];
