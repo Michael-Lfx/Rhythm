@@ -376,14 +376,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7232FAA0176338970097CA34 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				7232FAA1176339070097CA34 /* asi-http-request */,
-			);
-			name = Libraries;
-			sourceTree = "<group>";
-		};
 		7232FAA1176339070097CA34 /* asi-http-request */ = {
 			isa = PBXGroup;
 			children = (
@@ -498,7 +490,6 @@
 				F4CE3E531764C8F000F314D8 /* Library */,
 				725CB58D1760A48F0020FC78 /* Model */,
 				72893558175DA8D900EED04E /* Frameworks */,
-				7232FAA0176338970097CA34 /* Libraries */,
 				725CB58D1760A48F0020FC78 /* Model */,
 				72893557175DA8D900EED04E /* Products */,
 				7289355F175DA8D900EED04E /* SmartBat */,
@@ -760,6 +751,7 @@
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				7232FAA1176339070097CA34 /* asi-http-request */,
 				F4CE3DF41764BB4500F314D8 /* ObjectAL (iOS) */,
 			);
 			name = Library;
