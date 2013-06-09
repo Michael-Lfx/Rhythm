@@ -14,6 +14,9 @@
 #import "BTConstants.h"
 #import "BTNoBandViewController.h"
 #import "BTGlobals.h"
+#import "BTAppStore.h"
+#import "TPPreciseTimer.h"
+#import <mach/mach_time.h>
 
 @interface BTRootViewController : BTBaseViewController <UIScrollViewDelegate>{
     BTTempoViewController* _tempViewCtrl;
@@ -22,6 +25,7 @@
     BTNoBandViewController* _noBandViewCtrl;
     UIScrollView* _scrollView;
     UIPageControl* _pageControl;
+    BTAppStore* _appStore;
 }
 
 - (IBAction)callSettings:(UIButton *)sender;

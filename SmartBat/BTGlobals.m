@@ -8,12 +8,10 @@
 
 #import "BTGlobals.h"
 
-//定义初始化全局变量
+//定义全局变量的初始值
 int const kBeatPerMinuteInit = 150;
 
 @implementation BTGlobals
-
-@synthesize beatPerMinute;
 
 -(BTGlobals*)init{
     self = [super init];
@@ -36,15 +34,19 @@ int const kBeatPerMinuteInit = 150;
         NSError* error;
         NSArray *globalFromModel = [_context executeFetchRequest:request error:&error];
         
-        NSLog(@"%d", globalFromModel.count);
-        
         if (globalFromModel.count == 0) {
             //如果发现数据库为空
             _globalsInEntity = [NSEntityDescription insertNewObjectForEntityForName:@"BTEntity" inManagedObjectContext:_context];
             
-            //把初始化全局变量写入数据库，同时该实例全局变量初始化
-            _globalsInEntity.beatPerMinute = [NSNumber numberWithInt:kBeatPerMinuteInit];
-            beatPerMinute = kBeatPerMinuteInit;
+            //从常量初始化全局变量
+            _beatPerMinute = kBeatPerMinuteInit;
+            _lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
+            
+            //需要反复写入的
+            [self globalsIntoEntity];
+            
+            //首次写入即可
+            _globalsInEntity.installDate = [NSNumber numberWithInt:_lastCheckVersionDate];
             
             //保存数据
             if(![_context save:&error]){
@@ -54,14 +56,24 @@ int const kBeatPerMinuteInit = 150;
             _globalsInEntity = [globalFromModel objectAtIndex:0];
             
             //从数据库数据来初始化该实例的全局变量
-            beatPerMinute = [_globalsInEntity.beatPerMinute intValue];
+            _beatPerMinute = [_globalsInEntity.beatPerMinute intValue];
+            _lastCheckVersionDate = [_globalsInEntity.lastCheckVersionDate intValue];
+            _askGradeTimes = [_globalsInEntity.askGradeTimes intValue];
+            _installDate = [_globalsInEntity.installDate intValue]; 
         }
     }
     return self;
 }
 
+-(void)globalsIntoEntity{
+    _globalsInEntity.beatPerMinute = [NSNumber numberWithInt:_beatPerMinute];
+    _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
+    _globalsInEntity.askGradeTimes = [NSNumber numberWithInt:_askGradeTimes];
+}
+
 -(void)applicationWillResignActive:(NSNotification*) notification{
-    _globalsInEntity.beatPerMinute = [NSNumber numberWithInt:beatPerMinute];
+    //退出时写入
+    [self globalsIntoEntity];
     
     NSError* error;
     if(![_context save:&error]){

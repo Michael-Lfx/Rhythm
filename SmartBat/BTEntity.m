@@ -12,5 +12,8 @@
 @implementation BTEntity
 
 @dynamic beatPerMinute;
+@dynamic lastCheckVersionDate;
+@dynamic installDate;
+@dynamic askGradeTimes;
 
 @end
