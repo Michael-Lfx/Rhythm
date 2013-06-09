@@ -20,7 +20,7 @@
 @property(assign, nonatomic) int beatPerMinute;
 @property(assign, nonatomic) int lastCheckVersionDate;
 @property(assign, nonatomic) int installDate;
-@property(assign, nonatomic) int askGradeTimes;
+@property(assign, nonatomic) int hasAskGrade;
 
 
 +(BTGlobals*)sharedGlobals;

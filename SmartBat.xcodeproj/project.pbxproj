@@ -143,7 +143,6 @@
 		7232FB06176340300097CA34 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7232FB081763403A0097CA34 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
-		7232FB0C176344420097CA34 /* SBJson.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SBJson.framework; path = "../../json-framework/SBJson.framework"; sourceTree = "<group>"; };
 		7232FB0F176377710097CA34 /* TPPreciseTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPPreciseTimer.h; sourceTree = "<group>"; };
 		7232FB10176377710097CA34 /* TPPreciseTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPPreciseTimer.m; sourceTree = "<group>"; };
 		723FA12A175DEDFD00DEF5E0 /* BTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTConstants.h; sourceTree = "<group>"; };
@@ -420,7 +419,6 @@
 		72893558175DA8D900EED04E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7232FB0C176344420097CA34 /* SBJson.framework */,
 				7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */,
 				7232FB081763403A0097CA34 /* MobileCoreServices.framework */,
 				7232FB06176340300097CA34 /* SystemConfiguration.framework */,

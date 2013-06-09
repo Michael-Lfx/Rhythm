@@ -89,16 +89,8 @@
     [_appStore checkVersion];
     
     //去评分
+    [_appStore askGraed];
     
-    struct mach_timebase_info timebase;
-    mach_timebase_info(&timebase);
-    double timebase_ratio = ((double)timebase.numer / (double)timebase.denom) * 1.0e-9;
-    NSTimeInterval start = mach_absolute_time() * timebase_ratio;
-    
-    [TPPreciseTimer scheduleBlock:^{
-        NSTimeInterval end = mach_absolute_time() * timebase_ratio;
-        printf("TPPreciseTimer deviation:\t%lf s\n", (end - start) - 1);
-    } inTimeInterval:1];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender

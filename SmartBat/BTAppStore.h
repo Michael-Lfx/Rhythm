@@ -16,6 +16,6 @@
 }
 
 -(BOOL)checkVersion;
--(BOOL)gotoGrade;
+-(BOOL)askGraed;
 
 @end

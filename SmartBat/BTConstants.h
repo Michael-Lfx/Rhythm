@@ -14,8 +14,7 @@
 
 #define CHECK_VERSION_DURATION 86400
 #define APP_LOOKUP_URL @"http://itunes.apple.com/lookup?id=632827808"
-#define ASK_GRADE_DURATION 86400
-#define ASK_GRADE_COUNT 86400
+#define ASK_GRADE_DURATION 86400*3
 
 #define SWIPE_2_MOVE_TIMES 1.2f
 #define THRESHOLD_2_COMPLETE 0.3f

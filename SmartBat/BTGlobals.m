@@ -41,6 +41,8 @@ int const kBeatPerMinuteInit = 150;
             //从常量初始化全局变量
             _beatPerMinute = kBeatPerMinuteInit;
             _lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
+            _hasAskGrade = 0;
+            _installDate = _lastCheckVersionDate;
             
             //需要反复写入的
             [self globalsIntoEntity];
@@ -58,8 +60,10 @@ int const kBeatPerMinuteInit = 150;
             //从数据库数据来初始化该实例的全局变量
             _beatPerMinute = [_globalsInEntity.beatPerMinute intValue];
             _lastCheckVersionDate = [_globalsInEntity.lastCheckVersionDate intValue];
-            _askGradeTimes = [_globalsInEntity.askGradeTimes intValue];
-            _installDate = [_globalsInEntity.installDate intValue]; 
+            _hasAskGrade = [_globalsInEntity.hasAskGrade intValue];
+            _installDate = [_globalsInEntity.installDate intValue];
+            
+            NSLog(@"%@", _globalsInEntity);
         }
     }
     return self;
@@ -68,7 +72,7 @@ int const kBeatPerMinuteInit = 150;
 -(void)globalsIntoEntity{
     _globalsInEntity.beatPerMinute = [NSNumber numberWithInt:_beatPerMinute];
     _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
-    _globalsInEntity.askGradeTimes = [NSNumber numberWithInt:_askGradeTimes];
+    _globalsInEntity.hasAskGrade = [NSNumber numberWithInt:_hasAskGrade];
 }
 
 -(void)applicationWillResignActive:(NSNotification*) notification{

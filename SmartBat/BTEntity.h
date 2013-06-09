@@ -15,6 +15,6 @@
 @property (nonatomic, retain) NSNumber * beatPerMinute;
 @property (nonatomic, retain) NSNumber * lastCheckVersionDate;
 @property (nonatomic, retain) NSNumber * installDate;
-@property (nonatomic, retain) NSNumber * askGradeTimes;
+@property (nonatomic, retain) NSNumber * hasAskGrade;
 
 @end

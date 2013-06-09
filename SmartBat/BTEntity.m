@@ -14,6 +14,6 @@
 @dynamic beatPerMinute;
 @dynamic lastCheckVersionDate;
 @dynamic installDate;
-@dynamic askGradeTimes;
+@dynamic hasAskGrade;
 
 @end

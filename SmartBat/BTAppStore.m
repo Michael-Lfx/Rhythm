@@ -41,28 +41,48 @@
     if([localVersion isEqual:lasterVersion]){
         //
     }else{
+        [BTGlobals sharedGlobals].lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
+        
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"发现新版本！"
                                                       message:@""
                                                      delegate:self
                                             cancelButtonTitle:@"以后再说"
                                             otherButtonTitles:@"马上更新",nil];
+        av.tag = 1;
         [av show];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    NSURL *url;
     
-    if (buttonIndex != [alertView cancelButtonIndex])
+    if (alertView.tag == 1 && buttonIndex != [alertView cancelButtonIndex])
     {
-        NSURL *url = [NSURL URLWithString:trackViewUrl];
-        [[UIApplication sharedApplication] openURL:url];
+        url = [NSURL URLWithString:trackViewUrl];
+    }else if (alertView.tag == 2 && buttonIndex != [alertView cancelButtonIndex]){
+        url = [NSURL URLWithString:@"http://www.baidu.com/"];
     }
     
-    [BTGlobals sharedGlobals].lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
+    [[UIApplication sharedApplication] openURL:url];
 }
 
--(BOOL)gotoGrade{
+-(BOOL)askGraed{
+    if(((int)[[NSDate date] timeIntervalSince1970] - [BTGlobals sharedGlobals].installDate < ASK_GRADE_DURATION) || [BTGlobals sharedGlobals].hasAskGrade == 1){
+        
+        return NO;
+    }
     
+    [BTGlobals sharedGlobals].hasAskGrade = 1;
+    
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"来都来了，评个分吧！"
+                                                 message:@""
+                                                delegate:self
+                                       cancelButtonTitle:@"不了"
+                                       otherButtonTitles:@"马上去",nil];
+    av.tag = 2;
+    [av show];
+
+    return YES;
 }
 
 @end
