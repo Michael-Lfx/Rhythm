@@ -15,12 +15,30 @@
 #import "TheAmazingAudioEngine.h"
 #import <mach/mach_time.h>
 
+@protocol metronomeBeatProtocol <NSObject>
+
+@end
+
 @interface BTMetronomeCoreController : NSObject<BTTimeToBeatTransmitterBeatDelegate>
 {
     BTSimpleFileSoundEngine *_simpleFileSoundEngine;
     BTTimeToBeatTransmitter * _timeToBeatTransmitter;
     BTTimeLine * _timeLine;
     BTGlobals* _globals;
+    BTMeasure * _measureTemplate;
+    BTSubdivision * _subdivisionTemplate;
+    
+    //beat type
+    BTBeat *_beat_F;
+    BTBeat *_beat_P;
+    BTBeat * _beat_SUBDIVISION;
+    BTBeat * _beat_NIL;
+    
+    //sound type
+    NSString * _soundFile_F;
+    NSString * _soundFile_P;
+    NSString * _soundFile_SUBDIVISION;
+
 }
 
 

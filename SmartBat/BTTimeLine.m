@@ -9,6 +9,7 @@
 #import "BTTimeLine.h"
 
 #define DEFAULT_INTERVAL 0.01
+#define LOCK_TIME 0.002
 
 @implementation BTTimeLine
 
@@ -77,10 +78,7 @@
     
     while (!_isStop) {
                 
-        dispatch_queue_t mainQueue = dispatch_get_main_queue();
-            dispatch_async(mainQueue, ^{
-                [self invokeDelegate:nil];
-            });
+       
         
         _clockPreviousTickTime = mach_absolute_time() * 1.0e-9;
         _clockPreviousTickTime *= info.numer;
@@ -92,19 +90,41 @@
         }
         
         
+        Boolean _isLock = true;
+        
+        while(_isLock)
+        {
+            NSTimeInterval _testTime = mach_absolute_time() * 1.0e-9;
+            _testTime *= info.numer;
+            _testTime /= info.denom;
+            
+            if(_testTime >= _clockStartTime + _clockDuration * _clockTickCount  )
+            {
+                _isLock = false;
+            }
+            else
+            {
+                NSLog(@"d: %f, testTime: %f, clockStartTime: %f, clockDuration: %f, clockTickCount: %d",_testTime -( _clockStartTime + _clockDuration * _clockTickCount ), _testTime, _clockStartTime, _clockDuration, _clockTickCount );
+            }
+        }
+        
+        
+        dispatch_queue_t mainQueue = dispatch_get_main_queue();
+        dispatch_async(mainQueue, ^{
+            [self invokeDelegate:nil];
+        });
+        
+        
         
         NSTimeInterval _accurateClockDuration = _clockDuration + ( _clockStartTime + _clockDuration * _clockTickCount - _clockPreviousTickTime);
         
-//        _accurateClockDuration *= info.numer;
-//        _accurateClockDuration /= info.denom;
         
-//        _accurateClockDuration = _clockDuration;
         
-        NSLog(@"accurateClock: %f, info.numer: %u, info.denom: %u", _accurateClockDuration, info.numer, info.denom);
+//        NSLog(@"accurateClock: %f, info.numer: %u, info.denom: %u", _accurateClockDuration, info.numer, info.denom);
         
         _clockTickCount++;
         
-        [NSThread sleepForTimeInterval: _accurateClockDuration];
+        [NSThread sleepForTimeInterval: _accurateClockDuration-LOCK_TIME];
         
         
     }
@@ -114,8 +134,15 @@
 
 -(void)invokeDelegate:(id)info
 {
+    mach_timebase_info_data_t data;
+    mach_timebase_info(&data);
     
-    [self.timeLineDelegate onTimeInvokeHandler: mach_absolute_time()];
+    NSTimeInterval _point = mach_absolute_time()*1.0e-9;
+    _point *= data.numer;
+    _point /= data.denom;
+    
+    
+    [self.timeLineDelegate onTimeInvokeHandler: _point];
 }
 
 
