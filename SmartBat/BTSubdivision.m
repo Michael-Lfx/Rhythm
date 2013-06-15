@@ -1,33 +1,35 @@
 //
-//  BTMEasure.m
+//  BTBeat.m
 //  SmartBat
 //
 //  Created by poppy on 13-6-6.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
-#import "BTMeasure.h"
+#import "BTSubdivision.h"
 
-@implementation BTMeasure
+@implementation BTSubdivision
 
-@synthesize noteType;
 
--(BTMeasure *) initWithBeat: (NSArray *) _beatDescription andNoteType:(double) _noteType
+-(BTSubdivision *) initWithBeat: (NSArray *) _beatDescription
 {
-    
     self = [super init];
     
     _noteList = [[NSArray alloc]initWithArray:_beatDescription];
-    
+
     self.playIndex = 0;
-    self.noteType = _noteType;
     
     return self;
+
+}
+
+-(int)count
+{
+    return [_noteList count];
 }
 
 -(void) playNote
 {
-    
     if(self.playIndex == [_noteList count]-1){
         
         self.playIndex = 0;
@@ -36,13 +38,6 @@
     {
         self.playIndex ++;
     }
-    
-}
-
-
--(BTBeat *) getCurrentNote
-{
-    return [self getNote:self.playIndex];
 }
 
 -(void)reset
@@ -50,17 +45,12 @@
     self.playIndex = 0;
 }
 
--(BTBeat *)getNote: (int)index
+-(BTBeatType)getNote: (int)index
 {
     
-    BTBeat * note = [_noteList objectAtIndex:index];
+    BTBeatType type = [[_noteList objectAtIndex:index] intValue];
     
-    return note;
-}
-
--(void) updateBeat:(int) _beat withNote:(double) _note;
-{
-    
+    return type;
 }
 
 @end

@@ -104,13 +104,16 @@
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
 		72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FAC806176326C100A6DAE0 /* BTAppStore.m */; };
+		F4536FC91769909400D1ED41 /* default_p.aif in Resources */ = {isa = PBXBuildFile; fileRef = F4536FC61769909400D1ED41 /* default_p.aif */; };
+		F4536FCA1769909400D1ED41 /* default_subdivision.aif in Resources */ = {isa = PBXBuildFile; fileRef = F4536FC71769909400D1ED41 /* default_subdivision.aif */; };
+		F4536FCB1769909400D1ED41 /* default_f.aif in Resources */ = {isa = PBXBuildFile; fileRef = F4536FC81769909400D1ED41 /* default_f.aif */; };
+		F4536FCE1769C98B00D1ED41 /* BTBeat.m in Sources */ = {isa = PBXBuildFile; fileRef = F4536FCD1769C98B00D1ED41 /* BTBeat.m */; };
 		F47E9D12176039D400C42899 /* BTTimeToBeatTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */; };
-		F47E9D1517603B0F00C42899 /* BTBeat.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1417603B0F00C42899 /* BTBeat.m */; };
+		F47E9D1517603B0F00C42899 /* BTSubdivision.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1417603B0F00C42899 /* BTSubdivision.m */; };
 		F47E9D1817603D7600C42899 /* BTMeasure.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1717603D7500C42899 /* BTMeasure.m */; };
 		F47E9D1B1760429400C42899 /* BTTimeLine.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D1A1760429400C42899 /* BTTimeLine.m */; };
 		F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
-		F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */ = {isa = PBXBuildFile; fileRef = F49E6D18175F3DE100E2EDCB /* tick.aif */; };
 		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
 		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
 		F49E6D23175F7ECF00E2EDCB /* BTMetronomeCoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E6D22175F7ECF00E2EDCB /* BTMetronomeCoreController.m */; };
@@ -278,10 +281,15 @@
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
 		72FAC805176326C100A6DAE0 /* BTAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppStore.h; sourceTree = "<group>"; };
 		72FAC806176326C100A6DAE0 /* BTAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppStore.m; sourceTree = "<group>"; };
+		F4536FC61769909400D1ED41 /* default_p.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_p.aif; sourceTree = "<group>"; };
+		F4536FC71769909400D1ED41 /* default_subdivision.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.aif; sourceTree = "<group>"; };
+		F4536FC81769909400D1ED41 /* default_f.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_f.aif; sourceTree = "<group>"; };
+		F4536FCC1769C98B00D1ED41 /* BTBeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBeat.h; sourceTree = "<group>"; };
+		F4536FCD1769C98B00D1ED41 /* BTBeat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBeat.m; sourceTree = "<group>"; };
 		F47E9D10176039D400C42899 /* BTTimeToBeatTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTimeToBeatTransmitter.h; sourceTree = "<group>"; };
 		F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTimeToBeatTransmitter.m; sourceTree = "<group>"; };
-		F47E9D1317603B0F00C42899 /* BTBeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBeat.h; sourceTree = "<group>"; };
-		F47E9D1417603B0F00C42899 /* BTBeat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBeat.m; sourceTree = "<group>"; };
+		F47E9D1317603B0F00C42899 /* BTSubdivision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSubdivision.h; sourceTree = "<group>"; };
+		F47E9D1417603B0F00C42899 /* BTSubdivision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSubdivision.m; sourceTree = "<group>"; };
 		F47E9D1617603D7500C42899 /* BTMeasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTMeasure.h; sourceTree = "<group>"; };
 		F47E9D1717603D7500C42899 /* BTMeasure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTMeasure.m; sourceTree = "<group>"; };
 		F47E9D191760429400C42899 /* BTTimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTimeLine.h; sourceTree = "<group>"; };
@@ -289,7 +297,6 @@
 		F49E6D12175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSimpleFileSoundEngine.h; sourceTree = "<group>"; };
 		F49E6D13175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSimpleFileSoundEngine.m; sourceTree = "<group>"; };
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		F49E6D18175F3DE100E2EDCB /* tick.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = tick.aif; sourceTree = "<group>"; };
 		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F49E6D21175F7ECF00E2EDCB /* BTMetronomeCoreController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTMetronomeCoreController.h; sourceTree = "<group>"; };
@@ -645,10 +652,12 @@
 				F47E9D1A1760429400C42899 /* BTTimeLine.m */,
 				F47E9D10176039D400C42899 /* BTTimeToBeatTransmitter.h */,
 				F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */,
-				F47E9D1317603B0F00C42899 /* BTBeat.h */,
-				F47E9D1417603B0F00C42899 /* BTBeat.m */,
+				F47E9D1317603B0F00C42899 /* BTSubdivision.h */,
+				F47E9D1417603B0F00C42899 /* BTSubdivision.m */,
 				F47E9D1617603D7500C42899 /* BTMeasure.h */,
 				F47E9D1717603D7500C42899 /* BTMeasure.m */,
+				F4536FCC1769C98B00D1ED41 /* BTBeat.h */,
+				F4536FCD1769C98B00D1ED41 /* BTBeat.m */,
 			);
 			name = "Metronome Core";
 			sourceTree = "<group>";
@@ -656,7 +665,9 @@
 		F49E6D17175F3DD600E2EDCB /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				F49E6D18175F3DE100E2EDCB /* tick.aif */,
+				F4536FC61769909400D1ED41 /* default_p.aif */,
+				F4536FC71769909400D1ED41 /* default_subdivision.aif */,
+				F4536FC81769909400D1ED41 /* default_f.aif */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -836,7 +847,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F49E6D19175F3DE100E2EDCB /* tick.aif in Resources */,
 				725CB5931760A4D70020FC78 /* band-button.png in Resources */,
 				725CB5941760A4D70020FC78 /* beat-note-plus-button.png in Resources */,
 				725CB5951760A4D70020FC78 /* common-button.png in Resources */,
@@ -859,12 +869,15 @@
 				725CB5DC1760AD330020FC78 /* SubnoteBig_29.png in Resources */,
 				725CB5DD1760AD330020FC78 /* SubnoteBig_30.png in Resources */,
 				725CB5DE1760AD330020FC78 /* SubnoteBig_31.png in Resources */,
+				F4536FC91769909400D1ED41 /* default_p.aif in Resources */,
 				725CB5DF1760AD330020FC78 /* SubnoteBig_32.png in Resources */,
 				725CB5E01760AD330020FC78 /* SubnoteBig_33.png in Resources */,
 				725CB5E11760AD330020FC78 /* SubnoteBig_34.png in Resources */,
+				F4536FCB1769909400D1ED41 /* default_f.aif in Resources */,
 				725CB5E21760AD330020FC78 /* SubnoteBig_35.png in Resources */,
 				725CB5E31760AD330020FC78 /* SubnoteBig_38.png in Resources */,
 				725CB5E41760AD330020FC78 /* SubnoteBig_39.png in Resources */,
+				F4536FCA1769909400D1ED41 /* default_subdivision.aif in Resources */,
 				725CB5E51760AD330020FC78 /* SubnoteBig_40.png in Resources */,
 				725CB5E61760AD330020FC78 /* SubnoteBig_41.png in Resources */,
 				725CB5E71760AD330020FC78 /* SubnoteBig_42.png in Resources */,
@@ -926,7 +939,7 @@
 				F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.m in Sources */,
 				F49E6D23175F7ECF00E2EDCB /* BTMetronomeCoreController.m in Sources */,
 				F47E9D12176039D400C42899 /* BTTimeToBeatTransmitter.m in Sources */,
-				F47E9D1517603B0F00C42899 /* BTBeat.m in Sources */,
+				F47E9D1517603B0F00C42899 /* BTSubdivision.m in Sources */,
 				F47E9D1817603D7600C42899 /* BTMeasure.m in Sources */,
 				F47E9D1B1760429400C42899 /* BTTimeLine.m in Sources */,
 				725CB58C1760A4780020FC78 /* Model.xcdatamodeld in Sources */,
@@ -957,6 +970,7 @@
 				F4CE3E4F1764BB4600F314D8 /* NSMutableDictionary+WeakReferences.m in Sources */,
 				F4CE3E501764BB4600F314D8 /* OALAudioFile.m in Sources */,
 				F4CE3E511764BB4600F314D8 /* OALTools.m in Sources */,
+				F4536FCE1769C98B00D1ED41 /* BTBeat.m in Sources */,
 				72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */,
 				7232FAF917633ED90097CA34 /* ASIAuthenticationDialog.m in Sources */,
 				7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */,

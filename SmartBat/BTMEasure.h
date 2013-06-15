@@ -9,11 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "BTBeat.h"
 
-@interface BTMeasure : NSObject
 
-@property int beat;
-@property double note;
+@interface BTMeasure : NSObject{
+    
+    NSArray *_noteList;
+    int _playIndex;
+    
+}
 
--(BTMeasure *) initWithBeat: (int) beat andNote:(double) note;
+@property int playIndex;
+@property double noteType;
+
+-(BTMeasure *) initWithBeat: (NSArray *) _beatDescription andNoteType:(double)noteType;
+-(void)playNote;
+-(BTBeat *)getNote:(int)index;
+-(BTBeat *)getCurrentNote;
+-(void)reset;
 
 @end

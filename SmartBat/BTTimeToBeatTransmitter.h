@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "BTMeasure.h"
 #import "BTTimeLine.h"
-
+#import "BTSubdivision.h"
 
 //protocal
 @protocol  BTTimeToBeatTransmitterBeatDelegate<NSObject>
 
 -(void) onBeatHandler: (BTBeat *) beat ofMeasure:(BTMeasure *) measure withBPM:(int)bpm;
+-(void) onSubdivisionHandler: (BTBeat *) beat;
 
 @end
 
@@ -37,6 +38,13 @@
     int _bpm;
     
     BTMeasure * _measureTemplate;
+    BTSubdivision * _subdivisionTemplate;
+    
+    NSTimeInterval _minDistance;
+    NSTimeInterval _maxDistance;
+    NSTimeInterval _totalDistance;
+    NSTimeInterval _avarageDistance;
+
 }
 
 @property int bpm;
@@ -46,7 +54,7 @@
 -(void) updateMeasureTemplate:(BTMeasure *) measure;
 -(BTMeasure *)getMeasureTemplate;
 -(void) bindTimeLine:(BTTimeLine *) timeLine;
--(void) startWithBPM:(int)BPM andMeasureTemplate:(BTMeasure *) measureTemplate;
+-(void) startWithBPM:(int)BPM andMeasureTemplate:(BTMeasure *) measureTemplate andSubdivision:(BTSubdivision *) subdivision;
 -(void) stop;
 
 @end

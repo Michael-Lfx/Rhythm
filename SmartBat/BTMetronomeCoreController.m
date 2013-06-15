@@ -13,7 +13,9 @@
 
 
 #define TICK_SOUND_KEY @"P"
-#define DEFAULT_P_SOUND_FILENAME @"tick.aif"
+#define DEFAULT_SOUNDFILE_F @"default_f.aif"
+#define DEFAULT_SOUNDFILE_P @"default_p.aif"
+#define DEFAULT_SOUNDFILE_SUBDIVISION @"default_subdivision.aif"
 #define DEFAULT_SOUND_FILE_EXT @"aif"
 
 #define DEFAULT_BPM 120
@@ -29,8 +31,14 @@
     
     
     //init sound engine;
+    _soundFile_F = DEFAULT_SOUNDFILE_F;
+    _soundFile_P = DEFAULT_SOUNDFILE_P;
+    _soundFile_SUBDIVISION = DEFAULT_SOUNDFILE_SUBDIVISION;
+    
     _simpleFileSoundEngine = [BTSimpleFileSoundEngine getEngine];
-    [_simpleFileSoundEngine loadSoundFile:DEFAULT_P_SOUND_FILENAME];
+    [_simpleFileSoundEngine loadSoundFile:_soundFile_F];
+    [_simpleFileSoundEngine loadSoundFile:_soundFile_P];
+    [_simpleFileSoundEngine loadSoundFile:_soundFile_SUBDIVISION];
 
     
     //init timeLine
@@ -38,16 +46,28 @@
     
     
     
-    //init a measure for template which would be used for a transmiter
-    //BTMeasure * measure = [[BTMeasure alloc]initWithBeatAndNote:DEFAULT_BEAT withNote:DEFAULT_NOTE];
+    //prepare beat type
+    _beat_F = [[BTBeat alloc]initWithBeatType:BTBeatType_F];
+    _beat_P = [[BTBeat alloc]initWithBeatType:BTBeatType_P];
+    _beat_NIL = [[BTBeat alloc]initWithBeatType:BTBeatType_NIL];
+    _beat_SUBDIVISION = [[BTBeat alloc]initWithBeatType:BTBeatType_SUBDIVISION];
     
+    
+    //init a measure for template which would be used for a transmiter
+    NSArray *_measureBeatValues = [[NSArray alloc]initWithObjects: _beat_F, _beat_P,_beat_F,_beat_P,nil];
+    _measureTemplate = [[BTMeasure alloc]initWithBeat:_measureBeatValues andNoteType:0.25];
+
+    NSArray *_subdivisionBeatValues = [[NSArray alloc]initWithObjects: _beat_SUBDIVISION, _beat_SUBDIVISION,nil];
+    _subdivisionTemplate = [[BTSubdivision alloc]initWithBeat:_subdivisionBeatValues];
     
     
     //init transmitter
     _timeToBeatTransmitter = [[BTTimeToBeatTransmitter alloc]init];
     [_timeToBeatTransmitter bindTimeLine:_timeLine];
-    //[_timeToBeatTransmitter updateMeasureTemplate:measure];
+    
+    
     _timeToBeatTransmitter.timeToBeatTransmitterBeatDelegate = self;
+    
     
     
     
@@ -68,9 +88,7 @@
 
 -(void)start
 {
-    BTMeasure * _measureTemplate = [[BTMeasure alloc]initWithBeat:4 andNote:0.25];
-    
-    [_timeToBeatTransmitter startWithBPM:_globals.beatPerMinute andMeasureTemplate:_measureTemplate];
+    [_timeToBeatTransmitter startWithBPM:_globals.beatPerMinute andMeasureTemplate:_measureTemplate andSubdivision:_subdivisionTemplate];
 }
 
 
@@ -106,8 +124,72 @@
 //delegate
 -(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(int)bpm
 {
-    NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, beat.indexOfMeasure);
-    [_simpleFileSoundEngine playSound:DEFAULT_P_SOUND_FILENAME];
+    NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, measure.playIndex);
+    
+    BTBeatType beatType = beat.beatType;
+    
+    switch(beat.indexOfMeasure)
+    {
+        case 0:
+            break;
+        default:
+            break;
+    }
+    
+    switch(beatType)
+    {
+        case BTBeatType_F:
+            [_simpleFileSoundEngine playSound:_soundFile_F];
+            [self turnOnLed];
+            [self turnOffLed];
+            
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"abc" object: beat];
+            
+            break;
+        case BTBeatType_P:
+            [_simpleFileSoundEngine playSound:_soundFile_P];
+        case BTBeatType_SUBDIVISION:
+            break;
+    }
+    
+    
 }
+
+-(void)onSubdivisionHandler:(BTBeat *)beat
+{
+    [_simpleFileSoundEngine playSound:_soundFile_SUBDIVISION];
+    NSLog(@"subdivision");
+}
+
+-(void)bindSoundProfile: (NSString *)_profileName
+{
+    
+    //todo: change sound from a plist file
+    //[_simpleFileSoundEngine loadSoundFile:DEFAULT_SOUNDFILE_P];
+}
+
+
+
+-(void)turnOnLed
+{
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if ([device hasTorch]) {
+        [device lockForConfiguration:nil];
+        [device setTorchMode: AVCaptureTorchModeOn];
+        [device unlockForConfiguration];
+    }
+}
+
+-(void)turnOffLed
+{
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if ([device hasTorch]) {
+        [device lockForConfiguration:nil];
+        [device setTorchMode: AVCaptureTorchModeOff];
+        [device unlockForConfiguration];
+    } 
+}
+
 
 @end
