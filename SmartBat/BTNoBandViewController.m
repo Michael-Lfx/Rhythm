@@ -38,4 +38,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)startCentral:(UIButton *)sender {
+    _cm = [[BTBandCentral alloc] init];
+}
+
+- (IBAction)centralWrite:(UIButton *)sender {
+    [_cm write];
+}
+
+- (IBAction)centralRead:(UIButton *)sender {
+    [_cm read];
+}
+
+- (IBAction)startPeripheral:(UIButton *)sender {
+    _pm = [[BTBandPeripheral alloc] init];
+}
+
+- (IBAction)peripheralUpdate:(UIButton *)sender {
+    [_pm update];
+}
 @end

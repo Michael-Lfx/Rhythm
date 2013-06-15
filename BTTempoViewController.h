@@ -8,6 +8,9 @@
 
 #import "BTSwipeViewController.h"
 
-@interface BTTempoViewController : BTSwipeViewController
+@interface BTTempoViewController : BTSwipeViewController{
+    
+}
+
 
 @end

@@ -44,6 +44,10 @@
 #define BPM_PLUS  @"plus"
 #define BPM_MINUS  @"minus"
 
+//蓝牙服务uuid
+#define kServiceUUID @"8726987C-BF15-4A60-8937-69588BC16EC0"
+#define kCharacteristicUUID @"DC961962-5010-4A02-9AC8-3F0268F713FC"
+
 @interface BTConstants : NSObject
 
 @end
