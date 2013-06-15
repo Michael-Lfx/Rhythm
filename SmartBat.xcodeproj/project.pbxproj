@@ -187,8 +187,6 @@
 		7232FB4C176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7232FB4D176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7232FB4E176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		7232FB4F176457730097CA34 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		7232FB50176457730097CA34 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		7232FB51176458F30097CA34 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7232FB52176458F30097CA34 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		723FA12A175DEDFD00DEF5E0 /* BTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTConstants.h; sourceTree = "<group>"; };
@@ -270,6 +268,8 @@
 		72893582175DAA7400EED04E /* BTGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTGlobals.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72893588175DAC9900EED04E /* BTTempoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTTempoViewController.h; path = ../BTTempoViewController.h; sourceTree = "<group>"; };
 		72893589175DAC9900EED04E /* BTTempoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTTempoViewController.m; path = ../BTTempoViewController.m; sourceTree = "<group>"; };
+		72B0F179176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		72B0F17A176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		72B45B32175DD7DC0071A082 /* BTSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSettingsViewController.h; sourceTree = "<group>"; };
 		72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSettingsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72B45B35175DDA840071A082 /* BTSwipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSwipeViewController.h; sourceTree = "<group>"; };
@@ -285,7 +285,6 @@
 		72FAC805176326C100A6DAE0 /* BTAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppStore.h; sourceTree = "<group>"; };
 		72FAC806176326C100A6DAE0 /* BTAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppStore.m; sourceTree = "<group>"; };
 		F436FF0F176C31A5006D7A8C /* default_subdivision.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.aif; sourceTree = "<group>"; };
-		F436FF11176C32FB006D7A8C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/MainStoryboard.storyboard"; sourceTree = "<group>"; };
 		F436FF12176C3605006D7A8C /* default_f.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_f.caf; sourceTree = "<group>"; };
 		F436FF13176C3605006D7A8C /* default_p.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_p.caf; sourceTree = "<group>"; };
 		F436FF14176C3605006D7A8C /* default_subdivision.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.caf; sourceTree = "<group>"; };
@@ -1004,8 +1003,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				7232FB4D176457360097CA34 /* en */,
-				7232FB50176457730097CA34 /* zh-Hans */,
 				7232FB52176458F30097CA34 /* zh-Hant */,
+				72B0F17A176C9AE00093490F /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1014,7 +1013,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				7232FB4E176457360097CA34 /* en */,
-				F436FF11176C32FB006D7A8C /* zh-Hans */,
 			);
 			name = MainStoryboard.storyboard;
 			path = ..;
@@ -1024,8 +1022,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				7232FB4C176457360097CA34 /* en */,
-				7232FB4F176457730097CA34 /* zh-Hans */,
 				7232FB51176458F30097CA34 /* zh-Hant */,
+				72B0F179176C9AE00093490F /* zh-Hans */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
