@@ -13,9 +13,9 @@
 
 
 #define TICK_SOUND_KEY @"P"
-#define DEFAULT_SOUNDFILE_F @"default_f.aif"
-#define DEFAULT_SOUNDFILE_P @"default_p.aif"
-#define DEFAULT_SOUNDFILE_SUBDIVISION @"default_subdivision.aif"
+#define DEFAULT_SOUNDFILE_F @"default_f.caf"
+#define DEFAULT_SOUNDFILE_P @"default_p.caf"
+#define DEFAULT_SOUNDFILE_SUBDIVISION @"default_subdivision.caf"
 #define DEFAULT_SOUND_FILE_EXT @"aif"
 
 #define DEFAULT_BPM 120

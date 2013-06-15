@@ -101,8 +101,11 @@
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
 		72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FAC806176326C100A6DAE0 /* BTAppStore.m */; };
+		F436FF10176C31A5006D7A8C /* default_subdivision.aif in Resources */ = {isa = PBXBuildFile; fileRef = F436FF0F176C31A5006D7A8C /* default_subdivision.aif */; };
+		F436FF15176C3605006D7A8C /* default_f.caf in Resources */ = {isa = PBXBuildFile; fileRef = F436FF12176C3605006D7A8C /* default_f.caf */; };
+		F436FF16176C3605006D7A8C /* default_p.caf in Resources */ = {isa = PBXBuildFile; fileRef = F436FF13176C3605006D7A8C /* default_p.caf */; };
+		F436FF17176C3605006D7A8C /* default_subdivision.caf in Resources */ = {isa = PBXBuildFile; fileRef = F436FF14176C3605006D7A8C /* default_subdivision.caf */; };
 		F4536FC91769909400D1ED41 /* default_p.aif in Resources */ = {isa = PBXBuildFile; fileRef = F4536FC61769909400D1ED41 /* default_p.aif */; };
-		F4536FCA1769909400D1ED41 /* default_subdivision.aif in Resources */ = {isa = PBXBuildFile; fileRef = F4536FC71769909400D1ED41 /* default_subdivision.aif */; };
 		F4536FCB1769909400D1ED41 /* default_f.aif in Resources */ = {isa = PBXBuildFile; fileRef = F4536FC81769909400D1ED41 /* default_f.aif */; };
 		F4536FCE1769C98B00D1ED41 /* BTBeat.m in Sources */ = {isa = PBXBuildFile; fileRef = F4536FCD1769C98B00D1ED41 /* BTBeat.m */; };
 		F47E9D12176039D400C42899 /* BTTimeToBeatTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E9D11176039D400C42899 /* BTTimeToBeatTransmitter.m */; };
@@ -273,8 +276,12 @@
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
 		72FAC805176326C100A6DAE0 /* BTAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppStore.h; sourceTree = "<group>"; };
 		72FAC806176326C100A6DAE0 /* BTAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppStore.m; sourceTree = "<group>"; };
+		F436FF0F176C31A5006D7A8C /* default_subdivision.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.aif; sourceTree = "<group>"; };
+		F436FF11176C32FB006D7A8C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/MainStoryboard.storyboard"; sourceTree = "<group>"; };
+		F436FF12176C3605006D7A8C /* default_f.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_f.caf; sourceTree = "<group>"; };
+		F436FF13176C3605006D7A8C /* default_p.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_p.caf; sourceTree = "<group>"; };
+		F436FF14176C3605006D7A8C /* default_subdivision.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.caf; sourceTree = "<group>"; };
 		F4536FC61769909400D1ED41 /* default_p.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_p.aif; sourceTree = "<group>"; };
-		F4536FC71769909400D1ED41 /* default_subdivision.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.aif; sourceTree = "<group>"; };
 		F4536FC81769909400D1ED41 /* default_f.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_f.aif; sourceTree = "<group>"; };
 		F4536FCC1769C98B00D1ED41 /* BTBeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBeat.h; sourceTree = "<group>"; };
 		F4536FCD1769C98B00D1ED41 /* BTBeat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBeat.m; sourceTree = "<group>"; };
@@ -643,8 +650,11 @@
 		F49E6D17175F3DD600E2EDCB /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				F436FF12176C3605006D7A8C /* default_f.caf */,
+				F436FF13176C3605006D7A8C /* default_p.caf */,
+				F436FF14176C3605006D7A8C /* default_subdivision.caf */,
+				F436FF0F176C31A5006D7A8C /* default_subdivision.aif */,
 				F4536FC61769909400D1ED41 /* default_p.aif */,
-				F4536FC71769909400D1ED41 /* default_subdivision.aif */,
 				F4536FC81769909400D1ED41 /* default_f.aif */,
 			);
 			name = Sounds;
@@ -825,6 +835,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F436FF17176C3605006D7A8C /* default_subdivision.caf in Resources */,
 				725CB5931760A4D70020FC78 /* band-button.png in Resources */,
 				725CB5941760A4D70020FC78 /* beat-note-plus-button.png in Resources */,
 				725CB5951760A4D70020FC78 /* common-button.png in Resources */,
@@ -837,6 +848,8 @@
 				725CB5A71760A4F60020FC78 /* stop-button.png in Resources */,
 				725CB5A81760A4F60020FC78 /* subdivision-plus-button.png in Resources */,
 				725CB5A91760A4F60020FC78 /* tap-button.png in Resources */,
+				F436FF15176C3605006D7A8C /* default_f.caf in Resources */,
+				F436FF16176C3605006D7A8C /* default_p.caf in Resources */,
 				725CB5AA1760A4F60020FC78 /* tempo-bg.png in Resources */,
 				725CB5AB1760A4F60020FC78 /* timer1-bg.png in Resources */,
 				725CB5B31760AB1B0020FC78 /* timer2-bg.png in Resources */,
@@ -849,13 +862,13 @@
 				725CB5DE1760AD330020FC78 /* SubnoteBig_31.png in Resources */,
 				F4536FC91769909400D1ED41 /* default_p.aif in Resources */,
 				725CB5DF1760AD330020FC78 /* SubnoteBig_32.png in Resources */,
+				F436FF10176C31A5006D7A8C /* default_subdivision.aif in Resources */,
 				725CB5E01760AD330020FC78 /* SubnoteBig_33.png in Resources */,
 				725CB5E11760AD330020FC78 /* SubnoteBig_34.png in Resources */,
 				F4536FCB1769909400D1ED41 /* default_f.aif in Resources */,
 				725CB5E21760AD330020FC78 /* SubnoteBig_35.png in Resources */,
 				725CB5E31760AD330020FC78 /* SubnoteBig_38.png in Resources */,
 				725CB5E41760AD330020FC78 /* SubnoteBig_39.png in Resources */,
-				F4536FCA1769909400D1ED41 /* default_subdivision.aif in Resources */,
 				725CB5E51760AD330020FC78 /* SubnoteBig_40.png in Resources */,
 				725CB5E61760AD330020FC78 /* SubnoteBig_41.png in Resources */,
 				725CB5E71760AD330020FC78 /* SubnoteBig_42.png in Resources */,
@@ -977,6 +990,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				7232FB4E176457360097CA34 /* en */,
+				F436FF11176C32FB006D7A8C /* zh-Hans */,
 			);
 			name = MainStoryboard.storyboard;
 			path = ..;

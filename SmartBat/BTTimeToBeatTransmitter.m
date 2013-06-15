@@ -9,6 +9,7 @@
 #import "BTTimeToBeatTransmitter.h"
 
 #define SECONDS_PER_MINUTE 60;
+#define DEFAULT_DURATION 0.5;
 
 @implementation BTTimeToBeatTransmitter
 
