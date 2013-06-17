@@ -16,7 +16,9 @@
 @property(strong, nonatomic) CBCentralManager* cm;
 @property(strong, nonatomic) CBPeripheral* p;
 @property(strong, nonatomic) CBCharacteristic* c;
-@property(assign, nonatomic) int i;
+@property(assign, nonatomic) int16_t i;
+
+@property(strong, nonatomic) NSMutableArray* allCharacteristics;
 
 -(void)write;
 -(void)read;

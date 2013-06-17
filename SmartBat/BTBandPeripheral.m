@@ -16,7 +16,7 @@
     if (self) {
         self.pm = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
         
-        [[OALSimpleAudio sharedInstance] preloadEffect:@"tick.aif"];
+        [[OALSimpleAudio sharedInstance] preloadEffect:@"default_p.caf"];
     }
     
     return self;
@@ -37,9 +37,9 @@
 
 -(void)addService{
     
-    _mc = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kCharacteristicUUID] properties:CBCharacteristicPropertyWrite|CBCharacteristicPropertyNotify|CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsWriteable|CBAttributePermissionsReadable];
+    _mc = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kMetronomeServiceUUID] properties:CBCharacteristicPropertyWrite|CBCharacteristicPropertyNotify|CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
     
-    CBMutableService* ms = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:kServiceUUID] primary:YES];
+    CBMutableService* ms = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:kMetronomePlayUUID] primary:YES];
     
     [ms setCharacteristics:@[_mc]];
     
@@ -52,7 +52,7 @@
 - (void)peripheralManager:(CBPeripheralManager *)peripheral
             didAddService:(CBService *)service error:(NSError *)error {
 
-    [peripheral startAdvertising:@{CBAdvertisementDataLocalNameKey :@"SmartBat", CBAdvertisementDataServiceUUIDsKey :@[[CBUUID UUIDWithString:kServiceUUID]]}];
+    [peripheral startAdvertising:@{CBAdvertisementDataLocalNameKey :@"SmartBat", CBAdvertisementDataServiceUUIDsKey :@[[CBUUID UUIDWithString:kMetronomeServiceUUID]]}];
     
     NSLog(@"Peripheral didAddService");
 }
@@ -73,7 +73,7 @@
     NSLog(@"%@", request.value);
     [_pm respondToRequest:request withResult:CBATTErrorSuccess];
     
-    [[OALSimpleAudio sharedInstance] playEffect:@"tick.aif"]; 
+    [[OALSimpleAudio sharedInstance] playEffect:@"default_p.caf"]; 
 }
 
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
@@ -82,7 +82,7 @@
         NSLog(@"%@", r.value);
         [_pm respondToRequest:r withResult:CBATTErrorSuccess];
         
-        [[OALSimpleAudio sharedInstance] playEffect:@"tick.aif"];
+        [[OALSimpleAudio sharedInstance] playEffect:@"default_p.caf"];
     }
 }
 
@@ -90,7 +90,7 @@
     _i++;
     [_pm updateValue:[NSData dataWithBytes:&_i length:sizeof(_i)] forCharacteristic:_mc onSubscribedCentrals:nil];
     
-    [[OALSimpleAudio sharedInstance] playEffect:@"tick.aif"];
+    [[OALSimpleAudio sharedInstance] playEffect:@"default_p.caf"];
 }
 
 @end

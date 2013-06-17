@@ -16,7 +16,9 @@
     if (self) {
         self.cm = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
         
-        [[OALSimpleAudio sharedInstance] preloadEffect:@"tick.aif"];
+        [[OALSimpleAudio sharedInstance] preloadEffect:@"default_f.caf"];
+        
+        self.allCharacteristics = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -43,11 +45,11 @@
     NSLog(@"Discover Peripheral: %@", peripheral);
     
     //找到了就停止扫描
-    [central stopScan];
+//    [central stopScan];
     
     //付给私有变量，不然就释放了
-    self.p = peripheral;
     [central connectPeripheral:peripheral options:nil];
+    self.p = peripheral;
 }
 
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
@@ -70,11 +72,11 @@
         
         NSLog(@"%@", s.UUID);
         
-        if ([s.UUID isEqual:[CBUUID UUIDWithString:kServiceUUID]]) {
-            NSLog(@"find target");
-            
+//        if ([s.UUID isEqual:[CBUUID UUIDWithString:kMetronomeServiceUUID]]) {
+//            NSLog(@"find target");
+        
             [peripheral discoverCharacteristics:nil forService:s];
-        }
+//        }
     }
 }
 
@@ -84,14 +86,22 @@
         NSLog(@"DiscoverCharacteristics error: %@", error.localizedDescription);
     }
     
-    NSLog(@"Discover Characteristics %@", service.characteristics);
+    NSLog(@"Discover Characteristics");
     
     for (CBCharacteristic* c in service.characteristics) {
-        NSLog(@"find characteristic %@", c);
+        NSLog(@"find characteristic %@", c.UUID);
         
-        self.c = c;
-        [peripheral setNotifyValue:YES forCharacteristic:c];
+//        if ([c.UUID isEqual:[CBUUID UUIDWithString:kDeviceNameUUID]]) {
+//            self.c = c;
+        
+        [_allCharacteristics addObject:c];
+        
+//            [peripheral setNotifyValue:YES forCharacteristic:c];
+//            [peripheral readValueForCharacteristic:c];
+//        }
     }
+    
+    NSLog(@"%@", _allCharacteristics);
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
@@ -99,6 +109,8 @@
     if (error) {
         NSLog(@"UpdateNotificationStateForCharacteristic erroe:%@", error.localizedDescription);
     }
+    
+    NSLog(@"%hhd", characteristic.isNotifying);
     
     if (characteristic.isNotifying) {
         
@@ -117,22 +129,29 @@
         NSLog(@"UpdateValueForCharacteristic error: %@", error.localizedDescription);
     }
     
-    [[OALSimpleAudio sharedInstance] playEffect:@"tick.aif"];
+    [[OALSimpleAudio sharedInstance] playEffect:@"default_f.caf"];
     NSLog(@"the value: %@", characteristic.value);
+}
+
+-(void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
+    if (error) {
+        NSLog(@"WriteValueForCharacteristic error: %@", error.localizedDescription);
+    }
+    NSLog(@"write value: %@", characteristic.value);
 }
 
 -(void)write{
     _i++;
     
-    [_p writeValue:[NSData dataWithBytes:&_i length:sizeof(&_i)] forCharacteristic:_c type:CBCharacteristicWriteWithResponse];
+    [_p writeValue:[NSData dataWithBytes:&_i length:sizeof(_i)] forCharacteristic:_c type:CBCharacteristicWriteWithResponse];
     
-    [[OALSimpleAudio sharedInstance] playEffect:@"tick.aif"];
+    [[OALSimpleAudio sharedInstance] playEffect:@"default_f.caf"];
 }
 
 -(void)read{
     [_p readValueForCharacteristic:_c];
     
-    [[OALSimpleAudio sharedInstance] playEffect:@"tick.aif"];
+//    [[OALSimpleAudio sharedInstance] playEffect:@"default_f.caf"];
 }
 
 @end

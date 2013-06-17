@@ -45,8 +45,21 @@
 #define BPM_MINUS  @"minus"
 
 //蓝牙服务uuid
-#define kServiceUUID @"8726987C-BF15-4A60-8937-69588BC16EC0"
-#define kCharacteristicUUID @"DC961962-5010-4A02-9AC8-3F0268F713FC"
+#define kGapServiceUUID                 @"1800"
+#define kDeviceNameUUID                 @"2A00"
+
+#define kMetronomeServiceUUID           @"2300"
+#define kMetronomePlayUUID              @"2301"
+#define kMetronomeDurationUUID          @"2302"
+#define kMetronomeBatUUID               @"2304"
+#define kMetronomeFeedbackUUID          @"2304"
+
+#define kSettingServiceUUID             @"2400"
+#define kSettingShockUUID               @"2401"
+#define kSettingSparkUUID               @"2402"
+
+#define kBatteryServiceUUID             @"2500"
+#define kBatteryLevelUUID               @"2501"
 
 @interface BTConstants : NSObject
 
