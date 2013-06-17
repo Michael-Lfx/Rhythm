@@ -70,7 +70,8 @@
     
     
     
-    
+    //init flash
+     _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     
     return self;
@@ -140,9 +141,6 @@
     {
         case BTBeatType_F:
             [_simpleFileSoundEngine playSound:_soundFile_F];
-            [self turnOnLed];
-            [self turnOffLed];
-            
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"abc" object: beat];
             
@@ -154,12 +152,12 @@
     }
     
     
+    
 }
 
 -(void)onSubdivisionHandler:(BTBeat *)beat
 {
     [_simpleFileSoundEngine playSound:_soundFile_SUBDIVISION];
-    NSLog(@"subdivision");
 }
 
 -(void)bindSoundProfile: (NSString *)_profileName
@@ -168,28 +166,26 @@
     //todo: change sound from a plist file
     //[_simpleFileSoundEngine loadSoundFile:DEFAULT_SOUNDFILE_P];
 }
-
-
-
--(void)turnOnLed
-{
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    if ([device hasTorch]) {
-        [device lockForConfiguration:nil];
-        [device setTorchMode: AVCaptureTorchModeOn];
-        [device unlockForConfiguration];
-    }
-}
-
--(void)turnOffLed
-{
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    if ([device hasTorch]) {
-        [device lockForConfiguration:nil];
-        [device setTorchMode: AVCaptureTorchModeOff];
-        [device unlockForConfiguration];
-    } 
-}
+//
+//
+//
+//-(void)turnOnLed
+//{
+//    if ([_device hasTorch]) {
+//        [_device lockForConfiguration:nil];
+//        [_device setTorchMode: AVCaptureTorchModeOn];
+//        [_device unlockForConfiguration];
+//    }
+//}
+//
+//-(void)turnOffLed
+//{
+//    if ([_device hasTorch]) {
+//        [_device lockForConfiguration:nil];
+//        [_device setTorchMode: AVCaptureTorchModeOff];
+//        [_device unlockForConfiguration];
+//    } 
+//}
 
 
 @end

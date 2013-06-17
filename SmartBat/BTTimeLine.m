@@ -104,7 +104,7 @@
             }
             else
             {
-                NSLog(@"d: %f, testTime: %f, clockStartTime: %f, clockDuration: %f, clockTickCount: %d",_testTime -( _clockStartTime + _clockDuration * _clockTickCount ), _testTime, _clockStartTime, _clockDuration, _clockTickCount );
+//                NSLog(@"d: %f, testTime: %f, clockStartTime: %f, clockDuration: %f, clockTickCount: %d",_testTime -( _clockStartTime + _clockDuration * _clockTickCount ), _testTime, _clockStartTime, _clockDuration, _clockTickCount );
             }
         }
         
