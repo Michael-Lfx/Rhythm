@@ -16,9 +16,7 @@
     if (self) {
         self.cm = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
         
-        [[OALSimpleAudio sharedInstance] preloadEffect:@"default_f.caf"];
-        
-        self.allCharacteristics = [[NSMutableArray alloc] init];
+        self.allCharacteristics = [NSMutableDictionary dictionaryWithCapacity:9];
     }
     
     return self;
@@ -45,7 +43,7 @@
     NSLog(@"Discover Peripheral: %@", peripheral);
     
     //找到了就停止扫描
-//    [central stopScan];
+    [central stopScan];
     
     //付给私有变量，不然就释放了
     [central connectPeripheral:peripheral options:nil];
@@ -89,12 +87,13 @@
     NSLog(@"Discover Characteristics");
     
     for (CBCharacteristic* c in service.characteristics) {
-        NSLog(@"find characteristic %@", c.UUID);
+//        NSLog(@"find characteristic %@", c.UUID);
         
-//        if ([c.UUID isEqual:[CBUUID UUIDWithString:kDeviceNameUUID]]) {
-//            self.c = c;
+        if ([c.UUID isEqual:[CBUUID UUIDWithString:@"2A00"]]) {
+            NSLog(@"find 2a00");
+        }
         
-        [_allCharacteristics addObject:c];
+        [_allCharacteristics setObject:c forKey:c.UUID];
         
 //            [peripheral setNotifyValue:YES forCharacteristic:c];
 //            [peripheral readValueForCharacteristic:c];
@@ -129,7 +128,6 @@
         NSLog(@"UpdateValueForCharacteristic error: %@", error.localizedDescription);
     }
     
-    [[OALSimpleAudio sharedInstance] playEffect:@"default_f.caf"];
     NSLog(@"the value: %@", characteristic.value);
 }
 
@@ -144,14 +142,22 @@
     _i++;
     
     [_p writeValue:[NSData dataWithBytes:&_i length:sizeof(_i)] forCharacteristic:_c type:CBCharacteristicWriteWithResponse];
-    
-    [[OALSimpleAudio sharedInstance] playEffect:@"default_f.caf"];
 }
 
 -(void)read{
     [_p readValueForCharacteristic:_c];
-    
-//    [[OALSimpleAudio sharedInstance] playEffect:@"default_f.caf"];
+}
+
+
+//把丫做成单例
++(BTBandCentral *)sharedBandCentral
+{
+    static BTBandCentral *sharedBandCentralInstance = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        sharedBandCentralInstance = [[self alloc] init];
+    });
+    return sharedBandCentralInstance;
 }
 
 @end

@@ -68,12 +68,6 @@
     
     _timeToBeatTransmitter.timeToBeatTransmitterBeatDelegate = self;
     
-    
-    
-    //init flash
-     _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    
-    
     return self;
 }
 
