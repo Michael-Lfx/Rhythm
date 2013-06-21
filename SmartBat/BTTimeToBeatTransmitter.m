@@ -33,7 +33,7 @@
 {
     _bpm = bpm;
     
-    _noteDuration = [self getNoteDurationByBPM:bpm andNote:_note andSubdivision:_subdivisionTemplate];
+    _noteDuration = [self getNoteDurationByBPM:bpm andNote:_measureTemplate.noteType andSubdivision:_subdivisionTemplate];
     
     [self updateClockDuration];
 }
