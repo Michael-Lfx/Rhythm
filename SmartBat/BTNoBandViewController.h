@@ -13,7 +13,6 @@
 
 @interface BTNoBandViewController : BTSettingsViewController
 
-@property(strong, nonatomic) BTBandPeripheral* pm;
 @property(strong, nonatomic) BTBandCentral* cm;
 
 - (IBAction)scan:(UIButton *)sender;

@@ -28,7 +28,7 @@
 -(void)readAll:(CBUUID*)uuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
 
 -(void)scan;
--(void)setDuration:(NSTimeInterval) duration;
+-(void)setDuration:(double)duration;
 
 @end
  

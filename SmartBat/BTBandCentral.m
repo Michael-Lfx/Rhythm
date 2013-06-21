@@ -219,10 +219,10 @@
     [_cm scanForPeripheralsWithServices:nil options:nil];
 }
 
--(void)setDuration:(NSTimeInterval) duration{
+-(void)setDuration:(double)duration{
     uint16_t d = duration * 1000;
     
-    NSLog(@"%d", d);
+    NSLog(@"d is: %f", duration);
     
     [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
 }

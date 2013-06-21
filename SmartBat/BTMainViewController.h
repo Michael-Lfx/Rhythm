@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BTSwipeViewController.h"
 #import "BTMetronomeCoreController.h"
+#import "BTBandCentral.h"
 
 
 @interface BTMainViewController : BTSwipeViewController{

@@ -34,6 +34,8 @@
     [_globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [_globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [_globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"currentSubdivisionDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"currentMeasureDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -194,6 +196,16 @@
     if([keyPath isEqualToString:@"subdivision"])
     {
         [self updateSubdivisionDisplay];
+    }
+    
+    if([keyPath isEqualToString:@"currentSubdivisionDuration"])
+    {
+//        [[BTBandCentral sharedBandCentral] setDuration:_globals.currentSubdivisionDuration];
+    }
+    
+    if([keyPath isEqualToString:@"currentMeasureDuration"])
+    {
+//        [[BTBandCentral sharedBandCentral] setDuration:_globals.currentMeasureDuration];
     }
 }
 

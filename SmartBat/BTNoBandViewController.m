@@ -32,7 +32,7 @@
     _originX = [[UIScreen mainScreen] applicationFrame].size.width;
     
     //启动蓝牙并扫描连接
-    _cm = [[BTBandCentral alloc] init];
+    _cm = [BTBandCentral sharedBandCentral];
 }
 
 - (void)didReceiveMemoryWarning
