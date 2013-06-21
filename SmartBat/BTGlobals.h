@@ -25,9 +25,9 @@
 @property(assign, nonatomic) int installDate;
 @property(assign, nonatomic) int hasAskGrade;
 
-@property(assign, nonatomic) int currentMeasureDuration;
-@property(assign, nonatomic) int currentNoteDuration;
-@property(assign, nonatomic) int currentSubdivisionDuration;
+@property(assign, nonatomic) double currentMeasureDuration;
+@property(assign, nonatomic) double currentNoteDuration;
+@property(assign, nonatomic) double currentSubdivisionDuration;
 
 
 +(BTGlobals*)sharedGlobals;

@@ -13,7 +13,7 @@ int const kBeatPerMinuteInit = 120;
 int const kBeatPerMeasureInit = 4;
 float const kNoteType = 0.25;
 int const kSubdivision = 1;
-float const kSubdivisionDuration = 0.5;
+double const kSubdivisionDuration = 0.5;
 
 @implementation BTGlobals
 
