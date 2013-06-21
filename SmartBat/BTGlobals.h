@@ -25,6 +25,10 @@
 @property(assign, nonatomic) int installDate;
 @property(assign, nonatomic) int hasAskGrade;
 
+@property(assign, nonatomic) int currentMeasureDuration;
+@property(assign, nonatomic) int currentNoteDuration;
+@property(assign, nonatomic) int currentSubdivisionDuration;
+
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;

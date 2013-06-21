@@ -13,6 +13,7 @@ int const kBeatPerMinuteInit = 120;
 int const kBeatPerMeasureInit = 4;
 float const kNoteType = 0.25;
 int const kSubdivision = 1;
+float const kSubdivisionDuration = 0.5;
 
 @implementation BTGlobals
 
@@ -50,6 +51,7 @@ int const kSubdivision = 1;
             _lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
             _hasAskGrade = 0;
             _installDate = _lastCheckVersionDate;
+            _currentSubdivisionDuration = kSubdivisionDuration;
             
             //需要反复写入的
             [self globalsIntoEntity];

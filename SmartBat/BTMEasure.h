@@ -22,6 +22,7 @@
 
 -(BTMeasure *) initWithBeat: (NSArray *) _beatDescription andNoteType:(double)noteType;
 -(void)playNote;
+-(int)getNoteCount;
 -(BTBeat *)getNote:(int)index;
 -(BTBeat *)getCurrentNote;
 -(void)reset;

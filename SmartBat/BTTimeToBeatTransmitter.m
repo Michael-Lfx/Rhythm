@@ -17,6 +17,7 @@
 {
     self = [super init];
     
+    _globals = [BTGlobals sharedGlobals];
     _beatCount = 0;
     _minDistance = 100000000.0;
     _maxDistance =0;
@@ -34,7 +35,7 @@
     
     _noteDuration = [self getNoteDurationByBPM:bpm andNote:_note andSubdivision:_subdivisionTemplate];
     
-    [_timeLine updateClockDuration:_noteDuration];
+    [self updateClockDuration];
 }
 
 
@@ -45,7 +46,7 @@
     if(measureTemplate.noteType && measureTemplate.noteType != _measureTemplate.noteType)
     {
         _noteDuration = [self getNoteDurationByBPM:_bpm andNote:measureTemplate.noteType andSubdivision:_subdivisionTemplate];
-        [_timeLine updateClockDuration:_noteDuration];
+        [self updateClockDuration];
     }
     _measureTemplate = measureTemplate;
     
@@ -57,7 +58,7 @@
     if([subdivisionTemplate count] != [_subdivisionTemplate count])
     {
         _noteDuration = [self getNoteDurationByBPM:_bpm andNote:_measureTemplate.noteType andSubdivision:subdivisionTemplate];
-        [_timeLine updateClockDuration:_noteDuration];
+        [self updateClockDuration];
         
         _subdivisionTemplate = subdivisionTemplate;
     }
@@ -67,6 +68,17 @@
 -(BTMeasure *)getMeasureTemplate
 {
     return _measureTemplate;
+}
+
+
+-(void)updateClockDuration
+{
+    
+    _globals.currentSubdivisionDuration = _noteDuration;
+    _globals.currentNoteDuration = _noteDuration * _subdivisionTemplate.count;
+    _globals.currentMeasureDuration = _noteDuration * [_subdivisionTemplate count] * [_measureTemplate getNoteCount ];
+    
+    [_timeLine updateClockDuration:_noteDuration];
 }
 
 

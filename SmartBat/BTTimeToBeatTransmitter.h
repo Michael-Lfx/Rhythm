@@ -10,6 +10,7 @@
 #import "BTMeasure.h"
 #import "BTTimeLine.h"
 #import "BTSubdivision.h"
+#import "BTGlobals.h"
 
 //protocal
 @protocol  BTTimeToBeatTransmitterBeatDelegate<NSObject>
@@ -25,6 +26,8 @@
 //interface
 @interface BTTimeToBeatTransmitter : NSObject<TimeLineDelegate>{
     
+    
+    BTGlobals * _globals;
     BTTimeLine * _timeLine;
     
     NSTimeInterval _startTime;

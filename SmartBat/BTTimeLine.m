@@ -8,6 +8,7 @@
 
 #import "BTTimeLine.h"
 
+
 #define DEFAULT_INTERVAL 0.01
 #define LOCK_TIME 0.002
 
@@ -60,6 +61,7 @@
     _clockDuration = clockDuration;
     _clockTickCount = 0;
     _clockStartTime = 0;
+
 }
 
 

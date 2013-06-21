@@ -58,6 +58,11 @@
     return note;
 }
 
+-(int)getNoteCount
+{
+    return [_noteList count];
+}
+
 -(void) updateBeat:(int) _beat withNote:(double) _note;
 {
     
