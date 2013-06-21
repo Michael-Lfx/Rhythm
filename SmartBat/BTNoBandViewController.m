@@ -30,6 +30,9 @@
     
     //设置手环设置页在屏幕左侧隐藏
     _originX = [[UIScreen mainScreen] applicationFrame].size.width;
+    
+    //启动蓝牙并扫描连接
+    _cm = [[BTBandCentral alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,23 +41,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)startCentral:(UIButton *)sender {
-    _cm = [[BTBandCentral alloc] init];
+- (IBAction)scan:(UIButton *)sender {
+    [_cm scan];
 }
 
-- (IBAction)centralWrite:(UIButton *)sender {
-    [_cm write];
+- (IBAction)setShock:(UISwitch *)sender {
+    UInt16 i = (sender.on)?1:0;
+    
+    [_cm writeAll:[NSData dataWithBytes:&i length:sizeof(i)] withUUID:[CBUUID UUIDWithString:kMetronomeShockUUID]];
+    NSLog(@"%lu", sizeof(i));
+}
+- (IBAction)setSpark:(UISwitch *)sender {
 }
 
-- (IBAction)centralRead:(UIButton *)sender {
-    [_cm read];
+- (IBAction)read:(UIButton *)sender {
+    [_cm readAll:[CBUUID UUIDWithString:kMetronomeDurationUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+        NSLog(@"%@", value);
+    }];
+    
 }
 
-- (IBAction)startPeripheral:(UIButton *)sender {
-    _pm = [[BTBandPeripheral alloc] init];
-}
-
-- (IBAction)peripheralUpdate:(UIButton *)sender {
-    [_pm update];
+- (IBAction)write:(UIButton *)sender {
+    UInt16 i = 500;
+    
+    [_cm writeAll:[NSData dataWithBytes:&i length:sizeof(i)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
+    
+    NSLog(@"%lu", sizeof(i));
 }
 @end

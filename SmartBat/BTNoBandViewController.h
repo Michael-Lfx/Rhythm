@@ -16,4 +16,10 @@
 @property(strong, nonatomic) BTBandPeripheral* pm;
 @property(strong, nonatomic) BTBandCentral* cm;
 
+- (IBAction)scan:(UIButton *)sender;
+- (IBAction)setShock:(UISwitch *)sender;
+- (IBAction)setSpark:(UISwitch *)sender;
+- (IBAction)read:(UIButton *)sender;
+- (IBAction)write:(UIButton *)sender;
+
 @end

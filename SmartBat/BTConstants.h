@@ -49,21 +49,23 @@
 #define NOTETYPE_MAX 0.5f
 
 //蓝牙服务uuid
+#define kCharacteristicsCount           9
+
 #define kGapServiceUUID                 @"1800"
 #define kDeviceNameUUID                 @"2A00"
 
 #define kMetronomeServiceUUID           @"2300"
-#define kMetronomePlayUUID              @"2301"
-#define kMetronomeDurationUUID          @"2302"
-#define kMetronomeBatUUID               @"2304"
-#define kMetronomeFeedbackUUID          @"2304"
+#define kMetronomeNameUUID              @"2301"
+#define kMetronomeShockUUID             @"2302"
+#define kMetronomeSparkUUID             @"2303"
 
-#define kSettingServiceUUID             @"2400"
-#define kSettingShockUUID               @"2401"
-#define kSettingSparkUUID               @"2402"
+#define kMetronomePlayUUID              @"2311"
+#define kMetronomeDurationUUID          @"2312"
+#define kMetronomeBatUUID               @"2313"
+#define kMetronomeFeedbackUUID          @"2314"
 
-#define kBatteryServiceUUID             @"2500"
-#define kBatteryLevelUUID               @"2501"
+#define kBatteryServiceUUID             @"2400"
+#define kBatteryLevelUUID               @"2401"
 
 @interface BTConstants : NSObject
 

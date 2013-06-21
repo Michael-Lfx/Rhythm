@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BTConstants.h"
-#import "OALSimpleAudio.h"
 
-@interface BTBandPeripheral : NSObject <CBPeripheralManagerDelegate>
+@interface BTBandPeripheral : NSObject
 
-@property(strong, nonatomic) CBPeripheralManager* pm;
-@property(strong, nonatomic) CBMutableCharacteristic* mc;
-@property(assign, nonatomic) int i;
+@property(strong, nonatomic) NSMutableDictionary* allCharacteristics;
+@property(strong, nonatomic) NSMutableDictionary* allValues;
+@property(strong, nonatomic) NSMutableDictionary* allCallback;
+@property(strong, nonatomic) CBPeripheral* handle;
 
--(void)update;
+-(BTBandPeripheral*)initWithPeripheral:(CBPeripheral*)peripheral;
 
 @end

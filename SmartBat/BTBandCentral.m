@@ -1,4 +1,4 @@
-//
+ //
 //  BTBandCentral.m
 //  SmartBat
 //
@@ -16,7 +16,7 @@
     if (self) {
         self.cm = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
         
-        self.allCharacteristics = [NSMutableDictionary dictionaryWithCapacity:9];
+        self.allPeripherals = [NSMutableDictionary dictionaryWithCapacity:7];
     }
     
     return self;
@@ -40,14 +40,18 @@
 
 -(void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
     
-    NSLog(@"Discover Peripheral: %@", peripheral);
+    NSLog(@"Discover Peripheral: %@", [CBUUID UUIDWithCFUUID:peripheral.UUID]);
     
     //找到了就停止扫描
     [central stopScan];
     
     //付给私有变量，不然就释放了
+    BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
+    [self.allPeripherals setObject:find forKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+    
+//    self.p = peripheral;
+    
     [central connectPeripheral:peripheral options:nil];
-    self.p = peripheral;
 }
 
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
@@ -70,11 +74,11 @@
         
         NSLog(@"%@", s.UUID);
         
-//        if ([s.UUID isEqual:[CBUUID UUIDWithString:kMetronomeServiceUUID]]) {
+        if ([s.UUID isEqual:[CBUUID UUIDWithString:kMetronomeServiceUUID]] || [s.UUID isEqual:[CBUUID UUIDWithString:kBatteryServiceUUID]]) {
 //            NSLog(@"find target");
         
             [peripheral discoverCharacteristics:nil forService:s];
-//        }
+        }
     }
 }
 
@@ -87,20 +91,18 @@
     NSLog(@"Discover Characteristics");
     
     for (CBCharacteristic* c in service.characteristics) {
-//        NSLog(@"find characteristic %@", c.UUID);
         
-        if ([c.UUID isEqual:[CBUUID UUIDWithString:@"2A00"]]) {
-            NSLog(@"find 2a00");
-        }
+        BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
         
-        [_allCharacteristics setObject:c forKey:c.UUID];
+        [bp.allCharacteristics setObject:c forKey:c.UUID];
         
-//            [peripheral setNotifyValue:YES forCharacteristic:c];
-//            [peripheral readValueForCharacteristic:c];
-//        }
+//      [peripheral setNotifyValue:YES forCharacteristic:c];
+//        [peripheral readValueForCharacteristic:c];
+        
+        NSLog(@"%@", bp.allCharacteristics);
     }
     
-    NSLog(@"%@", _allCharacteristics);
+    
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
@@ -122,13 +124,27 @@
     }
 }
 
+//收到周边设备的数据更新
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     
     if (error) {
         NSLog(@"UpdateValueForCharacteristic error: %@", error.localizedDescription);
     }
     
-    NSLog(@"the value: %@", characteristic.value);
+    //根据uuid取到对象
+    BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+    
+    
+    [bp.allValues setObject:characteristic.value forKey:characteristic.UUID];
+    
+    NSLog(@"%@", characteristic.UUID);
+    
+    void (^block)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral)  = [bp.allCallback objectForKey:characteristic.UUID];
+    
+    if (block) {
+        block(characteristic.value, characteristic, peripheral);
+        [bp.allCallback removeObjectForKey:characteristic.UUID];
+    }
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
@@ -138,14 +154,53 @@
     NSLog(@"write value: %@", characteristic.value);
 }
 
--(void)write{
-    _i++;
-    
-    [_p writeValue:[NSData dataWithBytes:&_i length:sizeof(_i)] forCharacteristic:_c type:CBCharacteristicWriteWithResponse];
+-(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    [central scanForPeripheralsWithServices:nil options:nil];
 }
 
--(void)read{
-    [_p readValueForCharacteristic:_c];
+
+/*
+    对外接口
+ */
+
+-(void)write:(NSData*)value withUUID:(CBUUID*)cuuid FromPeripheral:(CBUUID*)puuid{
+    BTBandPeripheral* bp = [_allPeripherals objectForKey:puuid];
+    
+    CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
+    
+    [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithoutResponse];
+}
+
+//向所有peripheral写数据
+-(void)writeAll:(NSData*)value withUUID:(CBUUID*)cuuid{
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    for (BTBandPeripheral* bp in enumeratorValue) {
+        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
+        
+        [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+    }
+}
+
+
+//读取所有peripheral里某个characteristic
+-(void)readAll:(CBUUID*)uuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block{
+    
+    //遍历所有的peripheral
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    for (BTBandPeripheral* bp in enumeratorValue) {
+        
+        //根据uuid找到具体的characteristic
+        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:uuid];
+        
+        //把block句柄放到缓存里
+        //注意：没有加锁，可能有问题
+        [bp.allCallback setObject:block forKey:uuid];
+        
+        //发送read请求
+        [bp.handle readValueForCharacteristic:tmp];
+    }
 }
 
 
@@ -158,6 +213,18 @@
         sharedBandCentralInstance = [[self alloc] init];
     });
     return sharedBandCentralInstance;
+}
+
+-(void)scan{
+    [_cm scanForPeripheralsWithServices:nil options:nil];
+}
+
+-(void)setDuration:(NSTimeInterval) duration{
+    uint16_t d = duration * 1000;
+    
+    NSLog(@"%d", d);
+    
+    [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
 }
 
 @end
