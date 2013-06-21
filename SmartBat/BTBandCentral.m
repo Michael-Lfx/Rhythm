@@ -222,7 +222,7 @@
 -(void)setDuration:(double)duration{
     uint16_t d = duration * 1000;
     
-    NSLog(@"d is: %f", duration);
+    NSLog(@"d is: %d", d);
     
     [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
 }

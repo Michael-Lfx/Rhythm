@@ -67,6 +67,7 @@
 - (IBAction)playPressed:(UIButton *)sender {
     
     [self.metronomeCoreController start] ;
+    [[BTBandCentral sharedBandCentral] setDuration:_globals.currentMeasureDuration];
     
 }
 

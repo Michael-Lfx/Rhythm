@@ -95,8 +95,7 @@
     
     _bpm = bpm;
     _subdivisionTemplate = subdivision;
-    _note = measureTemplate.noteType;
-    _noteDuration = [self getNoteDurationByBPM:bpm andNote:_note andSubdivision:_subdivisionTemplate];
+    _noteDuration = [self getNoteDurationByBPM:bpm andNote:measureTemplate.noteType andSubdivision:_subdivisionTemplate];
     _measureTemplate = measureTemplate;
     
     
@@ -107,7 +106,7 @@
         {
             _startTime = [self getNowTime];
         }
-
+        [self updateClockDuration];
         [_timeLine startLoopWithDuration:_noteDuration];
     }
 }
