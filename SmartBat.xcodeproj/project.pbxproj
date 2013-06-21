@@ -104,6 +104,7 @@
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
 		72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FAC806176326C100A6DAE0 /* BTAppStore.m */; };
+		F423839017741CD4009FB5BA /* BTTapController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423838F17741CD4009FB5BA /* BTTapController.m */; };
 		F436FF10176C31A5006D7A8C /* default_subdivision.aif in Resources */ = {isa = PBXBuildFile; fileRef = F436FF0F176C31A5006D7A8C /* default_subdivision.aif */; };
 		F436FF15176C3605006D7A8C /* default_f.caf in Resources */ = {isa = PBXBuildFile; fileRef = F436FF12176C3605006D7A8C /* default_f.caf */; };
 		F436FF16176C3605006D7A8C /* default_p.caf in Resources */ = {isa = PBXBuildFile; fileRef = F436FF13176C3605006D7A8C /* default_p.caf */; };
@@ -284,6 +285,8 @@
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
 		72FAC805176326C100A6DAE0 /* BTAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppStore.h; sourceTree = "<group>"; };
 		72FAC806176326C100A6DAE0 /* BTAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppStore.m; sourceTree = "<group>"; };
+		F423838E17741CD4009FB5BA /* BTTapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTapController.h; sourceTree = "<group>"; };
+		F423838F17741CD4009FB5BA /* BTTapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTapController.m; sourceTree = "<group>"; };
 		F436FF0F176C31A5006D7A8C /* default_subdivision.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_subdivision.aif; sourceTree = "<group>"; };
 		F436FF12176C3605006D7A8C /* default_f.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_f.caf; sourceTree = "<group>"; };
 		F436FF13176C3605006D7A8C /* default_p.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = default_p.caf; sourceTree = "<group>"; };
@@ -664,6 +667,8 @@
 				F47E9D1717603D7500C42899 /* BTMeasure.m */,
 				F4536FCC1769C98B00D1ED41 /* BTBeat.h */,
 				F4536FCD1769C98B00D1ED41 /* BTBeat.m */,
+				F423838E17741CD4009FB5BA /* BTTapController.h */,
+				F423838F17741CD4009FB5BA /* BTTapController.m */,
 			);
 			name = "Metronome Core";
 			sourceTree = "<group>";
@@ -956,6 +961,7 @@
 				F47E9D1B1760429400C42899 /* BTTimeLine.m in Sources */,
 				725CB58C1760A4780020FC78 /* Model.xcdatamodeld in Sources */,
 				F4CE3E381764BB4600F314D8 /* OALAction.m in Sources */,
+				F423839017741CD4009FB5BA /* BTTapController.m in Sources */,
 				F4CE3E391764BB4600F314D8 /* OALActionManager.m in Sources */,
 				F4CE3E3A1764BB4600F314D8 /* OALAudioActions.m in Sources */,
 				F4CE3E3B1764BB4600F314D8 /* OALUtilityActions.m in Sources */,

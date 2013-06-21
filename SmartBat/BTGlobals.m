@@ -9,7 +9,10 @@
 #import "BTGlobals.h"
 
 //定义全局变量的初始值
-int const kBeatPerMinuteInit = 150;
+int const kBeatPerMinuteInit = 120;
+int const kBeatPerMeasureInit = 4;
+float const kNoteType = 0.25;
+int const kSubdivision = 1;
 
 @implementation BTGlobals
 
@@ -41,6 +44,9 @@ int const kBeatPerMinuteInit = 150;
             
             //从常量初始化全局变量
             _beatPerMinute = kBeatPerMinuteInit;
+            _beatPerMeasure = kBeatPerMeasureInit;
+            _noteType = kNoteType;
+            _subdivision = kSubdivision;
             _lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
             _hasAskGrade = 0;
             _installDate = _lastCheckVersionDate;
@@ -61,6 +67,9 @@ int const kBeatPerMinuteInit = 150;
             
             //从数据库数据来初始化该实例的全局变量
             _beatPerMinute = [_globalsInEntity.beatPerMinute intValue];
+            _beatPerMeasure = [_globalsInEntity.beatPerMeasure intValue];
+            _noteType = [_globalsInEntity.noteType floatValue];
+            _subdivision = [_globalsInEntity.subdivision intValue];
             _lastCheckVersionDate = [_globalsInEntity.lastCheckVersionDate intValue];
             _hasAskGrade = [_globalsInEntity.hasAskGrade intValue];
             _installDate = [_globalsInEntity.installDate intValue];
@@ -73,6 +82,9 @@ int const kBeatPerMinuteInit = 150;
 
 -(void)globalsIntoEntity{
     _globalsInEntity.beatPerMinute = [NSNumber numberWithInt:_beatPerMinute];
+    _globalsInEntity.beatPerMeasure = [NSNumber numberWithInt:_beatPerMeasure];
+    _globalsInEntity.noteType = [NSNumber numberWithFloat:_noteType];
+    _globalsInEntity.subdivision= [NSNumber numberWithInt:_subdivision];
     _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
     _globalsInEntity.hasAskGrade = [NSNumber numberWithInt:_hasAskGrade];
 }

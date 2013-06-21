@@ -28,6 +28,8 @@
     BTMeasure * _measureTemplate;
     BTSubdivision * _subdivisionTemplate;
     
+    float _noteType;
+    
     //beat type
     BTBeat *_beat_F;
     BTBeat *_beat_P;
@@ -51,5 +53,6 @@
 -(void) stop;
 -(void) pause;
 -(void) setBPM:(int)bpm;
+-(void) setMeasure:(int)noteCountPerMeasure withNoteType:(float)noteType;
 
 @end

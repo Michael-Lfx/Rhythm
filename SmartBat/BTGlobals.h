@@ -18,6 +18,9 @@
 
 //这里是全局变量
 @property(assign, nonatomic) int beatPerMinute;
+@property(assign, nonatomic) int beatPerMeasure;
+@property(assign, nonatomic) float noteType;
+@property(assign, nonatomic) int subdivision;
 @property(assign, nonatomic) int lastCheckVersionDate;
 @property(assign, nonatomic) int installDate;
 @property(assign, nonatomic) int hasAskGrade;

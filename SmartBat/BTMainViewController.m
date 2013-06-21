@@ -27,8 +27,13 @@
     //test by poppy
     self.metronomeCoreController = [BTMetronomeCoreController getController];
     
+    [self updateSubdivisionDisplay];
+    
     //监控全局变量beatPerMinute的变化
     [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,6 +78,54 @@
 //更新BPM显示
 -(void)updateBPMDisplay{
     _mainNumber.text = [NSString stringWithFormat:@"%d", _globals.beatPerMinute];
+}
+
+//更新节拍显示
+-(void)updateBeatAndNoteDisplay
+{
+    NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/_globals.noteType ];
+    self.beatAndNoteDisplay.text =[ [NSString alloc]initWithFormat:@"%d/%d", _globals.beatPerMeasure, n.intValue ];
+}
+
+
+//更新subdivision显示
+-(void)updateSubdivisionDisplay
+{
+    NSNumber *n = [[NSNumber alloc]initWithFloat: 1 / (_globals.noteType / _globals.subdivision) ];
+    NSString *filePath = nil;
+    
+    switch(n.intValue)
+    {
+        case 2:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_06" ofType:@"png"];
+            break;
+        case 4:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_07" ofType:@"png"];
+            break;
+        case 6:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_15" ofType:@"png"];
+            break;
+        case 8:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_12" ofType:@"png"];
+            break;
+        case 12:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_16" ofType:@"png"];
+            break;
+        case 16:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_22" ofType:@"png"];
+            break;
+        case 24:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_17" ofType:@"png"];
+            break;
+        case 32:
+            filePath=[[NSBundle mainBundle] pathForResource:@"SubnoteSmall_23" ofType:@"png"];
+            break;
+    }
+    NSData *data=[NSData dataWithContentsOfFile:filePath];
+    UIImage *image=[UIImage imageWithData:data];
+    [self.subdivisionDisplay setImage:image];
+    
+    
 }
 
 //修改BPM
@@ -126,6 +179,21 @@
     if([keyPath isEqualToString:@"beatPerMinute"])
     {
         [self updateBPMDisplay];
+    }
+    
+    if([keyPath isEqualToString:@"beatPerMeasure"])
+    {
+        [self updateBeatAndNoteDisplay];
+    }
+    
+    if([keyPath isEqualToString:@"noteType"])
+    {
+        [self updateBeatAndNoteDisplay];
+    }
+    
+    if([keyPath isEqualToString:@"subdivision"])
+    {
+        [self updateSubdivisionDisplay];
     }
 }
 

@@ -27,7 +27,11 @@
     self = [super init];
     
     _globals = [BTGlobals sharedGlobals];
+    
     [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
     
     //init sound engine;
@@ -51,15 +55,10 @@
     _beat_P = [[BTBeat alloc]initWithBeatType:BTBeatType_P];
     _beat_NIL = [[BTBeat alloc]initWithBeatType:BTBeatType_NIL];
     _beat_SUBDIVISION = [[BTBeat alloc]initWithBeatType:BTBeatType_SUBDIVISION];
-    
-    
-    //init a measure for template which would be used for a transmiter
-    NSArray *_measureBeatValues = [[NSArray alloc]initWithObjects: _beat_F, _beat_P,_beat_F,_beat_P,nil];
-    _measureTemplate = [[BTMeasure alloc]initWithBeat:_measureBeatValues andNoteType:0.25];
 
-    NSArray *_subdivisionBeatValues = [[NSArray alloc]initWithObjects: _beat_SUBDIVISION, _beat_SUBDIVISION,nil];
-    _subdivisionTemplate = [[BTSubdivision alloc]initWithBeat:_subdivisionBeatValues];
-    
+      
+    [self setMeasure:_globals.beatPerMeasure withNoteType:_globals.noteType];
+    [self setSubdivision:_globals.subdivision];
     
     //init transmitter
     _timeToBeatTransmitter = [[BTTimeToBeatTransmitter alloc]init];
@@ -103,6 +102,38 @@
 }
 
 
+-(void)setMeasure:(int)noteCountPerMeasure withNoteType:(float)noteType
+{
+    _noteType = noteType;
+    
+    NSMutableArray *tempArray = [[NSMutableArray alloc]initWithObjects:_beat_F, nil];
+    
+    for(int n=1; n < noteCountPerMeasure; n++)
+    {
+        [tempArray addObject:_beat_P];
+    }
+    
+    _measureTemplate = [[BTMeasure alloc]initWithBeat:tempArray andNoteType:noteType];
+    
+    [_timeToBeatTransmitter updateMeasureTemplate:_measureTemplate];
+}
+
+
+-(void)setSubdivision:(int)subdivisionCount
+{
+    
+    NSMutableArray *tempArray = [[NSMutableArray alloc]initWithObjects:nil];
+    
+    for(int n=0; n < subdivisionCount; n++)
+    {
+        [tempArray addObject:_beat_SUBDIVISION];
+    }
+
+    _subdivisionTemplate = [[BTSubdivision alloc]initWithBeat:tempArray];
+    
+    [_timeToBeatTransmitter updateSubdivisionTemplate:_subdivisionTemplate];
+}
+
 
 //global observer
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -110,6 +141,21 @@
     if([keyPath isEqualToString:@"beatPerMinute"])
     {
         [self setBPM: _globals.beatPerMinute];
+    }
+    
+    if([keyPath isEqualToString:@"beatPerMeasure"])
+    {
+        [self setMeasure:_globals.beatPerMeasure withNoteType:_globals.noteType];
+    }
+    
+    if([keyPath isEqualToString:@"noteType"])
+    {
+        [self setMeasure:_globals.beatPerMeasure withNoteType:_globals.noteType];
+    }
+    
+    if([keyPath isEqualToString:@"subdivision"])
+    {
+        [self setSubdivision:_globals.subdivision];
     }
 }
 

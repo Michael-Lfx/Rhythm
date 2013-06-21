@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *mainNumber;
 @property (weak, nonatomic) IBOutlet UIButton *plus;
 @property (weak, nonatomic) IBOutlet UIButton *minus;
+@property (weak, nonatomic) IBOutlet UILabel *beatAndNoteDisplay;
+@property (weak, nonatomic) IBOutlet UIImageView *subdivisionDisplay;
 
 @property (nonatomic, retain) BTMetronomeCoreController * metronomeCoreController;
 

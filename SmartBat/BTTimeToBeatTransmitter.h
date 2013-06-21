@@ -52,6 +52,7 @@
 
 -(void) updateBPM:(int) bpm;
 -(void) updateMeasureTemplate:(BTMeasure *) measure;
+-(void)updateSubdivisionTemplate:(BTSubdivision *) subdivision;
 -(BTMeasure *)getMeasureTemplate;
 -(void) bindTimeLine:(BTTimeLine *) timeLine;
 -(void) startWithBPM:(int)BPM andMeasureTemplate:(BTMeasure *) measureTemplate andSubdivision:(BTSubdivision *) subdivision;

@@ -44,6 +44,10 @@
 #define BPM_PLUS  @"plus"
 #define BPM_MINUS  @"minus"
 
+//noteType范围
+#define NOTETYPE_MIN 0.03125f
+#define NOTETYPE_MAX 0.5f
+
 //蓝牙服务uuid
 #define kGapServiceUUID                 @"1800"
 #define kDeviceNameUUID                 @"2A00"

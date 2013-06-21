@@ -40,16 +40,29 @@
 
 
 //measure template
--(void) updateMeasureTemplate:(BTMeasure *) measure
+-(void) updateMeasureTemplate:(BTMeasure *) measureTemplate
 {
-    if(_measureTemplate)
+    if(measureTemplate.noteType && measureTemplate.noteType != _measureTemplate.noteType)
     {
-        if(measure.noteType && _measureTemplate.noteType != measure.noteType)
-        {
-            _measureTemplate.noteType = measure.noteType;
-        }
+        _noteDuration = [self getNoteDurationByBPM:_bpm andNote:measureTemplate.noteType andSubdivision:_subdivisionTemplate];
+        [_timeLine updateClockDuration:_noteDuration];
+    }
+    _measureTemplate = measureTemplate;
+    
+}
+
+
+-(void) updateSubdivisionTemplate:(BTSubdivision *)subdivisionTemplate
+{
+    if([subdivisionTemplate count] != [_subdivisionTemplate count])
+    {
+        _noteDuration = [self getNoteDurationByBPM:_bpm andNote:_measureTemplate.noteType andSubdivision:subdivisionTemplate];
+        [_timeLine updateClockDuration:_noteDuration];
+        
+        _subdivisionTemplate = subdivisionTemplate;
     }
 }
+
 
 -(BTMeasure *)getMeasureTemplate
 {

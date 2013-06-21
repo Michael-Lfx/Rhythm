@@ -12,6 +12,9 @@
 @implementation BTEntity
 
 @dynamic beatPerMinute;
+@dynamic beatPerMeasure;
+@dynamic noteType;
+@dynamic subdivision;
 @dynamic lastCheckVersionDate;
 @dynamic installDate;
 @dynamic hasAskGrade;
