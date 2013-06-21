@@ -165,7 +165,7 @@
 //delegate
 -(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(int)bpm
 {
-    NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, measure.playIndex);
+//    NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, measure.playIndex);
     
     BTBeatType beatType = beat.beatType;
     

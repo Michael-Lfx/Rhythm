@@ -151,7 +151,7 @@
     
     _beatCount ++;
     
-    NSLog(@"distance: %f", _distance);
+//    NSLog(@"distance: %f", _distance);
     
     BTBeat * beat = [_measureTemplate getCurrentNote];
     beat.indexOfMeasure = _measureTemplate.playIndex;

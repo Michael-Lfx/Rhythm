@@ -118,15 +118,15 @@
         
         
         
-        NSTimeInterval _accurateClockDuration = _clockDuration + ( _clockStartTime + _clockDuration * _clockTickCount - _clockPreviousTickTime);
+        NSTimeInterval _accurateClockDuration = floor((_clockDuration + ( _clockStartTime + _clockDuration * _clockTickCount - _clockPreviousTickTime))*1.0e3)/1.0e3;
         
         
         
-//        NSLog(@"accurateClock: %f, info.numer: %u, info.denom: %u", _accurateClockDuration, info.numer, info.denom);
+//        NSLog(@"accurateClock: %.12f", _accurateClockDuration);
         
         _clockTickCount++;
         
-        [NSThread sleepForTimeInterval: _accurateClockDuration-LOCK_TIME];
+        [NSThread sleepForTimeInterval: _accurateClockDuration - LOCK_TIME];
         
         
     }
