@@ -220,7 +220,7 @@
 }
 
 -(void)setDuration:(double)duration{
-    uint16_t d = duration * 1000;
+    uint32_t d = duration * 1000000;
     
     NSLog(@"d is: %d", d);
     

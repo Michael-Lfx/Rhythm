@@ -55,17 +55,17 @@
 }
 
 - (IBAction)read:(UIButton *)sender {
-    [_cm readAll:[CBUUID UUIDWithString:kMetronomeDurationUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-        NSLog(@"%@", value);
+    [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+        NSLog(@"%@", [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding]);
     }];
     
 }
 
 - (IBAction)write:(UIButton *)sender {
-    UInt16 i = 500;
+    NSString* name = @"i am here";
     
-    [_cm writeAll:[NSData dataWithBytes:&i length:sizeof(i)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
+    [_cm writeAll:[name dataUsingEncoding:NSUTF8StringEncoding] withUUID:[CBUUID UUIDWithString:kMetronomeNameUUID]];
     
-    NSLog(@"%lu", sizeof(i));
+    NSLog(@"%@", name);
 }
 @end
