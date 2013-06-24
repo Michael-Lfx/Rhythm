@@ -15,8 +15,9 @@
     
     if (self) {
         self.cm = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
-        
         self.allPeripherals = [NSMutableDictionary dictionaryWithCapacity:7];
+        
+        self.globals = [BTGlobals sharedGlobals];
     }
     
     return self;
@@ -99,10 +100,13 @@
 //      [peripheral setNotifyValue:YES forCharacteristic:c];
 //        [peripheral readValueForCharacteristic:c];
         
-        NSLog(@"%@", bp.allCharacteristics);
+        NSLog(@"%lu", (unsigned long)bp.allCharacteristics.count);
+        
+        if(bp.allCharacteristics.count == kCharacteristicsCount){
+            NSLog(@"ge zaile ");
+            _globals.bluetoothConnected = YES;
+        }
     }
-    
-    
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
@@ -155,6 +159,7 @@
 }
 
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    //断开连接后自动重新搜索
     [central scanForPeripheralsWithServices:nil options:nil];
 }
 
@@ -215,6 +220,7 @@
     return sharedBandCentralInstance;
 }
 
+//主动重新搜索
 -(void)scan{
     [_cm scanForPeripheralsWithServices:nil options:nil];
 }

@@ -33,6 +33,8 @@
 @property(assign, nonatomic) NSArray * currentMeasure;
 @property(assign, nonatomic) int beatIndexOfMeasure;
 
+@property(assign, nonatomic) BOOL bluetoothConnected;
+
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;

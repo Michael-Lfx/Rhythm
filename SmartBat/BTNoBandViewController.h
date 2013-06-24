@@ -14,6 +14,7 @@
 @interface BTNoBandViewController : BTSettingsViewController
 
 @property(strong, nonatomic) BTBandCentral* cm;
+@property (weak, nonatomic) IBOutlet UITextField *bandName;
 
 - (IBAction)scan:(UIButton *)sender;
 - (IBAction)setShock:(UISwitch *)sender;

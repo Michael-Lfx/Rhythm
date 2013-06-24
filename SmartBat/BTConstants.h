@@ -49,10 +49,9 @@
 #define NOTETYPE_MAX 0.5f
 
 //蓝牙服务uuid
-#define kCharacteristicsCount           9
+#define kCharacteristicsCount           8
 
 #define kGapServiceUUID                 @"1800"
-#define kDeviceNameUUID                 @"2A00"
 
 #define kMetronomeServiceUUID           @"2300"
 #define kMetronomeNameUUID              @"2301"
@@ -61,8 +60,8 @@
 
 #define kMetronomePlayUUID              @"2311"
 #define kMetronomeDurationUUID          @"2312"
-#define kMetronomeBatUUID               @"2313"
-#define kMetronomeFeedbackUUID          @"2314"
+#define kMetronomeMeasureUUID           @"2313"
+#define kMetronomeIndexUUID             @"2314"
 
 #define kBatteryServiceUUID             @"2400"
 #define kBatteryLevelUUID               @"2401"

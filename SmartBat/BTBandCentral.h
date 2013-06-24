@@ -10,6 +10,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BTConstants.h"
 #import "BTBandPeripheral.h"
+#import "BTGlobals.h"
 
 @interface BTBandCentral : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>
 
@@ -18,6 +19,7 @@
 @property(strong, nonatomic) CBCharacteristic* c;
 @property(assign, nonatomic) int16_t i;
 
+@property(strong, nonatomic) BTGlobals* globals;
 @property(strong, nonatomic) NSMutableDictionary* allPeripherals;
 
 +(BTBandCentral*)sharedBandCentral;
