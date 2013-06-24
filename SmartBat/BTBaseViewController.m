@@ -41,7 +41,8 @@
     self.view.frame = f;
     
     //初始化全局变量为私有对象，供子类使用
-    _globals = [BTGlobals sharedGlobals];
+    self.globals = [BTGlobals sharedGlobals];
+    self.bandCM = [BTBandCentral sharedBandCentral];
 }
 
 - (void)didReceiveMemoryWarning

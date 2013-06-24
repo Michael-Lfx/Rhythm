@@ -35,11 +35,11 @@
     [self updateBeatPerMeasureDisplay];
     [self updateNoteTypeDisplay];
     
-    [_globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
 
     
@@ -54,79 +54,79 @@
 
 - (IBAction)increaseBeatHandler:(UIButton *)sender {
     
-    if(_globals.beatPerMeasure < 16)
+    if(self.globals.beatPerMeasure < 16)
     {
-        _globals.beatPerMeasure ++;
+        self.globals.beatPerMeasure ++;
     }
     
 }
 
 - (IBAction)decreaseBeatHandler:(UIButton *)sender {
 
-    if(_globals.beatPerMeasure > 1)
+    if(self.globals.beatPerMeasure > 1)
     {
-        _globals.beatPerMeasure --;
+        self.globals.beatPerMeasure --;
     }
 }
 
 - (IBAction)increaseNoteTypeHandler:(UIButton *)sender
 {
-    if(_globals.noteType > NOTETYPE_MIN)
+    if(self.globals.noteType > NOTETYPE_MIN)
     {
-        _globals.noteType = _globals.noteType/2;
+        self.globals.noteType = self.globals.noteType/2;
         
-        NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/_globals.noteType ];
-        _globals.beatPerMeasure = n.intValue;
-        _globals.subdivision = 1;
+        NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/self.globals.noteType ];
+        self.globals.beatPerMeasure = n.intValue;
+        self.globals.subdivision = 1;
     }
 }
 
 - (IBAction)decreaseNoteTypeHandler:(UIButton *)sender
 {
-    if(_globals.noteType < NOTETYPE_MAX)
+    if(self.globals.noteType < NOTETYPE_MAX)
     {
-        _globals.noteType = _globals.noteType*2;
+        self.globals.noteType = self.globals.noteType*2;
         
-         NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/_globals.noteType ];
-        _globals.beatPerMeasure = n.intValue;
-        _globals.subdivision = 1;
+         NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/self.globals.noteType ];
+        self.globals.beatPerMeasure = n.intValue;
+        self.globals.subdivision = 1;
     }
 }
 
 - (IBAction)increaseSubdivisionHandler:(id)sender {
     
-    if(_globals.noteType / _globals.subdivision > NOTETYPE_MIN && _globals.subdivision<4)
+    if(self.globals.noteType / self.globals.subdivision > NOTETYPE_MIN && self.globals.subdivision<4)
     {
-        _globals.subdivision ++;
+        self.globals.subdivision ++;
     }
     
 }
 
 - (IBAction)decreaseSubdivisionHandler:(id)sender {
 
-    if(_globals.subdivision > 1)
+    if(self.globals.subdivision > 1)
     {
-        _globals.subdivision--;
+        self.globals.subdivision--;
     }
     
 }
 
 -(void)updateBeatPerMeasureDisplay
 {
-    self.beatPerMeasureDisplay.text = [NSString stringWithFormat:@"%d", _globals.beatPerMeasure];
+    self.beatPerMeasureDisplay.text = [NSString stringWithFormat:@"%d", self.globals.beatPerMeasure];
 }
 
 
 -(void)updateNoteTypeDisplay
 {
-    NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/_globals.noteType ];
+    NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/self.globals.noteType ];
     self.noteTypeDisplay.text = [NSString stringWithFormat:@"%d",  n.intValue ];
 }
 
 -(void)updateSubdivisionDisplay
 {
 
-    NSNumber *n = [[NSNumber alloc]initWithFloat: 1 / (_globals.noteType / _globals.subdivision) ];
+    NSNumber *n = [[NSNumber alloc]initWithFloat: 1 / (self.globals.noteType / self.globals.subdivision) ];
     NSString *filePath = nil;
     
     switch(n.intValue)
@@ -182,12 +182,12 @@
     
     if([keyPath isEqualToString:@"currentMeasure"])
     {
-        NSLog(@"%@", _globals.currentMeasure.description);
+        NSLog(@"%@", self.globals.currentMeasure.description);
     }
     
     if([keyPath isEqualToString:@"beatIndexOfMeasure"])
     {
-        NSLog(@"%d", _globals.beatIndexOfMeasure);
+        NSLog(@"%d", self.globals.beatIndexOfMeasure);
     }
 }
 

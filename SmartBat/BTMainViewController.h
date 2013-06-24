@@ -25,6 +25,9 @@
 
 @property (nonatomic, retain) BTMetronomeCoreController * metronomeCoreController;
 
+@property(strong, nonatomic) NSTimer* bluetoothTimer;
+@property(assign, nonatomic) uint8_t play;
+
 - (IBAction)minusPressed:(UIButton *)sender;
 - (IBAction)plusPressed:(UIButton *)sender;
 - (IBAction)plusEnded:(UIButton *)sender;

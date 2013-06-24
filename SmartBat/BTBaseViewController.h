@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "BTConstants.h"
 #import "BTGlobals.h"
+#import "BTBandCentral.h"
 
 @interface BTBaseViewController : UIViewController{
-    BTGlobals* _globals;
 }
+
+@property(strong, nonatomic) BTGlobals* globals;
+@property(strong, nonatomic) BTBandCentral* bandCM;
 
 -(void)setViewX:(int)x;
 -(void)setViewHeight:(int)h;

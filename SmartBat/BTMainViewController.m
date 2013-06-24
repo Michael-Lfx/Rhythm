@@ -22,6 +22,7 @@
     
     [self updateBPMDisplay];
     _intervalCount = 0;
+    _play = 0;
 
     
     //test by poppy
@@ -30,12 +31,13 @@
     [self updateSubdivisionDisplay];
     
     //监控全局变量beatPerMinute的变化
-    [_globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"currentSubdivisionDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [_globals addObserver:self forKeyPath:@"currentMeasureDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"currentNoteDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,7 +69,7 @@
 - (IBAction)playPressed:(UIButton *)sender {
     
     [self.metronomeCoreController start] ;
-    [[BTBandCentral sharedBandCentral] setDuration:_globals.currentMeasureDuration];
+    [self.bandCM setDuration:self.globals.currentMeasureDuration];
     
 }
 
@@ -80,21 +82,21 @@
 
 //更新BPM显示
 -(void)updateBPMDisplay{
-    _mainNumber.text = [NSString stringWithFormat:@"%d", _globals.beatPerMinute];
+    _mainNumber.text = [NSString stringWithFormat:@"%d", self.globals.beatPerMinute];
 }
 
 //更新节拍显示
 -(void)updateBeatAndNoteDisplay
 {
-    NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/_globals.noteType ];
-    self.beatAndNoteDisplay.text =[ [NSString alloc]initWithFormat:@"%d/%d", _globals.beatPerMeasure, n.intValue ];
+    NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/self.globals.noteType ];
+    self.beatAndNoteDisplay.text =[ [NSString alloc]initWithFormat:@"%d/%d", self.globals.beatPerMeasure, n.intValue ];
 }
 
 
 //更新subdivision显示
 -(void)updateSubdivisionDisplay
 {
-    NSNumber *n = [[NSNumber alloc]initWithFloat: 1 / (_globals.noteType / _globals.subdivision) ];
+    NSNumber *n = [[NSNumber alloc]initWithFloat: 1 / (self.globals.noteType / self.globals.subdivision) ];
     NSString *filePath = nil;
     
     switch(n.intValue)
@@ -135,18 +137,18 @@
 //用于定时器
 -(void)changeBPM:(NSTimer*)timer{
     if([[timer userInfo] isEqual: BPM_PLUS]){
-        _globals.beatPerMinute++;
+        self.globals.beatPerMinute++;
     }else{
-        _globals.beatPerMinute--;
+        self.globals.beatPerMinute--;
     }
     
     //检查是否越界
-    if (_globals.beatPerMinute > BPM_MAX) {
-        _globals.beatPerMinute = BPM_MAX;
+    if (self.globals.beatPerMinute > BPM_MAX) {
+        self.globals.beatPerMinute = BPM_MAX;
     }
     
-    if (_globals.beatPerMinute < BPM_MIN) {
-        _globals.beatPerMinute = BPM_MIN;
+    if (self.globals.beatPerMinute < BPM_MIN) {
+        self.globals.beatPerMinute = BPM_MIN;
     }
     
     //执行n次，减小定时器间隔时间
@@ -199,15 +201,52 @@
         [self updateSubdivisionDisplay];
     }
     
-    if([keyPath isEqualToString:@"currentSubdivisionDuration"])
+    if([keyPath isEqualToString:@"currentNoteDuration"] || [keyPath isEqualToString:@"currentMeasure"])
     {
-//        [[BTBandCentral sharedBandCentral] setDuration:_globals.currentSubdivisionDuration];
+        //发生改变，先让手环停止
+        [self pauseBluetooth];
+        
+        //再开启定时器，稳定后再发请求
+        _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
     }
     
-    if([keyPath isEqualToString:@"currentMeasureDuration"])
+    if([keyPath isEqualToString:@"beatIndexOfMeasure"])
     {
-//        [[BTBandCentral sharedBandCentral] setDuration:_globals.currentMeasureDuration];
+        uint8_t d = self.globals.beatIndexOfMeasure;
+        
+        [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
     }
+}
+
+//发送蓝牙播放停止指令
+-(void)playBluetooth{
+    if (_play == 0) {
+        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        
+        _play = 1;
+    }
+}
+
+-(void)pauseBluetooth{
+    //如有还未启动的定时器，直接干掉
+    if(_bluetoothTimer != nil) {
+        [_bluetoothTimer invalidate];
+        _bluetoothTimer = nil;
+    }
+    
+    if (_play == 1) {
+        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        
+        _play = 0;
+    }
+}
+
+
+-(void)bluetooch{
+    NSLog(@"ARR: %@", self.globals.currentMeasure);
+    [self.bandCM setDuration:self.globals.currentMeasureDuration];
+    
+    [self playBluetooth];
 }
 
 @end
