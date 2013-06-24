@@ -115,9 +115,26 @@
     
     _measureTemplate = [[BTMeasure alloc]initWithBeat:tempArray andNoteType:noteType];
     
-    _globals.currentMeasure = [_measureTemplate getNoteList];
+    [self setGlobalMeasure];
     
     [_timeToBeatTransmitter updateMeasureTemplate:_measureTemplate];
+}
+
+-(void)setGlobalMeasure
+{
+    
+    NSMutableArray * tempArray = [[NSMutableArray alloc]initWithObjects:nil];
+    
+    for( int n =0 ; n<[_measureTemplate getNoteCount]; n++)
+    {
+        BTBeat * beat = [_measureTemplate getNote:n];
+        
+        NSNumber * type = [[NSNumber alloc]initWithInt:beat.beatType];
+        
+        [tempArray insertObject:type atIndex:n];
+        
+    }
+    _globals.currentMeasure = tempArray;
 }
 
 
@@ -176,9 +193,7 @@
     switch(beatType)
     {
         case BTBeatType_F:
-            [_simpleFileSoundEngine playSound:_soundFile_F];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"abc" object: beat];            
+            [_simpleFileSoundEngine playSound:_soundFile_F];       
             
             break;
         case BTBeatType_P:

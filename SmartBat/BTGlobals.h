@@ -30,7 +30,7 @@
 @property(assign, nonatomic) double currentMeasureDuration;
 @property(assign, nonatomic) double currentNoteDuration;
 @property(assign, nonatomic) double currentSubdivisionDuration;
-@property(assign, nonatomic) NSArray * currentMeasure;
+@property(strong, nonatomic) NSArray * currentMeasure;
 @property(assign, nonatomic) int beatIndexOfMeasure;
 
 @property(assign, nonatomic) BOOL bluetoothConnected;

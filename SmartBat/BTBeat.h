@@ -13,7 +13,7 @@ typedef enum BTBeatType : NSUInteger {
     BTBeatType_F = 100,
     BTBeatType_P = 101,
     BTBeatType_SUBDIVISION = 102,
-    BTBeatType_NIL = -1,
+    BTBeatType_NIL = 255,
     BTBeatType_1 = 1,
     BTBeatType_2 = 2,
     BTBeatType_3 = 3,
