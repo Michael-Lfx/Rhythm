@@ -167,7 +167,7 @@
 //启动、停止定时器
 -(void)startChangeBPMTimer:(NSString*)operation interval:(float)duration{
     if(_changeBPMTimer != nil) {
-        _changeBPMTimer = nil;
+        [self stopChangeBPMTImer];
     }
     
     _changeBPMTimer = [NSTimer scheduledTimerWithTimeInterval:duration target:self selector:@selector(changeBPM:) userInfo:operation repeats:YES];
@@ -176,6 +176,8 @@
 -(void)stopChangeBPMTImer{
     [_changeBPMTimer invalidate];
     _changeBPMTimer = nil;
+    
+    NSLog(@"end");
 }
 
 //监控参数，更新显示
@@ -207,7 +209,7 @@
         [self pauseBluetooth];
         
         //再开启定时器，稳定后再发请求
-        _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
+        _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:kBluetoothDelay target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
     }
     
     if([keyPath isEqualToString:@"beatIndexOfMeasure"])
@@ -221,9 +223,9 @@
 //发送蓝牙播放停止指令
 -(void)playBluetooth{
     if (_play == 0) {
-        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
-        
         _play = 1;
+        
+        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
     }
 }
 
@@ -235,16 +237,32 @@
     }
     
     if (_play == 1) {
-        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
-        
         _play = 0;
+           
+        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
     }
 }
 
 
--(void)bluetooch{
+-(void)bluetooth{
     NSLog(@"ARR: %@", self.globals.currentMeasure);
-    [self.bandCM setDuration:self.globals.currentMeasureDuration];
+    
+    int len = self.globals.currentMeasure.count;
+    uint8_t measure[len];
+    
+    for (int i = 0; i < len; i++) {
+        measure[i] = [[self.globals.currentMeasure objectAtIndex:i] intValue];
+    }
+    
+    NSLog(@"new ARR: %@", [NSData dataWithBytes:measure length:sizeof(measure)]);
+    
+    [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:kMetronomeMeasureUUID]];
+    
+    uint32_t d = self.globals.currentNoteDuration * 1000000;
+    
+    NSLog(@"d is: %d", d);
+    
+    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
     
     [self playBluetooth];
 }

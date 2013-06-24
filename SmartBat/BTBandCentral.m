@@ -183,7 +183,9 @@
     for (BTBandPeripheral* bp in enumeratorValue) {
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
         
-        [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+        if (bp.handle) {
+            [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+        }
     }
 }
 
@@ -199,12 +201,14 @@
         //根据uuid找到具体的characteristic
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:uuid];
         
-        //把block句柄放到缓存里
-        //注意：没有加锁，可能有问题
-        [bp.allCallback setObject:block forKey:uuid];
-        
-        //发送read请求
-        [bp.handle readValueForCharacteristic:tmp];
+        if (bp.handle) {
+            //把block句柄放到缓存里
+            //注意：没有加锁，可能有问题
+            [bp.allCallback setObject:block forKey:uuid];
+            
+            //发送read请求
+            [bp.handle readValueForCharacteristic:tmp];
+        }
     }
 }
 
@@ -226,11 +230,7 @@
 }
 
 -(void)setDuration:(double)duration{
-    uint32_t d = duration * 1000000;
     
-    NSLog(@"d is: %d", d);
-    
-    [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
 }
 
 @end

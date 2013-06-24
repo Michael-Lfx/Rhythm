@@ -66,6 +66,9 @@
 #define kBatteryServiceUUID             @"2400"
 #define kBatteryLevelUUID               @"2401"
 
+//蓝牙延时传输间隔
+#define kBluetoothDelay                 0.5
+
 @interface BTConstants : NSObject
 
 @end
