@@ -115,6 +115,8 @@
     
     _measureTemplate = [[BTMeasure alloc]initWithBeat:tempArray andNoteType:noteType];
     
+    _globals.currentMeasure = [_measureTemplate getNoteList];
+    
     [_timeToBeatTransmitter updateMeasureTemplate:_measureTemplate];
 }
 
@@ -169,24 +171,21 @@
     
     BTBeatType beatType = beat.beatType;
     
-    switch(beat.indexOfMeasure)
-    {
-        case 0:
-            break;
-        default:
-            break;
-    }
+    _globals.beatIndexOfMeasure = beat.indexOfMeasure;
     
     switch(beatType)
     {
         case BTBeatType_F:
             [_simpleFileSoundEngine playSound:_soundFile_F];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"abc" object: beat];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"abc" object: beat];            
             
             break;
         case BTBeatType_P:
             [_simpleFileSoundEngine playSound:_soundFile_P];
+            break;
+        case BTBeatType_NIL:
+            break;
         case BTBeatType_SUBDIVISION:
             break;
     }

@@ -38,6 +38,8 @@
     [_globals addObserver:self forKeyPath:@"beatPerMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [_globals addObserver:self forKeyPath:@"noteType" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [_globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [_globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
 
     
@@ -176,6 +178,16 @@
     if([keyPath isEqualToString:@"subdivision"])
     {
         [self updateSubdivisionDisplay];
+    }
+    
+    if([keyPath isEqualToString:@"currentMeasure"])
+    {
+        NSLog(@"%@", _globals.currentMeasure.description);
+    }
+    
+    if([keyPath isEqualToString:@"beatIndexOfMeasure"])
+    {
+        NSLog(@"%d", _globals.beatIndexOfMeasure);
     }
 }
 

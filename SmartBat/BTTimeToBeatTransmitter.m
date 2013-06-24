@@ -155,7 +155,7 @@
     BTBeat * beat = [_measureTemplate getCurrentNote];
     beat.indexOfMeasure = _measureTemplate.playIndex;
     beat.indexOfSubdivision = _subdivisionTemplate.playIndex;
-    
+
     
     switch(_subdivisionTemplate.playIndex)
     {

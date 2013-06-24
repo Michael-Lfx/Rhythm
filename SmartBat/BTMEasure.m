@@ -39,6 +39,11 @@
     
 }
 
+-(NSArray * )getNoteList
+{
+    return _noteList;
+}
+
 
 -(BTBeat *) getCurrentNote
 {

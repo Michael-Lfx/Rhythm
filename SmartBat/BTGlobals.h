@@ -21,6 +21,8 @@
 @property(assign, nonatomic) int beatPerMeasure;
 @property(assign, nonatomic) float noteType;
 @property(assign, nonatomic) int subdivision;
+
+
 @property(assign, nonatomic) int lastCheckVersionDate;
 @property(assign, nonatomic) int installDate;
 @property(assign, nonatomic) int hasAskGrade;
@@ -28,6 +30,8 @@
 @property(assign, nonatomic) double currentMeasureDuration;
 @property(assign, nonatomic) double currentNoteDuration;
 @property(assign, nonatomic) double currentSubdivisionDuration;
+@property(assign, nonatomic) NSArray * currentMeasure;
+@property(assign, nonatomic) int beatIndexOfMeasure;
 
 
 +(BTGlobals*)sharedGlobals;
