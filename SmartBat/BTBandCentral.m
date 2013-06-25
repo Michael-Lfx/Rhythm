@@ -183,7 +183,7 @@
     for (BTBandPeripheral* bp in enumeratorValue) {
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
         
-        if (bp.handle) {
+        if (tmp) {
             [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
         }
     }
@@ -201,7 +201,7 @@
         //根据uuid找到具体的characteristic
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:uuid];
         
-        if (bp.handle) {
+        if (tmp) {
             //把block句柄放到缓存里
             //注意：没有加锁，可能有问题
             [bp.allCallback setObject:block forKey:uuid];

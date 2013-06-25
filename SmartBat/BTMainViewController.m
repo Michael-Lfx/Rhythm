@@ -22,7 +22,9 @@
     
     [self updateBPMDisplay];
     _intervalCount = 0;
-    _play = 0;
+    _bluetoothPlay = 0;
+    
+    self.globals.play = NO;
 
     
     //test by poppy
@@ -68,8 +70,17 @@
 
 - (IBAction)playPressed:(UIButton *)sender {
     
-    [self.metronomeCoreController start] ;
-    [self.bandCM setDuration:self.globals.currentMeasureDuration];
+    if (self.globals.play == 0) {
+        self.globals.play = 1;
+        
+        [self.metronomeCoreController start] ;
+//        [self playBluetooth];
+    }else{
+        self.globals.play = 0;
+        
+        [self.metronomeCoreController stop] ;
+        [self pauseBluetooth];
+    }
     
 }
 
@@ -205,27 +216,35 @@
     
     if([keyPath isEqualToString:@"currentNoteDuration"] || [keyPath isEqualToString:@"currentMeasure"])
     {
-        //发生改变，先让手环停止
-        [self pauseBluetooth];
-        
-        //再开启定时器，稳定后再发请求
-        _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:kBluetoothDelay target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
+//        if (_bluetoothPlay) {
+            //发生改变，先让手环停止
+            [self pauseBluetooth];
+            
+            //再开启定时器，稳定后再发请求
+            _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:kBluetoothDelay target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
+//        }
     }
     
     if([keyPath isEqualToString:@"beatIndexOfMeasure"])
     {
-        uint8_t d = self.globals.beatIndexOfMeasure;
-        
-        [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
+//        if (_bluetoothPlay) {
+            //传递当前拍子是第几小节
+//            uint8_t d = self.globals.beatIndexOfMeasure;
+//            
+//            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
+//        }
     }
 }
 
 //发送蓝牙播放停止指令
 -(void)playBluetooth{
-    if (_play == 0) {
-        _play = 1;
-        
-        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+    if (self.globals.play == 1) {
+        if (_bluetoothPlay == 0) {
+            _bluetoothPlay = 1;
+            
+            NSLog(@"play");
+            [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        }
     }
 }
 
@@ -236,10 +255,10 @@
         _bluetoothTimer = nil;
     }
     
-    if (_play == 1) {
-        _play = 0;
+    if (_bluetoothPlay == 1) {
+        _bluetoothPlay = 0;
            
-        [self.bandCM writeAll:[NSData dataWithBytes:&_play length:sizeof(_play)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
     }
 }
 
@@ -247,6 +266,7 @@
 -(void)bluetooth{
     NSLog(@"ARR: %@", self.globals.currentMeasure);
     
+    //传递每小节几拍
     int len = self.globals.currentMeasure.count;
     uint8_t measure[len];
     
@@ -258,12 +278,14 @@
     
     [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:kMetronomeMeasureUUID]];
     
+    //传递拍子间隔
     uint32_t d = self.globals.currentNoteDuration * 1000000;
     
     NSLog(@"d is: %d", d);
     
     [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
     
+    //让手环开始震动
     [self playBluetooth];
 }
 

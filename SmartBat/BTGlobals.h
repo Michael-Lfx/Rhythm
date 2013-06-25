@@ -34,6 +34,8 @@
 @property(assign, nonatomic) int beatIndexOfMeasure;
 
 @property(assign, nonatomic) BOOL bluetoothConnected;
+@property(assign, nonatomic) BOOL play;
+
 
 
 +(BTGlobals*)sharedGlobals;
