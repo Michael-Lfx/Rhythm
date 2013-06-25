@@ -43,25 +43,22 @@
 //measure template
 -(void) updateMeasureTemplate:(BTMeasure *) measureTemplate
 {
-    if(measureTemplate.noteType && measureTemplate.noteType != _measureTemplate.noteType)
-    {
-        _noteDuration = [self getNoteDurationByBPM:_bpm andNote:measureTemplate.noteType andSubdivision:_subdivisionTemplate];
-        [self updateClockDuration];
-    }
+
+    _noteDuration = [self getNoteDurationByBPM:_bpm andNote:measureTemplate.noteType andSubdivision:_subdivisionTemplate];
+       
+
     _measureTemplate = measureTemplate;
-    
+     [self updateClockDuration];
 }
 
 
 -(void) updateSubdivisionTemplate:(BTSubdivision *)subdivisionTemplate
 {
-    if([subdivisionTemplate count] != [_subdivisionTemplate count])
-    {
-        _noteDuration = [self getNoteDurationByBPM:_bpm andNote:_measureTemplate.noteType andSubdivision:subdivisionTemplate];
-        [self updateClockDuration];
+
+    _noteDuration = [self getNoteDurationByBPM:_bpm andNote:_measureTemplate.noteType andSubdivision:subdivisionTemplate];
         
-        _subdivisionTemplate = subdivisionTemplate;
-    }
+    _subdivisionTemplate = subdivisionTemplate;
+    [self updateClockDuration];
 }
 
 
@@ -75,7 +72,7 @@
 {
     
     _globals.currentSubdivisionDuration = _noteDuration;
-    _globals.currentNoteDuration = _noteDuration * _subdivisionTemplate.count;
+    _globals.currentNoteDuration = _noteDuration * [_subdivisionTemplate count];
     _globals.currentMeasureDuration = _noteDuration * [_subdivisionTemplate count] * [_measureTemplate getNoteCount ];
     
     [_timeLine updateClockDuration:_noteDuration];
