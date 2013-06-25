@@ -229,23 +229,16 @@
     {
 //        if (_bluetoothPlay) {
             //传递当前拍子是第几小节
-//            uint8_t d = self.globals.beatIndexOfMeasure;
-//            
-//            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
+            uint8_t d = self.globals.beatIndexOfMeasure;
+            
+            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
 //        }
     }
 }
 
 //发送蓝牙播放停止指令
 -(void)playBluetooth{
-    if (self.globals.play == 1) {
-        if (_bluetoothPlay == 0) {
-            _bluetoothPlay = 1;
-            
-            NSLog(@"play");
-            [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
-        }
-    }
+    
 }
 
 -(void)pauseBluetooth{
@@ -264,6 +257,13 @@
 
 
 -(void)bluetooth{
+    //传递拍子间隔
+    uint32_t d = self.globals.currentNoteDuration * 1000000;
+    
+    NSLog(@"d is: %d", d);
+    
+    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
+    
     NSLog(@"ARR: %@", self.globals.currentMeasure);
     
     //传递每小节几拍
@@ -274,19 +274,18 @@
         measure[i] = [[self.globals.currentMeasure objectAtIndex:i] intValue];
     }
     
-    NSLog(@"new ARR: %@", [NSData dataWithBytes:measure length:sizeof(measure)]);
-    
     [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:kMetronomeMeasureUUID]];
     
-    //传递拍子间隔
-    uint32_t d = self.globals.currentNoteDuration * 1000000;
-    
-    NSLog(@"d is: %d", d);
-    
-    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
     
     //让手环开始震动
-    [self playBluetooth];
+    if (self.globals.play == 1) {
+        if (_bluetoothPlay == 0) {
+            _bluetoothPlay = 1;
+            
+            NSLog(@"play");
+            [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        }
+    }
 }
 
 @end
