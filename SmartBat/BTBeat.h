@@ -37,6 +37,7 @@ typedef enum BTBeatType : NSUInteger {
 @property BTBeatType beatType;
 @property int indexOfMeasure;
 @property int indexOfSubdivision;
+@property double hitTime;
 
 -(BTBeat *)initWithBeatType:(BTBeatType) beatType ;
 

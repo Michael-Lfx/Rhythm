@@ -215,8 +215,6 @@
     
     BTBeatType beatType = beat.beatType;
     
-    _globals.beatIndexOfMeasure = beat.indexOfMeasure;
-    
     switch(beatType)
     {
         case BTBeatType_F:
@@ -228,11 +226,24 @@
             break;
         case BTBeatType_NIL:
             break;
-        case BTBeatType_SUBDIVISION:
+        default:
             break;
     }
     
+    NSNumber * indexOfMeasure = [[NSNumber alloc]initWithInt:beat.indexOfMeasure];
+    NSNumber * hitTime = [[NSNumber alloc]initWithDouble:beat.hitTime];
+    NSNumber * type = [[NSNumber alloc]initWithInt:beat.beatType];
     
+    NSMutableDictionary * tempBeatInfo = [[NSMutableDictionary alloc]init];
+    
+    [tempBeatInfo setValue:indexOfMeasure forKey:@"indexOfMeasure"];
+    [tempBeatInfo setValue:hitTime forKey:@"hitTime"];
+    [tempBeatInfo setValue:type forKey:@"type"];
+    
+    
+    _globals.beatInfo = tempBeatInfo;
+    
+    NSLog(@"global.beatInfo : %@", _globals.beatInfo.description);
     
 }
 

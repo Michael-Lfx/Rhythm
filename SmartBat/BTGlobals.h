@@ -31,7 +31,12 @@
 @property(assign, nonatomic) double currentNoteDuration;
 @property(assign, nonatomic) double currentSubdivisionDuration;
 @property(strong, nonatomic) NSArray * currentMeasure;
-@property(assign, nonatomic) int beatIndexOfMeasure;
+
+
+//indexOfMeasure: 0
+//hitTime: mach_absolute_time
+//type: BeatType: 100, 101
+@property(retain, nonatomic) NSDictionary * beatInfo;
 
 //playStatus : YES/NO, Play Status
 //playStatusChangedTime : mach_absolute_time, Play Status changed time

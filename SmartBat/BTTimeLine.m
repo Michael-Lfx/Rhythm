@@ -142,13 +142,10 @@
 
 -(void)invokeDelegate:(id)info
 {
-    mach_timebase_info_data_t data;
-    mach_timebase_info(&data);
     
-    NSTimeInterval _point = [self getMachNowTime];
+    double point = [self getMachNowTime];
     
-    
-    [self.timeLineDelegate onTimeInvokeHandler: _point];
+    [self.timeLineDelegate onTimeInvokeHandler: point];
 }
 
 

@@ -10,11 +10,13 @@
 
 @implementation BTBeat
 
--(BTBeat *) initWithBeatType:(BTBeatType) beatType
+@synthesize indexOfMeasure, indexOfSubdivision, beatType, hitTime;
+
+-(BTBeat *) initWithBeatType:(BTBeatType) _beatType
 {
     self = [super init];
     
-    self.beatType = beatType;
+    self.beatType = _beatType;
     self.indexOfMeasure = 0;
     self.indexOfSubdivision = 0;
     

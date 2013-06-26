@@ -514,11 +514,18 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NY2-dN-F10">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="SubnoteSmall_26.png" translatesAutoresizingMaskIntoConstraints="NO" id="XlY-2j-H5Y">
+                                <rect key="frame" x="15" y="99" width="36" height="13"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="13" id="H5Y-aE-akq"/>
+                                    <constraint firstAttribute="width" constant="36" id="L1k-KD-f3D"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xah-Yn-03X">
                                 <rect key="frame" x="111" y="320" width="98" height="98"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="98" id="ivD-VI-4wx"/>
-                                    <constraint firstAttribute="height" constant="98" id="lkG-8d-0fo"/>
+                                    <constraint firstAttribute="height" constant="98" id="0yR-IQ-cxk"/>
+                                    <constraint firstAttribute="width" constant="98" id="InH-o8-JVu"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="play-button.png">
@@ -529,16 +536,9 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="playPressed:" destination="2" eventType="touchDown" id="es4-ND-RlA"/>
+                                    <action selector="playPressed:" destination="2" eventType="touchDown" id="HGO-mi-uAe"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="SubnoteSmall_26.png" translatesAutoresizingMaskIntoConstraints="NO" id="XlY-2j-H5Y">
-                                <rect key="frame" x="15" y="99" width="36" height="13"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="13" id="H5Y-aE-akq"/>
-                                    <constraint firstAttribute="width" constant="36" id="L1k-KD-f3D"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -553,8 +553,6 @@
                             <constraint firstAttribute="bottom" secondItem="5Er-Vd-nFV" secondAttribute="bottom" constant="32" id="dXU-2N-tpY"/>
                             <constraint firstItem="mXi-RJ-8nL" firstAttribute="top" secondItem="3" secondAttribute="top" constant="54" id="eiq-K5-Cc9"/>
                             <constraint firstItem="5ix-nk-nwD" firstAttribute="top" secondItem="3" secondAttribute="top" constant="56" id="fS8-in-cZs"/>
-                            <constraint firstItem="NY2-dN-F10" firstAttribute="centerY" secondItem="5Er-Vd-nFV" secondAttribute="centerY" id="ips-1H-31f"/>
-                            <constraint firstItem="NY2-dN-F10" firstAttribute="centerX" secondItem="5Er-Vd-nFV" secondAttribute="centerX" id="l94-rT-l6x"/>
                             <constraint firstItem="as2-QD-hbk" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="17" id="nvN-uR-oLT"/>
                             <constraint firstItem="5Er-Vd-nFV" firstAttribute="leading" secondItem="mXi-RJ-8nL" secondAttribute="leading" id="sHX-MT-zPB"/>
                             <constraint firstItem="XlY-2j-H5Y" firstAttribute="leading" secondItem="c3u-HF-j9t" secondAttribute="leading" id="sOa-cZ-jd8"/>
@@ -569,6 +567,7 @@
                         <outlet property="beatAndNoteDisplay" destination="c3u-HF-j9t" id="BfB-FV-mZC"/>
                         <outlet property="mainNumber" destination="as2-QD-hbk" id="DmW-ks-Z6k"/>
                         <outlet property="minus" destination="b2V-zD-jLl" id="tJU-3q-ArU"/>
+                        <outlet property="playButton" destination="Xah-Yn-03X" id="wKq-6J-zsw"/>
                         <outlet property="plus" destination="2lm-s7-uRU" id="mIg-Cd-3ih"/>
                         <outlet property="subdivisionDisplay" destination="XlY-2j-H5Y" id="Pr9-7o-tQa"/>
                     </connections>
