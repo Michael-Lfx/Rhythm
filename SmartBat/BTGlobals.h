@@ -40,7 +40,7 @@
 @property(assign, nonatomic) BOOL bluetoothConnected;
 @property(assign, nonatomic) BOOL play;
 
-
+@property(assign, nonatomic) double zero;
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;

@@ -224,10 +224,10 @@
     if([keyPath isEqualToString:@"beatIndexOfMeasure"])
     {
 //        if (_bluetoothPlay) {
-            //传递当前拍子是第几小节
-            uint8_t d = self.globals.beatIndexOfMeasure;
-            
-            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
+//            //传递当前拍子是第几小节
+//            uint8_t d = self.globals.beatIndexOfMeasure;
+//            
+//            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
 //        }
     }
 }
@@ -249,7 +249,7 @@
            
         [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
     }
-}
+ }
 
 
 -(void)bluetooth{

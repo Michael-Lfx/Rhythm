@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <mach/mach_time.h>
+#import "BTConstants.h"
 
 @protocol TimeLineDelegate <NSObject>
 
