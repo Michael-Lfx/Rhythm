@@ -49,7 +49,7 @@
 #define NOTETYPE_MAX 0.5f
 
 //蓝牙服务uuid
-#define kCharacteristicsCount           8
+#define kCharacteristicsCount           9
 
 #define kGapServiceUUID                 @"1800"
 
@@ -61,13 +61,22 @@
 #define kMetronomePlayUUID              @"2311"
 #define kMetronomeDurationUUID          @"2312"
 #define kMetronomeMeasureUUID           @"2313"
-#define kMetronomeIndexUUID             @"2314"
+#define kMetronomeSyncUUID              @"2314"
+#define kMetronomeZeroUUID              @"2315"
 
 #define kBatteryServiceUUID             @"2400"
 #define kBatteryLevelUUID               @"2401"
 
 //蓝牙延时传输间隔
 #define kBluetoothDelay                 0.5
+
+//手环同步设置
+#define kSyncInterval                   0.067
+#define kSyncCount                      20
+
+//定时器锁常量
+#define DEFAULT_INTERVAL 0.01
+#define LOCK_TIME 0.002
 
 @interface BTConstants : NSObject
 

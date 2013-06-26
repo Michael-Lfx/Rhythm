@@ -16,6 +16,7 @@
 @property(strong, nonatomic) NSMutableDictionary* allValues;
 @property(strong, nonatomic) NSMutableDictionary* allCallback;
 @property(strong, nonatomic) CBPeripheral* handle;
+@property(assign, nonatomic) double zero;
 
 -(BTBandPeripheral*)initWithPeripheral:(CBPeripheral*)peripheral;
 

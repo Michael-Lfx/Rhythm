@@ -8,10 +8,6 @@
 
 #import "BTTimeLine.h"
 
-
-#define DEFAULT_INTERVAL 0.01
-#define LOCK_TIME 0.002
-
 @implementation BTTimeLine
 
 @synthesize interval;

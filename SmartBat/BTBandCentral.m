@@ -28,9 +28,7 @@
     switch (central.state) {
         case CBCentralManagerStatePoweredOn:
             //设置nil查找任何设备
-            [central scanForPeripheralsWithServices:nil options:nil];
-            
-            NSLog(@"scan ForPeripherals");
+            [self scan];
             
             break;
         default:
@@ -89,7 +87,7 @@
         NSLog(@"DiscoverCharacteristics error: %@", error.localizedDescription);
     }
     
-    NSLog(@"Discover Characteristics");
+    NSLog(@"Discover Characteristics sum: %d", service.characteristics.count);
     
     for (CBCharacteristic* c in service.characteristics) {
         
@@ -105,6 +103,7 @@
         if(bp.allCharacteristics.count == kCharacteristicsCount){
             NSLog(@"ge zaile ");
             _globals.bluetoothConnected = YES;
+            [self sync];
         }
     }
 }
@@ -160,7 +159,7 @@
 
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     //断开连接后自动重新搜索
-    [central scanForPeripheralsWithServices:nil options:nil];
+    [self scan];
 }
 
 
@@ -185,6 +184,8 @@
         
         if (tmp) {
             [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+            
+            
         }
     }
 }
@@ -227,10 +228,81 @@
 //主动重新搜索
 -(void)scan{
     [_cm scanForPeripheralsWithServices:nil options:nil];
+    NSLog(@"scan ForPeripherals");
 }
 
--(void)setDuration:(double)duration{
+//和手环同步时间
+-(void)sync{
+    _syncTread = [[NSThread alloc] initWithTarget:self selector:@selector(doSync) object:nil];
     
+    
+    
+    [_syncTread start];
+}
+
+//同步操作
+-(void)doSync{
+    //调高优先级
+    [NSThread setThreadPriority:1.0];
+    
+    //取得主线程
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    uint8_t count = 0;
+    Boolean isLock = NO;
+    double sendTime = 0.0, now = 0.0;
+    
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
+    
+    _syncStart = mach_absolute_time() * 1.0e-9;
+    _syncStart *= info.numer;
+    _syncStart /= info.denom;
+    
+    while (count < kSyncCount) {
+        
+        while (isLock) {
+            now = mach_absolute_time() * 1.0e-9;
+            now *= info.numer;
+            now /= info.denom;
+            
+            if (now >= sendTime) {
+                isLock = NO;
+            }
+        }
+        
+        //让主线程发蓝牙请求
+        dispatch_async(mainQueue, ^{
+            [self writeAll:[NSData dataWithBytes:&count length:sizeof(count)] withUUID:[CBUUID UUIDWithString:kMetronomeSyncUUID]];
+        });
+        
+        //计算序号
+        count++;
+        isLock = YES;
+        
+        sendTime = _syncStart + kSyncInterval * count;
+        
+        now = mach_absolute_time() * 1.0e-9;
+        now *= info.numer;
+        now /= info.denom;
+        
+        //缩短sleep时间，提前用死循环加锁
+        [NSThread sleepForTimeInterval:sendTime - now - LOCK_TIME];
+    }
+    
+    //最后读取蓝牙里算出的最匹配时间点
+    [self readAll:[CBUUID UUIDWithString:kMetronomeZeroUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+        
+        uint8_t sn;
+        [value getBytes:&sn];
+        
+        NSLog(@"cb: %d", sn);
+        
+        BTBandPeripheral *bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+        
+        bp.zero = _syncStart + kSyncInterval * sn;
+        
+        NSLog(@"zero is: %f", bp.zero);
+    }];
 }
 
 @end
