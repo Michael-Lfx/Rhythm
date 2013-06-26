@@ -70,10 +70,24 @@
 
 -(void)updateClockDuration
 {
+    if(_globals.currentSubdivisionDuration!=_noteDuration)
+    {
+        _globals.currentSubdivisionDuration = _noteDuration;
+    }
     
-    _globals.currentSubdivisionDuration = _noteDuration;
-    _globals.currentNoteDuration = _noteDuration * [_subdivisionTemplate count];
-    _globals.currentMeasureDuration = _noteDuration * [_subdivisionTemplate count] * [_measureTemplate getNoteCount ];
+    
+    double currentNoteDuration = _noteDuration * [_subdivisionTemplate count];
+    if(_globals.currentNoteDuration != currentNoteDuration)
+    {
+        _globals.currentNoteDuration = currentNoteDuration;
+    }
+    
+    
+    double currentMeasureDuration = _noteDuration * [_subdivisionTemplate count] * [_measureTemplate getNoteCount ];
+    if(_globals.currentMeasureDuration != currentMeasureDuration)
+    {
+        _globals.currentMeasureDuration = currentMeasureDuration;
+    }
     
     [_timeLine updateClockDuration:_noteDuration];
 }
