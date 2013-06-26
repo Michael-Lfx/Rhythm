@@ -94,6 +94,11 @@
         
         _clockPreviousTickTime = [self getMachNowTime];
         
+        if(!_clockStartTime)
+        {
+            _clockStartTime =_clockPreviousTickTime;
+        }
+        
         
         Boolean _isLock = true;
         

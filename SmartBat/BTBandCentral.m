@@ -305,4 +305,20 @@
     }];
 }
 
+-(void)playAllAt:(double)timestamp andWait:(double)interval{
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    for (BTBandPeripheral* bp in enumeratorValue) {
+        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        
+        uint32_t start = (timestamp - bp.zero + interval) * 1000000;
+        
+        NSLog(@"%d", start);
+        
+        if (tmp) {
+            [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+        }
+    }
+}
+
 @end

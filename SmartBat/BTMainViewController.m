@@ -39,7 +39,7 @@
     [self.globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"currentNoteDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [self.globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"systemStatus" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,7 +76,7 @@
     }else{
         
         [self.metronomeCoreController stop] ;
-        [self pauseBluetooth];
+//        [self pauseBluetooth];
     }
     
 }
@@ -230,11 +230,27 @@
 //            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
 //        }
     }
+    
+    if([keyPath isEqualToString:@"systemStatus"])
+    {
+        if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+            [self bluetooth];
+        }else{
+            [self pauseBluetooth];
+        }
+    }
 }
 
 //发送蓝牙播放停止指令
 -(void)playBluetooth{
-    
+    //让手环开始震动
+    if (_bluetoothPlay == 0) {
+        _bluetoothPlay = 1;
+        
+        double interval = self.globals.currentNoteDuration * self.globals.currentMeasure.count;
+        
+        [self.bandCM playAllAt:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue] andWait:interval];
+    }
 }
 
 -(void)pauseBluetooth{
@@ -272,15 +288,8 @@
     
     [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:kMetronomeMeasureUUID]];
     
-    
-    //让手环开始震动
-    if (self.globals.play == 1) {
-        if (_bluetoothPlay == 0) {
-            _bluetoothPlay = 1;
-            
-            NSLog(@"play");
-            [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
-        }
+    if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+        [self playBluetooth];
     }
 }
 
