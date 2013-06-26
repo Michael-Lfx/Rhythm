@@ -25,7 +25,7 @@
     _bluetoothPlay = 0;
     
     self.globals.play = NO;
-
+    self.waitForRestart = NO;
     
     //test by poppy
     self.metronomeCoreController = [BTMetronomeCoreController getController];
@@ -40,6 +40,7 @@
     [self.globals addObserver:self forKeyPath:@"currentNoteDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"systemStatus" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"beatInfo" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -246,22 +247,35 @@
     if([keyPath isEqualToString:@"systemStatus"])
     {
         if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
-            [self bluetooth];
+            [self sendDurationAndMeasure];
+            
+            if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+                [self playBluetooth:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue]];
+            }
         }else{
             [self pauseBluetooth];
+        }
+    }
+    
+    if([keyPath isEqualToString:@"beatInfo"])
+    {
+        if (_waitForRestart && [[self.globals.beatInfo valueForKey:@"indexOfMeasure"] intValue] == 0) {
+            _waitForRestart = NO;
+            
+            [self playBluetooth:[[self.globals.beatInfo valueForKey:@"hitTime"] doubleValue]];
         }
     }
 }
 
 //发送蓝牙播放停止指令
--(void)playBluetooth{
+-(void)playBluetooth:(double)start{
     //让手环开始震动
     if (_bluetoothPlay == 0) {
         _bluetoothPlay = 1;
         
         double interval = self.globals.currentNoteDuration * self.globals.currentMeasure.count;
         
-        [self.bandCM playAllAt:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue] andWait:interval];
+        [self.bandCM playAllAt:start andWait:interval];
     }
 }
 
@@ -279,8 +293,7 @@
     }
  }
 
-
--(void)bluetooth{
+-(void)sendDurationAndMeasure{
     //传递拍子间隔
     uint32_t d = self.globals.currentNoteDuration * 1000000;
     
@@ -299,10 +312,12 @@
     }
     
     [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:kMetronomeMeasureUUID]];
+}
+
+-(void)bluetooth{
+    [self sendDurationAndMeasure];
     
-    if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
-        [self playBluetooth];
-    }
+    _waitForRestart = YES;
 }
 
 @end
