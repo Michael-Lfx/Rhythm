@@ -26,11 +26,11 @@
     return self;
 }
 
-- (void)startLoopWithDuration:(NSTimeInterval) duration
+- (double)startLoopWithDuration:(NSTimeInterval) duration
 {
     if(_timeLineThread)
     {
-        return;
+        return 0;
     }
     
     _isStop = false;
@@ -43,9 +43,12 @@
     _timeLineThread = [[NSThread alloc] initWithTarget:self selector:@selector(loop:) object:number];
     [_timeLineThread start];
     
+    _clockStartTime = [self getMachNowTime];
+    return _clockStartTime;
+    
 }
 
-- (void)stopLoop
+- (double)stopLoop
 {
     _isStop = true;
     
@@ -53,6 +56,9 @@
     _timeLineThread = nil;
     _clockStartTime = 0;
     _clockPreviousTickTime = 0;
+    
+    
+    return [self getMachNowTime];
     
 }
 
@@ -65,6 +71,17 @@
 }
 
 
+-(double)getMachNowTime
+{
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
+    double nowTime =  mach_absolute_time() * 1.0e-9;
+        nowTime *= info.numer;
+        nowTime /= info.denom;
+    
+    return nowTime;
+}
+
 -(void) loop:(NSNumber *) timeIntervalNumber
 {
     
@@ -75,30 +92,18 @@
     
     [NSThread setThreadPriority:1.0];
     
-    mach_timebase_info_data_t info;
-    mach_timebase_info(&info);
-    
     while (!_isStop) {
                 
        
         
-        _clockPreviousTickTime = mach_absolute_time() * 1.0e-9;
-        _clockPreviousTickTime *= info.numer;
-        _clockPreviousTickTime /= info.denom;
-        
-        if(!_clockStartTime)
-        {
-            _clockStartTime = _clockPreviousTickTime;
-        }
+        _clockPreviousTickTime = [self getMachNowTime];
         
         
         Boolean _isLock = true;
         
         while(_isLock)
         {
-            NSTimeInterval _testTime = mach_absolute_time() * 1.0e-9;
-            _testTime *= info.numer;
-            _testTime /= info.denom;
+            NSTimeInterval _testTime = [self getMachNowTime];
             
             if(_testTime >= _clockStartTime + _clockDuration * _clockTickCount  )
             {
@@ -139,9 +144,7 @@
     mach_timebase_info_data_t data;
     mach_timebase_info(&data);
     
-    NSTimeInterval _point = mach_absolute_time()*1.0e-9;
-    _point *= data.numer;
-    _point /= data.denom;
+    NSTimeInterval _point = [self getMachNowTime];
     
     
     [self.timeLineDelegate onTimeInvokeHandler: _point];

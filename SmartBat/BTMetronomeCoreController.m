@@ -67,6 +67,12 @@
     
     _timeToBeatTransmitter.timeToBeatTransmitterBeatDelegate = self;
     
+    
+    [self setBPM: _globals.beatPerMinute];
+    [self setMeasure:_globals.beatPerMeasure withNoteType:_globals.noteType];
+    [self setSubdivision:_globals.subdivision];
+    
+    
     return self;
 }
 
@@ -82,13 +88,16 @@
 
 -(void)start
 {
-    [_timeToBeatTransmitter startWithBPM:_globals.beatPerMinute andMeasureTemplate:_measureTemplate andSubdivision:_subdivisionTemplate];
-}
+    double startTime =  [_timeToBeatTransmitter start];
 
+    [self updateSystemStatus:YES andPlayStatusChangedTime:startTime];
+    
+}
 
 -(void)stop
 {
-    [_timeToBeatTransmitter stop] ;
+    double stopTime = [_timeToBeatTransmitter stop] ;
+    [self updateSystemStatus:NO andPlayStatusChangedTime:stopTime];
 }
 
 -(void)pause
@@ -152,6 +161,24 @@
     
     [_timeToBeatTransmitter updateSubdivisionTemplate:_subdivisionTemplate];
 }
+
+
+
+
+-(void)updateSystemStatus:(BOOL) playStatus andPlayStatusChangedTime:(double)changeTime
+{
+    NSMutableDictionary * tempSystemStatus = [[NSMutableDictionary alloc]init];
+    
+    NSNumber * tempPlayStatus = [[NSNumber alloc]initWithBool:playStatus];
+    NSNumber * tempPlayStatusChangedTime = [[NSNumber alloc]initWithDouble:changeTime];
+    
+    [tempSystemStatus setValue:tempPlayStatus forKey:@"playStatus"];
+    [tempSystemStatus setValue:tempPlayStatusChangedTime forKey:@"playStatusChangedTime"];
+
+    _globals.systemStatus = tempSystemStatus;
+}
+
+
 
 
 //global observer

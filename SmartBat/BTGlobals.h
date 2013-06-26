@@ -33,6 +33,10 @@
 @property(strong, nonatomic) NSArray * currentMeasure;
 @property(assign, nonatomic) int beatIndexOfMeasure;
 
+//playStatus : YES/NO, Play Status
+//playStatusChangedTime : mach_absolute_time, Play Status changed time
+@property(retain, nonatomic) NSDictionary * systemStatus;
+
 @property(assign, nonatomic) BOOL bluetoothConnected;
 @property(assign, nonatomic) BOOL play;
 

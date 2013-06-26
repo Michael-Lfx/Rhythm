@@ -70,13 +70,10 @@
 
 - (IBAction)playPressed:(UIButton *)sender {
     
-    if (self.globals.play == 0) {
-        self.globals.play = 1;
-        
+    if ([[self.globals.systemStatus valueForKey:@"playStatus"]boolValue] == NO) {
         [self.metronomeCoreController start] ;
 //        [self playBluetooth];
     }else{
-        self.globals.play = 0;
         
         [self.metronomeCoreController stop] ;
         [self pauseBluetooth];
@@ -86,7 +83,6 @@
 
 
 - (IBAction)tapPressed:(UIButton *)sender {
-    [self.metronomeCoreController stop] ;
 }
 
 //私有方法

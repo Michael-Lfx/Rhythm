@@ -39,8 +39,8 @@
 @property NSTimeInterval interval;
 @property(nonatomic, retain) id<TimeLineDelegate> timeLineDelegate;
 
--(void)startLoopWithDuration:(NSTimeInterval) duration;
--(void)stopLoop;
+-(double)startLoopWithDuration:(NSTimeInterval) duration;
+-(double)stopLoop;
 -(void)updateClockDuration: (NSTimeInterval) clockDuration;
 
 @end

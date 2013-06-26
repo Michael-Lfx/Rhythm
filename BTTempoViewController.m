@@ -40,6 +40,7 @@
     [self.globals addObserver:self forKeyPath:@"subdivision" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"systemStatus" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
 
     
@@ -183,6 +184,11 @@
     if([keyPath isEqualToString:@"currentMeasure"])
     {
         NSLog(@"%@", self.globals.currentMeasure.description);
+    }
+    
+    if([keyPath isEqualToString:@"systemStatus"])
+    {
+        NSLog(@"systemStatus : %@", self.globals.systemStatus.description);
     }
     
     if([keyPath isEqualToString:@"beatIndexOfMeasure"])

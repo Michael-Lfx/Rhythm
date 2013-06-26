@@ -87,7 +87,7 @@
     _timeLine.timeLineDelegate = self;
 }
 
--(void) startWithBPM:(int)bpm andMeasureTemplate:(BTMeasure *)measureTemplate andSubdivision:(BTSubdivision *) subdivision
+-(double) startWithBPM:(int)bpm andMeasureTemplate:(BTMeasure *)measureTemplate andSubdivision:(BTSubdivision *) subdivision
 {
     
     _bpm = bpm;
@@ -99,23 +99,32 @@
     if(_timeLine)
     {
         
-        if(!_startTime)
-        {
-            _startTime = [self getNowTime];
-        }
         [self updateClockDuration];
-        [_timeLine startLoopWithDuration:_noteDuration];
+        return [_timeLine startLoopWithDuration:_noteDuration];
     }
+    
+    return -1;
 }
 
--(void)stop
+-(double)start
 {
     if(_timeLine)
     {
-        [_timeLine stopLoop];
+        return [_timeLine startLoopWithDuration:_noteDuration];
+    }
+    return -1;
+}
+
+-(double)stop
+{
+    if(_timeLine)
+    {
+        
         [_measureTemplate reset];
         [_subdivisionTemplate reset];
+        return [_timeLine stopLoop];
     }
+    return -1;
 }
 
 -(double)getNoteDurationByBPM:(int) bpm andNote:(double)note andSubdivision:(BTSubdivision *)subdivision

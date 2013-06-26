@@ -58,7 +58,8 @@
 -(void)updateSubdivisionTemplate:(BTSubdivision *) subdivision;
 -(BTMeasure *)getMeasureTemplate;
 -(void) bindTimeLine:(BTTimeLine *) timeLine;
--(void) startWithBPM:(int)BPM andMeasureTemplate:(BTMeasure *) measureTemplate andSubdivision:(BTSubdivision *) subdivision;
--(void) stop;
+-(double) startWithBPM:(int)BPM andMeasureTemplate:(BTMeasure *) measureTemplate andSubdivision:(BTSubdivision *) subdivision;
+-(double)start;
+-(double) stop;
 
 @end

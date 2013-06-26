@@ -52,6 +52,8 @@ double const kSubdivisionDuration = 0.5;
             _hasAskGrade = 0;
             _installDate = _lastCheckVersionDate;
             _currentSubdivisionDuration = kSubdivisionDuration;
+            _systemStatus = [[NSDictionary alloc]init];
+            [_systemStatus setValue:NO forKey:@"playStatus"];
             
             //需要反复写入的
             [self globalsIntoEntity];
@@ -75,6 +77,7 @@ double const kSubdivisionDuration = 0.5;
             _lastCheckVersionDate = [_globalsInEntity.lastCheckVersionDate intValue];
             _hasAskGrade = [_globalsInEntity.hasAskGrade intValue];
             _installDate = [_globalsInEntity.installDate intValue];
+            
             
             NSLog(@"%@", _globalsInEntity);
         }
