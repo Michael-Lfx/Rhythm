@@ -11,7 +11,7 @@
 
 @protocol TimeLineDelegate <NSObject>
 
--(void) onTimeInvokeHandler:(uint64_t) time;
+-(void) onTimeInvokeHandler:(double) time;
 
 @end
 
@@ -20,7 +20,6 @@
 @interface BTTimeLine : NSObject
 {
     NSUInteger _isStop;
-    NSDate * _startTime;
     NSTimeInterval _previousTime;
     NSTimeInterval _distanceTime;
     

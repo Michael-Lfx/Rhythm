@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *minus;
 @property (weak, nonatomic) IBOutlet UILabel *beatAndNoteDisplay;
 @property (weak, nonatomic) IBOutlet UIImageView *subdivisionDisplay;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
 @property (nonatomic, retain) BTMetronomeCoreController * metronomeCoreController;
 

@@ -139,20 +139,20 @@
 }
 
 //implement of TimeLineDelegate
--(void)onTimeInvokeHandler: (uint64_t) time
+-(void)onTimeInvokeHandler: (double) time
 {
     
     
-    mach_timebase_info_data_t data;
-    mach_timebase_info(&data);
-    
-    NSTimeInterval _point = mach_absolute_time() * 1.0e-9;
-    _point *= data.numer;
-    _point /= data.denom;
-
-    
-    NSTimeInterval _distance = _point - _previousTime;
-    _previousTime = _point;
+//    mach_timebase_info_data_t data;
+//    mach_timebase_info(&data);
+//    
+//    NSTimeInterval _point = mach_absolute_time() * 1.0e-9;
+//    _point *= data.numer;
+//    _point /= data.denom;
+//
+//    
+//    NSTimeInterval _distance = _point - _previousTime;
+//    _previousTime = time;
     
     _beatCount ++;
     
@@ -161,6 +161,7 @@
     BTBeat * beat = [_measureTemplate getCurrentNote];
     beat.indexOfMeasure = _measureTemplate.playIndex;
     beat.indexOfSubdivision = _subdivisionTemplate.playIndex;
+    beat.hitTime = time;
 
     
     switch(_subdivisionTemplate.playIndex)

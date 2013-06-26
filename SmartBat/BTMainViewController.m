@@ -40,6 +40,7 @@
     [self.globals addObserver:self forKeyPath:@"currentNoteDuration" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"currentMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"beatIndexOfMeasure" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"systemStatus" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,11 +73,10 @@
     
     if ([[self.globals.systemStatus valueForKey:@"playStatus"]boolValue] == NO) {
         [self.metronomeCoreController start] ;
-//        [self playBluetooth];
+
     }else{
-        
         [self.metronomeCoreController stop] ;
-        [self pauseBluetooth];
+        
     }
     
 }
@@ -97,6 +97,25 @@
 {
     NSNumber *n = [[NSNumber alloc]initWithFloat:1.0/self.globals.noteType ];
     self.beatAndNoteDisplay.text =[ [NSString alloc]initWithFormat:@"%d/%d", self.globals.beatPerMeasure, n.intValue ];
+}
+
+-(void)updatePlayButtonBackgroundImage
+{
+    if([[self.globals.systemStatus valueForKey:@"playStatus"]boolValue])
+    {
+        NSString *filePath=[[NSBundle mainBundle] pathForResource:@"stop-button" ofType:@"png"];
+        NSData *data=[NSData dataWithContentsOfFile:filePath];
+        UIImage *image=[UIImage imageWithData:data];
+        [self.playButton setBackgroundImage:image forState: NO];
+    }
+    else
+    {
+        NSString *filePath=[[NSBundle mainBundle] pathForResource:@"play-button" ofType:@"png"];
+        NSData *data=[NSData dataWithContentsOfFile:filePath];
+        UIImage *image=[UIImage imageWithData:data];
+        [self.playButton setBackgroundImage:image forState: NO];
+    }
+    
 }
 
 
@@ -205,6 +224,11 @@
         [self updateBeatAndNoteDisplay];
     }
     
+    if([keyPath isEqualToString:@"systemStatus"])
+    {
+        [self updatePlayButtonBackgroundImage];
+    }
+    
     if([keyPath isEqualToString:@"subdivision"])
     {
         [self updateSubdivisionDisplay];
@@ -221,15 +245,15 @@
 //        }
     }
     
-    if([keyPath isEqualToString:@"beatIndexOfMeasure"])
-    {
-//        if (_bluetoothPlay) {
-            //传递当前拍子是第几小节
-            uint8_t d = self.globals.beatIndexOfMeasure;
-            
-            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
-//        }
-    }
+//    if([keyPath isEqualToString:@"beatIndexOfMeasure"])
+//    {
+////        if (_bluetoothPlay) {
+//            //传递当前拍子是第几小节
+//            uint8_t d = self.globals.beatIndexOfMeasure;
+//            
+//            [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeIndexUUID]];
+////        }
+//    }
 }
 
 //发送蓝牙播放停止指令
