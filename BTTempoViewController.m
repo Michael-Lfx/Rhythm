@@ -184,11 +184,11 @@
     {
         NSLog(@"%@", self.globals.currentMeasure.description);
     }
-//    
-//    if([keyPath isEqualToString:@"beatInfo"])
-//    {
-//        NSLog(@"beatInfo : %@", self.globals.beatInfo.description);
-//    }
+    
+    if([keyPath isEqualToString:@"beatInfo"])
+    {
+        NSLog(@"beatInfo : %@", self.globals.beatInfo.description);
+    }
 }
 
 @end

@@ -243,8 +243,6 @@
     
     _globals.beatInfo = tempBeatInfo;
     
-    NSLog(@"global.beatInfo : %@", _globals.beatInfo.description);
-    
 }
 
 -(void)onSubdivisionHandler:(BTBeat *)beat
