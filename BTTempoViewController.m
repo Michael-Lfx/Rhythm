@@ -183,7 +183,6 @@
     {
         NSLog(@"%@", self.globals.currentMeasure.description);
     }
-
 }
 
 @end
