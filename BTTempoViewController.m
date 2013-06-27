@@ -187,7 +187,7 @@
     
     if([keyPath isEqualToString:@"beatInfo"])
     {
-        NSLog(@"beatInfo : %@", self.globals.beatInfo.description);
+//        NSLog(@"beatInfo : %@", self.globals.beatInfo.description);
     }
 }
 

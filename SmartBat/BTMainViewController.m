@@ -235,13 +235,11 @@
     
     if([keyPath isEqualToString:@"currentNoteDuration"] || [keyPath isEqualToString:@"currentMeasure"])
     {
-//        if (_bluetoothPlay) {
-            //发生改变，先让手环停止
-            [self pauseBluetooth];
+        //发生改变，先让手环停止
+        [self pauseBluetooth];
             
-            //再开启定时器，稳定后再发请求
-            _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:kBluetoothDelay target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
-//        }
+        //再开启定时器，稳定后再发请求
+        _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:kBluetoothDelay target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
     }
     
     if([keyPath isEqualToString:@"systemStatus"])
@@ -291,7 +289,7 @@
            
         [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
     }
- }
+}
 
 -(void)sendDurationAndMeasure{
     //传递拍子间隔
