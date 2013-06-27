@@ -31,6 +31,7 @@
 
 @property(strong, nonatomic) NSTimer* bluetoothTimer;
 @property(assign, nonatomic) uint8_t bluetoothPlay;
+@property(assign, nonatomic) Boolean waitForRestart;
 
 - (IBAction)minusPressed:(UIButton *)sender;
 - (IBAction)plusPressed:(UIButton *)sender;
