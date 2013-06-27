@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <mach/mach_time.h>
+#import "BTGlobals.h"
 
 @protocol TapBeatProtocal <NSObject>
 
@@ -15,9 +17,19 @@
 @end
 
 @interface BTTapController : NSObject
+{
+    int _targetCount;
+    NSTimer  * _timer;
+    NSMutableArray * _hitPointArray;
+    
+    BTGlobals * _globals;
+}
 
 
--(void)initWithTapCount:(int)tapCount;
--(void)tap;
+-(void)updateTargetCount:(int)tapCount;
+-(int)tap;
+-(void)reset;
+-(int)currentTapCount;
+-(int) targetTapCount;
 
 @end

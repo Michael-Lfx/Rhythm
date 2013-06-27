@@ -27,8 +27,9 @@
     self.globals.play = NO;
 
     
-    //test by poppy
     self.metronomeCoreController = [BTMetronomeCoreController getController];
+    self.tapController = [[BTTapController alloc]init];
+    [self.tapController updateTargetCount:self.globals.beatPerMeasure];
     
     [self updateSubdivisionDisplay];
     
@@ -81,6 +82,25 @@
 
 
 - (IBAction)tapPressed:(UIButton *)sender {
+    
+    int tapCount = [self.tapController tap];
+    
+    if(tapCount > 0)
+    {
+        self.tapDisplay.text = [[NSString alloc]initWithFormat: @"%d of %d", tapCount, [self.tapController targetTapCount]];
+    }
+    else
+    {
+        self.tapDisplay.text = @"";
+        
+        if(![[self.globals.systemStatus valueForKey:@"playStatus"]boolValue])
+        {
+            
+            [NSTimer scheduledTimerWithTimeInterval:self.globals.currentNoteDuration target:self selector:@selector(playPressed:) userInfo:nil repeats:NO];
+            
+        }
+    }
+    
 }
 
 //私有方法
@@ -210,11 +230,13 @@
     if([keyPath isEqualToString:@"beatPerMinute"])
     {
         [self updateBPMDisplay];
+        
     }
     
     if([keyPath isEqualToString:@"beatPerMeasure"])
     {
         [self updateBeatAndNoteDisplay];
+        [self.tapController updateTargetCount:self.globals.beatPerMeasure];
     }
     
     if([keyPath isEqualToString:@"noteType"])

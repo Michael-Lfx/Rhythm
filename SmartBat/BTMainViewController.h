@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BTSwipeViewController.h"
 #import "BTMetronomeCoreController.h"
+#import "BTTapController.h"
 #import "BTBandCentral.h"
 
 
@@ -23,8 +24,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *beatAndNoteDisplay;
 @property (weak, nonatomic) IBOutlet UIImageView *subdivisionDisplay;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UILabel *tapDisplay;
 
 @property (nonatomic, retain) BTMetronomeCoreController * metronomeCoreController;
+@property (nonatomic, retain) BTTapController * tapController;
 
 @property(strong, nonatomic) NSTimer* bluetoothTimer;
 @property(assign, nonatomic) uint8_t bluetoothPlay;

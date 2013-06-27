@@ -539,6 +539,13 @@
                                     <action selector="playPressed:" destination="2" eventType="touchDown" id="HGO-mi-uAe"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPb-Xt-z1E">
+                                <rect key="frame" x="54" y="262" width="63" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -570,6 +577,7 @@
                         <outlet property="playButton" destination="Xah-Yn-03X" id="wKq-6J-zsw"/>
                         <outlet property="plus" destination="2lm-s7-uRU" id="mIg-Cd-3ih"/>
                         <outlet property="subdivisionDisplay" destination="XlY-2j-H5Y" id="Pr9-7o-tQa"/>
+                        <outlet property="tapDisplay" destination="LPb-Xt-z1E" id="EWe-Sq-0PU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
