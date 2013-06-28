@@ -35,7 +35,7 @@
     _cm = [BTBandCentral sharedBandCentral];
     
     //监控全局变量beatPerMinute的变化
-    [self.globals addObserver:self forKeyPath:@"bluetoothConnected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"bleConnected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,9 +75,9 @@
 //监控参数，更新显示
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"bluetoothConnected"])
+    if([keyPath isEqualToString:@"bleConnected"])
     {
-        if (self.globals.bluetoothConnected) {
+        if (self.globals.bleConnected) {
             [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                 NSString* name = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
                 NSLog(@"cb: %@", name);

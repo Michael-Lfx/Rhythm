@@ -38,7 +38,7 @@
 -(void)sync;
 -(void)doSync;
 
--(void)playAllAt:(double)timestamp andWait:(double)interval;
+-(void)playAllAt:(double)timestamp;
 
 @end
  

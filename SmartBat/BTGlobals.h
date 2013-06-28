@@ -42,10 +42,13 @@
 //playStatusChangedTime : mach_absolute_time, Play Status changed time
 @property(retain, nonatomic) NSDictionary * systemStatus;
 
-@property(assign, nonatomic) BOOL bluetoothConnected;
-@property(assign, nonatomic) BOOL play;
+@property(assign, nonatomic) BOOL bleConnected;
 
-@property(assign, nonatomic) double zero;
+//手环等着下一个重拍到达
+@property(assign, nonatomic) Boolean waitForRestart;
+
+//手环当前的状态
+@property(assign, nonatomic) uint8_t blePlay;
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;

@@ -102,7 +102,7 @@
         
         if(bp.allCharacteristics.count == kCharacteristicsCount){
             NSLog(@"ge zaile ");
-            _globals.bluetoothConnected = YES;
+            _globals.bleConnected = YES;
             [self sync];
         }
     }
@@ -302,17 +302,25 @@
         bp.zero = _syncStart + kSyncInterval * sn;
         
         NSLog(@"zero is: %f", bp.zero);
+        
+        //如果设备正在播放，就等马上启动
+        if ([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+            NSLog(@"wait for restart");
+            
+            self.globals.blePlay = 0;
+            self.globals.waitForRestart = YES;
+        }
     }];
 }
 
--(void)playAllAt:(double)timestamp andWait:(double)interval{
+-(void)playAllAt:(double)timestamp{
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     for (BTBandPeripheral* bp in enumeratorValue) {
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:kMetronomePlayUUID]];
         
-        uint32_t start = (timestamp - bp.zero + interval) * 1000000;
-        
+        uint32_t start = (timestamp - bp.zero) * 1000000;
+            
         NSLog(@"%d", start);
         
         if (tmp) {
