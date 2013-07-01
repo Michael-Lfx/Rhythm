@@ -50,6 +50,10 @@
 //手环当前的状态
 @property(assign, nonatomic) uint8_t blePlay;
 
+//手环总数和数组
+@property(assign, nonatomic) NSInteger bleListCount;
+@property(strong, nonatomic) NSMutableArray* bleList;
+
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;
 

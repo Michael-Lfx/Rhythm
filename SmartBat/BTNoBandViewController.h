@@ -11,10 +11,11 @@
 #import "BTBandPeripheral.h"
 #import "OALSimpleAudio.h"
 
-@interface BTNoBandViewController : BTSettingsViewController
+@interface BTNoBandViewController : BTSettingsViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property(strong, nonatomic) BTBandCentral* cm;
-@property (weak, nonatomic) IBOutlet UITextField *bandName;
+
+@property (weak, nonatomic) IBOutlet UITableView *bleList;
 
 - (IBAction)scan:(UIButton *)sender;
 - (IBAction)setShock:(UISwitch *)sender;

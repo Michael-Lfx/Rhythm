@@ -36,6 +36,10 @@
     
     //监控全局变量beatPerMinute的变化
     [self.globals addObserver:self forKeyPath:@"bleConnected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
+    _bleList.delegate = self;
+    _bleList.dataSource = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,10 +85,43 @@
             [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                 NSString* name = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
                 NSLog(@"cb: %@", name);
+            }];
+            
+            [_cm readAll:[CBUUID UUIDWithString:kBatteryLevelUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                 
-                _bandName.text = name;
+                uint8_t bl;
+                [value getBytes:&bl];
+                
+                NSLog(@"cb: %d", bl);
+                
             }];
         }
     }
+    
+    if([keyPath isEqualToString:@"bleListCount"])
+    {
+        [_bleList reloadData];
+    }
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.globals.bleListCount;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"oj yeah %@", indexPath);
+    static NSString *CellIdentifier = @"bleListCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:1];
+    batteryLevel.text = @"wo ca lei";
+    
+    return cell;
 }
 @end
