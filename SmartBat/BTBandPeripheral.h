@@ -18,6 +18,9 @@
 @property(strong, nonatomic) CBPeripheral* handle;
 @property(assign, nonatomic) double zero;
 
+@property(assign, nonatomic) uint8_t play;
+//@property(assign, nonatomic) Boolean waitForRestart;
+
 -(BTBandPeripheral*)initWithPeripheral:(CBPeripheral*)peripheral;
 
 @end

@@ -23,7 +23,6 @@
     [self updateBPMDisplay];
     _intervalCount = 0;
     
-    self.globals.blePlay = 0;
     self.self.globals.waitForRestart = NO;
     
     self.metronomeCoreController = [BTMetronomeCoreController getController];
@@ -291,13 +290,15 @@
 //发送蓝牙播放停止指令
 -(void)playBluetooth:(double)start{
     //让手环开始震动
-    if (self.globals.blePlay == 0) {
-        self.globals.blePlay = 1;
-        
-        NSLog(@"send play");
-        
-        [self.bandCM playAllAt:start];
-    }
+//    if (self.globals.blePlay == 0) {
+//        self.globals.blePlay = 1;
+//        
+//        NSLog(@"send play");
+//        
+//        [self.bandCM playAllAt:start];
+//    }
+    
+    [self.bandCM playAllAt:start];
 }
 
 -(void)pauseBluetooth{
@@ -307,13 +308,15 @@
         _bleTimer = nil;
     }
     
-    if (self.globals.blePlay == 1) {
-        self.globals.blePlay = 0;
-        
-        uint8_t rs = self.globals.blePlay;
-        
-        [self.bandCM writeAll:[NSData dataWithBytes:&rs length:sizeof(rs)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
-    }
+//    if (self.globals.blePlay == 1) {
+//        self.globals.blePlay = 0;
+//        
+//        uint8_t rs = self.globals.blePlay;
+//        
+//        [self.bandCM writeAll:[NSData dataWithBytes:&rs length:sizeof(rs)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+//    }
+    
+    [self.bandCM pauseAll];
 }
 
 -(void)sendDurationAndMeasure{

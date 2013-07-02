@@ -79,27 +79,22 @@
 //监控参数，更新显示
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"bleConnected"])
-    {
-        if (self.globals.bleConnected) {
-            [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-                NSString* name = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-                NSLog(@"cb: %@", name);
-            }];
-            
-            [_cm readAll:[CBUUID UUIDWithString:kBatteryLevelUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-                
-                uint8_t bl;
-                [value getBytes:&bl];
-                
-                NSLog(@"cb: %d", bl);
-                
-            }];
-        }
-    }
+//    if([keyPath isEqualToString:@"bleConnected"])
+//    {
+//        if (self.globals.bleConnected) {
+//            [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+//                NSString* name = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
+//                NSLog(@"cb: %@", name);
+//            }];
+//            
+//            
+//        }
+//    }
     
     if([keyPath isEqualToString:@"bleListCount"])
     {
+        NSLog(@"ble count: %d", self.globals.bleListCount);
+        
         [_bleList reloadData];
     }
 }
@@ -119,8 +114,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:1];
-    batteryLevel.text = @"wo ca lei";
+    NSArray* bleOne = [self.bandCM bleList:(NSUInteger)indexPath.row];
+    
+    UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:2];
+    batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:2]];
+    batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    
+    UITextField* name = (UITextField*)[cell.contentView viewWithTag:1];
+    name.text = [bleOne objectAtIndex:1];
+    
+    NSLog(@"%@", [bleOne objectAtIndex:1]);
     
     return cell;
 }

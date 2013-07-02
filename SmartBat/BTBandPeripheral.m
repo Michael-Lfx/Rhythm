@@ -20,6 +20,9 @@
         self.allCallback = [NSMutableDictionary dictionaryWithCapacity:kCharacteristicsCount];
         
         self.handle = peripheral;
+        
+        self.play = 0;
+//        self.waitForRestart = NO;
     }
     
     return self;

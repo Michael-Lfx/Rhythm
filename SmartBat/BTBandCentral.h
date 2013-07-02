@@ -28,11 +28,14 @@
 -(void)writeAll:(NSData*)value withUUID:(CBUUID*)cuuid;
 
 -(void)read:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
--(void)readAll:(CBUUID*)uuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
+-(void)readAll:(CBUUID*)cuuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
 
 -(void)scan;
 
 -(void)playAllAt:(double)timestamp;
+-(void)pauseAll;
+
+-(NSArray*)bleList:(NSUInteger)index;
 
 @end
  
