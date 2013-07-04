@@ -36,6 +36,7 @@
 -(void)pauseAll;
 
 -(NSArray*)bleList:(NSUInteger)index;
+-(void)connectSelectedPeripheral:(NSUInteger)index;
 
 @end
  

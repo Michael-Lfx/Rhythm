@@ -16,9 +16,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *bleList;
 
 - (IBAction)scan:(UIButton *)sender;
-- (IBAction)setShock:(UISwitch *)sender;
-- (IBAction)setSpark:(UISwitch *)sender;
-- (IBAction)read:(UIButton *)sender;
-- (IBAction)write:(UIButton *)sender;
 
 @end

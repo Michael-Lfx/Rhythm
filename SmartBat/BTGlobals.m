@@ -53,16 +53,13 @@ double const kSubdivisionDuration = 0.5;
             _installDate = _lastCheckVersionDate;
             _currentSubdivisionDuration = kSubdivisionDuration;
             
-            //需要反复写入的
-            [self globalsIntoEntity];
-            
             //首次写入即可
             _globalsInEntity.installDate = [NSNumber numberWithInt:_lastCheckVersionDate];
             
             //保存数据
-            if(![_context save:&error]){
-                NSLog(@"%@", [error localizedDescription]);
-            }
+            //需要反复写入的
+            [self globalsIntoEntity];
+            
         }else{
             //数据库里有数据
             _globalsInEntity = [globalFromModel objectAtIndex:0];
@@ -79,6 +76,11 @@ double const kSubdivisionDuration = 0.5;
             
             NSLog(@"%@", _globalsInEntity);
         }
+        
+        //监控变量，变化时写入数据库
+        //监控全局变量beatPerMinute的变化
+        [self addObserver:self forKeyPath:@"lastCheckVersionDate" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+        [self addObserver:self forKeyPath:@"hasAskGrade" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     }
     return self;
 }
@@ -90,16 +92,21 @@ double const kSubdivisionDuration = 0.5;
     _globalsInEntity.subdivision= [NSNumber numberWithInt:_subdivision];
     _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
     _globalsInEntity.hasAskGrade = [NSNumber numberWithInt:_hasAskGrade];
-}
-
--(void)applicationWillResignActive:(NSNotification*) notification{
-    //退出时写入
-    [self globalsIntoEntity];
     
     NSError* error;
     if(![_context save:&error]){
         NSLog(@"%@", [error localizedDescription]);
     }
+}
+
+-(void)applicationWillResignActive:(NSNotification*) notification{
+    //退出时写入
+    [self globalsIntoEntity];
+}
+
+//监控参数，写入本地
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    [self globalsIntoEntity];
 }
 
 +(BTGlobals *)sharedGlobals

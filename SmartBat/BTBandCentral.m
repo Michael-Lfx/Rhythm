@@ -27,6 +27,7 @@
     return self;
 }
 
+//central改变状态后的回调
 -(void)centralManagerDidUpdateState:(CBCentralManager *)central{
     
     switch (central.state) {
@@ -36,12 +37,21 @@
             [self scan];
             
             break;
+            
+        case CBCentralManagerStatePoweredOff:
+            
+            //关掉蓝牙开关时清零
+            self.globals.bleListCount = 0;
+            
+            break;
+            
         default:
             NSLog(@"Central Manager did change state");
             break;
     }
 }
 
+//发现peripheral后的回调
 -(void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
     
     NSLog(@"Discover Peripheral: %@", peripheral);
@@ -55,7 +65,7 @@
     
     [self.p setObject:peripheral forKey:[NSString stringWithFormat:@"%d",peripheral.hash]];
     
-    [central connectPeripheral:peripheral options:nil];
+//    [central connectPeripheral:peripheral options:nil];
     
 //    if (![self.allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]]) {
     
@@ -63,39 +73,53 @@
 //    }
     
 //    [central scanForPeripheralsWithServices:nil options:nil];
+    
+    BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
+    find.name = [advertisementData valueForKey:@"kCBAdvDataLocalName"];
+    
+    [_allPeripherals setObject:find forKey:[NSNumber numberWithInt:peripheral.hash]];
+    
+    //连接上一个以后增加
+    self.globals.bleListCount++;
+    
+    NSLog(@"%@", _allPeripherals);
 }
 
+//连接peripheral后的回调
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     
     NSLog(@"Connect Peripheral: %@", peripheral);
     
+    
+    
     BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
+    
+    //取出name后，把未连接的peripheral对象清除
+    find.name = [[_allPeripherals objectForKey:[NSNumber numberWithInt:peripheral.hash]] name];
+    [_allPeripherals removeObjectForKey:[NSNumber numberWithInt:peripheral.hash]];
     
     [self.allPeripherals setObject:find forKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
     
     //代理peripheral
     [peripheral setDelegate:self];
-    [peripheral discoverServices:nil];
+    [peripheral discoverServices:@[[CBUUID UUIDWithString:kMetronomeServiceUUID], [CBUUID UUIDWithString:kBatteryServiceUUID]]];
+    
+    NSLog(@"%@", _allPeripherals);
 }
 
+//发现所有service后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
     if (error) {
         NSLog(@"DiscoverServices error: %@", error.localizedDescription);
     }
     
-//    NSLog(@"Discover Services: %@", peripheral.services);
-    
     for (CBService *s in peripheral.services) {
         
-//        NSLog(@"%@", s.UUID);
-        
-        if ([s.UUID isEqual:[CBUUID UUIDWithString:kMetronomeServiceUUID]] || [s.UUID isEqual:[CBUUID UUIDWithString:kBatteryServiceUUID]]) {
-        
-            [peripheral discoverCharacteristics:nil forService:s];
-        }
+        [peripheral discoverCharacteristics:nil forService:s];
     }
 }
 
+//发现所有characteristic后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
     
     if (error) {
@@ -121,7 +145,8 @@
             
             [self read:[CBUUID UUIDWithString:kBatteryLevelUUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                 
-                self.globals.bleListCount++;
+                //读取完名称和电量后
+                self.globals.bleListCount+=0;
                 
             }];
             
@@ -130,6 +155,7 @@
     }
 }
 
+//注册update value后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     
     if (error) {
@@ -172,14 +198,15 @@
     }
 }
 
+//写数据完成后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     if (error) {
         NSLog(@"WriteValueForCharacteristic error: %@", error.localizedDescription);
     }
-    NSLog(@"write value: %@", characteristic.value);
+//    NSLog(@"write value: %@", characteristic.value);
 }
 
-//某个p断开连接
+//某个peripheral断开连接
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     
     //从缓存中移除
@@ -197,6 +224,7 @@
     对外接口
  */
 
+//向某个peripheral写数据
 -(void)write:(NSData*)value withUUID:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid{
     
     BTBandPeripheral* bp = [_allPeripherals objectForKey:puuid];
@@ -205,6 +233,7 @@
     [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
 }
 
+//读取某个peripheral里的数据
 -(void)read:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block{
     
     BTBandPeripheral* bp = [_allPeripherals objectForKey:puuid];
@@ -358,6 +387,7 @@
     }];
 }
 
+//所有设备播放
 -(void)playAllAt:(double)timestamp{
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
@@ -378,6 +408,7 @@
     }
 }
 
+//所有设备暂停
 -(void)pauseAll{
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
@@ -398,22 +429,34 @@
     }
 }
 
+//返回蓝牙列表展示数据
 -(NSArray*)bleList:(NSUInteger)index{
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
     
-    NSLog(@"index : %@", bp);
-    
     //1
-    NSString* name = [[NSString alloc] initWithData:[bp.allValues objectForKey:[CBUUID UUIDWithString:kMetronomeNameUUID]] encoding:NSUTF8StringEncoding];
+    NSString* name = bp.name;
     //0
-    Boolean isConnected = bp.handle.isConnected;
+    NSNumber* isConnected = [NSNumber numberWithBool:bp.handle.isConnected];
     //2
-    uint8_t batteryLevel;
-    [[bp.allValues objectForKey:[CBUUID UUIDWithString:kBatteryLevelUUID]] getBytes:&batteryLevel];
+    uint8_t d;
+    [[bp.allValues objectForKey:[CBUUID UUIDWithString:kBatteryLevelUUID]] getBytes:&d];
+    NSNumber *batteryLevel = [NSNumber numberWithInt:d];
     
-    return [NSArray arrayWithObjects:[NSNumber numberWithBool:isConnected], name, [NSNumber numberWithInt:batteryLevel], nil];
+    return @[isConnected, name, batteryLevel];
+}
+
+//连接选中的peripheral
+-(void)connectSelectedPeripheral:(NSUInteger)index{
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
+    
+    if (!bp.handle.isConnected) {
+        [_cm connectPeripheral:bp.handle options:nil];
+    } 
+    
 }
 
 @end

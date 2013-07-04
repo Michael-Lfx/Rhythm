@@ -48,65 +48,45 @@
     // Dispose of any resources that can be recreated.
 }
 
+//手动查找
 - (IBAction)scan:(UIButton *)sender {
     [_cm scan];
-}
-
-- (IBAction)setShock:(UISwitch *)sender {
-    UInt16 i = (sender.on)?1:0;
-    
-    [_cm writeAll:[NSData dataWithBytes:&i length:sizeof(i)] withUUID:[CBUUID UUIDWithString:kMetronomeShockUUID]];
-    NSLog(@"%lu", sizeof(i));
-}
-- (IBAction)setSpark:(UISwitch *)sender {
-}
-
-- (IBAction)read:(UIButton *)sender {
-    [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-        NSLog(@"cb: %@", [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding]);
-    }];
-    
-}
-
-- (IBAction)write:(UIButton *)sender {
-    NSString* name = @"卡卡音乐手环";
-    
-    [_cm writeAll:[name dataUsingEncoding:NSUTF8StringEncoding] withUUID:[CBUUID UUIDWithString:kMetronomeNameUUID]];
-    
-    NSLog(@"%lu", (unsigned long)name.length);
 }
 
 //监控参数，更新显示
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-//    if([keyPath isEqualToString:@"bleConnected"])
-//    {
-//        if (self.globals.bleConnected) {
-//            [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-//                NSString* name = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-//                NSLog(@"cb: %@", name);
-//            }];
-//            
-//            
-//        }
-//    }
     
     if([keyPath isEqualToString:@"bleListCount"])
     {
         NSLog(@"ble count: %d", self.globals.bleListCount);
         
+        //行数变化时，重新加载列表
         [_bleList reloadData];
     }
 }
 
+//列表行数的代理
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.globals.bleListCount;
 }
 
+//渲染每行数据的代理
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSLog(@"oj yeah %@", indexPath);
-    static NSString *CellIdentifier = @"bleListCell";
+    NSArray* bleOne = [self.bandCM bleList:indexPath.row];
+    
+    Boolean isConnected = [[bleOne objectAtIndex:0] intValue];
+    
+    NSString *CellIdentifier;
+    
+    if (isConnected) {
+        CellIdentifier = @"bleListCellConnected";
+    }else{
+        CellIdentifier = @"bleListCellScan";
+    }
+    
+    NSLog(@"%@", CellIdentifier);
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -114,17 +94,23 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    NSArray* bleOne = [self.bandCM bleList:(NSUInteger)indexPath.row];
+    if (isConnected) {
+        //电量
+        UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:2];
+        batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:2]];
+        batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    }
     
-    UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:2];
-    batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:2]];
-    batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
-    
+    //手环名称
     UITextField* name = (UITextField*)[cell.contentView viewWithTag:1];
     name.text = [bleOne objectAtIndex:1];
     
-    NSLog(@"%@", [bleOne objectAtIndex:1]);
-    
     return cell;
 }
+
+//选中某行
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.bandCM connectSelectedPeripheral:[indexPath row]];
+}
+
 @end
