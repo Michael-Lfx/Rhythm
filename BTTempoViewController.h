@@ -8,6 +8,7 @@
 
 #import "BTSwipeViewController.h"
 #import "BTMetronomeCoreController.h"
+#import "BTSoundController.h"
 
 @interface BTTempoViewController : BTSwipeViewController{
     
@@ -25,6 +26,8 @@
 - (IBAction)decreaseNoteTypeHandler:(UIButton *)sender;
 - (IBAction)increaseSubdivisionHandler:(id)sender;
 - (IBAction)decreaseSubdivisionHandler:(id)sender;
+- (IBAction)recordTestHandler:(UIButton *)sender;
+- (IBAction)stopRecordTestHandler:(UIButton *)sender;
 
 
 @end

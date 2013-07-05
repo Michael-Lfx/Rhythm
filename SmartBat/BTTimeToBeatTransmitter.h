@@ -17,6 +17,8 @@
 
 -(void) onBeatHandler: (BTBeat *) beat ofMeasure:(BTMeasure *) measure withBPM:(int)bpm;
 -(void) onSubdivisionHandler: (BTBeat *) beat;
+-(void) onSoundBeatHandler: (BTBeat *) beat ofMeasure:(BTMeasure *) measure withBPM:(int)bpm;
+-(void) onSoundSubdivisionHandler: (BTBeat *) beat;
 
 @end
 

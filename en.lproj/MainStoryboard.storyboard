@@ -62,6 +62,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="recordTestHandler:" destination="OGS-1n-gEN" eventType="touchDown" id="oOp-ge-dQf"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HPe-md-3Ai">
                                 <rect key="frame" x="165" y="182" width="145" height="118"/>
@@ -76,6 +79,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="stopRecordTestHandler:" destination="OGS-1n-gEN" eventType="touchDown" id="D0W-wC-qzL"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VjP-e8-QtL">
                                 <rect key="frame" x="10" y="309" width="145" height="118"/>

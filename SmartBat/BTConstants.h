@@ -73,6 +73,7 @@
 //手环同步设置
 #define kSyncInterval                   0.067
 #define kSyncCount                      20
+#define APP_SOUND_LATENCY               0.004f
 
 //定时器锁常量
 #define DEFAULT_INTERVAL 0.01

@@ -11,6 +11,7 @@
 #import "BTMetronomeCoreController.h"
 #import "BTTapController.h"
 #import "BTBandCentral.h"
+#import "BTSoundController.h"
 
 
 @interface BTMainViewController : BTSwipeViewController{
@@ -28,6 +29,7 @@
 
 @property (nonatomic, retain) BTMetronomeCoreController * metronomeCoreController;
 @property (nonatomic, retain) BTTapController * tapController;
+@property (nonatomic, retain) BTSoundController * soundController;
 
 @property(strong, nonatomic) NSTimer* bluetoothTimer;
 @property(assign, nonatomic) uint8_t bluetoothPlay;

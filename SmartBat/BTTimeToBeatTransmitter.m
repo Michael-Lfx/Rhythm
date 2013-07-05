@@ -156,21 +156,7 @@
 -(void)onTimeInvokeHandler: (double) time
 {
     
-    
-//    mach_timebase_info_data_t data;
-//    mach_timebase_info(&data);
-//    
-//    NSTimeInterval _point = mach_absolute_time() * 1.0e-9;
-//    _point *= data.numer;
-//    _point /= data.denom;
-//
-//    
-//    NSTimeInterval _distance = _point - _previousTime;
-//    _previousTime = time;
-    
     _beatCount ++;
-    
-//    NSLog(@"distance: %f", _distance);
     
     BTBeat * beat = [_measureTemplate getCurrentNote];
     beat.indexOfMeasure = _measureTemplate.playIndex;
@@ -182,21 +168,47 @@
     {
         case 0:
             [self.timeToBeatTransmitterBeatDelegate onBeatHandler:beat ofMeasure:_measureTemplate withBPM:_bpm];
-            
-            [_measureTemplate playNote];
-            [_subdivisionTemplate playNote ];
-            
+
             break;
         default:
             [self.timeToBeatTransmitterBeatDelegate onSubdivisionHandler:beat];
+            
+            
+            break;
+    }
+
+}
+
+
+-(void)onSoundTimeInvokeHandler: (double) time
+{
+
+    
+    BTBeat * beat = [_measureTemplate getCurrentNote];
+    beat.indexOfMeasure = _measureTemplate.playIndex;
+    beat.indexOfSubdivision = _subdivisionTemplate.playIndex;
+    beat.hitTime = time;
+    
+    
+    switch(_subdivisionTemplate.playIndex)
+    {
+        case 0:
+            [self.timeToBeatTransmitterBeatDelegate onSoundBeatHandler:beat ofMeasure:_measureTemplate withBPM:_bpm];
+            
+            [_measureTemplate playNote];
+            [_subdivisionTemplate playNote ];
+            break;
+        default:
+            [self.timeToBeatTransmitterBeatDelegate onSoundSubdivisionHandler:beat];
             
             [_subdivisionTemplate playNote ];
             break;
     }
     
-
     
-
+    
+    
 }
+
 
 @end

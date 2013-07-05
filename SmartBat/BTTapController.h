@@ -31,5 +31,7 @@
 -(void)reset;
 -(int)currentTapCount;
 -(int) targetTapCount;
++(BTTapController *)sharedInstance;
+
 
 @end

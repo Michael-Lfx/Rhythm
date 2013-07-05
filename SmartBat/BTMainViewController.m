@@ -28,10 +28,12 @@
     self.waitForRestart = NO;
     
     self.metronomeCoreController = [BTMetronomeCoreController getController];
-    self.tapController = [[BTTapController alloc]init];
+    self.tapController = [BTTapController sharedInstance];
     [self.tapController updateTargetCount:self.globals.beatPerMeasure];
     
     [self updateSubdivisionDisplay];
+    
+    self.soundController = [BTSoundController sharedInstance];
     
     //监控全局变量beatPerMinute的变化
     [self.globals addObserver:self forKeyPath:@"beatPerMinute" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
@@ -97,11 +99,22 @@
         if(![[self.globals.systemStatus valueForKey:@"playStatus"]boolValue])
         {
             
-            [NSTimer scheduledTimerWithTimeInterval:self.globals.currentNoteDuration target:self selector:@selector(playPressed:) userInfo:nil repeats:NO];
+            [self.metronomeCoreController startAfter:self.globals.currentNoteDuration];
             
         }
     }
     
+}
+
+- (IBAction)recoredPressed:(UIButton *)sender {
+    
+    [[BTSoundController sharedInstance ]record];
+    
+}
+
+- (IBAction)recordEnd:(UIButton *)sender {
+    
+     [[BTSoundController sharedInstance ]stopRecord];
 }
 
 //私有方法

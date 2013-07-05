@@ -8,6 +8,10 @@
 
 #import "BTTimeLine.h"
 
+
+
+
+
 @implementation BTTimeLine
 
 @synthesize interval;
@@ -24,6 +28,7 @@
 
 - (double)startLoopWithDuration:(NSTimeInterval) duration
 {
+    
     if(_timeLineThread)
     {
         return 0;
@@ -100,7 +105,9 @@
         }
         
         
-        Boolean _isLock = true;
+        Boolean _isLock = YES;
+        
+        Boolean _isDispatchOnTime = NO;
         
         while(_isLock)
         {
@@ -108,20 +115,30 @@
             
             if(_testTime >= _clockStartTime + _clockDuration * _clockTickCount  )
             {
-                _isLock = false;
+                if(!_isDispatchOnTime){
+                    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                    dispatch_async(mainQueue, ^{
+                        [self invokeDelegate:nil];
+                    });
+                    _isDispatchOnTime = YES;
+                    
+                }
+                
+                if(_testTime >= _clockStartTime + _clockDuration * _clockTickCount  + APP_SOUND_LATENCY){
+                
+                    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                    dispatch_async(mainQueue, ^{
+                        [self invokeSoundDelegate:nil];
+                    });
+                    
+                    _isLock = NO;
+                }
             }
             else
             {
 //                NSLog(@"d: %f, testTime: %f, clockStartTime: %f, clockDuration: %f, clockTickCount: %d",_testTime -( _clockStartTime + _clockDuration * _clockTickCount ), _testTime, _clockStartTime, _clockDuration, _clockTickCount );
             }
         }
-        
-        
-        dispatch_queue_t mainQueue = dispatch_get_main_queue();
-        dispatch_async(mainQueue, ^{
-            [self invokeDelegate:nil];
-        });
-        
         
         
         NSTimeInterval _accurateClockDuration = floor((_clockDuration + ( _clockStartTime + _clockDuration * _clockTickCount - _clockPreviousTickTime))*1.0e3)/1.0e3;
@@ -146,6 +163,15 @@
     double point = [self getMachNowTime];
     
     [self.timeLineDelegate onTimeInvokeHandler: point];
+}
+
+
+-(void)invokeSoundDelegate:(id)info
+{
+    
+    double point = [self getMachNowTime];
+    
+    [self.timeLineDelegate onSoundTimeInvokeHandler: point];
 }
 
 

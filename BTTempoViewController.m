@@ -110,6 +110,18 @@
     
 }
 
+- (IBAction)recordTestHandler:(UIButton *)sender {
+    
+    [[BTSoundController sharedInstance]record];
+    
+}
+
+- (IBAction)stopRecordTestHandler:(UIButton *)sender {
+    
+     [[BTSoundController sharedInstance]stopRecord];
+    
+}
+
 -(void)updateBeatPerMeasureDisplay
 {
     self.beatPerMeasureDisplay.text = [NSString stringWithFormat:@"%d", self.globals.beatPerMeasure];

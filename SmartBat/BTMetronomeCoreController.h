@@ -50,6 +50,7 @@
 @property(nonatomic, retain) AEAudioController * audioController;
 
 -(void) start;
+-(void) startAfter:(NSTimeInterval) timeInterval;
 -(void) stop;
 -(void) pause;
 -(void) setBPM:(int)bpm;

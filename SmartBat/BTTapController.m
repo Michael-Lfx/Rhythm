@@ -24,6 +24,17 @@
     return self;
 }
 
+
++(BTTapController *)sharedInstance
+{
+    static BTTapController *sharedInstance = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
+}
+
 -(void)updateTargetCount:(int)targetCount
 {
     _targetCount = targetCount;
@@ -31,6 +42,8 @@
 
 -(int)tap
 {
+    
+    NSLog(@"tap!");
     NSNumber *now = [[NSNumber alloc]initWithDouble:[self getMachNowTime]];
     [_hitPointArray addObject:now];
     
