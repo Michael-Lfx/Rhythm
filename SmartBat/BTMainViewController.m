@@ -22,10 +22,8 @@
     
     [self updateBPMDisplay];
     _intervalCount = 0;
-    _bluetoothPlay = 0;
     
-    self.globals.play = NO;
-    self.waitForRestart = NO;
+    self.self.globals.waitForRestart = NO;
     
     self.metronomeCoreController = [BTMetronomeCoreController getController];
     self.tapController = [BTTapController sharedInstance];
@@ -274,17 +272,16 @@
         [self pauseBluetooth];
             
         //再开启定时器，稳定后再发请求
-        _bluetoothTimer = [NSTimer scheduledTimerWithTimeInterval:kBluetoothDelay target:self selector:@selector(bluetooth) userInfo:nil repeats:NO];
+        _bleTimer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_DELAY target:self selector:@selector(bleWaitForRestart) userInfo:nil repeats:NO];
     }
     
     if([keyPath isEqualToString:@"systemStatus"])
     {
         if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+            
             [self sendDurationAndMeasure];
             
-            if([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
-                [self playBluetooth:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue]];
-            }
+            [self playBluetooth:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue]];
         }else{
             [self pauseBluetooth];
         }
@@ -292,8 +289,11 @@
     
     if([keyPath isEqualToString:@"beatInfo"])
     {
-        if (_waitForRestart && [[self.globals.beatInfo valueForKey:@"indexOfMeasure"] intValue] == 0) {
-            _waitForRestart = NO;
+        if (self.globals.waitForRestart && [[self.globals.beatInfo valueForKey:@"indexOfMeasure"] intValue] == 0) {
+            
+            self.globals.waitForRestart = NO;
+            
+            [self sendDurationAndMeasure];
             
             [self playBluetooth:[[self.globals.beatInfo valueForKey:@"hitTime"] doubleValue]];
         }
@@ -302,28 +302,17 @@
 
 //发送蓝牙播放停止指令
 -(void)playBluetooth:(double)start{
-    //让手环开始震动
-    if (_bluetoothPlay == 0) {
-        _bluetoothPlay = 1;
-        
-        double interval = self.globals.currentNoteDuration * self.globals.currentMeasure.count;
-        
-        [self.bandCM playAllAt:start andWait:interval];
-    }
+    [self.bandCM playAllAt:start];
 }
 
 -(void)pauseBluetooth{
     //如有还未启动的定时器，直接干掉
-    if(_bluetoothTimer != nil) {
-        [_bluetoothTimer invalidate];
-        _bluetoothTimer = nil;
+    if(_bleTimer != nil) {
+        [_bleTimer invalidate];
+        _bleTimer = nil;
     }
     
-    if (_bluetoothPlay == 1) {
-        _bluetoothPlay = 0;
-           
-        [self.bandCM writeAll:[NSData dataWithBytes:&_bluetoothPlay length:sizeof(_bluetoothPlay)] withUUID:[CBUUID UUIDWithString:kMetronomePlayUUID]];
-    }
+    [self.bandCM pauseAll];
 }
 
 -(void)sendDurationAndMeasure{
@@ -332,7 +321,7 @@
     
     NSLog(@"d is: %d", d);
     
-    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:kMetronomeDurationUUID]];
+    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:METRONOME_DURATION_UUID]];
     
     NSLog(@"ARR: %@", self.globals.currentMeasure);
     
@@ -344,13 +333,12 @@
         measure[i] = [[self.globals.currentMeasure objectAtIndex:i] intValue];
     }
     
-    [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:kMetronomeMeasureUUID]];
+    [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:METRONOME_MEASURE_UUID]];
 }
 
--(void)bluetooth{
-    [self sendDurationAndMeasure];
+-(void)bleWaitForRestart{
     
-    _waitForRestart = YES;
+    self.globals.waitForRestart = YES;
 }
 
 @end

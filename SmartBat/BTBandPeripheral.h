@@ -16,7 +16,13 @@
 @property(strong, nonatomic) NSMutableDictionary* allValues;
 @property(strong, nonatomic) NSMutableDictionary* allCallback;
 @property(strong, nonatomic) CBPeripheral* handle;
+
+@property(strong, nonatomic) NSString* name;
+
 @property(assign, nonatomic) double zero;
+
+@property(assign, nonatomic) uint8_t play;
+//@property(assign, nonatomic) Boolean waitForRestart;
 
 -(BTBandPeripheral*)initWithPeripheral:(CBPeripheral*)peripheral;
 

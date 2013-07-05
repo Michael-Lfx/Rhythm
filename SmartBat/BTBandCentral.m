@@ -16,71 +16,145 @@
     if (self) {
         self.cm = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
         self.allPeripherals = [NSMutableDictionary dictionaryWithCapacity:7];
-        
+        self.p = [NSMutableDictionary dictionaryWithCapacity:7];
         self.globals = [BTGlobals sharedGlobals];
+        self.globals.bleListCount = 0;
+        
+        //获取上下文
+        UIApplication *app = [UIApplication sharedApplication];
+        BTAppDelegate *delegate = (BTAppDelegate *)[app delegate];
+        _context = delegate.managedObjectContext;
     }
     
     return self;
 }
 
+//central改变状态后的回调
 -(void)centralManagerDidUpdateState:(CBCentralManager *)central{
     
     switch (central.state) {
         case CBCentralManagerStatePoweredOn:
+            
             //设置nil查找任何设备
             [self scan];
             
             break;
+            
+        case CBCentralManagerStatePoweredOff:
+            
+            //关掉蓝牙开关时清零
+            self.globals.bleListCount = 0;
+            
+            break;
+            
         default:
             NSLog(@"Central Manager did change state");
             break;
     }
 }
 
+//发现peripheral后的回调
 -(void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
     
-    NSLog(@"Discover Peripheral: %@", [CBUUID UUIDWithCFUUID:peripheral.UUID]);
+    NSLog(@"Discover Peripheral: %@", peripheral);
     
     //找到了就停止扫描
-    [central stopScan];
+//    [central stopScan];
+    
+    NSLog(@"%@", advertisementData);
     
     //付给私有变量，不然就释放了
+    //以peripheral的hash为key，存起来
+//    [self.p setObject:peripheral forKey:[NSString stringWithFormat:@"%d",peripheral.hash]];
+    
     BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
-    [self.allPeripherals setObject:find forKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+    find.name = [advertisementData valueForKey:@"kCBAdvDataLocalName"];
     
-//    self.p = peripheral;
+    [_allPeripherals setObject:find forKey:[NSNumber numberWithInt:peripheral.hash]];
     
-    [central connectPeripheral:peripheral options:nil];
+    //连接上一个以后增加
+    self.globals.bleListCount++;
+    
+    //查找之前是否连接过
+    //读取BTEntity下的数据
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTBleList" inManagedObjectContext:_context];
+    
+    NSFetchRequest* request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    
+    NSError* error;
+    _localBleLIst = [_context executeFetchRequest:request error:&error];
+    
+    for (BTBleList* old in _localBleLIst) {
+        if ([old.uuid isEqualToString:(__bridge NSString *)(CFUUIDCreateString(NULL,peripheral.UUID))]) {
+            [_cm connectPeripheral:peripheral options:nil];
+        }
+    }
+    
+    NSLog(@"%@", _localBleLIst);
+    
+    NSLog(@"%@", _allPeripherals);
 }
 
+//连接peripheral后的回调
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     
     NSLog(@"Connect Peripheral: %@", peripheral);
     
+    BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
+    
+    //取出name后，把未连接的peripheral对象清除
+    find.name = [[_allPeripherals objectForKey:[NSNumber numberWithInt:peripheral.hash]] name];
+    [_allPeripherals removeObjectForKey:[NSNumber numberWithInt:peripheral.hash]];
+    
+    [self.allPeripherals setObject:find forKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+    
+    //查找之前是否连接过
+    Boolean never = YES;
+    
+    for (BTBleList* old in _localBleLIst) {
+        if ([old.uuid isEqualToString:CFBridgingRelease(CFUUIDCreateString(NULL,peripheral.UUID))]) {
+            never = NO;
+        }
+    }
+    
+    //从来没有连接过
+    if (never) {
+        //新建一条记录
+        BTBleList* first = [NSEntityDescription insertNewObjectForEntityForName:@"BTBleList" inManagedObjectContext:_context];
+        
+        first.name = find.name;
+        first.uuid = (__bridge NSString *)(CFUUIDCreateString(NULL,peripheral.UUID));
+        
+        //及时保存
+        NSError* error;
+        if(![_context save:&error]){
+            NSLog(@"%@", [error localizedDescription]);
+        }
+    }
+    
+    
+    
     //代理peripheral
     [peripheral setDelegate:self];
-    [peripheral discoverServices:nil];
+    [peripheral discoverServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID], [CBUUID UUIDWithString:BATTERY_SERVICE_UUID]]];
+    
+    NSLog(@"%@", _allPeripherals);
 }
 
+//发现所有service后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
     if (error) {
         NSLog(@"DiscoverServices error: %@", error.localizedDescription);
     }
     
-    NSLog(@"Discover Services: %@", peripheral.services);
-    
     for (CBService *s in peripheral.services) {
         
-        NSLog(@"%@", s.UUID);
-        
-        if ([s.UUID isEqual:[CBUUID UUIDWithString:kMetronomeServiceUUID]] || [s.UUID isEqual:[CBUUID UUIDWithString:kBatteryServiceUUID]]) {
-//            NSLog(@"find target");
-        
-            [peripheral discoverCharacteristics:nil forService:s];
-        }
+        [peripheral discoverCharacteristics:nil forService:s];
     }
 }
 
+//发现所有characteristic后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
     
     if (error) {
@@ -89,25 +163,34 @@
     
     NSLog(@"Discover Characteristics sum: %d", service.characteristics.count);
     
+    BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+    
     for (CBCharacteristic* c in service.characteristics) {
-        
-        BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
         
         [bp.allCharacteristics setObject:c forKey:c.UUID];
         
 //      [peripheral setNotifyValue:YES forCharacteristic:c];
-//        [peripheral readValueForCharacteristic:c];
         
-        NSLog(@"%lu", (unsigned long)bp.allCharacteristics.count);
-        
-        if(bp.allCharacteristics.count == kCharacteristicsCount){
+        //连接完成！！
+        if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
             NSLog(@"ge zaile ");
-            _globals.bluetoothConnected = YES;
-            [self sync];
+            _globals.bleConnected = YES;
+            
+            [self read:[CBUUID UUIDWithString:METRONOME_NAME_UUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:nil];
+            
+            [self read:[CBUUID UUIDWithString:BATTERY_LEVEL_UUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+                
+                //读取完名称和电量后
+                self.globals.bleListCount+=0;
+                
+            }];
+            
+            [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
         }
     }
 }
 
+//注册update value后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     
     if (error) {
@@ -137,7 +220,7 @@
     //根据uuid取到对象
     BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
     
-    
+    //把数据放到缓存里
     [bp.allValues setObject:characteristic.value forKey:characteristic.UUID];
     
     NSLog(@"%@", characteristic.UUID);
@@ -150,14 +233,23 @@
     }
 }
 
+//写数据完成后的回调
 -(void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     if (error) {
         NSLog(@"WriteValueForCharacteristic error: %@", error.localizedDescription);
     }
-    NSLog(@"write value: %@", characteristic.value);
+//    NSLog(@"write value: %@", characteristic.value);
 }
 
+//某个peripheral断开连接
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    
+    //从缓存中移除
+    [_allPeripherals removeObjectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+    
+    //设备总数减少
+    self.globals.bleListCount--;
+    
     //断开连接后自动重新搜索
     [self scan];
 }
@@ -167,16 +259,33 @@
     对外接口
  */
 
--(void)write:(NSData*)value withUUID:(CBUUID*)cuuid FromPeripheral:(CBUUID*)puuid{
-    BTBandPeripheral* bp = [_allPeripherals objectForKey:puuid];
+//向某个peripheral写数据
+-(void)write:(NSData*)value withUUID:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid{
     
+    BTBandPeripheral* bp = [_allPeripherals objectForKey:puuid];
     CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
     
-    [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithoutResponse];
+    [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+}
+
+//读取某个peripheral里的数据
+-(void)read:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block{
+    
+    BTBandPeripheral* bp = [_allPeripherals objectForKey:puuid];
+    CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
+    
+    //把block句柄放到缓存里
+    //注意：没有加锁，可能有问题
+    if (block) {
+        [bp.allCallback setObject:block forKey:cuuid];
+    }
+    
+    [bp.handle readValueForCharacteristic:tmp];
 }
 
 //向所有peripheral写数据
 -(void)writeAll:(NSData*)value withUUID:(CBUUID*)cuuid{
+    
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     for (BTBandPeripheral* bp in enumeratorValue) {
@@ -184,15 +293,13 @@
         
         if (tmp) {
             [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
-            
-            
         }
     }
 }
 
 
 //读取所有peripheral里某个characteristic
--(void)readAll:(CBUUID*)uuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block{
+-(void)readAll:(CBUUID*)cuuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block{
     
     //遍历所有的peripheral
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
@@ -200,12 +307,14 @@
     for (BTBandPeripheral* bp in enumeratorValue) {
         
         //根据uuid找到具体的characteristic
-        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:uuid];
+        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
         
         if (tmp) {
             //把block句柄放到缓存里
             //注意：没有加锁，可能有问题
-            [bp.allCallback setObject:block forKey:uuid];
+            if (block) {
+                [bp.allCallback setObject:block forKey:cuuid];
+            }
             
             //发送read请求
             [bp.handle readValueForCharacteristic:tmp];
@@ -227,21 +336,25 @@
 
 //主动重新搜索
 -(void)scan{
-    [_cm scanForPeripheralsWithServices:nil options:nil];
+    
+    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID]] options:nil];
+    
     NSLog(@"scan ForPeripherals");
 }
 
 //和手环同步时间
--(void)sync{
-    _syncTread = [[NSThread alloc] initWithTarget:self selector:@selector(doSync) object:nil];
+-(void)sync:(CBUUID*)puuid{
+    NSThread *syncTread = [[NSThread alloc] initWithTarget:self selector:@selector(doSync:) object:puuid];
     
-    
-    
-    [_syncTread start];
+    [syncTread start];
+}
+
+-(void)sync60:(NSTimer*)timer{
+    [self sync:timer.userInfo];
 }
 
 //同步操作
--(void)doSync{
+-(void)doSync:(CBUUID*)puuid{
     //调高优先级
     [NSThread setThreadPriority:1.0];
     
@@ -254,11 +367,11 @@
     mach_timebase_info_data_t info;
     mach_timebase_info(&info);
     
-    _syncStart = mach_absolute_time() * 1.0e-9;
-    _syncStart *= info.numer;
-    _syncStart /= info.denom;
+    double syncStart = mach_absolute_time() * 1.0e-9;
+    syncStart *= info.numer;
+    syncStart /= info.denom;
     
-    while (count < kSyncCount) {
+    while (count <SYNC_COUNT) {
         
         while (isLock) {
             now = mach_absolute_time() * 1.0e-9;
@@ -272,14 +385,15 @@
         
         //让主线程发蓝牙请求
         dispatch_async(mainQueue, ^{
-            [self writeAll:[NSData dataWithBytes:&count length:sizeof(count)] withUUID:[CBUUID UUIDWithString:kMetronomeSyncUUID]];
+            
+            [self write:[NSData dataWithBytes:&count length:sizeof(count)] withUUID:[CBUUID UUIDWithString:METRONOME_SYNC_UUID] fromPeripheral:puuid];
         });
         
         //计算序号
         count++;
         isLock = YES;
         
-        sendTime = _syncStart + kSyncInterval * count;
+        sendTime = syncStart +SYNC_INTERVAL * count;
         
         now = mach_absolute_time() * 1.0e-9;
         now *= info.numer;
@@ -289,36 +403,112 @@
         [NSThread sleepForTimeInterval:sendTime - now - LOCK_TIME];
     }
     
-    //最后读取蓝牙里算出的最匹配时间点
-    [self readAll:[CBUUID UUIDWithString:kMetronomeZeroUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+    //让主线程发蓝牙请求
+    dispatch_async(mainQueue, ^{
         
-        uint8_t sn;
-        [value getBytes:&sn];
-        
-        NSLog(@"cb: %d", sn);
-        
-        BTBandPeripheral *bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
-        
-        bp.zero = _syncStart + kSyncInterval * sn;
-        
-        NSLog(@"zero is: %f", bp.zero);
-    }];
+        //最后读取蓝牙里算出的最匹配时间点
+        [self read:[CBUUID UUIDWithString:METRONOME_ZERO_UUID] fromPeripheral:puuid withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+            
+            uint8_t sn;
+            [value getBytes:&sn];
+            
+            NSLog(@"cb: %d", sn);
+            
+            if (sn == 0) {
+                //如果没有找到同步点，立即再同步一次
+                [self sync:puuid];
+            }else{
+                //设定手机端的同步时刻
+                BTBandPeripheral *bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+                
+                bp.zero = syncStart +SYNC_INTERVAL * sn;
+                
+                NSLog(@"zero is: %f", bp.zero);
+                
+                //如果设备正在播放，就等马上启动
+                if ([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+                    NSLog(@"wait for restart");
+                    
+                    self.globals.waitForRestart = YES;
+                }
+                
+                //一段时间再次同步
+                [NSTimer scheduledTimerWithTimeInterval:SYNC_AGAIN target:self selector:@selector(sync60:) userInfo:puuid repeats:NO];
+            }
+        }];
+    });
 }
 
--(void)playAllAt:(double)timestamp andWait:(double)interval{
+//所有设备播放
+-(void)playAllAt:(double)timestamp{
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     for (BTBandPeripheral* bp in enumeratorValue) {
-        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:kMetronomePlayUUID]];
+        if (bp.play == 0) {
+            bp.play = 1;
         
-        uint32_t start = (timestamp - bp.zero + interval) * 1000000;
+            CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:METRONOME_PLAY_UUID]];
         
-        NSLog(@"%d", start);
+            uint32_t start = (timestamp - bp.zero) * 1000000;
+            
+            NSLog(@"let's play : %d", start);
         
-        if (tmp) {
-            [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+            if (tmp) {
+                [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+            }
         }
     }
+}
+
+//所有设备暂停
+-(void)pauseAll{
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    for (BTBandPeripheral* bp in enumeratorValue) {
+        if (bp.play == 1) {
+            bp.play = 0;
+            
+            CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:METRONOME_PLAY_UUID]];
+            
+            NSLog(@"let's pause");
+            
+            uint8_t rs = bp.play;
+            
+            if (tmp) {
+                [bp.handle writeValue:[NSData dataWithBytes:&rs length:sizeof(rs)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+            }
+        }
+    }
+}
+
+//返回蓝牙列表展示数据
+-(NSArray*)bleList:(NSUInteger)index{
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
+    
+    //1
+    NSString* bandName = bp.name;
+    //0
+    NSNumber* isConnected = [NSNumber numberWithBool:bp.handle.isConnected];
+    //2
+    uint8_t d;
+    [[bp.allValues objectForKey:[CBUUID UUIDWithString:BATTERY_LEVEL_UUID]] getBytes:&d];
+    NSNumber *batteryLevel = [NSNumber numberWithInt:d];
+    
+    return @[isConnected, bandName, batteryLevel];
+}
+
+//连接选中的peripheral
+-(void)connectSelectedPeripheral:(NSUInteger)index{
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
+    
+    if (!bp.handle.isConnected) {
+        [_cm connectPeripheral:bp.handle options:nil];
+    } 
+    
 }
 
 @end

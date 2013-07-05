@@ -15,11 +15,14 @@
     
     if (self) {
         
-        self.allCharacteristics = [NSMutableDictionary dictionaryWithCapacity:kCharacteristicsCount];
-        self.allValues = [NSMutableDictionary dictionaryWithCapacity:kCharacteristicsCount];
-        self.allCallback = [NSMutableDictionary dictionaryWithCapacity:kCharacteristicsCount];
+        self.allCharacteristics = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
+        self.allValues = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
+        self.allCallback = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
         
         self.handle = peripheral;
+        
+        self.play = 0;
+//        self.waitForRestart = NO;
     }
     
     return self;

@@ -35,7 +35,11 @@
     _cm = [BTBandCentral sharedBandCentral];
     
     //监控全局变量beatPerMinute的变化
-    [self.globals addObserver:self forKeyPath:@"bluetoothConnected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"bleConnected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
+    _bleList.delegate = self;
+    _bleList.dataSource = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,47 +48,69 @@
     // Dispose of any resources that can be recreated.
 }
 
+//手动查找
 - (IBAction)scan:(UIButton *)sender {
     [_cm scan];
-}
-
-- (IBAction)setShock:(UISwitch *)sender {
-    UInt16 i = (sender.on)?1:0;
-    
-    [_cm writeAll:[NSData dataWithBytes:&i length:sizeof(i)] withUUID:[CBUUID UUIDWithString:kMetronomeShockUUID]];
-    NSLog(@"%lu", sizeof(i));
-}
-- (IBAction)setSpark:(UISwitch *)sender {
-}
-
-- (IBAction)read:(UIButton *)sender {
-    [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-        NSLog(@"cb: %@", [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding]);
-    }];
-    
-}
-
-- (IBAction)write:(UIButton *)sender {
-    NSString* name = @"卡卡音乐手环";
-    
-    [_cm writeAll:[name dataUsingEncoding:NSUTF8StringEncoding] withUUID:[CBUUID UUIDWithString:kMetronomeNameUUID]];
-    
-    NSLog(@"%lu", (unsigned long)name.length);
 }
 
 //监控参数，更新显示
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"bluetoothConnected"])
+    
+    if([keyPath isEqualToString:@"bleListCount"])
     {
-        if (self.globals.bluetoothConnected) {
-            [_cm readAll:[CBUUID UUIDWithString:kMetronomeNameUUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-                NSString* name = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-                NSLog(@"cb: %@", name);
-                
-                _bandName.text = name;
-            }];
-        }
+        NSLog(@"ble count: %d", self.globals.bleListCount);
+        
+        //行数变化时，重新加载列表
+        [_bleList reloadData];
     }
 }
+
+//列表行数的代理
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.globals.bleListCount;
+}
+
+//渲染每行数据的代理
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSArray* bleOne = [self.bandCM bleList:indexPath.row];
+    
+    Boolean isConnected = [[bleOne objectAtIndex:IS_CONNECTED_INDEX] intValue];
+    
+    NSString *CellIdentifier;
+    
+    if (isConnected) {
+        CellIdentifier = @"bleListCellConnected";
+    }else{
+        CellIdentifier = @"bleListCellScan";
+    }
+    
+    NSLog(@"%@", CellIdentifier);
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    //手环名称
+    UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
+    bandName.text = [bleOne objectAtIndex:BAND_NAME_INDEX];
+    
+    if (isConnected) {
+        //连接后显示电量
+        UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:BATTERY_LEVEL_TAG];
+        batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:BATTERY_LEVEL_INDEX]];
+        batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    }
+    
+    return cell;
+}
+
+//选中某行
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.bandCM connectSelectedPeripheral:[indexPath row]];
+}
+
 @end
