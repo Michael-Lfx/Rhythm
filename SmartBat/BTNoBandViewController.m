@@ -35,7 +35,6 @@
     _cm = [BTBandCentral sharedBandCentral];
     
     //监控全局变量beatPerMinute的变化
-    [self.globals addObserver:self forKeyPath:@"bleConnected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
     _bleList.delegate = self;

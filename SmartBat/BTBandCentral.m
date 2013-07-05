@@ -174,18 +174,20 @@
         //连接完成！！
         if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
             NSLog(@"ge zaile ");
-            _globals.bleConnected = YES;
             
+            //开始设备同步
+            [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+            
+            //读取设备名称
             [self read:[CBUUID UUIDWithString:METRONOME_NAME_UUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:nil];
             
+            //读取电量
             [self read:[CBUUID UUIDWithString:BATTERY_LEVEL_UUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                 
                 //读取完名称和电量后
                 self.globals.bleListCount+=0;
                 
             }];
-            
-            [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
         }
     }
 }
@@ -225,12 +227,14 @@
     
     NSLog(@"%@", characteristic.UUID);
     
+    //取出缓存中的block并执行
     void (^block)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral)  = [bp.allCallback objectForKey:characteristic.UUID];
     
     if (block) {
         block(characteristic.value, characteristic, peripheral);
-        [bp.allCallback removeObjectForKey:characteristic.UUID];
     }
+    
+    [bp.allCallback removeObjectForKey:characteristic.UUID];
 }
 
 //写数据完成后的回调
@@ -349,11 +353,12 @@
     [syncTread start];
 }
 
+//60秒同步一次的函数句柄
 -(void)sync60:(NSTimer*)timer{
     [self sync:timer.userInfo];
 }
 
-//同步操作
+//同步操作的新线程
 -(void)doSync:(CBUUID*)puuid{
     //调高优先级
     [NSThread setThreadPriority:1.0];
@@ -367,12 +372,14 @@
     mach_timebase_info_data_t info;
     mach_timebase_info(&info);
     
+    //同步操作最开始的时刻
     double syncStart = mach_absolute_time() * 1.0e-9;
     syncStart *= info.numer;
     syncStart /= info.denom;
     
     while (count <SYNC_COUNT) {
         
+        //在靠近触发时刻时加锁
         while (isLock) {
             now = mach_absolute_time() * 1.0e-9;
             now *= info.numer;
@@ -409,6 +416,7 @@
         //最后读取蓝牙里算出的最匹配时间点
         [self read:[CBUUID UUIDWithString:METRONOME_ZERO_UUID] fromPeripheral:puuid withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
             
+            //读取设备中时刻最接近的序号
             uint8_t sn;
             [value getBytes:&sn];
             
@@ -421,12 +429,13 @@
                 //设定手机端的同步时刻
                 BTBandPeripheral *bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
+                //纳秒级别
                 bp.zero = syncStart +SYNC_INTERVAL * sn;
                 
                 NSLog(@"zero is: %f", bp.zero);
                 
-                //如果设备正在播放，就等马上启动
-                if ([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue]){
+                //如果设备正在播放，并且设备处在暂停状态，就等马上启动
+                if ([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue] && !bp.play){
                     NSLog(@"wait for restart");
                     
                     self.globals.waitForRestart = YES;
@@ -448,7 +457,8 @@
             bp.play = 1;
         
             CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:METRONOME_PLAY_UUID]];
-        
+            
+            //算出基于同步点的时间间隔，微米级别
             uint32_t start = (timestamp - bp.zero) * 1000000;
             
             NSLog(@"let's play : %d", start);
@@ -483,15 +493,16 @@
 
 //返回蓝牙列表展示数据
 -(NSArray*)bleList:(NSUInteger)index{
-    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
+    //根据index找到对应的peripheral
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
     
-    //1
-    NSString* bandName = bp.name;
-    //0
+    //0 是否连接
     NSNumber* isConnected = [NSNumber numberWithBool:bp.handle.isConnected];
-    //2
+    //1 设备名称
+    NSString* bandName = bp.name;
+    //2 电池电量
     uint8_t d;
     [[bp.allValues objectForKey:[CBUUID UUIDWithString:BATTERY_LEVEL_UUID]] getBytes:&d];
     NSNumber *batteryLevel = [NSNumber numberWithInt:d];
@@ -501,8 +512,9 @@
 
 //连接选中的peripheral
 -(void)connectSelectedPeripheral:(NSUInteger)index{
-    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
+    //根据index找到对应的peripheral
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
     
     if (!bp.handle.isConnected) {

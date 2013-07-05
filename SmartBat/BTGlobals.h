@@ -42,8 +42,6 @@
 //playStatusChangedTime : mach_absolute_time, Play Status changed time
 @property(retain, nonatomic) NSDictionary * systemStatus;
 
-@property(assign, nonatomic) BOOL bleConnected;
-
 //手环等着下一个重拍到达
 @property(assign, nonatomic) Boolean waitForRestart;
 

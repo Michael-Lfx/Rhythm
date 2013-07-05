@@ -289,6 +289,7 @@
     
     if([keyPath isEqualToString:@"beatInfo"])
     {
+        //判断当前节拍是否是第一个重拍
         if (self.globals.waitForRestart && [[self.globals.beatInfo valueForKey:@"indexOfMeasure"] intValue] == 0) {
             
             self.globals.waitForRestart = NO;
