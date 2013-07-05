@@ -76,7 +76,7 @@
     
     NSArray* bleOne = [self.bandCM bleList:indexPath.row];
     
-    Boolean isConnected = [[bleOne objectAtIndex:0] intValue];
+    Boolean isConnected = [[bleOne objectAtIndex:IS_CONNECTED_INDEX] intValue];
     
     NSString *CellIdentifier;
     
@@ -94,16 +94,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    //手环名称
+    UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
+    bandName.text = [bleOne objectAtIndex:BAND_NAME_INDEX];
+    
     if (isConnected) {
-        //电量
-        UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:2];
-        batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:2]];
+        //连接后显示电量
+        UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:BATTERY_LEVEL_TAG];
+        batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:BATTERY_LEVEL_INDEX]];
         batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     }
-    
-    //手环名称
-    UITextField* name = (UITextField*)[cell.contentView viewWithTag:1];
-    name.text = [bleOne objectAtIndex:1];
     
     return cell;
 }

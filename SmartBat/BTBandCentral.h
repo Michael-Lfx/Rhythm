@@ -11,9 +11,14 @@
 #import "BTConstants.h"
 #import "BTBandPeripheral.h"
 #import "BTGlobals.h"
+#import "BTBleList.h"
+#import "BTAppDelegate.h"
 #import <mach/mach_time.h>
 
-@interface BTBandCentral : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>
+@interface BTBandCentral : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>{
+    NSManagedObjectContext* _context;
+    NSArray* _localBleLIst;
+}
 
 @property(strong, nonatomic) CBCentralManager* cm;
 @property(strong, nonatomic) NSMutableDictionary* p;
