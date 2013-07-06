@@ -13,7 +13,6 @@
 @protocol TimeLineDelegate <NSObject>
 
 -(void) onTimeInvokeHandler:(double) time;
--(void) onSoundTimeInvokeHandler:(double) time;
 
 @end
 

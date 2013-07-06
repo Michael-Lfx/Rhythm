@@ -107,7 +107,6 @@
         
         Boolean _isLock = YES;
         
-        Boolean _isDispatchOnTime = NO;
         
         while(_isLock)
         {
@@ -115,28 +114,17 @@
             
             if(_testTime >= _clockStartTime + _clockDuration * _clockTickCount  )
             {
-                if(!_isDispatchOnTime){
-                    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                    dispatch_async(mainQueue, ^{
-                        [self invokeDelegate:nil];
-                    });
-                    _isDispatchOnTime = YES;
-                    
-                }
+
+                dispatch_queue_t mainQueue = dispatch_get_main_queue();
+                dispatch_async(mainQueue, ^{
+                    [self invokeDelegate:nil];
+                });
                 
-                if(_testTime >= _clockStartTime + _clockDuration * _clockTickCount  + APP_SOUND_LATENCY){
-                
-                    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-                    dispatch_async(mainQueue, ^{
-                        [self invokeSoundDelegate:nil];
-                    });
-                    
-                    _isLock = NO;
-                }
+                _isLock = NO;
             }
             else
             {
-//                NSLog(@"d: %f, testTime: %f, clockStartTime: %f, clockDuration: %f, clockTickCount: %d",_testTime -( _clockStartTime + _clockDuration * _clockTickCount ), _testTime, _clockStartTime, _clockDuration, _clockTickCount );
+                
             }
         }
         
@@ -163,15 +151,6 @@
     double point = [self getMachNowTime];
     
     [self.timeLineDelegate onTimeInvokeHandler: point];
-}
-
-
--(void)invokeSoundDelegate:(id)info
-{
-    
-    double point = [self getMachNowTime];
-    
-    [self.timeLineDelegate onSoundTimeInvokeHandler: point];
 }
 
 
