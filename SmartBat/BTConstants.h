@@ -6,8 +6,6 @@
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 //ip5处理时用到
 #define IS_IP5                          (([UIScreen mainScreen].applicationFrame.size.height == 548) ? YES : NO)
 #define IP4_HEIGHT                      460
@@ -81,7 +79,7 @@
 
 //手环同步设置
 
-#define APP_SOUND_LATENCY               0.004f
+#define APP_SOUND_LATENCY               0.030f
 #define SYNC_INTERVAL                   0.067
 #define SYNC_COUNT                      10
 
@@ -92,6 +90,3 @@
 #define DEFAULT_INTERVAL                0.01
 #define LOCK_TIME                       0.002
 
-@interface BTConstants : NSObject
-
-@end

@@ -6,8 +6,4 @@
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
-#import "BTConstants.h"
 
-@implementation BTConstants
-
-@end
