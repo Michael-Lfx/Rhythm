@@ -168,47 +168,19 @@
     {
         case 0:
             [self.timeToBeatTransmitterBeatDelegate onBeatHandler:beat ofMeasure:_measureTemplate withBPM:_bpm];
-
-            break;
-        default:
-            [self.timeToBeatTransmitterBeatDelegate onSubdivisionHandler:beat];
-            
-            
-            break;
-    }
-
-}
-
-
--(void)onSoundTimeInvokeHandler: (double) time
-{
-
-    
-    BTBeat * beat = [_measureTemplate getCurrentNote];
-    beat.indexOfMeasure = _measureTemplate.playIndex;
-    beat.indexOfSubdivision = _subdivisionTemplate.playIndex;
-    beat.hitTime = time;
-    
-    
-    switch(_subdivisionTemplate.playIndex)
-    {
-        case 0:
-            [self.timeToBeatTransmitterBeatDelegate onSoundBeatHandler:beat ofMeasure:_measureTemplate withBPM:_bpm];
             
             [_measureTemplate playNote];
             [_subdivisionTemplate playNote ];
             break;
         default:
-            [self.timeToBeatTransmitterBeatDelegate onSoundSubdivisionHandler:beat];
+            [self.timeToBeatTransmitterBeatDelegate onSubdivisionHandler:beat];
             
             [_subdivisionTemplate playNote ];
             break;
     }
-    
-    
-    
-    
+
 }
+
 
 
 @end

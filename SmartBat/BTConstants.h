@@ -81,7 +81,6 @@
 
 //手环同步设置
 
-#define APP_SOUND_LATENCY               0.004f
 #define SYNC_INTERVAL                   0.067
 #define SYNC_COUNT                      10
 

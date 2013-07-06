@@ -220,7 +220,24 @@
 //delegate
 -(void)onBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(int)bpm
 {
-//    NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, measure.playIndex);
+    
+    BTBeatType beatType = beat.beatType;
+    
+    switch(beatType)
+    {
+        case BTBeatType_F:
+            [_simpleFileSoundEngine playSound:_soundFile_F  withExtension:DEFAULT_SOUND_FILE_EXT];
+            
+            break;
+        case BTBeatType_P:
+            [_simpleFileSoundEngine playSound:_soundFile_P  withExtension:DEFAULT_SOUND_FILE_EXT];
+            
+            break;
+        case BTBeatType_NIL:
+            break;
+        default:
+            break;
+    }
     
     NSNumber * indexOfMeasure = [[NSNumber alloc]initWithInt:beat.indexOfMeasure];
     NSNumber * hitTime = [[NSNumber alloc]initWithDouble:beat.hitTime];
@@ -239,36 +256,9 @@
 
 -(void)onSubdivisionHandler:(BTBeat *)beat
 {
-//    [_simpleFileSoundEngine playSound:_soundFile_SUBDIVISION  withExtension:DEFAULT_SOUND_FILE_EXT];
-}
-
--(void)onSoundBeatHandler:(BTBeat *)beat ofMeasure:(BTMeasure *)measure withBPM:(int)bpm
-{
-    //    NSLog(@"beat of timeline! bpm: %d, beatIndex: %d", bpm, measure.playIndex);
-    
-    BTBeatType beatType = beat.beatType;
-    
-    switch(beatType)
-    {
-        case BTBeatType_F:
-            [_simpleFileSoundEngine playSound:_soundFile_F  withExtension:DEFAULT_SOUND_FILE_EXT];
-            
-            break;
-        case BTBeatType_P:
-            [_simpleFileSoundEngine playSound:_soundFile_P  withExtension:DEFAULT_SOUND_FILE_EXT];
-            break;
-        case BTBeatType_NIL:
-            break;
-        default:
-            break;
-    }
-    
-}
-
--(void)onSoundSubdivisionHandler:(BTBeat *)beat
-{
     [_simpleFileSoundEngine playSound:_soundFile_SUBDIVISION  withExtension:DEFAULT_SOUND_FILE_EXT];
 }
+
 
 -(void)bindSoundProfile: (NSString *)_profileName
 {
