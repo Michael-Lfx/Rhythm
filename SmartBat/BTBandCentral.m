@@ -86,9 +86,12 @@
     _localBleLIst = [_context executeFetchRequest:request error:&error];
     
     for (BTBleList* old in _localBleLIst) {
-        if ([old.uuid isEqualToString:(__bridge NSString *)(CFUUIDCreateString(NULL,peripheral.UUID))]) {
-            [_cm connectPeripheral:peripheral options:nil];
+        if (peripheral.UUID != NULL) {
+            if ([old.uuid isEqualToString:(__bridge NSString *)(CFUUIDCreateString(NULL, peripheral.UUID))]) {
+                [_cm connectPeripheral:peripheral options:nil];
+            }
         }
+        
     }
     
     NSLog(@"%@", _localBleLIst);
@@ -356,6 +359,14 @@
 //60秒同步一次的函数句柄
 -(void)sync60:(NSTimer*)timer{
     [self sync:timer.userInfo];
+    
+    //读取电量
+    [self read:[CBUUID UUIDWithString:BATTERY_LEVEL_UUID] fromPeripheral:timer.userInfo withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+        
+        //读取完名称和电量后
+        self.globals.bleListCount+=0;
+                                        
+    }];
 }
 
 //同步操作的新线程
