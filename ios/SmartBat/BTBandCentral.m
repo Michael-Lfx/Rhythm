@@ -86,12 +86,9 @@
     _localBleLIst = [_context executeFetchRequest:request error:&error];
     
     for (BTBleList* old in _localBleLIst) {
-        if (peripheral.UUID != NULL) {
-            if ([old.uuid isEqualToString:(__bridge NSString *)(CFUUIDCreateString(NULL, peripheral.UUID))]) {
-                [_cm connectPeripheral:peripheral options:nil];
-            }
+        if ([old.name isEqualToString:find.name]){
+            [_cm connectPeripheral:peripheral options:nil];
         }
-        
     }
     
     NSLog(@"%@", _localBleLIst);
@@ -116,7 +113,7 @@
     Boolean never = YES;
     
     for (BTBleList* old in _localBleLIst) {
-        if ([old.uuid isEqualToString:CFBridgingRelease(CFUUIDCreateString(NULL,peripheral.UUID))]) {
+        if ([old.name isEqualToString:find.name]) {
             never = NO;
         }
     }
@@ -142,7 +139,7 @@
     [peripheral setDelegate:self];
     [peripheral discoverServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID], [CBUUID UUIDWithString:BATTERY_SERVICE_UUID]]];
     
-    NSLog(@"%@", _allPeripherals);
+    NSLog(@"hello：%@", _allPeripherals);
 }
 
 //发现所有service后的回调
@@ -344,7 +341,8 @@
 //主动重新搜索
 -(void)scan{
     
-    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID]] options:nil];
+//    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID]] options:nil];
+    [_cm scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
     
     NSLog(@"scan ForPeripherals");
 }
@@ -530,7 +528,9 @@
     
     if (!bp.handle.isConnected) {
         [_cm connectPeripheral:bp.handle options:nil];
-    } 
+    } else {
+        [_cm cancelPeripheralConnection:bp.handle];
+    }
     
 }
 

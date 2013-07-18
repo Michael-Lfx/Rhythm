@@ -56,7 +56,7 @@
 #define NOTETYPE_MAX                    0.5f
 
 //蓝牙服务uuid
-#define CHARACTERISTICS_COUNT           9
+#define CHARACTERISTICS_COUNT           7
 
 #define METRONOME_SERVICE_UUID          @"2300"
 
@@ -80,7 +80,7 @@
 //手环同步设置
 
 #define APP_SOUND_LATENCY               0.030f
-#define SYNC_INTERVAL                   0.061
+#define SYNC_INTERVAL                   0.067
 #define SYNC_COUNT                      12
 
 //同步间隔

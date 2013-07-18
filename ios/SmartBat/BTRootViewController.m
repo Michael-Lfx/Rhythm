@@ -32,6 +32,8 @@
     int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
     int scrollY, scrollHeight;
     
+    NSLog(@"%d", screenHeight);
+    
     //如果是ip5的话，scrollview上面少40像素，里面的子view保持460高度不变
     if(IS_IP5){
         scrollY = IP5_Y_FIXED;
