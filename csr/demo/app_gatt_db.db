@@ -1,0 +1,204 @@
+#include "smart_band.h"
+
+/* For service details, refer http://developer.bluetooth.org/gatt/services/
+ * Pages/ServiceViewer.aspx?u=org.bluetooth.service.generic_access.xml
+ */
+
+/* Primary service declaration of GAP service */
+primary_service {
+    uuid : UUID_GAP,
+    name : "GAP_SERVICE",
+
+    /* Device Name characteristic */
+    characteristic {
+	    uuid : UUID_DEVICE_NAME,
+	    name : "DEVICE_NAME",
+	    properties : [read, write],
+        flags : [FLAG_IRQ, FLAG_ENCR_W],
+
+	    /* Value is kept zero as the device name buffer is managed by 
+	     * application 
+	     */
+	    value : "Smart Band"
+    },
+     
+    /* Device name characteristic supports IRQ flag, thereby reads 
+     * and writes on characteristic value are handled by application. 
+     * Write to device name characteristic value requires encryption 
+     * to be enabled.
+     */
+    
+    /* Appearance characteristic */
+    characteristic {
+	    uuid : UUID_APPEARANCE,
+	    name : "DEVICE_APPEARANCE",
+	    properties : read,
+            value : APPEARANCE_METRONOME_VALUE
+    },
+    
+    /* Peripheral preferred connection parameters characteristic */
+    characteristic {
+	    uuid : UUID_PER_PREF_CONN_PARAMS,
+	    properties : read,
+	    value : [PREFERRED_MIN_CON_INTERVAL, PREFERRED_MAX_CON_INTERVAL, 
+	             PREFERRED_SLAVE_LATENCY, PREFERRED_SUPERVISION_TIMEOUT]
+    }
+},
+
+/* For service details, refer http://developer.bluetooth.org/gatt/services/
+ * Pages/ServiceViewer.aspx?u=org.bluetooth.service.generic_attribute.xml
+ */
+
+/* Primary service declaration of GATT service */
+primary_service {
+    uuid : UUID_GATT,
+    name : "GATT_SERVICE"
+
+    /* No characteristic supported for this service */
+
+},
+
+primary_service {
+    uuid : UUID_DEVICE_INFO_SERVICE,
+    name : "DEVICE_INFO_SERVICE", /* Name will be used in handle name */
+
+    /* Serial number characteristic of device info service */
+    characteristic {
+        uuid : UUID_DEVICE_INFO_SERIAL_NUMBER,
+        properties : read,      /* Characteristic can only be read */
+        flags : [FLAG_ENCR_R],
+        name : "DEVICE_INFO_SERIAL_NUMBER",
+        value : "BLE-ALERT-001"
+       
+    },
+
+    /* Hardware revision charcteristic of device info service */
+    characteristic {
+        uuid : UUID_DEVICE_INFO_HARDWARE_REVISION,
+        properties : read,      /*Characteristic can only be read */
+        flags : [FLAG_ENCR_R],
+        name : "DEVICE_INFO_HARDWARE_REVISION",
+        value : HARDWARE_REVISION
+
+    },
+
+    /* Firmware revision charcteristic */
+    characteristic {
+        uuid : UUID_DEVICE_INFO_FIRMWARE_REVISION,
+        properties : read,      /*Characteristic can only be read */
+        flags : [FLAG_ENCR_R],
+        name : "DEVICE_INFO_FIRMWARE_REVISION",
+        value : "CSR uEnergy SDK 2.1.0"
+
+    },
+
+    /* Software revision characteristic */
+    characteristic {
+        uuid : UUID_DEVICE_INFO_SOFTWARE_REVISION,
+        properties : read,      /*Characteristic can only be read */
+        flags : [FLAG_ENCR_R],
+        name : "DEVICE_INFO_SOFTWARE_REVISION",
+        value : "Application version 2.1.0.0"
+
+    },
+
+    /* Manufacturer name charcteristic */
+    characteristic {
+        uuid : UUID_DEVICE_INFO_MANUFACTURER_NAME,
+        properties : read,      /*Characteristic can only be read */
+        flags : [FLAG_ENCR_R],
+        name : "DEVICE_INFO_MANUFACTURER_NAME",
+        value : "Cambridge Silicon Radio"
+    },
+
+    /* Device info PNP id */
+    characteristic {
+        uuid : UUID_DEVICE_INFO_PNP_ID,
+        properties : read,      /*Characteristic can only be read */
+        flags : [FLAG_ENCR_R],
+        name : "DEVICE_INFO_END",
+        value : [VENDOR_ID_SRC_BT, VENDOR_ID,
+                 PRODUCT_ID,
+                 PRODUCT_VER]
+    }  
+},
+
+primary_service {
+    uuid: UUID_METRONOME_SERVICE,
+    name : "METRONOME_SERVICE",
+    
+    characteristic {
+        uuid : UUID_METRONOME_NAME,
+        name : "METRONOME_NAME",
+        properties : [read, write],
+        flags : FLAG_IRQ,
+        size_value : NAME_MAX_LENGTH
+    },
+    
+    // characteristic {
+    //     uuid : UUID_METRONOME_SHOCK,
+    //     name : "METRONOME_SHOCK",
+    //     properties : [write],
+    //     size_value : 1
+    // },
+    
+    // characteristic {
+    //     uuid : UUID_METRONOME_SPARK,
+    //     name : "METRONOME_SPARK",
+    //     properties : [write],
+    //     size_value : 1
+    // },
+
+    characteristic {
+        uuid : UUID_METRONOME_PLAY,
+        name : "METRONOME_PLAY",
+        properties : [write],
+        flags : FLAG_IRQ,
+        size_value : 4
+    },
+    
+    characteristic {
+        uuid : UUID_METRONOME_DURATION,
+        name : "METRONOME_DURATION",
+        properties : [write],
+        flags : FLAG_IRQ,
+        size_value : 4
+    },
+    
+    characteristic {
+        uuid : UUID_METRONOME_MEASURE,
+        name : "METRONOME_MEASURE",
+        properties : [write],
+        flags : FLAG_IRQ,
+        size_value : 16
+    },
+    
+    characteristic {
+        uuid : UUID_METRONOME_SYNC,
+        name : "METRONOME_SYNC",
+        properties : [write],
+        flags : FLAG_IRQ,
+        size_value : 1
+    },
+    
+    characteristic {
+        uuid : UUID_METRONOME_ZERO,
+        name : "METRONOME_ZERO",
+        properties : [read],
+        flags : FLAG_IRQ,
+        size_value : 1
+    }
+},
+    
+primary_service {   
+    uuid: UUID_BATTERY_SERVICE,
+    name : "BATTERY_SERVICE",
+    
+    characteristic {
+        uuid : UUID_BATTERY_LEVEL,
+        name : "BATTERY_LEVEL",
+        properties : [read],
+        flags : FLAG_IRQ,
+        size_value : 1
+    }
+}

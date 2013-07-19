@@ -1,0 +1,2687 @@
+   1                 		.file	"alert_client_hw.c"
+   2                 		.variant xap2+
+   3                 	
+   4                 		.small
+   5                 	
+   6                 		.section	.debug_abbrev,"",@progbits
+   7                 	.Ldebug_abbrev0:
+   8                 		.section	.debug_info,"",@progbits
+   9                 	.Ldebug_info0:
+  10                 		.section	.debug_line,"",@progbits
+  11                 	.Ldebug_line0:
+  12 0000 00 00 00 00 		.text
+  12      00 02 00 00 
+  12      00 00 01 01 
+  12      FB 0E 0D 00 
+  12      01 01 01 01 
+  13                 	.Ltext0:
+  14                 		.section	.text.SetIndication,"ax",@progbits
+  15                 		.global	SetIndication
+  16                 		.type	SetIndication, @function
+  17                 	SetIndication:
+  18                 	.LFB7:
+  19                 		.file 1 "alert_client_hw.c"
+   0:alert_client_hw.c **** /******************************************************************************
+   1:alert_client_hw.c ****  *  Copyright (C) Cambridge Silicon Radio Limited 2012-2013
+   2:alert_client_hw.c ****  *  Part of CSR uEnergy SDK 2.1.0
+   3:alert_client_hw.c ****  *  Application version 2.1.0.0
+   4:alert_client_hw.c ****  *
+   5:alert_client_hw.c ****  *  FILE
+   6:alert_client_hw.c ****  *      alert_client_hw.c
+   7:alert_client_hw.c ****  *
+   8:alert_client_hw.c ****  *  DESCRIPTION
+   9:alert_client_hw.c ****  *      This file defines all the function which interact with hardware
+  10:alert_client_hw.c ****  *
+  11:alert_client_hw.c ****  *  NOTES
+  12:alert_client_hw.c ****  *
+  13:alert_client_hw.c ****  ******************************************************************************/
+  14:alert_client_hw.c ****  
+  15:alert_client_hw.c **** /*============================================================================*
+  16:alert_client_hw.c ****  *  SDK Header Files
+  17:alert_client_hw.c ****  *============================================================================*/
+  18:alert_client_hw.c **** #include <main.h>
+  19:alert_client_hw.c **** #include <pio_ctrlr.h>
+  20:alert_client_hw.c **** #include <pio.h>
+  21:alert_client_hw.c **** #include <timer.h>
+  22:alert_client_hw.c **** #include <ls_app_if.h>
+  23:alert_client_hw.c **** #include <mem.h>
+  24:alert_client_hw.c **** 
+  25:alert_client_hw.c **** /*============================================================================*
+  26:alert_client_hw.c ****  *  Local Header File
+  27:alert_client_hw.c ****  *============================================================================*/
+  28:alert_client_hw.c **** #include "alert_client_hw.h"
+  29:alert_client_hw.c **** #include "alert_client.h"
+  30:alert_client_hw.c **** #include "alert_client_gatt.h"
+  31:alert_client_hw.c **** #include "phone_alert_service_data.h"
+  32:alert_client_hw.c **** 
+  33:alert_client_hw.c **** 
+  34:alert_client_hw.c **** /*============================================================================*
+  35:alert_client_hw.c ****  *  Private Data
+  36:alert_client_hw.c ****  *============================================================================*/
+  37:alert_client_hw.c **** /* Alert tag application hardware data structure */
+  38:alert_client_hw.c **** APP_HW_DATA_T g_app_hw_data;
+  39:alert_client_hw.c **** 
+  40:alert_client_hw.c **** 
+  41:alert_client_hw.c **** /*============================================================================*
+  42:alert_client_hw.c ****  *  Private Function Prototypes
+  43:alert_client_hw.c ****  *============================================================================*/
+  44:alert_client_hw.c **** #ifdef ENABLE_BUZZER
+  45:alert_client_hw.c **** /* This function gets called on buzzer timer expiry and stops it */
+  46:alert_client_hw.c **** static void appBuzzerTimerHandler(timer_id tid);
+  47:alert_client_hw.c **** #endif /* ENABLE_BUZZER */
+  48:alert_client_hw.c **** /*============================================================================*
+  49:alert_client_hw.c ****  *  Private Function Implementations
+  50:alert_client_hw.c ****  *============================================================================*/
+  51:alert_client_hw.c **** 
+  52:alert_client_hw.c **** #ifdef ENABLE_BUZZER
+  53:alert_client_hw.c **** /*----------------------------------------------------------------------------*
+  54:alert_client_hw.c ****  *  NAME
+  55:alert_client_hw.c ****  *      appBuzzerTimerHandler
+  56:alert_client_hw.c ****  *
+  57:alert_client_hw.c ****  *  DESCRIPTION
+  58:alert_client_hw.c ****  *      This function is used to stop the Buzzer at the expiry of 
+  59:alert_client_hw.c ****  *      timer.
+  60:alert_client_hw.c ****  *
+  61:alert_client_hw.c ****  *  RETURNS
+  62:alert_client_hw.c ****  *      Nothing.
+  63:alert_client_hw.c ****  *
+  64:alert_client_hw.c ****  *----------------------------------------------------------------------------*/
+  65:alert_client_hw.c **** static void appBuzzerTimerHandler(timer_id tid)
+  66:alert_client_hw.c **** {
+  67:alert_client_hw.c ****     uint32 beep_timer = SHORT_BEEP_TIMER_VALUE;
+  68:alert_client_hw.c **** 
+  69:alert_client_hw.c ****     g_app_hw_data.buzzer_tid = TIMER_INVALID;
+  70:alert_client_hw.c **** 
+  71:alert_client_hw.c ****     switch(g_app_hw_data.beep_type)
+  72:alert_client_hw.c ****     {
+  73:alert_client_hw.c ****         case beep_short: /* FALLTHROUGH */
+  74:alert_client_hw.c ****         case beep_long:
+  75:alert_client_hw.c ****         {
+  76:alert_client_hw.c ****             g_app_hw_data.beep_type = beep_off;
+  77:alert_client_hw.c **** 
+  78:alert_client_hw.c ****             /* Disable buzzer */
+  79:alert_client_hw.c ****             PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+  80:alert_client_hw.c ****         }
+  81:alert_client_hw.c ****         break;
+  82:alert_client_hw.c ****         case beep_twice:
+  83:alert_client_hw.c ****         {
+  84:alert_client_hw.c ****             if(g_app_hw_data.beep_count == 0)
+  85:alert_client_hw.c ****             {
+  86:alert_client_hw.c ****                 /* First beep sounded. Start the silent gap*/
+  87:alert_client_hw.c ****                 g_app_hw_data.beep_count = 1;
+  88:alert_client_hw.c **** 
+  89:alert_client_hw.c ****                 /* Disable buzzer */
+  90:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+  91:alert_client_hw.c **** 
+  92:alert_client_hw.c ****                 /* Time gap between two beeps */
+  93:alert_client_hw.c ****                 beep_timer = BEEP_GAP_TIMER_VALUE;
+  94:alert_client_hw.c ****             }
+  95:alert_client_hw.c ****             else if(g_app_hw_data.beep_count == 1)
+  96:alert_client_hw.c ****             {
+  97:alert_client_hw.c ****                 g_app_hw_data.beep_count = 2;
+  98:alert_client_hw.c **** 
+  99:alert_client_hw.c ****                 /* Enable buzzer */
+ 100:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, TRUE);
+ 101:alert_client_hw.c **** 
+ 102:alert_client_hw.c ****                 /* Start beep */
+ 103:alert_client_hw.c ****                 beep_timer = SHORT_BEEP_TIMER_VALUE;
+ 104:alert_client_hw.c ****             }
+ 105:alert_client_hw.c ****             else
+ 106:alert_client_hw.c ****             {
+ 107:alert_client_hw.c ****                 /* Two beeps have been sounded. Stop buzzer now*/
+ 108:alert_client_hw.c ****                 g_app_hw_data.beep_count = 0;
+ 109:alert_client_hw.c **** 
+ 110:alert_client_hw.c ****                 /* Disable buzzer */
+ 111:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 112:alert_client_hw.c **** 
+ 113:alert_client_hw.c ****                 g_app_hw_data.beep_type = beep_off;
+ 114:alert_client_hw.c ****             }
+ 115:alert_client_hw.c ****         }
+ 116:alert_client_hw.c ****         break;
+ 117:alert_client_hw.c ****         case beep_thrice:
+ 118:alert_client_hw.c ****         {
+ 119:alert_client_hw.c ****             if(g_app_hw_data.beep_count == 0 ||
+ 120:alert_client_hw.c ****                g_app_hw_data.beep_count == 2)
+ 121:alert_client_hw.c ****             {
+ 122:alert_client_hw.c ****                 /* First beep sounded. Start the silent gap*/
+ 123:alert_client_hw.c ****                 g_app_hw_data.beep_count++;
+ 124:alert_client_hw.c **** 
+ 125:alert_client_hw.c ****                 /* Disable buzzer */
+ 126:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 127:alert_client_hw.c **** 
+ 128:alert_client_hw.c ****                 /* Time gap between two beeps */
+ 129:alert_client_hw.c ****                 beep_timer = BEEP_GAP_TIMER_VALUE;
+ 130:alert_client_hw.c ****             }
+ 131:alert_client_hw.c ****             else if(g_app_hw_data.beep_count == 1 ||
+ 132:alert_client_hw.c ****                     g_app_hw_data.beep_count == 3)
+ 133:alert_client_hw.c ****             {
+ 134:alert_client_hw.c ****                 g_app_hw_data.beep_count++;
+ 135:alert_client_hw.c **** 
+ 136:alert_client_hw.c ****                 /* Enable buzzer */
+ 137:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, TRUE);
+ 138:alert_client_hw.c **** 
+ 139:alert_client_hw.c ****                 beep_timer = SHORT_BEEP_TIMER_VALUE;
+ 140:alert_client_hw.c ****             }
+ 141:alert_client_hw.c ****             else
+ 142:alert_client_hw.c ****             {
+ 143:alert_client_hw.c ****                 /* Two beeps have been sounded. Stop buzzer now*/
+ 144:alert_client_hw.c ****                 g_app_hw_data.beep_count = 0;
+ 145:alert_client_hw.c **** 
+ 146:alert_client_hw.c ****                 /* Disable buzzer */
+ 147:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 148:alert_client_hw.c **** 
+ 149:alert_client_hw.c ****                 g_app_hw_data.beep_type = beep_off;
+ 150:alert_client_hw.c ****             }
+ 151:alert_client_hw.c ****         }
+ 152:alert_client_hw.c ****         break;
+ 153:alert_client_hw.c ****         default:
+ 154:alert_client_hw.c ****         {
+ 155:alert_client_hw.c ****             /* No such beep type */
+ 156:alert_client_hw.c ****             ReportPanic(app_panic_unexpected_beep_type);
+ 157:alert_client_hw.c ****             /* Though break statement will not be executed after panic but this
+ 158:alert_client_hw.c ****              * has been kept to avoid any confusion for default case.
+ 159:alert_client_hw.c ****              */
+ 160:alert_client_hw.c ****         }
+ 161:alert_client_hw.c ****         break;
+ 162:alert_client_hw.c ****     }
+ 163:alert_client_hw.c **** 
+ 164:alert_client_hw.c ****     if(g_app_hw_data.beep_type != beep_off)
+ 165:alert_client_hw.c ****     {
+ 166:alert_client_hw.c ****         /* start the timer */
+ 167:alert_client_hw.c ****         g_app_hw_data.buzzer_tid = TimerCreate(beep_timer, TRUE, 
+ 168:alert_client_hw.c ****                                                appBuzzerTimerHandler);
+ 169:alert_client_hw.c ****     }
+ 170:alert_client_hw.c **** 
+ 171:alert_client_hw.c **** }
+ 172:alert_client_hw.c **** #endif /* ENABLE_BUZZER*/
+ 173:alert_client_hw.c **** 
+ 174:alert_client_hw.c **** 
+ 175:alert_client_hw.c **** /*============================================================================*
+ 176:alert_client_hw.c ****  *  Public Function Implementations
+ 177:alert_client_hw.c ****  *============================================================================*/
+ 178:alert_client_hw.c **** 
+ 179:alert_client_hw.c **** /*----------------------------------------------------------------------------*
+ 180:alert_client_hw.c ****  *  NAME
+ 181:alert_client_hw.c ****  *      InitAlertTagHardware  -  initialize application hardware
+ 182:alert_client_hw.c ****  *
+ 183:alert_client_hw.c ****  *  DESCRIPTION
+ 184:alert_client_hw.c ****  *      This function is called upon a power reset to initialize the PIOs
+ 185:alert_client_hw.c ****  *      and configure their initial states.
+ 186:alert_client_hw.c ****  *
+ 187:alert_client_hw.c ****  *  RETURNS
+ 188:alert_client_hw.c ****  *      Nothing.
+ 189:alert_client_hw.c ****  *
+ 190:alert_client_hw.c ****  *----------------------------------------------------------------------------*/
+ 191:alert_client_hw.c **** extern void InitAlertTagHardware(void)
+ 192:alert_client_hw.c **** {
+ 193:alert_client_hw.c **** #ifndef DEBUG_THRU_UART
+ 194:alert_client_hw.c ****     /* Don't wakeup on UART RX line */
+ 195:alert_client_hw.c ****     SleepWakeOnUartRX(FALSE);
+ 196:alert_client_hw.c **** #endif
+ 197:alert_client_hw.c ****     /* Setup PIOs
+ 198:alert_client_hw.c ****      * PIO3 - Buzzer - BUZZER_PIO
+ 199:alert_client_hw.c ****      * PIO4 - LED 1 - LED_PIO
+ 200:alert_client_hw.c ****      * PIO11 - Button - BUTTON_PIO
+ 201:alert_client_hw.c ****      */
+ 202:alert_client_hw.c **** 
+ 203:alert_client_hw.c ****     PioSetModes(PIO_BIT_MASK(BUTTON_PIO), pio_mode_user);
+ 204:alert_client_hw.c ****     PioSetDir(BUTTON_PIO, PIO_DIRECTION_INPUT); /* input */
+ 205:alert_client_hw.c ****     PioSetPullModes(PIO_BIT_MASK(BUTTON_PIO), pio_mode_strong_pull_up); 
+ 206:alert_client_hw.c ****     /* Setup button on PIO11 */
+ 207:alert_client_hw.c ****     PioSetEventMask(PIO_BIT_MASK(BUTTON_PIO), pio_event_mode_both);
+ 208:alert_client_hw.c **** 
+ 209:alert_client_hw.c **** 
+ 210:alert_client_hw.c **** #ifdef ENABLE_LEDBLINK
+ 211:alert_client_hw.c ****     /* PWM is being used for LED glowing.*/
+ 212:alert_client_hw.c ****     PioSetModes(PIO_BIT_MASK(LED_PIO), pio_mode_pwm1);
+ 213:alert_client_hw.c **** 
+ 214:alert_client_hw.c ****     /* Advertising parameters are being configured for PWM right now. When
+ 215:alert_client_hw.c ****      * application moves to connection state, we change PWM parameters to
+ 216:alert_client_hw.c ****      * the ones for connection
+ 217:alert_client_hw.c ****      */
+ 218:alert_client_hw.c **** 
+ 219:alert_client_hw.c ****     PioConfigPWM(LED_PWM_INDEX_1, pio_pwm_mode_push_pull, DULL_LED_ON_TIME_ADV,
+ 220:alert_client_hw.c ****          DULL_LED_OFF_TIME_ADV, DULL_LED_HOLD_TIME_ADV, BRIGHT_LED_OFF_TIME_ADV,
+ 221:alert_client_hw.c ****          BRIGHT_LED_ON_TIME_ADV, BRIGHT_LED_HOLD_TIME_ADV, LED_RAMP_RATE);
+ 222:alert_client_hw.c **** 
+ 223:alert_client_hw.c ****     PioEnablePWM(LED_PWM_INDEX_1, FALSE);
+ 224:alert_client_hw.c **** #endif /* ENABLE_LEDBLINK */
+ 225:alert_client_hw.c **** 
+ 226:alert_client_hw.c **** 
+ 227:alert_client_hw.c **** #ifdef ENABLE_BUZZER
+ 228:alert_client_hw.c ****     PioSetModes(PIO_BIT_MASK(BUZZER_PIO), pio_mode_pwm0);
+ 229:alert_client_hw.c ****     /* Configure the buzzer on PIO3 */
+ 230:alert_client_hw.c ****     PioConfigPWM(BUZZER_PWM_INDEX_0, pio_pwm_mode_push_pull, DULL_BUZZ_ON_TIME,
+ 231:alert_client_hw.c ****                  DULL_BUZZ_OFF_TIME, DULL_BUZZ_HOLD_TIME, BRIGHT_BUZZ_ON_TIME,
+ 232:alert_client_hw.c ****                  BRIGHT_BUZZ_OFF_TIME, BRIGHT_BUZZ_HOLD_TIME, BUZZ_RAMP_RATE);
+ 233:alert_client_hw.c **** 
+ 234:alert_client_hw.c **** 
+ 235:alert_client_hw.c ****     PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 236:alert_client_hw.c **** #endif /* ENABLE_BUZZER */
+ 237:alert_client_hw.c **** 
+ 238:alert_client_hw.c ****     /* Set the I2C pins to pull down */
+ 239:alert_client_hw.c ****     PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
+ 240:alert_client_hw.c **** }
+ 241:alert_client_hw.c **** 
+ 242:alert_client_hw.c **** /*----------------------------------------------------------------------------*
+ 243:alert_client_hw.c ****  *  NAME
+ 244:alert_client_hw.c ****  *      HandleLongButtonPressTimerExpiry
+ 245:alert_client_hw.c ****  *
+ 246:alert_client_hw.c ****  *  DESCRIPTION
+ 247:alert_client_hw.c ****  *      This function is for handling the long Button press timer expiry
+ 248:alert_client_hw.c ****  *
+ 249:alert_client_hw.c ****  *  RETURNS
+ 250:alert_client_hw.c ****  *      Nothing.
+ 251:alert_client_hw.c ****  *
+ 252:alert_client_hw.c ****  *----------------------------------------------------------------------------*/
+ 253:alert_client_hw.c **** extern void HandleLongButtonPressTimerExpiry(timer_id tid)
+ 254:alert_client_hw.c **** {
+ 255:alert_client_hw.c ****     if(tid == g_app_hw_data.button_press_tid)
+ 256:alert_client_hw.c ****     {
+ 257:alert_client_hw.c ****         /* Set the long button pressed flag. */
+ 258:alert_client_hw.c ****         g_app_hw_data.long_button_pressed = TRUE;
+ 259:alert_client_hw.c ****         g_app_hw_data.button_press_tid = TIMER_INVALID;
+ 260:alert_client_hw.c **** 
+ 261:alert_client_hw.c ****         /* long button press timer has expired. Now Start a timer of value 
+ 262:alert_client_hw.c ****          * (EXTRA_LONG_BUTTON_PRESS_TIMER - LONG_BUTTON_PRESS_TIMER).
+ 263:alert_client_hw.c ****          *
+ 264:alert_client_hw.c ****          * If application receives the button release event between this time 
+ 265:alert_client_hw.c ****          * (EXTRA_LONG_BUTTON_PRESS_TIMER - LONG_BUTTON_PRESS_TIMER), it means
+ 266:alert_client_hw.c ****          * that user has performed an long button press which will handled 
+ 267:alert_client_hw.c ****          * accordingly.
+ 268:alert_client_hw.c ****          *
+ 269:alert_client_hw.c ****          * else if this timer expires before button release event then it will 
+ 270:alert_client_hw.c ****          * mean that user had performed extra long button press.
+ 271:alert_client_hw.c ****          */
+ 272:alert_client_hw.c **** 
+ 273:alert_client_hw.c ****         g_app_hw_data.button_press_tid = 
+ 274:alert_client_hw.c ****                 TimerCreate(
+ 275:alert_client_hw.c ****                          EXTRA_LONG_BUTTON_PRESS_TIMER -LONG_BUTTON_PRESS_TIMER,
+ 276:alert_client_hw.c ****                          TRUE,
+ 277:alert_client_hw.c ****                          HandleExtraLongButtonPressTimerExpiry);
+ 278:alert_client_hw.c ****     }
+ 279:alert_client_hw.c ****     /* else it may be because of some race condition, ignore it */
+ 280:alert_client_hw.c **** }
+ 281:alert_client_hw.c **** 
+ 282:alert_client_hw.c **** /*----------------------------------------------------------------------------*
+ 283:alert_client_hw.c ****  *  NAME
+ 284:alert_client_hw.c ****  *      AppHwDataInit
+ 285:alert_client_hw.c ****  *
+ 286:alert_client_hw.c ****  *  DESCRIPTION
+ 287:alert_client_hw.c ****  *      This function initializes the application hardware data
+ 288:alert_client_hw.c ****  *
+ 289:alert_client_hw.c ****  *  RETURNS
+ 290:alert_client_hw.c ****  *      Nothing.
+ 291:alert_client_hw.c ****  *
+ 292:alert_client_hw.c ****  *----------------------------------------------------------------------------*/
+ 293:alert_client_hw.c **** extern void AppHwDataInit(void)
+ 294:alert_client_hw.c **** {
+ 295:alert_client_hw.c ****     /* Clear the button press timer id. */
+ 296:alert_client_hw.c ****     TimerDelete(g_app_hw_data.button_press_tid);
+ 297:alert_client_hw.c ****     g_app_hw_data.button_press_tid = TIMER_INVALID;
+ 298:alert_client_hw.c **** 
+ 299:alert_client_hw.c ****     SetIndication(app_ind_stop);
+ 300:alert_client_hw.c **** }
+ 301:alert_client_hw.c **** 
+ 302:alert_client_hw.c **** 
+ 303:alert_client_hw.c **** /*----------------------------------------------------------------------------*
+ 304:alert_client_hw.c ****  *  NAME
+ 305:alert_client_hw.c ****  *      SoundBuzzer
+ 306:alert_client_hw.c ****  *
+ 307:alert_client_hw.c ****  *  DESCRIPTION
+ 308:alert_client_hw.c ****  *      Function for sounding beeps.
+ 309:alert_client_hw.c ****  *
+ 310:alert_client_hw.c ****  *  RETURNS
+ 311:alert_client_hw.c ****  *      Nothing.
+ 312:alert_client_hw.c ****  *
+ 313:alert_client_hw.c ****  *----------------------------------------------------------------------------*/
+ 314:alert_client_hw.c **** extern void SoundBuzzer(buzzer_beep_type beep_type)
+ 315:alert_client_hw.c **** {
+ 316:alert_client_hw.c **** #ifdef ENABLE_BUZZER
+ 317:alert_client_hw.c ****     uint32 beep_timer = SHORT_BEEP_TIMER_VALUE;
+ 318:alert_client_hw.c **** 
+ 319:alert_client_hw.c ****     PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 320:alert_client_hw.c ****     TimerDelete(g_app_hw_data.buzzer_tid);
+ 321:alert_client_hw.c ****     g_app_hw_data.buzzer_tid = TIMER_INVALID;
+ 322:alert_client_hw.c ****     g_app_hw_data.beep_count = 0;
+ 323:alert_client_hw.c **** 
+ 324:alert_client_hw.c ****     /* Store the beep type in some global variable. It will used on timer expiry
+ 325:alert_client_hw.c ****      * to check the type of beeps being sounded.
+ 326:alert_client_hw.c ****      */
+ 327:alert_client_hw.c ****     g_app_hw_data.beep_type = beep_type;
+ 328:alert_client_hw.c **** 
+ 329:alert_client_hw.c ****     switch(g_app_hw_data.beep_type)
+ 330:alert_client_hw.c ****     {
+ 331:alert_client_hw.c ****         case beep_off:
+ 332:alert_client_hw.c ****         {
+ 333:alert_client_hw.c ****             /* Don't do anything */
+ 334:alert_client_hw.c ****         }
+ 335:alert_client_hw.c ****         break;
+ 336:alert_client_hw.c ****         case beep_short:
+ 337:alert_client_hw.c ****             /* FALLTHROUGH */
+ 338:alert_client_hw.c ****         case beep_twice: /* Two short beeps will be sounded */
+ 339:alert_client_hw.c ****             /* FALLTHROUGH */
+ 340:alert_client_hw.c ****         case beep_thrice: /* Three short beeps will be sounded */
+ 341:alert_client_hw.c ****         {
+ 342:alert_client_hw.c ****             /* One short beep will be sounded */
+ 343:alert_client_hw.c ****             beep_timer = SHORT_BEEP_TIMER_VALUE;
+ 344:alert_client_hw.c ****         }
+ 345:alert_client_hw.c ****         break;
+ 346:alert_client_hw.c ****         
+ 347:alert_client_hw.c ****         case beep_long:
+ 348:alert_client_hw.c ****         {
+ 349:alert_client_hw.c ****             /* One long beep will be sounded */
+ 350:alert_client_hw.c ****             beep_timer = LONG_BEEP_TIMER_VALUE;
+ 351:alert_client_hw.c ****         }
+ 352:alert_client_hw.c ****         break;
+ 353:alert_client_hw.c **** 
+ 354:alert_client_hw.c ****         break;
+ 355:alert_client_hw.c ****         default:
+ 356:alert_client_hw.c ****         {
+ 357:alert_client_hw.c ****             /* No such beep type defined */
+ 358:alert_client_hw.c ****             ReportPanic(app_panic_unexpected_beep_type);
+ 359:alert_client_hw.c ****             /* Though break statement will not be executed after panic but this
+ 360:alert_client_hw.c ****              * has been kept to avoid any confusion for default case.
+ 361:alert_client_hw.c ****              */
+ 362:alert_client_hw.c ****         }
+ 363:alert_client_hw.c ****         break;
+ 364:alert_client_hw.c ****     }
+ 365:alert_client_hw.c **** 
+ 366:alert_client_hw.c ****     if(g_app_hw_data.beep_type != beep_off)
+ 367:alert_client_hw.c ****     {
+ 368:alert_client_hw.c ****         /* Initialize beep count to zero */
+ 369:alert_client_hw.c ****         g_app_hw_data.beep_count = 0;
+ 370:alert_client_hw.c **** 
+ 371:alert_client_hw.c ****         /* Enable buzzer */
+ 372:alert_client_hw.c ****         PioEnablePWM(BUZZER_PWM_INDEX_0, TRUE);
+ 373:alert_client_hw.c **** 
+ 374:alert_client_hw.c ****         TimerDelete(g_app_hw_data.buzzer_tid);
+ 375:alert_client_hw.c ****         g_app_hw_data.buzzer_tid = TimerCreate(beep_timer, TRUE, 
+ 376:alert_client_hw.c ****                                                appBuzzerTimerHandler);
+ 377:alert_client_hw.c ****     }
+ 378:alert_client_hw.c **** #endif /* ENABLE_BUZZER */
+ 379:alert_client_hw.c **** }
+ 380:alert_client_hw.c **** 
+ 381:alert_client_hw.c **** 
+ 382:alert_client_hw.c **** 
+ 383:alert_client_hw.c **** /*----------------------------------------------------------------------------*
+ 384:alert_client_hw.c ****  *  NAME
+ 385:alert_client_hw.c ****  *      SetIndication
+ 386:alert_client_hw.c ****  *
+ 387:alert_client_hw.c ****  *  DESCRIPTION
+ 388:alert_client_hw.c ****  *      This function indicates the app state through LED blinking
+ 389:alert_client_hw.c ****  *
+ 390:alert_client_hw.c ****  *  RETURNS/MODIFIES
+ 391:alert_client_hw.c ****  *      Nothing.
+ 392:alert_client_hw.c ****  *
+ 393:alert_client_hw.c ****  *----------------------------------------------------------------------------*/
+ 394:alert_client_hw.c **** extern void SetIndication(app_indication state)
+ 395:alert_client_hw.c **** {
+  20                 	:
+  21                 		enter	#0x0008
+  22 0000 08 0B       	.LCFI0:
+  23                 		.loc 1 399 0
+ 396:alert_client_hw.c **** 
+ 397:alert_client_hw.c **** #ifdef ENABLE_LEDBLINK
+ 398:alert_client_hw.c ****     if(state == app_ind_stop)
+  24                 		@$XAP_AL
+  25 0001 00 00 00 99 		bne	.L2
+  26 0003 00 00 00 00 		.loc 1 402 0
+  26      00 F0 
+ 399:alert_client_hw.c ****     {
+ 400:alert_client_hw.c ****         /*Stop LED glowing */
+ 401:alert_client_hw.c ****         PioEnablePWM(LED_PWM_INDEX_1, FALSE);
+  27                 		AL,#0x0001
+  28 0006 01 14       	.LVL1:
+  29                 		ld	AH,#0x0000
+  30 0007 00 10       		bsr	PioEnablePWM
+  31 0008 00 00 00 00 		.loc 1 410 0
+  31      00 9C 
+ 402:alert_client_hw.c **** 
+ 403:alert_client_hw.c ****         /* Reconfigure LED to pio_mode_user. This reconfiguration has been done
+ 404:alert_client_hw.c ****          * because When PWM is disabled, LED pio value remains same as it was at
+ 405:alert_client_hw.c ****          * the exact time of disabling. So if LED was on, it may remain ON even
+ 406:alert_client_hw.c ****          * after PWM disabling. So it is better to reconfigure it to user mode.
+ 407:alert_client_hw.c ****          * It will reconfigured to PWM mode while enabling.
+ 408:alert_client_hw.c ****          */
+ 409:alert_client_hw.c ****         PioSetModes(PIO_BIT_MASK(LED_PIO), pio_mode_user);
+  32                 	L,#0x0000
+  33 000b 00 14       		st	AL,@(0,Y)
+  34 000c 00 27       		ld	AH,#0x0000
+  35 000d 00 10       		ld	AL,#0x0010
+  36 000e 10 14       		bsr	PioSetModes
+  37 000f 00 00 00 00 		.loc 1 411 0
+  37      00 9C 
+ 410:alert_client_hw.c ****         PioSet(LED_PIO, FALSE);
+  38                 	,#0x0004
+  39 0012 04 14       		ld	AH,#0x0000
+  40 0013 00 10       		bra	.L8
+  41 0014 00 00 00 00 	.LVL2:
+  41      00 E0 
+  42                 	.L2:
+  43                 		.loc 1 415 0
+ 411:alert_client_hw.c ****     }
+ 412:alert_client_hw.c ****     else
+ 413:alert_client_hw.c ****     {
+ 414:alert_client_hw.c ****         if(state == app_ind_adv)
+  44                 	L,#0x0001
+  45 0017 01 84       		bne	.L4
+  46 0018 00 00 00 00 		.loc 1 418 0
+  46      00 F0 
+ 415:alert_client_hw.c ****         {
+ 416:alert_client_hw.c ****             /* Fast Blinking for advertising */
+ 417:alert_client_hw.c ****             PioConfigPWM(LED_PWM_INDEX_1, pio_pwm_mode_push_pull, 
+  47                 		AL,#0x0002
+  48 001b 02 14       	.LVL3:
+  49                 		st	AL,@(0,Y)
+  50 001c 00 27       		ld	AL,#0x0014
+  51 001d 14 14       		st	AL,@(0x0001,Y)
+  52 001e 01 27       		ld	AL,#0x000a
+  53 001f 0A 14       		st	AL,@(0x0002,Y)
+  54 0020 02 27       		st	AL,@(0x0003,Y)
+  55 0021 03 27       		ld	AL,#0x001e
+  56 0022 1E 14       		st	AL,@(0x0004,Y)
+  57 0023 04 27       		ld	AL,#0x000a
+  58 0024 0A 14       		bra	.L7
+  59 0025 00 00 00 00 	.LVL4:
+  59      00 E0 
+  60                 	.L4:
+  61                 		.loc 1 424 0
+ 418:alert_client_hw.c ****                 DULL_LED_ON_TIME_ADV, DULL_LED_OFF_TIME_ADV,
+ 419:alert_client_hw.c ****                 DULL_LED_HOLD_TIME_ADV, BRIGHT_LED_ON_TIME_ADV,
+ 420:alert_client_hw.c ****                 BRIGHT_LED_OFF_TIME_ADV, BRIGHT_LED_HOLD_TIME_ADV, 
+ 421:alert_client_hw.c ****                 LED_RAMP_RATE);
+ 422:alert_client_hw.c ****         }
+ 423:alert_client_hw.c ****         else if(state == app_ind_conn)
+  62                 	
+  63 0028 02 84       		bne	.L5
+  64 0029 00 00 00 00 		.loc 1 427 0
+  64      00 F0 
+ 424:alert_client_hw.c ****         {
+ 425:alert_client_hw.c ****             /* slow blinking for connected state */
+ 426:alert_client_hw.c ****             PioConfigPWM(LED_PWM_INDEX_1, pio_pwm_mode_push_pull, 
+  65                 	t	AL,@(0,Y)
+  66 002c 00 27       	.LVL5:
+  67                 		ld	AL,#0x0014
+  68 002d 14 14       		st	AL,@(0x0001,Y)
+  69 002e 01 27       		ld	AL,#0x0046
+  70 002f 46 14       		st	AL,@(0x0002,Y)
+  71 0030 02 27       		ld	AL,#0x000a
+  72 0031 0A 14       		st	AL,@(0x0003,Y)
+  73 0032 03 27       		ld	AL,#0x001e
+  74 0033 1E 14       		st	AL,@(0x0004,Y)
+  75 0034 04 27       		ld	AL,#0x0046
+  76 0035 46 14       	.L7:
+  77                 		st	AL,@(0x0005,Y)
+  78 0036 05 27       		ld	AL,#0x0033
+  79 0037 33 14       		st	AL,@(0x0006,Y)
+  80 0038 06 27       		ld	AL,#0x0001
+  81 0039 01 14       		ld	AH,#0x0000
+  82 003a 00 10       		bsr	PioConfigPWM
+  83 003b 00 00 00 00 	.LVL6:
+  83      00 9C 
+  84                 	.L5:
+  85                 		.loc 1 434 0
+ 427:alert_client_hw.c ****                 DULL_LED_ON_TIME_CONN, DULL_LED_OFF_TIME_CONN, 
+ 428:alert_client_hw.c ****                 DULL_LED_HOLD_TIME_CONN, BRIGHT_LED_ON_TIME_CONN,
+ 429:alert_client_hw.c ****                 BRIGHT_LED_OFF_TIME_CONN, BRIGHT_LED_HOLD_TIME_CONN, 
+ 430:alert_client_hw.c ****                 LED_RAMP_RATE);
+ 431:alert_client_hw.c ****         }
+ 432:alert_client_hw.c **** 
+ 433:alert_client_hw.c ****         PioSetModes(PIO_BIT_MASK(LED_PIO), pio_mode_pwm1);
+  86                 	
+  87 003e 05 14       		st	AL,@(0,Y)
+  88                 		ld	AH,#0x0000
+  89 003f 00 27       		ld	AL,#0x0010
+  90 0040 00 10       		bsr	PioSetModes
+  91 0041 10 14       		.loc 1 436 0
+  92 0042 00 00 00 00 		ld	AL,#0x0001
+  92      00 9C 
+ 434:alert_client_hw.c ****         /*Start LED glowing */
+ 435:alert_client_hw.c ****         PioEnablePWM(LED_PWM_INDEX_1, TRUE);
+  93                 	,#0x0001
+  94 0045 01 14       		bsr	PioEnablePWM
+  95 0046 01 10       		.loc 1 437 0
+  96 0047 00 00 00 00 		ld	AL,#0x0004
+  96      00 9C 
+ 436:alert_client_hw.c ****         PioSet(LED_PIO, TRUE);
+  97                 	AH,#0x0001
+  98 004a 04 14       	.L8:
+  99 004b 01 10       		bsr	PioSet
+ 100                 		.loc 1 440 0
+ 101 004c 00 00 00 00 		leave	#0x0008
+ 101      00 9C 
+ 437:alert_client_hw.c ****     }
+ 438:alert_client_hw.c **** #endif /* ENABLE_LEDBLINK */
+ 439:alert_client_hw.c **** }
+ 102                 	:
+ 103 004f 08 0F       		.size	SetIndication, .-SetIndication
+ 104                 		.global	__size_of_SetIndication
+ 105                 		.equ	__size_of_SetIndication,. - SetIndication
+ 106                 		.section	.text.AppHwDataInit,"ax",@progbits
+ 107                 		.global	AppHwDataInit
+ 108                 		.type	AppHwDataInit, @function
+ 109                 	AppHwDataInit:
+ 110                 	.LFB5:
+ 111                 		.loc 1 295 0
+ 112                 		enter	#0x0001
+ 295:alert_client_hw.c **** {
+ 113                 	oc 1 297 0
+ 114 0000 01 0B       		ld	X,#g_app_hw_data+1
+ 115                 		ld	AL,@(0,X)
+ 297:alert_client_hw.c ****     TimerDelete(g_app_hw_data.button_press_tid);
+ 116                 	r	TimerDelete
+ 117 0001 00 00 00 18 		.loc 1 298 0
+ 118 0003 00 16       		ld	AL,#0x0000
+ 119 0004 00 00 00 00 		ld	X,#g_app_hw_data+1
+ 119      00 9C 
+ 298:alert_client_hw.c ****     g_app_hw_data.button_press_tid = TIMER_INVALID;
+ 120                 	AL,@(0,X)
+ 121 0007 00 14       		.loc 1 300 0
+ 122 0008 00 00 00 18 		bsr	SetIndication
+ 123 000a 00 26       		.loc 1 301 0
+ 300:alert_client_hw.c ****     SetIndication(app_ind_stop);
+ 124                 	ve	#0x0001
+ 125 000b 00 00 00 00 	.LFE5:
+ 125      00 9C 
+ 301:alert_client_hw.c **** }
+ 126                 	size	AppHwDataInit, .-AppHwDataInit
+ 127 000e 01 0F       		.global	__size_of_AppHwDataInit
+ 128                 		.equ	__size_of_AppHwDataInit,. - AppHwDataInit
+ 129                 		.section	.text.SoundBuzzer,"ax",@progbits
+ 130                 		.global	SoundBuzzer
+ 131                 		.type	SoundBuzzer, @function
+ 132                 	SoundBuzzer:
+ 133                 	.LFB6:
+ 134                 		.loc 1 316 0
+ 135                 	.LVL8:
+ 136                 		enter	#0x0006
+ 316:alert_client_hw.c **** {
+ 137                 		AL,@(0x0002,Y)
+ 138                 		.loc 1 320 0
+ 139 0000 06 0B       		ld	AL,#0x0000
+ 140                 	.LVL9:
+ 141 0001 02 27       		ld	AH,#0x0000
+ 320:alert_client_hw.c ****     PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 142                 	PioEnablePWM
+ 143 0002 00 14       		.loc 1 321 0
+ 144                 		ld	AL,@g_app_hw_data
+ 145 0003 00 10       		bsr	TimerDelete
+ 146 0004 00 00 00 00 		.loc 1 322 0
+ 146      00 9C 
+ 321:alert_client_hw.c ****     TimerDelete(g_app_hw_data.buzzer_tid);
+ 147                 	L,#0x0000
+ 148 0007 00 00 00 15 		st	AL,@g_app_hw_data
+ 149 0009 00 00 00 00 		.loc 1 323 0
+ 149      00 9C 
+ 322:alert_client_hw.c ****     g_app_hw_data.buzzer_tid = TIMER_INVALID;
+ 150                 		AL,@g_app_hw_data+0x0004
+ 151 000c 00 14       		.loc 1 328 0
+ 152 000d 00 00 00 25 		ld	AL,@(0x0002,Y)
+ 323:alert_client_hw.c ****     g_app_hw_data.beep_count = 0;
+ 153                 		AL,@g_app_hw_data+0x0003
+ 154 000f 00 00 00 25 		.loc 1 330 0
+ 328:alert_client_hw.c ****     g_app_hw_data.beep_type = beep_type;
+ 155                 	mp	AL,#0x0005
+ 156 0011 02 17       		bcc	.L12
+ 157 0012 00 00 00 25 		ld	AL,#0x0001
+ 330:alert_client_hw.c ****     switch(g_app_hw_data.beep_type)
+ 158                 	l	@(0x0002,Y)
+ 159 0014 05 84       		ld	AH,@$XAP_AL
+ 160 0015 00 00 00 00 		and	AL,#0x001b
+ 160      00 F8 
+ 161 0018 01 14       		bne	.L19
+ 162 0019 02 A3       		ld	AL,@$XAP_AH
+ 163 001a 00 00 00 11 		and	AL,#0x0004
+ 164 001c 1B C4       		beq	.L12
+ 165 001d 00 00 00 00 		ld	AL,#0x0007
+ 165      00 F0 
+ 166 0020 00 00 00 15 		st	AL,@(0x0003,Y)
+ 167 0022 04 C4       		ld	AL,#0xa120
+ 168 0023 00 00 00 00 		bra	.L18
+ 168      00 F4 
+ 169 0026 07 14       	.L12:
+ 170 0027 03 27       		.loc 1 359 0
+ 171 0028 A1 00 20 14 		ld	AL,#0x000c
+ 172 002a 00 00 00 00 		bsr	ReportPanic
+ 172      00 E0 
+ 173                 	.L19:
+ 359:alert_client_hw.c ****             ReportPanic(app_panic_unexpected_beep_type);
+ 174                 	st	AL,@(0x0003,Y)
+ 175 002d 0C 14       		ld	AL,#0x86a0
+ 176 002e 00 00 00 00 	.L18:
+ 176      00 9C 
+ 177                 		st	AL,@(0x0004,Y)
+ 178 0031 01 14       		.loc 1 367 0
+ 179 0032 03 27       		tst	@g_app_hw_data+0x0003
+ 180 0033 87 00 A0 14 		beq	.L17
+ 181                 		.loc 1 370 0
+ 182 0035 04 27       		ld	AL,#0x0000
+ 367:alert_client_hw.c ****     if(g_app_hw_data.beep_type != beep_off)
+ 183                 	_app_hw_data+0x0004
+ 184 0036 00 00 00 99 		.loc 1 373 0
+ 185 0038 00 00 00 00 		ld	AH,#0x0001
+ 185      00 F4 
+ 370:alert_client_hw.c ****         g_app_hw_data.beep_count = 0;
+ 186                 	r	PioEnablePWM
+ 187 003b 00 14       		.loc 1 375 0
+ 188 003c 00 00 00 25 		ld	AL,@g_app_hw_data
+ 373:alert_client_hw.c ****         PioEnablePWM(BUZZER_PWM_INDEX_0, TRUE);
+ 189                 	r	TimerDelete
+ 190 003e 01 10       		.loc 1 376 0
+ 191 003f 00 00 00 00 		ld	AL,#0x0001
+ 191      00 9C 
+ 375:alert_client_hw.c ****         TimerDelete(g_app_hw_data.buzzer_tid);
+ 192                 		AL,@(0,Y)
+ 193 0042 00 00 00 15 		ld	AL,#appBuzzerTimerHandler
+ 194 0044 00 00 00 00 		st	AL,@(0x0001,Y)
+ 194      00 9C 
+ 376:alert_client_hw.c ****         g_app_hw_data.buzzer_tid = TimerCreate(beep_timer, TRUE, 
+ 195                 		AH,@(0x0003,Y)
+ 196 0047 01 14       		ld	AL,@(0x0004,Y)
+ 197 0048 00 27       		bsr	TimerCreate
+ 198 0049 00 00 00 14 		st	AL,@g_app_hw_data
+ 199 004b 01 27       	.L17:
+ 200 004c 03 13       		.loc 1 380 0
+ 201 004d 04 17       		leave	#0x0006
+ 202 004e 00 00 00 00 	.LFE6:
+ 202      00 9C 
+ 203 0051 00 00 00 25 		.size	SoundBuzzer, .-SoundBuzzer
+ 204                 		.global	__size_of_SoundBuzzer
+ 380:alert_client_hw.c **** }
+ 205                 	ze_of_SoundBuzzer,. - SoundBuzzer
+ 206 0053 06 0F       		.section	.text.appBuzzerTimerHandler,"ax",@progbits
+ 207                 		.type	appBuzzerTimerHandler, @function
+ 208                 	appBuzzerTimerHandler:
+ 209                 	.LFB2:
+ 210                 		.loc 1 67 0
+ 211                 	.LVL10:
+ 212                 		enter	#0x0003
+ 213                 	.LCFI3:
+ 214                 		.loc 1 70 0
+  67:alert_client_hw.c **** {
+ 215                 	0000
+ 216                 	.LVL11:
+ 217 0000 03 0B       		st	AL,@g_app_hw_data
+ 218                 		.loc 1 72 0
+  70:alert_client_hw.c ****     g_app_hw_data.buzzer_tid = TIMER_INVALID;
+ 219                 	AL,@g_app_hw_data+0x0003
+ 220 0001 00 14       		cmp	AL,#0x0003
+ 221                 		beq	.L23
+ 222 0002 00 00 00 25 		cmp	AL,#0x0004
+  72:alert_client_hw.c ****     switch(g_app_hw_data.beep_type)
+ 223                 		.L25
+ 224 0004 00 00 00 15 		cmp	AL,#0x0001
+ 225 0006 03 84       		bcs	.L21
+ 226 0007 00 00 00 00 		bra	.L40
+ 226      00 F4 
+ 227 000a 04 84       	.L25:
+ 228 000b 00 00 00 00 		cmp	AL,#0x0004
+ 228      00 F8 
+ 229 000e 01 84       		bne	.L21
+ 230 000f 00 00 00 00 		bra	.L41
+ 230      00 FC 
+ 231 0012 00 00 00 00 	.L40:
+ 231      00 E0 
+ 232                 		.loc 1 77 0
+ 233 0015 04 84       		ld	X,#0x0000
+ 234 0016 00 00 00 00 		st	X,@g_app_hw_data+0x0003
+ 234      00 F0 
+ 235 0019 00 00 00 00 		.loc 1 80 0
+ 235      00 E0 
+ 236                 		ld	AL,#0x0000
+  77:alert_client_hw.c ****             g_app_hw_data.beep_type = beep_off;
+ 237                 	
+ 238 001c 00 18       		bra	.L38
+ 239 001d 00 00 00 29 	.L23:
+  80:alert_client_hw.c ****             PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 240                 	loc 1 85 0
+ 241 001f 00 14       		ld	AL,@g_app_hw_data+0x0004
+ 242 0020 00 10       		bne	.L27
+ 243 0021 00 00 00 00 		.loc 1 88 0
+ 243      00 E0 
+ 244                 		ld	AL,#0x0001
+  85:alert_client_hw.c ****             if(g_app_hw_data.beep_count == 0)
+ 245                 	.L37
+ 246 0024 00 00 00 15 	.L27:
+ 247 0026 00 00 00 00 		.loc 1 96 0
+ 247      00 F0 
+  88:alert_client_hw.c ****                 g_app_hw_data.beep_count = 1;
+ 248                 	p	AL,#0x0001
+ 249 0029 01 14       		bne	.L32
+ 250 002a 00 00 00 00 		.loc 1 98 0
+ 250      00 E0 
+ 251                 		ld	X,#0x0002
+  96:alert_client_hw.c ****             else if(g_app_hw_data.beep_count == 1)
+ 252                 	X,@g_app_hw_data+0x0004
+ 253 002d 01 84       		bra	.L39
+ 254 002e 00 00 00 00 	.L41:
+ 254      00 F0 
+  98:alert_client_hw.c ****                 g_app_hw_data.beep_count = 2;
+ 255                 	oc 1 120 0
+ 256 0031 02 18       		ld	AL,@g_app_hw_data+0x0004
+ 257 0032 00 00 00 29 		beq	.L29
+ 258 0034 00 00 00 00 		cmp	AL,#0x0002
+ 258      00 E0 
+ 259                 		bne	.L30
+ 120:alert_client_hw.c ****             if(g_app_hw_data.beep_count == 0 ||
+ 260                 	
+ 261 0037 00 00 00 15 		.loc 1 124 0
+ 262 0039 00 00 00 00 		add	AL,#0x0001
+ 262      00 F4 
+ 263 003c 02 84       	.L37:
+ 264 003d 00 00 00 00 		st	AL,@g_app_hw_data+0x0004
+ 264      00 F0 
+ 265                 		.loc 1 127 0
+ 124:alert_client_hw.c ****                 g_app_hw_data.beep_count++;
+ 266                 	L,#0x0000
+ 267 0040 01 34       		ld	AH,#0x0000
+ 268                 		bsr	PioEnablePWM
+ 269 0041 00 00 00 25 		ld	AH,#0x0000
+ 127:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 270                 	12:
+ 271 0043 00 14       		ld	AL,#0x61a8
+ 272 0044 00 10       	.LVL13:
+ 273 0045 00 00 00 00 		bra	.L26
+ 273      00 9C 
+ 274 0048 00 10       	.LVL14:
+ 275                 	.L30:
+ 276 0049 62 00 A8 14 		.loc 1 132 0
+ 277                 		cmp	AL,#0x0001
+ 278 004b 00 00 00 00 		beq	.L31
+ 278      00 E0 
+ 279                 		cmp	AL,#0x0003
+ 280                 		bne	.L32
+ 132:alert_client_hw.c ****             else if(g_app_hw_data.beep_count == 1 ||
+ 281                 	 1 135 0
+ 282 004e 01 84       		add	AL,#0x0001
+ 283 004f 00 00 00 00 		st	AL,@g_app_hw_data+0x0004
+ 283      00 F4 
+ 284 0052 03 84       	.L39:
+ 285 0053 00 00 00 00 		.loc 1 138 0
+ 285      00 F0 
+ 286                 		ld	AL,#0x0000
+ 135:alert_client_hw.c ****                 g_app_hw_data.beep_count++;
+ 287                 	,#0x0001
+ 288 0056 01 34       	.L38:
+ 289 0057 00 00 00 25 		bsr	PioEnablePWM
+ 290                 		bra	.L36
+ 138:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, TRUE);
+ 291                 	:
+ 292 0059 00 14       		.loc 1 145 0
+ 293 005a 01 10       		ld	AL,#0x0000
+ 294                 		st	AL,@g_app_hw_data+0x0004
+ 295 005b 00 00 00 00 		.loc 1 148 0
+ 295      00 9C 
+ 296 005e 00 00 00 00 		ld	AH,#0x0000
+ 296      00 E0 
+ 297                 		bsr	PioEnablePWM
+ 145:alert_client_hw.c ****                 g_app_hw_data.beep_count = 0;
+ 298                 	 150 0
+ 299 0061 00 14       		ld	X,#0x0000
+ 300 0062 00 00 00 25 		st	X,@g_app_hw_data+0x0003
+ 148:alert_client_hw.c ****                 PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 301                 	a	.L36
+ 302 0064 00 10       	.L21:
+ 303 0065 00 00 00 00 		.loc 1 157 0
+ 303      00 9C 
+ 150:alert_client_hw.c ****                 g_app_hw_data.beep_type = beep_off;
+ 304                 		AL,#0x000c
+ 305 0068 00 18       		bsr	ReportPanic
+ 306 0069 00 00 00 29 	.L36:
+ 307 006b 00 00 00 00 		ld	AH,#0x0001
+ 307      00 E0 
+ 308                 	.LVL15:
+ 157:alert_client_hw.c ****             ReportPanic(app_panic_unexpected_beep_type);
+ 309                 	L,#0x86a0
+ 310 006e 0C 14       	.LVL16:
+ 311 006f 00 00 00 00 	.L26:
+ 311      00 9C 
+ 312                 		.loc 1 165 0
+ 313 0072 01 10       		tst	@g_app_hw_data+0x0003
+ 314                 		beq	.L34
+ 315 0073 87 00 A0 14 		.loc 1 168 0
+ 316                 		ld	X,#0x0001
+ 317                 		st	X,@(0,Y)
+ 165:alert_client_hw.c ****     if(g_app_hw_data.beep_type != beep_off)
+ 318                 	pBuzzerTimerHandler
+ 319 0075 00 00 00 99 		st	X,@(0x0001,Y)
+ 320 0077 00 00 00 00 		bsr	TimerCreate
+ 320      00 F4 
+ 168:alert_client_hw.c ****         g_app_hw_data.buzzer_tid = TimerCreate(beep_timer, TRUE, 
+ 321                 	L17:
+ 322 007a 01 18       		st	AL,@g_app_hw_data
+ 323 007b 00 2B       	.LVL18:
+ 324 007c 00 00 00 18 	.L34:
+ 325 007e 01 2B       		.loc 1 172 0
+ 326 007f 00 00 00 00 		leave	#0x0003
+ 326      00 9C 
+ 327                 	.LFE2:
+ 328 0082 00 00 00 25 		.size	appBuzzerTimerHandler, .-appBuzzerTimerHandler
+ 329                 		.equ	__size_of_appBuzzerTimerHandler,. - appBuzzerTimerHandler
+ 330                 		.section	.text.HandleLongButtonPressTimerExpiry,"ax",@progbits
+ 172:alert_client_hw.c **** }
+ 331                 	andleLongButtonPressTimerExpiry
+ 332 0084 03 0F       		.type	HandleLongButtonPressTimerExpiry, @function
+ 333                 	HandleLongButtonPressTimerExpiry:
+ 334                 	.LFB4:
+ 335                 		.loc 1 255 0
+ 336                 	.LVL19:
+ 337                 		enter	#0x0003
+ 338                 	.LCFI4:
+ 339                 		.loc 1 256 0
+ 340                 		cmp	AL,@g_app_hw_data+0x0001
+ 255:alert_client_hw.c **** {
+ 341                 		.loc 1 259 0
+ 342                 		ld	AL,#0x0001
+ 343 0000 03 0B       	.LVL20:
+ 344                 		st	AL,@g_app_hw_data+0x0002
+ 256:alert_client_hw.c ****     if(tid == g_app_hw_data.button_press_tid)
+ 345                 	c 1 260 0
+ 346 0001 00 00 00 85 		ld	AL,#0x0000
+ 347 0003 00 00 00 00 		st	AL,@g_app_hw_data+0x0001
+ 347      00 F0 
+ 259:alert_client_hw.c ****         g_app_hw_data.long_button_pressed = TRUE;
+ 348                 	oc 1 274 0
+ 349 0006 01 14       		ld	AL,#0x0001
+ 350                 		st	AL,@(0,Y)
+ 351 0007 00 00 00 25 		ld	AL,#HandleExtraLongButtonPressTimerExpiry
+ 260:alert_client_hw.c ****         g_app_hw_data.button_press_tid = TIMER_INVALID;
+ 352                 	AL,@(0x0001,Y)
+ 353 0009 00 14       		ld	AH,#0x001e
+ 354 000a 00 00 00 25 		ld	AL,#0x8480
+ 274:alert_client_hw.c ****         g_app_hw_data.button_press_tid = 
+ 355                 	r	TimerCreate
+ 356 000c 01 14       		st	AL,@g_app_hw_data+0x0001
+ 357 000d 00 27       	.LVL21:
+ 358 000e 00 00 00 14 	.L44:
+ 359 0010 01 27       		.loc 1 281 0
+ 360 0011 1E 10       		leave	#0x0003
+ 361 0012 85 00 80 14 	.LFE4:
+ 362 0014 00 00 00 00 		.size	HandleLongButtonPressTimerExpiry, .-HandleLongButtonPressTimerExpiry
+ 362      00 9C 
+ 363 0017 00 00 00 25 		.global	__size_of_HandleLongButtonPressTimerExpiry
+ 364                 		.equ	__size_of_HandleLongButtonPressTimerExpiry,. - HandleLongButtonPressTimerExpiry
+ 365                 		.section	.text.InitAlertTagHardware,"ax",@progbits
+ 281:alert_client_hw.c **** }
+ 366                 	itAlertTagHardware
+ 367 0019 03 0F       		.type	InitAlertTagHardware, @function
+ 368                 	InitAlertTagHardware:
+ 369                 	.LFB3:
+ 370                 		.loc 1 193 0
+ 371                 		enter	#0x0008
+ 372                 	.LCFI5:
+ 373                 		.loc 1 196 0
+ 374                 		ld	AL,#0x0000
+ 375                 		bsr	SleepWakeOnUartRX
+ 376                 		.loc 1 204 0
+ 193:alert_client_hw.c **** {
+ 377                 	000
+ 378 0000 08 0B       		st	AL,@(0,Y)
+ 379                 		ld	AH,#0x0000
+ 196:alert_client_hw.c ****     SleepWakeOnUartRX(FALSE);
+ 380                 		AL,#0x0800
+ 381 0001 00 14       		bsr	PioSetModes
+ 382 0002 00 00 00 00 		.loc 1 205 0
+ 382      00 9C 
+ 204:alert_client_hw.c ****     PioSetModes(PIO_BIT_MASK(BUTTON_PIO), pio_mode_user);
+ 383                 		AL,#0x000b
+ 384 0005 00 14       		ld	AH,#0x0000
+ 385 0006 00 27       		bsr	PioSetDir
+ 386 0007 00 10       		.loc 1 206 0
+ 387 0008 08 00 00 14 		ld	AL,#0x0007
+ 388 000a 00 00 00 00 		st	AL,@(0,Y)
+ 388      00 9C 
+ 205:alert_client_hw.c ****     PioSetDir(BUTTON_PIO, PIO_DIRECTION_INPUT); /* input */
+ 389                 	,#0x0000
+ 390 000d 0B 14       		ld	AL,#0x0800
+ 391 000e 00 10       		bsr	PioSetPullModes
+ 392 000f 00 00 00 00 		.loc 1 208 0
+ 392      00 9C 
+ 206:alert_client_hw.c ****     PioSetPullModes(PIO_BIT_MASK(BUTTON_PIO), pio_mode_strong_pull_up); 
+ 393                 	AL,#0x0003
+ 394 0012 07 14       		st	AL,@(0,Y)
+ 395 0013 00 27       		ld	AH,#0x0000
+ 396 0014 00 10       		ld	AL,#0x0800
+ 397 0015 08 00 00 14 		bsr	PioSetEventMask
+ 398 0017 00 00 00 00 		.loc 1 213 0
+ 398      00 9C 
+ 208:alert_client_hw.c ****     PioSetEventMask(PIO_BIT_MASK(BUTTON_PIO), pio_event_mode_both);
+ 399                 	,#0x0005
+ 400 001a 03 14       		st	AL,@(0,Y)
+ 401 001b 00 27       		ld	AH,#0x0000
+ 402 001c 00 10       		ld	AL,#0x0010
+ 403 001d 08 00 00 14 		bsr	PioSetModes
+ 404 001f 00 00 00 00 		.loc 1 220 0
+ 404      00 9C 
+ 213:alert_client_hw.c ****     PioSetModes(PIO_BIT_MASK(LED_PIO), pio_mode_pwm1);
+ 405                 	,#0x0002
+ 406 0022 05 14       		st	AL,@(0,Y)
+ 407 0023 00 27       		ld	AL,#0x0014
+ 408 0024 00 10       		st	AL,@(0x0001,Y)
+ 409 0025 10 14       		ld	AL,#0x000a
+ 410 0026 00 00 00 00 		st	AL,@(0x0002,Y)
+ 410      00 9C 
+ 220:alert_client_hw.c ****     PioConfigPWM(LED_PWM_INDEX_1, pio_pwm_mode_push_pull, DULL_LED_ON_TIME_ADV,
+ 411                 	,#0x001e
+ 412 0029 02 14       		st	AL,@(0x0003,Y)
+ 413 002a 00 27       		ld	AL,#0x000a
+ 414 002b 14 14       		st	AL,@(0x0004,Y)
+ 415 002c 01 27       		st	AL,@(0x0005,Y)
+ 416 002d 0A 14       		ld	AL,#0x0033
+ 417 002e 02 27       		st	AL,@(0x0006,Y)
+ 418 002f 1E 14       		ld	AL,#0x0001
+ 419 0030 03 27       		ld	AH,#0x0000
+ 420 0031 0A 14       		bsr	PioConfigPWM
+ 421 0032 04 27       		.loc 1 224 0
+ 422 0033 05 27       		ld	AL,#0x0001
+ 423 0034 33 14       		ld	AH,#0x0000
+ 424 0035 06 27       		bsr	PioEnablePWM
+ 425 0036 01 14       		.loc 1 229 0
+ 426 0037 00 10       		ld	AL,#0x0004
+ 427 0038 00 00 00 00 		st	AL,@(0,Y)
+ 427      00 9C 
+ 224:alert_client_hw.c ****     PioEnablePWM(LED_PWM_INDEX_1, FALSE);
+ 428                 	d	AL,#0x0008
+ 429 003b 01 14       		bsr	PioSetModes
+ 430 003c 00 10       		.loc 1 231 0
+ 431 003d 00 00 00 00 		ld	AL,#0x0002
+ 431      00 9C 
+ 229:alert_client_hw.c ****     PioSetModes(PIO_BIT_MASK(BUZZER_PIO), pio_mode_pwm0);
+ 432                 	AL,@(0,Y)
+ 433 0040 04 14       		ld	AL,#0x000f
+ 434 0041 00 27       		st	AL,@(0x0001,Y)
+ 435 0042 00 10       		ld	AL,#0x0000
+ 436 0043 08 14       		st	AL,@(0x0002,Y)
+ 437 0044 00 00 00 00 		ld	AL,#0x0002
+ 437      00 9C 
+ 231:alert_client_hw.c ****     PioConfigPWM(BUZZER_PWM_INDEX_0, pio_pwm_mode_push_pull, DULL_BUZZ_ON_TIME,
+ 438                 	,@(0x0003,Y)
+ 439 0047 02 14       		ld	AL,#0x000f
+ 440 0048 00 27       		st	AL,@(0x0004,Y)
+ 441 0049 0F 14       		ld	AL,#0x0000
+ 442 004a 01 27       		st	AL,@(0x0005,Y)
+ 443 004b 00 14       		ld	AL,#0x00ff
+ 444 004c 02 27       		st	AL,@(0x0006,Y)
+ 445 004d 02 14       		ld	AL,#0x0000
+ 446 004e 03 27       		ld	AH,#0x0000
+ 447 004f 0F 14       		bsr	PioConfigPWM
+ 448 0050 04 27       		.loc 1 236 0
+ 449 0051 00 14       		ld	AL,#0x0000
+ 450 0052 05 27       		ld	AH,#0x0000
+ 451 0053 01 00 FF 14 		bsr	PioEnablePWM
+ 452 0055 06 27       		.loc 1 240 0
+ 453 0056 00 14       		ld	AL,#0x0005
+ 454 0057 00 10       		bsr	PioSetI2CPullMode
+ 455 0058 00 00 00 00 		.loc 1 241 0
+ 455      00 9C 
+ 236:alert_client_hw.c ****     PioEnablePWM(BUZZER_PWM_INDEX_0, FALSE);
+ 456                 	E3:
+ 457 005b 00 14       		.size	InitAlertTagHardware, .-InitAlertTagHardware
+ 458 005c 00 10       		.global	__size_of_InitAlertTagHardware
+ 459 005d 00 00 00 00 		.equ	__size_of_InitAlertTagHardware,. - InitAlertTagHardware
+ 459      00 9C 
+ 240:alert_client_hw.c ****     PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
+ 460                 	mm g_app_hw_data, 5, 1
+ 461 0060 05 14       	
+ 462 0061 00 00 00 00 		.section	.debug_frame,"",@progbits
+ 462      00 9C 
+ 241:alert_client_hw.c **** }
+ 463                 	rame0:
+ 464 0064 08 0F       		.4byte	.LECIE0-.LSCIE0
+ 465                 	.LSCIE0:
+ 466                 		.4byte	0xffffffff
+ 467                 		.1byte	0x1
+ 468                 		.ascii "\000"
+ 469                 		.1byte	0x1
+ 470                 		.1byte	0x7f
+ 471                 		.1byte	0x3
+ 472                 		.1byte	0xc
+ 473 0000 00 00 00 00 		.1byte	0x5
+ 474                 		.1byte	0x0
+ 475 0002 FF FF FF FF 		.p2align	2
+ 476 0004 01          	.LECIE0:
+ 477 0004 00          	.LSFDE0:
+ 478 0005 01          		.4byte	.LEFDE0-.LASFDE0
+ 479 0005 7F          	.LASFDE0:
+ 480 0006 03          		.4byte	.Lframe0
+ 481 0006 0C          		.4byte	.LFB7
+ 482 0007 05          		.4byte	.LFE7-.LFB7
+ 483 0007 00          		.1byte	0x4
+ 484                 		.4byte	.LCFI0-.LFB7
+ 485                 		.1byte	0xe
+ 486                 		.1byte	0x8
+ 487 0008 00 00 00 00 		.1byte	0x83
+ 488                 		.1byte	0x1
+ 489 000a 00 00 00 00 		.p2align	2
+ 490 000c 00 00 00 00 	.LEFDE0:
+ 491 000e 00 00 00 00 	.LSFDE2:
+ 492 0010 41          		.4byte	.LEFDE2-.LASFDE2
+ 493                 	.LASFDE2:
+ 494 0010 0E          		.4byte	.Lframe0
+ 495 0011 08          		.4byte	.LFB5
+ 496 0011 83          		.4byte	.LFE5-.LFB5
+ 497 0012 01          		.1byte	0x4
+ 498 0012 00 00 00    		.4byte	.LCFI1-.LFB5
+ 499                 		.1byte	0xe
+ 500                 		.1byte	0x1
+ 501 0014 00 00 00 00 		.1byte	0x83
+ 502                 		.1byte	0x1
+ 503 0016 00 00 00 00 		.p2align	2
+ 504 0018 00 00 00 00 	.LEFDE2:
+ 505 001a 00 00 00 00 	.LSFDE4:
+ 506 001c 41          		.4byte	.LEFDE4-.LASFDE4
+ 507                 	.LASFDE4:
+ 508 001c 0E          		.4byte	.Lframe0
+ 509 001d 01          		.4byte	.LFB6
+ 510 001d 83          		.4byte	.LFE6-.LFB6
+ 511 001e 01          		.1byte	0x4
+ 512 001e 00 00 00    		.4byte	.LCFI2-.LFB6
+ 513                 		.1byte	0xe
+ 514                 		.1byte	0x6
+ 515 0020 00 00 00 00 		.1byte	0x83
+ 516                 		.1byte	0x1
+ 517 0022 00 00 00 00 		.p2align	2
+ 518 0024 00 00 00 00 	.LEFDE4:
+ 519 0026 00 00 00 00 	.LSFDE6:
+ 520 0028 41          		.4byte	.LEFDE6-.LASFDE6
+ 521                 	.LASFDE6:
+ 522 0028 0E          		.4byte	.Lframe0
+ 523 0029 06          		.4byte	.LFB2
+ 524 0029 83          		.4byte	.LFE2-.LFB2
+ 525 002a 01          		.1byte	0x4
+ 526 002a 00 00 00    		.4byte	.LCFI3-.LFB2
+ 527                 		.1byte	0xe
+ 528                 		.1byte	0x3
+ 529 002c 00 00 00 00 		.1byte	0x83
+ 530                 		.1byte	0x1
+ 531 002e 00 00 00 00 		.p2align	2
+ 532 0030 00 00 00 00 	.LEFDE6:
+ 533 0032 00 00 00 00 	.LSFDE8:
+ 534 0034 41          		.4byte	.LEFDE8-.LASFDE8
+ 535                 	.LASFDE8:
+ 536 0034 0E          		.4byte	.Lframe0
+ 537 0035 03          		.4byte	.LFB4
+ 538 0035 83          		.4byte	.LFE4-.LFB4
+ 539 0036 01          		.1byte	0x4
+ 540 0036 00 00 00    		.4byte	.LCFI4-.LFB4
+ 541                 		.1byte	0xe
+ 542                 		.1byte	0x3
+ 543 0038 00 00 00 00 		.1byte	0x83
+ 544                 		.1byte	0x1
+ 545 003a 00 00 00 00 		.p2align	2
+ 546 003c 00 00 00 00 	.LEFDE8:
+ 547 003e 00 00 00 00 	.LSFDE10:
+ 548 0040 41          		.4byte	.LEFDE10-.LASFDE10
+ 549                 	.LASFDE10:
+ 550 0040 0E          		.4byte	.Lframe0
+ 551 0041 03          		.4byte	.LFB3
+ 552 0041 83          		.4byte	.LFE3-.LFB3
+ 553 0042 01          		.1byte	0x4
+ 554 0042 00 00 00    		.4byte	.LCFI5-.LFB3
+ 555                 		.1byte	0xe
+ 556                 		.1byte	0x8
+ 557 0044 00 00 00 00 		.1byte	0x83
+ 558                 		.1byte	0x1
+ 559 0046 00 00 00 00 		.p2align	2
+ 560 0048 00 00 00 00 	.LEFDE10:
+ 561 004a 00 00 00 00 		.text
+ 562 004c 41          	.Letext0:
+ 563                 		.section	.debug_loc,"",@progbits
+ 564 004c 0E          	.Ldebug_loc0:
+ 565 004d 08          	.LLST0:
+ 566 004d 83          		.4byte	.LFB7
+ 567 004e 01          		.4byte	.LCFI0
+ 568 004e 00 00 00    		.2byte	0x1
+ 569                 		.1byte	0x55
+ 570                 		.4byte	.LCFI0
+ 571                 		.4byte	.LFE7
+ 572                 		.2byte	0x2
+ 573                 		.1byte	0x75
+ 574                 		.1byte	0x8
+ 575 0000 00 00 00 00 		.4byte	0x0
+ 576 0002 00 00 00 00 		.4byte	0x0
+ 577 0004 00 01       	.LLST1:
+ 578 0005 55          		.4byte	.LVL0
+ 579 0005 00 00 00 00 		.4byte	.LVL1
+ 580 0007 00 00 00 00 		.2byte	0x1
+ 581 0009 00 02       		.1byte	0x51
+ 582 000a 75          		.4byte	.LVL2
+ 583 000b 08          		.4byte	.LVL3
+ 584 000b 00 00 00 00 		.2byte	0x1
+ 585 000d 00 00 00 00 		.1byte	0x51
+ 586                 		.4byte	.LVL4
+ 587 000f 00 00 00 00 		.4byte	.LVL5
+ 588 0011 00 00 00 00 		.2byte	0x1
+ 589 0013 00 01       		.1byte	0x51
+ 590 0014 51          		.4byte	.LVL6
+ 591 0015 00 00 00 00 		.4byte	.LVL7
+ 592 0017 00 00 00 00 		.2byte	0x1
+ 593 0019 00 01       		.1byte	0x51
+ 594 001a 51          		.4byte	0x0
+ 595 001a 00 00 00 00 		.4byte	0x0
+ 596 001c 00 00 00 00 	.LLST2:
+ 597 001e 00 01       		.4byte	.LFB5
+ 598 001f 51          		.4byte	.LCFI1
+ 599 0020 00 00 00 00 		.2byte	0x1
+ 600 0022 00 00 00 00 		.1byte	0x55
+ 601 0024 00 01       		.4byte	.LCFI1
+ 602 0025 51          		.4byte	.LFE5
+ 603 0025 00 00 00 00 		.2byte	0x2
+ 604 0027 00 00 00 00 		.1byte	0x75
+ 605                 		.1byte	0x1
+ 606 0029 00 00 00 00 		.4byte	0x0
+ 607 002b 00 00 00 00 		.4byte	0x0
+ 608 002d 00 01       	.LLST3:
+ 609 002e 55          		.4byte	.LFB6
+ 610 002f 00 00 00 00 		.4byte	.LCFI2
+ 611 0031 00 00 00 00 		.2byte	0x1
+ 612 0033 00 02       		.1byte	0x55
+ 613 0034 75          		.4byte	.LCFI2
+ 614 0034 01          		.4byte	.LFE6
+ 615 0035 00 00 00 00 		.2byte	0x2
+ 616 0037 00 00 00 00 		.1byte	0x75
+ 617                 		.1byte	0x6
+ 618 0039 00 00 00 00 		.4byte	0x0
+ 619 003b 00 00 00 00 		.4byte	0x0
+ 620 003d 00 01       	.LLST4:
+ 621 003e 55          		.4byte	.LVL8
+ 622 003e 00 00 00 00 		.4byte	.LVL9
+ 623 0040 00 00 00 00 		.2byte	0x1
+ 624 0042 00 02       		.1byte	0x51
+ 625 0043 75          		.4byte	.LVL9
+ 626 0044 06          		.4byte	.LFE6
+ 627 0044 00 00 00 00 		.2byte	0x2
+ 628 0046 00 00 00 00 		.1byte	0x76
+ 629                 		.1byte	0x2
+ 630 0048 00 00 00 00 		.4byte	0x0
+ 631 004a 00 00 00 00 		.4byte	0x0
+ 632 004c 00 01       	.LLST5:
+ 633 004d 51          		.4byte	.LFB2
+ 634 004e 00 00 00 00 		.4byte	.LCFI3
+ 635 0050 00 00 00 00 		.2byte	0x1
+ 636 0052 00 02       		.1byte	0x55
+ 637 0053 76          		.4byte	.LCFI3
+ 638 0053 02          		.4byte	.LFE2
+ 639 0054 00 00 00 00 		.2byte	0x2
+ 640 0056 00 00 00 00 		.1byte	0x75
+ 641                 		.1byte	0x3
+ 642 0058 00 00 00 00 		.4byte	0x0
+ 643 005a 00 00 00 00 		.4byte	0x0
+ 644 005c 00 01       	.LLST6:
+ 645 005d 55          		.4byte	.LVL10
+ 646 005d 00 00 00 00 		.4byte	.LVL11
+ 647 005f 00 00 00 00 		.2byte	0x1
+ 648 0061 00 02       		.1byte	0x51
+ 649 0062 75          		.4byte	0x0
+ 650 0063 03          		.4byte	0x0
+ 651 0063 00 00 00 00 	.LLST7:
+ 652 0065 00 00 00 00 		.4byte	.LVL13
+ 653                 		.4byte	.LVL14
+ 654 0067 00 00 00 00 		.2byte	0x6
+ 655 0069 00 00 00 00 		.1byte	0x50
+ 656 006b 00 01       		.1byte	0x93
+ 657 006c 51          		.1byte	0x2
+ 658 006d 00 00 00 00 		.1byte	0x51
+ 659 006f 00 00 00 00 		.1byte	0x93
+ 660                 		.1byte	0x2
+ 661 0071 00 00 00 00 		.4byte	.LVL16
+ 662 0073 00 00 00 00 		.4byte	.LVL17
+ 663 0075 00 06       		.2byte	0x6
+ 664 0076 50          		.1byte	0x50
+ 665 0076 93          		.1byte	0x93
+ 666 0077 02          		.1byte	0x2
+ 667 0077 51          		.1byte	0x51
+ 668 0078 93          		.1byte	0x93
+ 669 0078 02          		.1byte	0x2
+ 670 0079 00 00 00 00 		.4byte	.LVL18
+ 671 007b 00 00 00 00 		.4byte	.LFE2
+ 672 007d 00 06       		.2byte	0x6
+ 673 007e 50          		.1byte	0x50
+ 674 007e 93          		.1byte	0x93
+ 675 007f 02          		.1byte	0x2
+ 676 007f 51          		.1byte	0x51
+ 677 0080 93          		.1byte	0x93
+ 678 0080 02          		.1byte	0x2
+ 679 0081 00 00 00 00 		.4byte	0x0
+ 680 0083 00 00 00 00 		.4byte	0x0
+ 681 0085 00 06       	.LLST8:
+ 682 0086 50          		.4byte	.LFB4
+ 683 0086 93          		.4byte	.LCFI4
+ 684 0087 02          		.2byte	0x1
+ 685 0087 51          		.1byte	0x55
+ 686 0088 93          		.4byte	.LCFI4
+ 687 0088 02          		.4byte	.LFE4
+ 688 0089 00 00 00 00 		.2byte	0x2
+ 689 008b 00 00 00 00 		.1byte	0x75
+ 690                 		.1byte	0x3
+ 691 008d 00 00 00 00 		.4byte	0x0
+ 692 008f 00 00 00 00 		.4byte	0x0
+ 693 0091 00 01       	.LLST9:
+ 694 0092 55          		.4byte	.LVL19
+ 695 0092 00 00 00 00 		.4byte	.LVL20
+ 696 0094 00 00 00 00 		.2byte	0x1
+ 697 0096 00 02       		.1byte	0x51
+ 698 0097 75          		.4byte	.LVL21
+ 699 0098 03          		.4byte	.LFE4
+ 700 0098 00 00 00 00 		.2byte	0x1
+ 701 009a 00 00 00 00 		.1byte	0x51
+ 702                 		.4byte	0x0
+ 703 009c 00 00 00 00 		.4byte	0x0
+ 704 009e 00 00 00 00 	.LLST10:
+ 705 00a0 00 01       		.4byte	.LFB3
+ 706 00a1 51          		.4byte	.LCFI5
+ 707 00a2 00 00 00 00 		.2byte	0x1
+ 708 00a4 00 00 00 00 		.1byte	0x55
+ 709 00a6 00 01       		.4byte	.LCFI5
+ 710 00a7 51          		.4byte	.LFE3
+ 711 00a7 00 00 00 00 		.2byte	0x2
+ 712 00a9 00 00 00 00 		.1byte	0x75
+ 713                 		.1byte	0x8
+ 714 00ab 00 00 00 00 		.4byte	0x0
+ 715 00ad 00 00 00 00 		.4byte	0x0
+ 716 00af 00 01       		.file 2 "C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/types.h"
+ 717 00b0 55          		.file 3 "C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/pio.h"
+ 718 00b1 00 00 00 00 		.file 4 "C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/timer.h"
+ 719 00b3 00 00 00 00 		.file 5 "app_gatt.h"
+ 720 00b5 00 02       		.file 6 "alert_client_hw.h"
+ 721 00b6 75          		.section	.debug_info
+ 722 00b6 08          		.4byte	0x3df
+ 723 00b7 00 00 00 00 		.2byte	0x2
+ 724 00b9 00 00 00 00 		.4byte	.Ldebug_abbrev0
+ 725                 		.1byte	0x4
+ 726                 		.1byte	0x1
+ 727                 		.4byte	.LASF94
+ 728                 		.1byte	0x1
+ 729                 		.4byte	.LASF95
+ 730                 		.4byte	.LASF96
+ 731 0000 00 00 03 DF 		.4byte	0x0
+ 732 0002 00 02       		.4byte	0x0
+ 733 0003 00 00 00 00 		.4byte	.Ldebug_ranges0+0x0
+ 734 0005 04          		.4byte	.Ldebug_line0
+ 735 0005 01          		.1byte	0x2
+ 736 0006 00 00 00 00 		.1byte	0x2
+ 737 0008 01          		.1byte	0x8
+ 738 0008 00 00 00 00 		.4byte	.LASF0
+ 739 000a 00 00 00 00 		.1byte	0x3
+ 740 000c 00 00 00 00 		.4byte	.LASF2
+ 741 000e 00 00 00 00 		.1byte	0x2
+ 742 0010 00 00 00 00 		.1byte	0x1f
+ 743 0012 00 00 00 00 		.4byte	0x3b
+ 744 0014 02          		.1byte	0x2
+ 745 0015 02          		.1byte	0x2
+ 746 0015 08          		.1byte	0x7
+ 747 0016 00 00 00 00 		.4byte	.LASF1
+ 748 0018 03          		.1byte	0x3
+ 749 0018 00 00 00 00 		.4byte	.LASF3
+ 750 001a 02          		.1byte	0x2
+ 751 001b 1F          		.1byte	0x20
+ 752 001b 00 00 00 3B 		.4byte	0x4d
+ 753 001d 02          		.1byte	0x2
+ 754 001e 02          		.1byte	0x4
+ 755 001e 07          		.1byte	0x7
+ 756 001f 00 00 00 00 		.4byte	.LASF4
+ 757 0021 03          		.1byte	0x2
+ 758 0021 00 00 00 00 		.1byte	0x2
+ 759 0023 02          		.1byte	0x6
+ 760 0024 20          		.4byte	.LASF5
+ 761 0024 00 00 00 4D 		.1byte	0x2
+ 762 0026 02          		.1byte	0x2
+ 763 0027 04          		.1byte	0x5
+ 764 0027 07          		.4byte	.LASF6
+ 765 0028 00 00 00 00 		.1byte	0x2
+ 766 002a 02          		.1byte	0x4
+ 767 002a 02          		.1byte	0x5
+ 768 002b 06          		.4byte	.LASF7
+ 769 002b 00 00 00 00 		.1byte	0x3
+ 770 002d 02          		.4byte	.LASF8
+ 771 002e 02          		.1byte	0x2
+ 772 002e 05          		.1byte	0x2a
+ 773 002f 00 00 00 00 		.4byte	0x74
+ 774 0031 02          		.1byte	0x2
+ 775 0031 04          		.1byte	0x2
+ 776 0032 05          		.1byte	0x7
+ 777 0032 00 00 00 00 		.4byte	.LASF9
+ 778 0034 03          		.1byte	0x4
+ 779 0035 00 00 00 00 		.1byte	0x2
+ 780 0037 02          		.1byte	0x7
+ 781 0037 2A          		.1byte	0x5
+ 782 0038 00 00 00 74 		.1byte	0x2
+ 783 003a 02          		.1byte	0x3
+ 784 003a 02          		.1byte	0x1b
+ 785 003b 07          		.4byte	0x11d
+ 786 003b 00 00 00 00 		.1byte	0x6
+ 787 003d 04          		.4byte	.LASF10
+ 788 003e 02          		.1byte	0x0
+ 789 003e 07          		.1byte	0x6
+ 790 003f 05          		.4byte	.LASF11
+ 791 003f 02          		.1byte	0x1
+ 792 0040 03          		.1byte	0x6
+ 793 0040 1B          		.4byte	.LASF12
+ 794 0041 00 00 01 1D 		.1byte	0x3
+ 795 0043 06          		.1byte	0x6
+ 796 0043 00 00 00 00 		.4byte	.LASF13
+ 797 0045 00          		.1byte	0x4
+ 798 0046 06          		.1byte	0x6
+ 799 0046 00 00 00 00 		.4byte	.LASF14
+ 800 0048 01          		.1byte	0x5
+ 801 0049 06          		.1byte	0x6
+ 802 0049 00 00 00 00 		.4byte	.LASF15
+ 803 004b 03          		.1byte	0x6
+ 804 004c 06          		.1byte	0x6
+ 805 004c 00 00 00 00 		.4byte	.LASF16
+ 806 004e 04          		.1byte	0x7
+ 807 004f 06          		.1byte	0x6
+ 808 004f 00 00 00 00 		.4byte	.LASF17
+ 809 0051 05          		.1byte	0x8
+ 810 0052 06          		.1byte	0x6
+ 811 0052 00 00 00 00 		.4byte	.LASF18
+ 812 0054 06          		.1byte	0x9
+ 813 0055 06          		.1byte	0x6
+ 814 0055 00 00 00 00 		.4byte	.LASF19
+ 815 0057 07          		.1byte	0xa
+ 816 0058 06          		.1byte	0x6
+ 817 0058 00 00 00 00 		.4byte	.LASF20
+ 818 005a 08          		.1byte	0xb
+ 819 005b 06          		.1byte	0x6
+ 820 005b 00 00 00 00 		.4byte	.LASF21
+ 821 005d 09          		.1byte	0xc
+ 822 005e 06          		.1byte	0x6
+ 823 005e 00 00 00 00 		.4byte	.LASF22
+ 824 0060 0A          		.1byte	0xd
+ 825 0061 06          		.1byte	0x6
+ 826 0061 00 00 00 00 		.4byte	.LASF23
+ 827 0063 0B          		.1byte	0xe
+ 828 0064 06          		.1byte	0x6
+ 829 0064 00 00 00 00 		.4byte	.LASF24
+ 830 0066 0C          		.1byte	0xf
+ 831 0067 06          		.1byte	0x6
+ 832 0067 00 00 00 00 		.4byte	.LASF25
+ 833 0069 0D          		.1byte	0x10
+ 834 006a 06          		.1byte	0x6
+ 835 006a 00 00 00 00 		.4byte	.LASF26
+ 836 006c 0E          		.1byte	0x11
+ 837 006d 06          		.1byte	0x6
+ 838 006d 00 00 00 00 		.4byte	.LASF27
+ 839 006f 0F          		.1byte	0x12
+ 840 0070 06          		.1byte	0x6
+ 841 0070 00 00 00 00 		.4byte	.LASF28
+ 842 0072 10          		.1byte	0x13
+ 843 0073 06          		.1byte	0x6
+ 844 0073 00 00 00 00 		.4byte	.LASF29
+ 845 0075 11          		.1byte	0x14
+ 846 0076 06          		.1byte	0x6
+ 847 0076 00 00 00 00 		.4byte	.LASF30
+ 848 0078 12          		.1byte	0x15
+ 849 0079 06          		.1byte	0x6
+ 850 0079 00 00 00 00 		.4byte	.LASF31
+ 851 007b 13          		.1byte	0x16
+ 852 007c 06          		.1byte	0x6
+ 853 007c 00 00 00 00 		.4byte	.LASF32
+ 854 007e 14          		.1byte	0x17
+ 855 007f 06          		.1byte	0x6
+ 856 007f 00 00 00 00 		.4byte	.LASF33
+ 857 0081 15          		.1byte	0x18
+ 858 0082 06          		.1byte	0x6
+ 859 0082 00 00 00 00 		.4byte	.LASF34
+ 860 0084 16          		.1byte	0x19
+ 861 0085 06          		.1byte	0x0
+ 862 0085 00 00 00 00 		.1byte	0x5
+ 863 0087 17          		.1byte	0x2
+ 864 0088 06          		.1byte	0x3
+ 865 0088 00 00 00 00 		.1byte	0x8c
+ 866 008a 18          		.4byte	0x150
+ 867 008b 06          		.1byte	0x6
+ 868 008b 00 00 00 00 		.4byte	.LASF35
+ 869 008d 19          		.1byte	0x0
+ 870 008e 00          		.1byte	0x6
+ 871 008e 05          		.4byte	.LASF36
+ 872 008f 02          		.1byte	0x1
+ 873 008f 03          		.1byte	0x6
+ 874 0090 8C          		.4byte	.LASF37
+ 875 0090 00 00 01 50 		.1byte	0x3
+ 876 0092 06          		.1byte	0x6
+ 877 0093 00 00 00 00 		.4byte	.LASF38
+ 878 0095 00          		.1byte	0x5
+ 879 0095 06          		.1byte	0x6
+ 880 0096 00 00 00 00 		.4byte	.LASF39
+ 881 0098 01          		.1byte	0x7
+ 882 0098 06          		.1byte	0x6
+ 883 0099 00 00 00 00 		.4byte	.LASF40
+ 884 009b 03          		.1byte	0x9
+ 885 009b 06          		.1byte	0x6
+ 886 009c 00 00 00 00 		.4byte	.LASF41
+ 887 009e 05          		.1byte	0xd
+ 888 009e 06          		.1byte	0x0
+ 889 009f 00 00 00 00 		.1byte	0x5
+ 890 00a1 07          		.1byte	0x2
+ 891 00a1 06          		.1byte	0x3
+ 892 00a2 00 00 00 00 		.1byte	0xa3
+ 893 00a4 09          		.4byte	0x183
+ 894 00a4 06          		.1byte	0x6
+ 895 00a5 00 00 00 00 		.4byte	.LASF42
+ 896 00a7 0D          		.1byte	0x0
+ 897 00a7 00          		.1byte	0x6
+ 898 00a8 05          		.4byte	.LASF43
+ 899 00a8 02          		.1byte	0x1
+ 900 00a9 03          		.1byte	0x6
+ 901 00a9 A3          		.4byte	.LASF44
+ 902 00aa 00 00 01 83 		.1byte	0x3
+ 903 00ac 06          		.1byte	0x6
+ 904 00ac 00 00 00 00 		.4byte	.LASF45
+ 905 00ae 00          		.1byte	0x5
+ 906 00af 06          		.1byte	0x6
+ 907 00af 00 00 00 00 		.4byte	.LASF46
+ 908 00b1 01          		.1byte	0x7
+ 909 00b2 06          		.1byte	0x6
+ 910 00b2 00 00 00 00 		.4byte	.LASF47
+ 911 00b4 03          		.1byte	0x9
+ 912 00b5 06          		.1byte	0x6
+ 913 00b5 00 00 00 00 		.4byte	.LASF48
+ 914 00b7 05          		.1byte	0xd
+ 915 00b8 06          		.1byte	0x0
+ 916 00b8 00 00 00 00 		.1byte	0x5
+ 917 00ba 07          		.1byte	0x2
+ 918 00bb 06          		.1byte	0x3
+ 919 00bb 00 00 00 00 		.1byte	0xb5
+ 920 00bd 09          		.4byte	0x1a4
+ 921 00be 06          		.1byte	0x6
+ 922 00be 00 00 00 00 		.4byte	.LASF49
+ 923 00c0 0D          		.1byte	0x0
+ 924 00c1 00          		.1byte	0x6
+ 925 00c1 05          		.4byte	.LASF50
+ 926 00c2 02          		.1byte	0x1
+ 927 00c2 03          		.1byte	0x6
+ 928 00c3 B5          		.4byte	.LASF51
+ 929 00c3 00 00 01 A4 		.1byte	0x2
+ 930 00c5 06          		.1byte	0x6
+ 931 00c6 00 00 00 00 		.4byte	.LASF52
+ 932 00c8 00          		.1byte	0x3
+ 933 00c8 06          		.1byte	0x0
+ 934 00c9 00 00 00 00 		.1byte	0x7
+ 935 00cb 01          		.1byte	0x2
+ 936 00cb 06          		.1byte	0x3
+ 937 00cc 00 00 00 00 		.2byte	0x19f
+ 938 00ce 02          		.4byte	0x1c6
+ 939 00ce 06          		.1byte	0x6
+ 940 00cf 00 00 00 00 		.4byte	.LASF53
+ 941 00d1 03          		.1byte	0x0
+ 942 00d1 00          		.1byte	0x6
+ 943 00d2 07          		.4byte	.LASF54
+ 944 00d2 02          		.1byte	0x1
+ 945 00d3 03          		.1byte	0x6
+ 946 00d3 01 9F       		.4byte	.LASF55
+ 947 00d4 00 00 01 C6 		.1byte	0x2
+ 948 00d6 06          		.1byte	0x6
+ 949 00d7 00 00 00 00 		.4byte	.LASF56
+ 950 00d9 00          		.1byte	0x3
+ 951 00d9 06          		.1byte	0x0
+ 952 00da 00 00 00 00 		.1byte	0x3
+ 953 00dc 01          		.4byte	.LASF57
+ 954 00dc 06          		.1byte	0x4
+ 955 00dd 00 00 00 00 		.1byte	0x1f
+ 956 00df 02          		.4byte	0x30
+ 957 00df 06          		.1byte	0x5
+ 958 00e0 00 00 00 00 		.1byte	0x2
+ 959 00e2 03          		.1byte	0x5
+ 960 00e2 00          		.1byte	0x72
+ 961 00e3 03          		.4byte	0x228
+ 962 00e3 00 00 00 00 		.1byte	0x6
+ 963 00e5 04          		.4byte	.LASF58
+ 964 00e6 1F          		.1byte	0x0
+ 965 00e6 00 00 00 30 		.1byte	0x6
+ 966 00e8 05          		.4byte	.LASF59
+ 967 00e9 02          		.1byte	0x1
+ 968 00e9 05          		.1byte	0x6
+ 969 00ea 72          		.4byte	.LASF60
+ 970 00ea 00 00 02 28 		.1byte	0x2
+ 971 00ec 06          		.1byte	0x6
+ 972 00ed 00 00 00 00 		.4byte	.LASF61
+ 973 00ef 00          		.1byte	0x3
+ 974 00ef 06          		.1byte	0x6
+ 975 00f0 00 00 00 00 		.4byte	.LASF62
+ 976 00f2 01          		.1byte	0x4
+ 977 00f2 06          		.1byte	0x6
+ 978 00f3 00 00 00 00 		.4byte	.LASF63
+ 979 00f5 02          		.1byte	0x5
+ 980 00f5 06          		.1byte	0x6
+ 981 00f6 00 00 00 00 		.4byte	.LASF64
+ 982 00f8 03          		.1byte	0x6
+ 983 00f8 06          		.1byte	0x6
+ 984 00f9 00 00 00 00 		.4byte	.LASF65
+ 985 00fb 04          		.1byte	0x7
+ 986 00fb 06          		.1byte	0x6
+ 987 00fc 00 00 00 00 		.4byte	.LASF66
+ 988 00fe 05          		.1byte	0x8
+ 989 00fe 06          		.1byte	0x6
+ 990 00ff 00 00 00 00 		.4byte	.LASF67
+ 991 0101 06          		.1byte	0x9
+ 992 0101 06          		.1byte	0x6
+ 993 0102 00 00 00 00 		.4byte	.LASF68
+ 994 0104 07          		.1byte	0xa
+ 995 0104 06          		.1byte	0x6
+ 996 0105 00 00 00 00 		.4byte	.LASF69
+ 997 0107 08          		.1byte	0xb
+ 998 0107 06          		.1byte	0x6
+ 999 0108 00 00 00 00 		.4byte	.LASF70
+ 1000 010a 09          		.1byte	0xc
+ 1001 010a 06          		.1byte	0x0
+ 1002 010b 00 00 00 00 		.1byte	0x5
+ 1003 010d 0A          		.1byte	0x2
+ 1004 010d 06          		.1byte	0x6
+ 1005 010e 00 00 00 00 		.1byte	0x78
+ 1006 0110 0B          		.4byte	0x24f
+ 1007 0110 06          		.1byte	0x6
+ 1008 0111 00 00 00 00 		.4byte	.LASF71
+ 1009 0113 0C          		.1byte	0x0
+ 1010 0113 00          		.1byte	0x6
+ 1011 0114 05          		.4byte	.LASF72
+ 1012 0114 02          		.1byte	0x1
+ 1013 0115 06          		.1byte	0x6
+ 1014 0115 78          		.4byte	.LASF73
+ 1015 0116 00 00 02 4F 		.1byte	0x2
+ 1016 0118 06          		.1byte	0x6
+ 1017 0118 00 00 00 00 		.4byte	.LASF74
+ 1018 011a 00          		.1byte	0x3
+ 1019 011b 06          		.1byte	0x6
+ 1020 011b 00 00 00 00 		.4byte	.LASF75
+ 1021 011d 01          		.1byte	0x4
+ 1022 011e 06          		.1byte	0x0
+ 1023 011e 00 00 00 00 		.1byte	0x3
+ 1024 0120 02          		.4byte	.LASF76
+ 1025 0121 06          		.1byte	0x6
+ 1026 0121 00 00 00 00 		.1byte	0x82
+ 1027 0123 03          		.4byte	0x228
+ 1028 0124 06          		.1byte	0x8
+ 1029 0124 00 00 00 00 		.1byte	0xa
+ 1030 0126 04          		.1byte	0x6
+ 1031 0127 00          		.1byte	0x87
+ 1032 0127 03          		.4byte	0x2a9
+ 1033 0128 00 00 00 00 		.1byte	0x9
+ 1034 012a 06          		.4byte	.LASF77
+ 1035 012a 82          		.1byte	0x6
+ 1036 012b 00 00 02 28 		.1byte	0x8b
+ 1037 012d 08          		.4byte	0x1c6
+ 1038 012d 0A          		.1byte	0x2
+ 1039 012e 06          		.1byte	0x23
+ 1040 012e 87          		.1byte	0x0
+ 1041 012f 00 00 02 A9 		.1byte	0x9
+ 1042 0131 09          		.4byte	.LASF78
+ 1043 0131 00 00 00 00 		.1byte	0x6
+ 1044 0133 06          		.1byte	0x8f
+ 1045 0134 8B          		.4byte	0x1c6
+ 1046 0134 00 00 01 C6 		.1byte	0x2
+ 1047 0136 02          		.1byte	0x23
+ 1048 0137 23          		.1byte	0x1
+ 1049 0137 00          		.1byte	0x9
+ 1050 0138 09          		.4byte	.LASF79
+ 1051 0138 00 00 00 00 		.1byte	0x6
+ 1052 013a 06          		.1byte	0x93
+ 1053 013b 8F          		.4byte	0x69
+ 1054 013b 00 00 01 C6 		.1byte	0x2
+ 1055 013d 02          		.1byte	0x23
+ 1056 013e 23          		.1byte	0x2
+ 1057 013e 01          		.1byte	0x9
+ 1058 013f 09          		.4byte	.LASF80
+ 1059 013f 00 00 00 00 		.1byte	0x6
+ 1060 0141 06          		.1byte	0x97
+ 1061 0142 93          		.4byte	0x24f
+ 1062 0142 00 00 00 69 		.1byte	0x2
+ 1063 0144 02          		.1byte	0x23
+ 1064 0145 23          		.1byte	0x3
+ 1065 0145 02          		.1byte	0x9
+ 1066 0146 09          		.4byte	.LASF81
+ 1067 0146 00 00 00 00 		.1byte	0x6
+ 1068 0148 06          		.1byte	0x9d
+ 1069 0149 97          		.4byte	0x30
+ 1070 0149 00 00 02 4F 		.1byte	0x2
+ 1071 014b 02          		.1byte	0x23
+ 1072 014c 23          		.1byte	0x4
+ 1073 014c 03          		.1byte	0x0
+ 1074 014d 09          		.1byte	0x3
+ 1075 014d 00 00 00 00 		.4byte	.LASF82
+ 1076 014f 06          		.1byte	0x6
+ 1077 0150 9D          		.1byte	0xa0
+ 1078 0150 00 00 00 30 		.4byte	0x25a
+ 1079 0152 02          		.1byte	0x5
+ 1080 0153 23          		.1byte	0x2
+ 1081 0153 04          		.1byte	0x6
+ 1082 0154 00          		.1byte	0xa4
+ 1083 0154 03          		.4byte	0x2cf
+ 1084 0155 00 00 00 00 		.1byte	0x6
+ 1085 0157 06          		.4byte	.LASF83
+ 1086 0157 A0          		.1byte	0x0
+ 1087 0158 00 00 02 5A 		.1byte	0x6
+ 1088 015a 05          		.4byte	.LASF84
+ 1089 015a 02          		.1byte	0x1
+ 1090 015b 06          		.1byte	0x6
+ 1091 015b A4          		.4byte	.LASF85
+ 1092 015c 00 00 02 CF 		.1byte	0x2
+ 1093 015e 06          		.1byte	0x0
+ 1094 015e 00 00 00 00 		.1byte	0x3
+ 1095 0160 00          		.4byte	.LASF86
+ 1096 0161 06          		.1byte	0x6
+ 1097 0161 00 00 00 00 		.1byte	0xab
+ 1098 0163 01          		.4byte	0x2b4
+ 1099 0164 06          		.1byte	0xa
+ 1100 0164 00 00 00 00 		.1byte	0x1
+ 1101 0166 02          		.4byte	.LASF87
+ 1102 0167 00          		.1byte	0x1
+ 1103 0167 03          		.2byte	0x18c
+ 1104 0168 00 00 00 00 		.1byte	0x1
+ 1105 016a 06          		.4byte	.LFB7
+ 1106 016a AB          		.4byte	.LFE7
+ 1107 016b 00 00 02 B4 		.4byte	.LLST0
+ 1108 016d 0A          		.4byte	0x305
+ 1109 016d 01          		.1byte	0xb
+ 1110 016e 00 00 00 00 		.4byte	.LASF89
+ 1111 0170 01          		.1byte	0x1
+ 1112 0170 01 8C       		.2byte	0x18b
+ 1113 0171 01          		.4byte	0x2cf
+ 1114 0172 00 00 00 00 		.4byte	.LLST1
+ 1115 0174 00 00 00 00 		.1byte	0x0
+ 1116 0176 00 00 00 00 		.1byte	0xc
+ 1117 0178 00 00 03 05 		.1byte	0x1
+ 1118 017a 0B          		.4byte	.LASF92
+ 1119 017a 00 00 00 00 		.1byte	0x1
+ 1120 017c 01          		.2byte	0x127
+ 1121 017d 01 8B       		.1byte	0x1
+ 1122 017e 00 00 02 CF 		.4byte	.LFB5
+ 1123 0180 00 00 00 00 		.4byte	.LFE5
+ 1124 0182 00          		.4byte	.LLST2
+ 1125 0182 0C          		.1byte	0xa
+ 1126 0183 01          		.1byte	0x1
+ 1127 0183 00 00 00 00 		.4byte	.LASF88
+ 1128 0185 01          		.1byte	0x1
+ 1129 0186 01 27       		.2byte	0x13c
+ 1130 0187 01          		.1byte	0x1
+ 1131 0187 00 00 00 00 		.4byte	.LFB6
+ 1132 0189 00 00 00 00 		.4byte	.LFE6
+ 1133 018b 00 00 00 00 		.4byte	.LLST3
+ 1134 018d 0A          		.4byte	0x35b
+ 1135 018e 01          		.1byte	0xb
+ 1136 018e 00 00 00 00 		.4byte	.LASF80
+ 1137 0190 01          		.1byte	0x1
+ 1138 0191 01 3C       		.2byte	0x13b
+ 1139 0192 01          		.4byte	0x24f
+ 1140 0192 00 00 00 00 		.4byte	.LLST4
+ 1141 0194 00 00 00 00 		.1byte	0xd
+ 1142 0196 00 00 00 00 		.4byte	.LASF90
+ 1143 0198 00 00 03 5B 		.1byte	0x1
+ 1144 019a 0B          		.2byte	0x13e
+ 1145 019b 00 00 00 00 		.4byte	0x42
+ 1146 019d 01          		.1byte	0x8
+ 1147 019d 01 3B       		.1byte	0x76
+ 1148 019e 00 00 02 4F 		.1byte	0x3
+ 1149 01a0 00 00 00 00 		.1byte	0x93
+ 1150 01a2 0D          		.1byte	0x1
+ 1151 01a3 00 00 00 00 		.1byte	0x76
+ 1152 01a5 01          		.1byte	0x4
+ 1153 01a5 01 3E       		.1byte	0x93
+ 1154 01a6 00 00 00 42 		.1byte	0x1
+ 1155 01a8 08          		.1byte	0x0
+ 1156 01a9 76          		.1byte	0xe
+ 1157 01a9 03          		.4byte	.LASF97
+ 1158 01aa 93          		.1byte	0x1
+ 1159 01aa 01          		.1byte	0x43
+ 1160 01ab 76          		.1byte	0x1
+ 1161 01ab 04          		.4byte	.LFB2
+ 1162 01ac 93          		.4byte	.LFE2
+ 1163 01ac 01          		.4byte	.LLST5
+ 1164 01ad 00          		.4byte	0x392
+ 1165 01ad 0E          		.1byte	0xf
+ 1166 01ae 00 00 00 00 		.ascii "tid\000"
+ 1167 01b0 01          		.1byte	0x1
+ 1168 01b0 43          		.1byte	0x42
+ 1169 01b1 01          		.4byte	0x1c6
+ 1170 01b1 00 00 00 00 		.4byte	.LLST6
+ 1171 01b3 00 00 00 00 		.1byte	0x10
+ 1172 01b5 00 00 00 00 		.4byte	.LASF90
+ 1173 01b7 00 00 03 92 		.1byte	0x1
+ 1174 01b9 0F          		.1byte	0x44
+ 1175 01ba 74 69 64 00 		.4byte	0x42
+ 1176 01bc 01          		.4byte	.LLST7
+ 1177 01bc 42          		.1byte	0x0
+ 1178 01bd 00 00 01 C6 		.1byte	0x11
+ 1179 01bf 00 00 00 00 		.1byte	0x1
+ 1180 01c1 10          		.4byte	.LASF91
+ 1181 01c1 00 00 00 00 		.1byte	0x1
+ 1182 01c3 01          		.1byte	0xff
+ 1183 01c4 44          		.1byte	0x1
+ 1184 01c4 00 00 00 42 		.4byte	.LFB4
+ 1185 01c6 00 00 00 00 		.4byte	.LFE4
+ 1186 01c8 00          		.4byte	.LLST8
+ 1187 01c9 11          		.4byte	0x3bb
+ 1188 01c9 01          		.1byte	0xf
+ 1189 01ca 00 00 00 00 		.ascii "tid\000"
+ 1190 01cc 01          		.1byte	0x1
+ 1191 01cc FF          		.1byte	0xfe
+ 1192 01cd 01          		.4byte	0x1c6
+ 1193 01cd 00 00 00 00 		.4byte	.LLST9
+ 1194 01cf 00 00 00 00 		.1byte	0x0
+ 1195 01d1 00 00 00 00 		.1byte	0x12
+ 1196 01d3 00 00 03 BB 		.1byte	0x1
+ 1197 01d5 0F          		.4byte	.LASF93
+ 1198 01d6 74 69 64 00 		.1byte	0x1
+ 1199 01d8 01          		.1byte	0xc1
+ 1200 01d8 FE          		.1byte	0x1
+ 1201 01d9 00 00 01 C6 		.4byte	.LFB3
+ 1202 01db 00 00 00 00 		.4byte	.LFE3
+ 1203 01dd 00          		.4byte	.LLST10
+ 1204 01dd 12          		.1byte	0x13
+ 1205 01de 01          		.4byte	.LASF98
+ 1206 01de 00 00 00 00 		.1byte	0x1
+ 1207 01e0 01          		.1byte	0x27
+ 1208 01e1 C1          		.4byte	0x2a9
+ 1209 01e1 01          		.1byte	0x1
+ 1210 01e2 00 00 00 00 		.1byte	0x5
+ 1211 01e4 00 00 00 00 		.1byte	0x3
+ 1212 01e6 00 00 00 00 		.4byte	g_app_hw_data
+ 1213 01e8 13          		.1byte	0x0
+ 1214 01e8 00 00 00 00 		.section	.debug_abbrev
+ 1215 01ea 01          		.1byte	0x1
+ 1216 01eb 27          		.1byte	0x11
+ 1217 01eb 00 00 02 A9 		.1byte	0x1
+ 1218 01ed 01          		.1byte	0x25
+ 1219 01ee 05          		.1byte	0xe
+ 1220 01ee 03          		.1byte	0x13
+ 1221 01ef 00 00 00 00 		.1byte	0xb
+ 1222 01f1 00          		.1byte	0x3
+ 1223                 		.1byte	0xe
+ 1224 0000 01          		.1byte	0x1b
+ 1225 0000 11          		.1byte	0xe
+ 1226 0001 01          		.1byte	0x11
+ 1227 0001 25          		.1byte	0x1
+ 1228 0002 0E          		.1byte	0x52
+ 1229 0002 13          		.1byte	0x1
+ 1230 0003 0B          		.1byte	0x55
+ 1231 0003 03          		.1byte	0x6
+ 1232 0004 0E          		.1byte	0x10
+ 1233 0004 1B          		.1byte	0x6
+ 1234 0005 0E          		.1byte	0x0
+ 1235 0005 11          		.1byte	0x0
+ 1236 0006 01          		.1byte	0x2
+ 1237 0006 52          		.1byte	0x24
+ 1238 0007 01          		.1byte	0x0
+ 1239 0007 55          		.1byte	0xb
+ 1240 0008 06          		.1byte	0xb
+ 1241 0008 10          		.1byte	0x3e
+ 1242 0009 06          		.1byte	0xb
+ 1243 0009 00          		.1byte	0x3
+ 1244 000a 00          		.1byte	0xe
+ 1245 000a 02          		.1byte	0x0
+ 1246 000b 24          		.1byte	0x0
+ 1247 000b 00          		.1byte	0x3
+ 1248 000c 0B          		.1byte	0x16
+ 1249 000c 0B          		.1byte	0x0
+ 1250 000d 3E          		.1byte	0x3
+ 1251 000d 0B          		.1byte	0xe
+ 1252 000e 03          		.1byte	0x3a
+ 1253 000e 0E          		.1byte	0xb
+ 1254 000f 00          		.1byte	0x3b
+ 1255 000f 00          		.1byte	0xb
+ 1256 0010 03          		.1byte	0x49
+ 1257 0010 16          		.1byte	0x13
+ 1258 0011 00          		.1byte	0x0
+ 1259 0011 03          		.1byte	0x0
+ 1260 0012 0E          		.1byte	0x4
+ 1261 0012 3A          		.1byte	0x24
+ 1262 0013 0B          		.1byte	0x0
+ 1263 0013 3B          		.1byte	0xb
+ 1264 0014 0B          		.1byte	0xb
+ 1265 0014 49          		.1byte	0x3e
+ 1266 0015 13          		.1byte	0xb
+ 1267 0015 00          		.1byte	0x0
+ 1268 0016 00          		.1byte	0x0
+ 1269 0016 04          		.1byte	0x5
+ 1270 0017 24          		.1byte	0x4
+ 1271 0017 00          		.1byte	0x1
+ 1272 0018 0B          		.1byte	0xb
+ 1273 0018 0B          		.1byte	0xb
+ 1274 0019 3E          		.1byte	0x3a
+ 1275 0019 0B          		.1byte	0xb
+ 1276 001a 00          		.1byte	0x3b
+ 1277 001a 00          		.1byte	0xb
+ 1278 001b 05          		.1byte	0x1
+ 1279 001b 04          		.1byte	0x13
+ 1280 001c 01          		.1byte	0x0
+ 1281 001c 0B          		.1byte	0x0
+ 1282 001d 0B          		.1byte	0x6
+ 1283 001d 3A          		.1byte	0x28
+ 1284 001e 0B          		.1byte	0x0
+ 1285 001e 3B          		.1byte	0x3
+ 1286 001f 0B          		.1byte	0xe
+ 1287 001f 01          		.1byte	0x1c
+ 1288 0020 13          		.1byte	0xd
+ 1289 0020 00          		.1byte	0x0
+ 1290 0021 00          		.1byte	0x0
+ 1291 0021 06          		.1byte	0x7
+ 1292 0022 28          		.1byte	0x4
+ 1293 0022 00          		.1byte	0x1
+ 1294 0023 03          		.1byte	0xb
+ 1295 0023 0E          		.1byte	0xb
+ 1296 0024 1C          		.1byte	0x3a
+ 1297 0024 0D          		.1byte	0xb
+ 1298 0025 00          		.1byte	0x3b
+ 1299 0025 00          		.1byte	0x5
+ 1300 0026 07          		.1byte	0x1
+ 1301 0026 04          		.1byte	0x13
+ 1302 0027 01          		.1byte	0x0
+ 1303 0027 0B          		.1byte	0x0
+ 1304 0028 0B          		.1byte	0x8
+ 1305 0028 3A          		.1byte	0x13
+ 1306 0029 0B          		.1byte	0x1
+ 1307 0029 3B          		.1byte	0xb
+ 1308 002a 05          		.1byte	0xb
+ 1309 002a 01          		.1byte	0x3a
+ 1310 002b 13          		.1byte	0xb
+ 1311 002b 00          		.1byte	0x3b
+ 1312 002c 00          		.1byte	0xb
+ 1313 002c 08          		.1byte	0x1
+ 1314 002d 13          		.1byte	0x13
+ 1315 002d 01          		.1byte	0x0
+ 1316 002e 0B          		.1byte	0x0
+ 1317 002e 0B          		.1byte	0x9
+ 1318 002f 3A          		.1byte	0xd
+ 1319 002f 0B          		.1byte	0x0
+ 1320 0030 3B          		.1byte	0x3
+ 1321 0030 0B          		.1byte	0xe
+ 1322 0031 01          		.1byte	0x3a
+ 1323 0031 13          		.1byte	0xb
+ 1324 0032 00          		.1byte	0x3b
+ 1325 0032 00          		.1byte	0xb
+ 1326 0033 09          		.1byte	0x49
+ 1327 0033 0D          		.1byte	0x13
+ 1328 0034 00          		.1byte	0x38
+ 1329 0034 03          		.1byte	0xa
+ 1330 0035 0E          		.1byte	0x0
+ 1331 0035 3A          		.1byte	0x0
+ 1332 0036 0B          		.1byte	0xa
+ 1333 0036 3B          		.1byte	0x2e
+ 1334 0037 0B          		.1byte	0x1
+ 1335 0037 49          		.1byte	0x3f
+ 1336 0038 13          		.1byte	0xc
+ 1337 0038 38          		.1byte	0x3
+ 1338 0039 0A          		.1byte	0xe
+ 1339 0039 00          		.1byte	0x3a
+ 1340 003a 00          		.1byte	0xb
+ 1341 003a 0A          		.1byte	0x3b
+ 1342 003b 2E          		.1byte	0x5
+ 1343 003b 01          		.1byte	0x27
+ 1344 003c 3F          		.1byte	0xc
+ 1345 003c 0C          		.1byte	0x11
+ 1346 003d 03          		.1byte	0x1
+ 1347 003d 0E          		.1byte	0x12
+ 1348 003e 3A          		.1byte	0x1
+ 1349 003e 0B          		.1byte	0x40
+ 1350 003f 3B          		.1byte	0x6
+ 1351 003f 05          		.1byte	0x1
+ 1352 0040 27          		.1byte	0x13
+ 1353 0040 0C          		.1byte	0x0
+ 1354 0041 11          		.1byte	0x0
+ 1355 0041 01          		.1byte	0xb
+ 1356 0042 12          		.1byte	0x5
+ 1357 0042 01          		.1byte	0x0
+ 1358 0043 40          		.1byte	0x3
+ 1359 0043 06          		.1byte	0xe
+ 1360 0044 01          		.1byte	0x3a
+ 1361 0044 13          		.1byte	0xb
+ 1362 0045 00          		.1byte	0x3b
+ 1363 0045 00          		.1byte	0x5
+ 1364 0046 0B          		.1byte	0x49
+ 1365 0046 05          		.1byte	0x13
+ 1366 0047 00          		.1byte	0x2
+ 1367 0047 03          		.1byte	0x6
+ 1368 0048 0E          		.1byte	0x0
+ 1369 0048 3A          		.1byte	0x0
+ 1370 0049 0B          		.1byte	0xc
+ 1371 0049 3B          		.1byte	0x2e
+ 1372 004a 05          		.1byte	0x0
+ 1373 004a 49          		.1byte	0x3f
+ 1374 004b 13          		.1byte	0xc
+ 1375 004b 02          		.1byte	0x3
+ 1376 004c 06          		.1byte	0xe
+ 1377 004c 00          		.1byte	0x3a
+ 1378 004d 00          		.1byte	0xb
+ 1379 004d 0C          		.1byte	0x3b
+ 1380 004e 2E          		.1byte	0x5
+ 1381 004e 00          		.1byte	0x27
+ 1382 004f 3F          		.1byte	0xc
+ 1383 004f 0C          		.1byte	0x11
+ 1384 0050 03          		.1byte	0x1
+ 1385 0050 0E          		.1byte	0x12
+ 1386 0051 3A          		.1byte	0x1
+ 1387 0051 0B          		.1byte	0x40
+ 1388 0052 3B          		.1byte	0x6
+ 1389 0052 05          		.1byte	0x0
+ 1390 0053 27          		.1byte	0x0
+ 1391 0053 0C          		.1byte	0xd
+ 1392 0054 11          		.1byte	0x34
+ 1393 0054 01          		.1byte	0x0
+ 1394 0055 12          		.1byte	0x3
+ 1395 0055 01          		.1byte	0xe
+ 1396 0056 40          		.1byte	0x3a
+ 1397 0056 06          		.1byte	0xb
+ 1398 0057 00          		.1byte	0x3b
+ 1399 0057 00          		.1byte	0x5
+ 1400 0058 0D          		.1byte	0x49
+ 1401 0058 34          		.1byte	0x13
+ 1402 0059 00          		.1byte	0x2
+ 1403 0059 03          		.1byte	0xa
+ 1404 005a 0E          		.1byte	0x0
+ 1405 005a 3A          		.1byte	0x0
+ 1406 005b 0B          		.1byte	0xe
+ 1407 005b 3B          		.1byte	0x2e
+ 1408 005c 05          		.1byte	0x1
+ 1409 005c 49          		.1byte	0x3
+ 1410 005d 13          		.1byte	0xe
+ 1411 005d 02          		.1byte	0x3a
+ 1412 005e 0A          		.1byte	0xb
+ 1413 005e 00          		.1byte	0x3b
+ 1414 005f 00          		.1byte	0xb
+ 1415 005f 0E          		.1byte	0x27
+ 1416 0060 2E          		.1byte	0xc
+ 1417 0060 01          		.1byte	0x11
+ 1418 0061 03          		.1byte	0x1
+ 1419 0061 0E          		.1byte	0x12
+ 1420 0062 3A          		.1byte	0x1
+ 1421 0062 0B          		.1byte	0x40
+ 1422 0063 3B          		.1byte	0x6
+ 1423 0063 0B          		.1byte	0x1
+ 1424 0064 27          		.1byte	0x13
+ 1425 0064 0C          		.1byte	0x0
+ 1426 0065 11          		.1byte	0x0
+ 1427 0065 01          		.1byte	0xf
+ 1428 0066 12          		.1byte	0x5
+ 1429 0066 01          		.1byte	0x0
+ 1430 0067 40          		.1byte	0x3
+ 1431 0067 06          		.1byte	0x8
+ 1432 0068 01          		.1byte	0x3a
+ 1433 0068 13          		.1byte	0xb
+ 1434 0069 00          		.1byte	0x3b
+ 1435 0069 00          		.1byte	0xb
+ 1436 006a 0F          		.1byte	0x49
+ 1437 006a 05          		.1byte	0x13
+ 1438 006b 00          		.1byte	0x2
+ 1439 006b 03          		.1byte	0x6
+ 1440 006c 08          		.1byte	0x0
+ 1441 006c 3A          		.1byte	0x0
+ 1442 006d 0B          		.1byte	0x10
+ 1443 006d 3B          		.1byte	0x34
+ 1444 006e 0B          		.1byte	0x0
+ 1445 006e 49          		.1byte	0x3
+ 1446 006f 13          		.1byte	0xe
+ 1447 006f 02          		.1byte	0x3a
+ 1448 0070 06          		.1byte	0xb
+ 1449 0070 00          		.1byte	0x3b
+ 1450 0071 00          		.1byte	0xb
+ 1451 0071 10          		.1byte	0x49
+ 1452 0072 34          		.1byte	0x13
+ 1453 0072 00          		.1byte	0x2
+ 1454 0073 03          		.1byte	0x6
+ 1455 0073 0E          		.1byte	0x0
+ 1456 0074 3A          		.1byte	0x0
+ 1457 0074 0B          		.1byte	0x11
+ 1458 0075 3B          		.1byte	0x2e
+ 1459 0075 0B          		.1byte	0x1
+ 1460 0076 49          		.1byte	0x3f
+ 1461 0076 13          		.1byte	0xc
+ 1462 0077 02          		.1byte	0x3
+ 1463 0077 06          		.1byte	0xe
+ 1464 0078 00          		.1byte	0x3a
+ 1465 0078 00          		.1byte	0xb
+ 1466 0079 11          		.1byte	0x3b
+ 1467 0079 2E          		.1byte	0xb
+ 1468 007a 01          		.1byte	0x27
+ 1469 007a 3F          		.1byte	0xc
+ 1470 007b 0C          		.1byte	0x11
+ 1471 007b 03          		.1byte	0x1
+ 1472 007c 0E          		.1byte	0x12
+ 1473 007c 3A          		.1byte	0x1
+ 1474 007d 0B          		.1byte	0x40
+ 1475 007d 3B          		.1byte	0x6
+ 1476 007e 0B          		.1byte	0x1
+ 1477 007e 27          		.1byte	0x13
+ 1478 007f 0C          		.1byte	0x0
+ 1479 007f 11          		.1byte	0x0
+ 1480 0080 01          		.1byte	0x12
+ 1481 0080 12          		.1byte	0x2e
+ 1482 0081 01          		.1byte	0x0
+ 1483 0081 40          		.1byte	0x3f
+ 1484 0082 06          		.1byte	0xc
+ 1485 0082 01          		.1byte	0x3
+ 1486 0083 13          		.1byte	0xe
+ 1487 0083 00          		.1byte	0x3a
+ 1488 0084 00          		.1byte	0xb
+ 1489 0084 12          		.1byte	0x3b
+ 1490 0085 2E          		.1byte	0xb
+ 1491 0085 00          		.1byte	0x27
+ 1492 0086 3F          		.1byte	0xc
+ 1493 0086 0C          		.1byte	0x11
+ 1494 0087 03          		.1byte	0x1
+ 1495 0087 0E          		.1byte	0x12
+ 1496 0088 3A          		.1byte	0x1
+ 1497 0088 0B          		.1byte	0x40
+ 1498 0089 3B          		.1byte	0x6
+ 1499 0089 0B          		.1byte	0x0
+ 1500 008a 27          		.1byte	0x0
+ 1501 008a 0C          		.1byte	0x13
+ 1502 008b 11          		.1byte	0x34
+ 1503 008b 01          		.1byte	0x0
+ 1504 008c 12          		.1byte	0x3
+ 1505 008c 01          		.1byte	0xe
+ 1506 008d 40          		.1byte	0x3a
+ 1507 008d 06          		.1byte	0xb
+ 1508 008e 00          		.1byte	0x3b
+ 1509 008e 00          		.1byte	0xb
+ 1510 008f 13          		.1byte	0x49
+ 1511 008f 34          		.1byte	0x13
+ 1512 0090 00          		.1byte	0x3f
+ 1513 0090 03          		.1byte	0xc
+ 1514 0091 0E          		.1byte	0x2
+ 1515 0091 3A          		.1byte	0xa
+ 1516 0092 0B          		.1byte	0x0
+ 1517 0092 3B          		.1byte	0x0
+ 1518 0093 0B          		.1byte	0x0
+ 1519 0093 49          		.section	.debug_pubnames,"",@progbits
+ 1520 0094 13          		.4byte	0x92
+ 1521 0094 3F          		.2byte	0x2
+ 1522 0095 0C          		.4byte	.Ldebug_info0
+ 1523 0095 02          		.4byte	0x3e3
+ 1524 0096 0A          		.4byte	0x2da
+ 1525 0096 00          		.ascii "SetIndication\000"
+ 1526 0097 00          		.4byte	0x305
+ 1527 0097 00          		.ascii "AppHwDataInit\000"
+ 1528                 		.4byte	0x31b
+ 1529 0000 00 00 00 92 		.ascii "SoundBuzzer\000"
+ 1530 0002 00 02       		.4byte	0x392
+ 1531 0003 00 00 00 00 		.ascii "HandleLongButtonPressTimerExpiry\000"
+ 1532 0005 00 00 03 E3 		.4byte	0x3bb
+ 1533 0007 00 00 02 DA 		.ascii "InitAlertTagHardware\000"
+ 1534 0009 53 65 74 49 		.4byte	0x3d0
+ 1534      6E 64 69 63 
+ 1534      61 74 69 6F 
+ 1534      6E 00 
+ 1535 0010 00 00 03 05 		.ascii "g_app_hw_data\000"
+ 1536 0012 41 70 70 48 		.4byte	0x0
+ 1536      77 44 61 74 
+ 1536      61 49 6E 69 
+ 1536      74 00 
+ 1537 0019 00 00 03 1B 		.section	.debug_aranges,"",@progbits
+ 1538 001b 53 6F 75 6E 		.4byte	0x44
+ 1538      64 42 75 7A 
+ 1538      7A 65 72 00 
+ 1539 0021 00 00 03 92 		.2byte	0x2
+ 1540 0023 48 61 6E 64 		.4byte	.Ldebug_info0
+ 1540      6C 65 4C 6F 
+ 1540      6E 67 42 75 
+ 1540      74 74 6F 6E 
+ 1540      50 72 65 73 
+ 1541 0033 00 00 03 BB 		.1byte	0x4
+ 1542 0035 49 6E 69 74 		.1byte	0x0
+ 1542      41 6C 65 72 
+ 1542      74 54 61 67 
+ 1542      48 61 72 64 
+ 1542      77 61 72 65 
+ 1543 0040 00 00 03 D0 		.2byte	0x0
+ 1544 0042 67 5F 61 70 		.2byte	0x0
+ 1544      70 5F 68 77 
+ 1544      5F 64 61 74 
+ 1544      61 00 
+ 1545 0049 00 00 00 00 		.4byte	.LFB7
+ 1546                 		.4byte	.LFE7-.LFB7
+ 1547 0000 00 00 00 44 		.4byte	.LFB5
+ 1548 0002 00 02       		.4byte	.LFE5-.LFB5
+ 1549 0003 00 00 00 00 		.4byte	.LFB6
+ 1550 0005 04          		.4byte	.LFE6-.LFB6
+ 1551 0005 00          		.4byte	.LFB2
+ 1552 0006 00 00       		.4byte	.LFE2-.LFB2
+ 1553 0007 00 00       		.4byte	.LFB4
+ 1554 0008 00 00 00 00 		.4byte	.LFE4-.LFB4
+ 1555 000a 00 00 00 00 		.4byte	.LFB3
+ 1556 000c 00 00 00 00 		.4byte	.LFE3-.LFB3
+ 1557 000e 00 00 00 00 		.4byte	0x0
+ 1558 0010 00 00 00 00 		.4byte	0x0
+ 1559 0012 00 00 00 00 		.section	.debug_ranges,"",@progbits
+ 1560 0014 00 00 00 00 	.Ldebug_ranges0:
+ 1561 0016 00 00 00 00 		.4byte	.Ltext0
+ 1562 0018 00 00 00 00 		.4byte	.Letext0
+ 1563 001a 00 00 00 00 		.4byte	.LFB7
+ 1564 001c 00 00 00 00 		.4byte	.LFE7
+ 1565 001e 00 00 00 00 		.4byte	.LFB5
+ 1566 0020 00 00 00 00 		.4byte	.LFE5
+ 1567 0022 00 00 00 00 		.4byte	.LFB6
+ 1568                 		.4byte	.LFE6
+ 1569                 		.4byte	.LFB2
+ 1570 0000 00 00 00 00 		.4byte	.LFE2
+ 1571 0002 00 00 00 00 		.4byte	.LFB4
+ 1572 0004 00 00 00 00 		.4byte	.LFE4
+ 1573 0006 00 00 00 00 		.4byte	.LFB3
+ 1574 0008 00 00 00 00 		.4byte	.LFE3
+ 1575 000a 00 00 00 00 		.4byte	0x0
+ 1576 000c 00 00 00 00 		.4byte	0x0
+ 1577 000e 00 00 00 00 		.section	.debug_str,"MS",@progbits,1
+ 1578 0010 00 00 00 00 	.LASF34:
+ 1579 0012 00 00 00 00 		.ascii "pio_mode_ana_mon_clk_pio\000"
+ 1580 0014 00 00 00 00 	.LASF45:
+ 1581 0016 00 00 00 00 		.ascii "pio_i2c_pull_mode_strong_pull_down\000"
+ 1582 0018 00 00 00 00 	.LASF22:
+ 1583 001a 00 00 00 00 		.ascii "pio_mode_radio_rx_en\000"
+ 1584 001c 00 00 00 00 	.LASF69:
+ 1585 001e 00 00 00 00 		.ascii "app_panic_invalid_state\000"
+ 1586                 	.LASF80:
+ 1587                 		.ascii "beep_type\000"
+ 1588 0000 70 69 6F 5F 	.LASF74:
+ 1588      6D 6F 64 65 
+ 1588      5F 61 6E 61 
+ 1588      5F 6D 6F 6E 
+ 1588      5F 63 6C 6B 
+ 1589                 		.ascii "beep_twice\000"
+ 1590 000c 70 69 6F 5F 	.LASF12:
+ 1590      69 32 63 5F 
+ 1590      70 75 6C 6C 
+ 1590      5F 6D 6F 64 
+ 1590      65 5F 73 74 
+ 1591                 		.ascii "pio_mode_clk_req\000"
+ 1592 001e 70 69 6F 5F 	.LASF30:
+ 1592      6D 6F 64 65 
+ 1592      5F 72 61 64 
+ 1592      69 6F 5F 72 
+ 1592      78 5F 65 6E 
+ 1593                 		.ascii "pio_mode_i2c_data\000"
+ 1594 0028 61 70 70 5F 	.LASF89:
+ 1594      70 61 6E 69 
+ 1594      63 5F 69 6E 
+ 1594      76 61 6C 69 
+ 1594      64 5F 73 74 
+ 1595                 		.ascii "state\000"
+ 1596 0034 62 65 65 70 	.LASF91:
+ 1596      5F 74 79 70 
+ 1596      65 00 
+ 1597                 		.ascii "HandleLongButtonPressTimerExpiry\000"
+ 1598 0039 62 65 65 70 	.LASF6:
+ 1598      5F 74 77 69 
+ 1598      63 65 00 
+ 1599                 		.ascii "short int\000"
+ 1600 003f 70 69 6F 5F 	.LASF71:
+ 1600      6D 6F 64 65 
+ 1600      5F 63 6C 6B 
+ 1600      5F 72 65 71 
+ 1600      00 
+ 1601                 		.ascii "beep_off\000"
+ 1602 0047 70 69 6F 5F 	.LASF79:
+ 1602      6D 6F 64 65 
+ 1602      5F 69 32 63 
+ 1602      5F 64 61 74 
+ 1602      61 00 
+ 1603                 		.ascii "long_button_pressed\000"
+ 1604 0050 73 74 61 74 	.LASF42:
+ 1604      65 00 
+ 1605                 		.ascii "pio_i2c_pull_mode_no_pulls\000"
+ 1606 0053 48 61 6E 64 	.LASF13:
+ 1606      6C 65 4C 6F 
+ 1606      6E 67 42 75 
+ 1606      74 74 6F 6E 
+ 1606      50 72 65 73 
+ 1607                 		.ascii "pio_mode_pwm0\000"
+ 1608 0064 73 68 6F 72 	.LASF27:
+ 1608      74 20 69 6E 
+ 1608      74 00 
+ 1609                 		.ascii "pio_mode_pio_control_rxd\000"
+ 1610 0069 62 65 65 70 	.LASF24:
+ 1610      5F 6F 66 66 
+ 1610      00 
+ 1611                 		.ascii "pio_mode_nvm_power_en\000"
+ 1612 006d 6C 6F 6E 67 	.LASF2:
+ 1612      5F 62 75 74 
+ 1612      74 6F 6E 5F 
+ 1612      70 72 65 73 
+ 1612      73 65 64 00 
+ 1613                 		.ascii "uint16\000"
+ 1614 0077 70 69 6F 5F 	.LASF90:
+ 1614      69 32 63 5F 
+ 1614      70 75 6C 6C 
+ 1614      5F 6D 6F 64 
+ 1614      65 5F 6E 6F 
+ 1615                 		.ascii "beep_timer\000"
+ 1616 0085 70 69 6F 5F 	.LASF97:
+ 1616      6D 6F 64 65 
+ 1616      5F 70 77 6D 
+ 1616      30 00 
+ 1617                 		.ascii "appBuzzerTimerHandler\000"
+ 1618 008c 70 69 6F 5F 	.LASF49:
+ 1618      6D 6F 64 65 
+ 1618      5F 70 69 6F 
+ 1618      5F 63 6F 6E 
+ 1618      74 72 6F 6C 
+ 1619                 		.ascii "pio_event_mode_disable\000"
+ 1620 0098 70 69 6F 5F 	.LASF8:
+ 1620      6D 6F 64 65 
+ 1620      5F 6E 76 6D 
+ 1620      5F 70 6F 77 
+ 1620      65 72 5F 65 
+ 1621                 		.ascii "bool\000"
+ 1622 00a3 75 69 6E 74 	.LASF76:
+ 1622      31 36 00 
+ 1623                 		.ascii "buzzer_beep_type\000"
+ 1624 00a7 62 65 65 70 	.LASF75:
+ 1624      5F 74 69 6D 
+ 1624      65 72 00 
+ 1625                 		.ascii "beep_thrice\000"
+ 1626 00ac 61 70 70 42 	.LASF31:
+ 1626      75 7A 7A 65 
+ 1626      72 54 69 6D 
+ 1626      65 72 48 61 
+ 1626      6E 64 6C 65 
+ 1627                 		.ascii "pio_mode_i2c_clock\000"
+ 1628 00b7 70 69 6F 5F 	.LASF32:
+ 1628      65 76 65 6E 
+ 1628      74 5F 6D 6F 
+ 1628      64 65 5F 64 
+ 1628      69 73 61 62 
+ 1629                 		.ascii "pio_mode_uart_flow_ctrl\000"
+ 1630 00c3 62 6F 6F 6C 	.LASF81:
+ 1630      00 
+ 1631                 		.ascii "beep_count\000"
+ 1632 00c5 62 75 7A 7A 	.LASF50:
+ 1632      65 72 5F 62 
+ 1632      65 65 70 5F 
+ 1632      74 79 70 65 
+ 1632      00 
+ 1633                 		.ascii "pio_event_mode_rising\000"
+ 1634 00ce 62 65 65 70 	.LASF46:
+ 1634      5F 74 68 72 
+ 1634      69 63 65 00 
+ 1635                 		.ascii "pio_i2c_pull_mode_strong_pull_up\000"
+ 1636 00d4 70 69 6F 5F 	.LASF35:
+ 1636      6D 6F 64 65 
+ 1636      5F 69 32 63 
+ 1636      5F 63 6C 6F 
+ 1636      63 6B 00 
+ 1637                 		.ascii "pio_mode_no_pulls\000"
+ 1638 00dd 70 69 6F 5F 	.LASF68:
+ 1638      6D 6F 64 65 
+ 1638      5F 75 61 72 
+ 1638      74 5F 66 6C 
+ 1638      6F 77 5F 63 
+ 1639                 		.ascii "app_panic_con_param_update\000"
+ 1640 00e9 62 65 65 70 	.LASF55:
+ 1640      5F 63 6F 75 
+ 1640      6E 74 00 
+ 1641                 		.ascii "pio_pwm_mode_open_source\000"
+ 1642 00ef 70 69 6F 5F 	.LASF48:
+ 1642      65 76 65 6E 
+ 1642      74 5F 6D 6F 
+ 1642      64 65 5F 72 
+ 1642      69 73 69 6E 
+ 1643                 		.ascii "pio_i2c_pull_mode_strong_sticky\000"
+ 1644 00fa 70 69 6F 5F 	.LASF62:
+ 1644      69 32 63 5F 
+ 1644      70 75 6C 6C 
+ 1644      5F 6D 6F 64 
+ 1644      65 5F 73 74 
+ 1645                 		.ascii "app_panic_db_registration\000"
+ 1646 010a 70 69 6F 5F 	.LASF10:
+ 1646      6D 6F 64 65 
+ 1646      5F 6E 6F 5F 
+ 1646      70 75 6C 6C 
+ 1646      73 00 
+ 1647                 		.ascii "pio_mode_user\000"
+ 1648 0113 61 70 70 5F 	.LASF40:
+ 1648      70 61 6E 69 
+ 1648      63 5F 63 6F 
+ 1648      6E 5F 70 61 
+ 1648      72 61 6D 5F 
+ 1649                 		.ascii "pio_mode_weak_sticky\000"
+ 1650 0121 70 69 6F 5F 	.LASF17:
+ 1650      70 77 6D 5F 
+ 1650      6D 6F 64 65 
+ 1650      5F 6F 70 65 
+ 1650      6E 5F 73 6F 
+ 1651                 		.ascii "pio_mode_quadrature0\000"
+ 1652 012d 70 69 6F 5F 	.LASF18:
+ 1652      69 32 63 5F 
+ 1652      70 75 6C 6C 
+ 1652      5F 6D 6F 64 
+ 1652      65 5F 73 74 
+ 1653                 		.ascii "pio_mode_quadrature1\000"
+ 1654 013d 61 70 70 5F 	.LASF19:
+ 1654      70 61 6E 69 
+ 1654      63 5F 64 62 
+ 1654      5F 72 65 67 
+ 1654      69 73 74 72 
+ 1655                 		.ascii "pio_mode_quadrature2\000"
+ 1656 014a 70 69 6F 5F 	.LASF20:
+ 1656      6D 6F 64 65 
+ 1656      5F 75 73 65 
+ 1656      72 00 
+ 1657                 		.ascii "pio_mode_quadrature3\000"
+ 1658 0151 70 69 6F 5F 	.LASF58:
+ 1658      6D 6F 64 65 
+ 1658      5F 77 65 61 
+ 1658      6B 5F 73 74 
+ 1658      69 63 6B 79 
+ 1659                 		.ascii "app_panic_set_advert_params\000"
+ 1660 015c 70 69 6F 5F 	.LASF88:
+ 1660      6D 6F 64 65 
+ 1660      5F 71 75 61 
+ 1660      64 72 61 74 
+ 1660      75 72 65 30 
+ 1661                 		.ascii "SoundBuzzer\000"
+ 1662 0166 70 69 6F 5F 	.LASF87:
+ 1662      6D 6F 64 65 
+ 1662      5F 71 75 61 
+ 1662      64 72 61 74 
+ 1662      75 72 65 31 
+ 1663                 		.ascii "SetIndication\000"
+ 1664 0171 70 69 6F 5F 	.LASF0:
+ 1664      6D 6F 64 65 
+ 1664      5F 71 75 61 
+ 1664      64 72 61 74 
+ 1664      75 72 65 32 
+ 1665                 		.ascii "unsigned char\000"
+ 1666 017b 70 69 6F 5F 	.LASF61:
+ 1666      6D 6F 64 65 
+ 1666      5F 71 75 61 
+ 1666      64 72 61 74 
+ 1666      75 72 65 33 
+ 1667                 		.ascii "app_panic_connection_est\000"
+ 1668 0186 61 70 70 5F 	.LASF29:
+ 1668      70 61 6E 69 
+ 1668      63 5F 73 65 
+ 1668      74 5F 61 64 
+ 1668      76 65 72 74 
+ 1669                 		.ascii "pio_mode_ser_flash_csb\000"
+ 1670 0194 53 6F 75 6E 	.LASF67:
+ 1670      64 42 75 7A 
+ 1670      7A 65 72 00 
+ 1671                 		.ascii "app_panic_add_whitelist\000"
+ 1672 019a 53 65 74 49 	.LASF44:
+ 1672      6E 64 69 63 
+ 1672      61 74 69 6F 
+ 1672      6E 00 
+ 1673                 		.ascii "pio_i2c_pull_mode_weak_pull_up\000"
+ 1674 01a1 75 6E 73 69 	.LASF93:
+ 1674      67 6E 65 64 
+ 1674      20 63 68 61 
+ 1674      72 00 
+ 1675                 		.ascii "InitAlertTagHardware\000"
+ 1676 01a8 61 70 70 5F 	.LASF5:
+ 1676      70 61 6E 69 
+ 1676      63 5F 63 6F 
+ 1676      6E 6E 65 63 
+ 1676      74 69 6F 6E 
+ 1677                 		.ascii "signed char\000"
+ 1678 01b4 70 69 6F 5F 	.LASF83:
+ 1678      6D 6F 64 65 
+ 1678      5F 73 65 72 
+ 1678      5F 66 6C 61 
+ 1678      73 68 5F 63 
+ 1679                 		.ascii "app_ind_stop\000"
+ 1680 01c0 61 70 70 5F 	.LASF14:
+ 1680      70 61 6E 69 
+ 1680      63 5F 61 64 
+ 1680      64 5F 77 68 
+ 1680      69 74 65 6C 
+ 1681                 		.ascii "pio_mode_pwm1\000"
+ 1682 01cc 70 69 6F 5F 	.LASF15:
+ 1682      69 32 63 5F 
+ 1682      70 75 6C 6C 
+ 1682      5F 6D 6F 64 
+ 1682      65 5F 77 65 
+ 1683                 		.ascii "pio_mode_pwm2\000"
+ 1684 01db 49 6E 69 74 	.LASF16:
+ 1684      41 6C 65 72 
+ 1684      74 54 61 67 
+ 1684      48 61 72 64 
+ 1684      77 61 72 65 
+ 1685                 		.ascii "pio_mode_pwm3\000"
+ 1686 01e6 73 69 67 6E 	.LASF9:
+ 1686      65 64 20 63 
+ 1686      68 61 72 00 
+ 1687                 		.ascii "unsigned int\000"
+ 1688 01ec 61 70 70 5F 	.LASF64:
+ 1688      69 6E 64 5F 
+ 1688      73 74 6F 70 
+ 1688      00 
+ 1689                 		.ascii "app_panic_nvm_write\000"
+ 1690 01f2 70 69 6F 5F 	.LASF63:
+ 1690      6D 6F 64 65 
+ 1690      5F 70 77 6D 
+ 1690      31 00 
+ 1691                 		.ascii "app_panic_nvm_read\000"
+ 1692 01f9 70 69 6F 5F 	.LASF56:
+ 1692      6D 6F 64 65 
+ 1692      5F 70 77 6D 
+ 1692      32 00 
+ 1693                 		.ascii "pio_pwm_mode_inverted_push_pull\000"
+ 1694 0200 70 69 6F 5F 	.LASF92:
+ 1694      6D 6F 64 65 
+ 1694      5F 70 77 6D 
+ 1694      33 00 
+ 1695                 		.ascii "AppHwDataInit\000"
+ 1696 0207 75 6E 73 69 	.LASF1:
+ 1696      67 6E 65 64 
+ 1696      20 69 6E 74 
+ 1696      00 
+ 1697                 		.ascii "short unsigned int\000"
+ 1698 020e 61 70 70 5F 	.LASF73:
+ 1698      70 61 6E 69 
+ 1698      63 5F 6E 76 
+ 1698      6D 5F 77 72 
+ 1698      69 74 65 00 
+ 1699                 		.ascii "beep_long\000"
+ 1700 0218 61 70 70 5F 	.LASF38:
+ 1700      70 61 6E 69 
+ 1700      63 5F 6E 76 
+ 1700      6D 5F 72 65 
+ 1700      61 64 00 
+ 1701                 		.ascii "pio_mode_strong_pull_down\000"
+ 1702 0221 70 69 6F 5F 	.LASF98:
+ 1702      70 77 6D 5F 
+ 1702      6D 6F 64 65 
+ 1702      5F 69 6E 76 
+ 1702      65 72 74 65 
+ 1703                 		.ascii "g_app_hw_data\000"
+ 1704 0231 41 70 70 48 	.LASF59:
+ 1704      77 44 61 74 
+ 1704      61 49 6E 69 
+ 1704      74 00 
+ 1705                 		.ascii "app_panic_set_advert_data\000"
+ 1706 0238 73 68 6F 72 	.LASF7:
+ 1706      74 20 75 6E 
+ 1706      73 69 67 6E 
+ 1706      65 64 20 69 
+ 1706      6E 74 00 
+ 1707                 		.ascii "long int\000"
+ 1708 0242 62 65 65 70 	.LASF33:
+ 1708      5F 6C 6F 6E 
+ 1708      67 00 
+ 1709                 		.ascii "pio_mode_pio_control_timer\000"
+ 1710 0247 70 69 6F 5F 	.LASF57:
+ 1710      6D 6F 64 65 
+ 1710      5F 73 74 72 
+ 1710      6F 6E 67 5F 
+ 1710      70 75 6C 6C 
+ 1711                 		.ascii "timer_id\000"
+ 1712 0254 67 5F 61 70 	.LASF37:
+ 1712      70 5F 68 77 
+ 1712      5F 64 61 74 
+ 1712      61 00 
+ 1713                 		.ascii "pio_mode_weak_pull_up\000"
+ 1714 025b 61 70 70 5F 	.LASF51:
+ 1714      70 61 6E 69 
+ 1714      63 5F 73 65 
+ 1714      74 5F 61 64 
+ 1714      76 65 72 74 
+ 1715                 		.ascii "pio_event_mode_falling\000"
+ 1716 0268 6C 6F 6E 67 	.LASF85:
+ 1716      20 69 6E 74 
+ 1716      00 
+ 1717                 		.ascii "app_ind_conn\000"
+ 1718 026c 70 69 6F 5F 	.LASF23:
+ 1718      6D 6F 64 65 
+ 1718      5F 70 69 6F 
+ 1718      5F 63 6F 6E 
+ 1718      74 72 6F 6C 
+ 1719                 		.ascii "pio_mode_radio_tx_en\000"
+ 1720 027a 74 69 6D 65 	.LASF3:
+ 1720      72 5F 69 64 
+ 1720      00 
+ 1721                 		.ascii "uint32\000"
+ 1722 027e 70 69 6F 5F 	.LASF96:
+ 1722      6D 6F 64 65 
+ 1722      5F 77 65 61 
+ 1722      6B 5F 70 75 
+ 1722      6C 6C 5F 75 
+ 1723                 		.ascii "C:\\Users\\Administrator\\Documents\\GitHub\\SmartBand\\release\000"
+ 1724 0289 70 69 6F 5F 	.LASF4:
+ 1724      65 76 65 6E 
+ 1724      74 5F 6D 6F 
+ 1724      64 65 5F 66 
+ 1724      61 6C 6C 69 
+ 1725                 		.ascii "long unsigned int\000"
+ 1726 0295 61 70 70 5F 	.LASF28:
+ 1726      69 6E 64 5F 
+ 1726      63 6F 6E 6E 
+ 1726      00 
+ 1727                 		.ascii "pio_mode_ser_flash_dout\000"
+ 1728 029b 70 69 6F 5F 	.LASF86:
+ 1728      6D 6F 64 65 
+ 1728      5F 72 61 64 
+ 1728      69 6F 5F 74 
+ 1728      78 5F 65 6E 
+ 1729                 		.ascii "app_indication\000"
+ 1730 02a6 75 69 6E 74 	.LASF84:
+ 1730      33 32 00 
+ 1731                 		.ascii "app_ind_adv\000"
+ 1732 02a9 43 3A 5C 55 	.LASF60:
+ 1732      73 65 72 73 
+ 1732      5C 41 64 6D 
+ 1732      69 6E 69 73 
+ 1732      74 72 61 74 
+ 1733                 		.ascii "app_panic_set_scan_rsp_data\000"
+ 1734 02c6 6C 6F 6E 67 	.LASF78:
+ 1734      20 75 6E 73 
+ 1734      69 67 6E 65 
+ 1734      64 20 69 6E 
+ 1734      74 00 
+ 1735                 		.ascii "button_press_tid\000"
+ 1736 02cf 70 69 6F 5F 	.LASF41:
+ 1736      6D 6F 64 65 
+ 1736      5F 73 65 72 
+ 1736      5F 66 6C 61 
+ 1736      73 68 5F 64 
+ 1737                 		.ascii "pio_mode_strong_sticky\000"
+ 1738 02db 61 70 70 5F 	.LASF95:
+ 1738      69 6E 64 69 
+ 1738      63 61 74 69 
+ 1738      6F 6E 00 
+ 1739                 		.ascii "alert_client_hw.c\000"
+ 1740 02e3 61 70 70 5F 	.LASF77:
+ 1740      69 6E 64 5F 
+ 1740      61 64 76 00 
+ 1741                 		.ascii "buzzer_tid\000"
+ 1742 02e9 61 70 70 5F 	.LASF54:
+ 1742      70 61 6E 69 
+ 1742      63 5F 73 65 
+ 1742      74 5F 73 63 
+ 1742      61 6E 5F 72 
+ 1743                 		.ascii "pio_pwm_mode_open_drain\000"
+ 1744 02f7 62 75 74 74 	.LASF25:
+ 1744      6F 6E 5F 70 
+ 1744      72 65 73 73 
+ 1744      5F 74 69 64 
+ 1744      00 
+ 1745                 		.ascii "pio_mode_pio_controller\000"
+ 1746 02ff 70 69 6F 5F 	.LASF72:
+ 1746      6D 6F 64 65 
+ 1746      5F 73 74 72 
+ 1746      6F 6E 67 5F 
+ 1746      73 74 69 63 
+ 1747                 		.ascii "beep_short\000"
+ 1748 030b 61 6C 65 72 	.LASF53:
+ 1748      74 5F 63 6C 
+ 1748      69 65 6E 74 
+ 1748      5F 68 77 2E 
+ 1748      63 00 
+ 1749                 		.ascii "pio_pwm_mode_push_pull\000"
+ 1750 0314 62 75 7A 7A 	.LASF11:
+ 1750      65 72 5F 74 
+ 1750      69 64 00 
+ 1751                 		.ascii "pio_mode_edge_capture\000"
+ 1752 0319 70 69 6F 5F 	.LASF43:
+ 1752      70 77 6D 5F 
+ 1752      6D 6F 64 65 
+ 1752      5F 6F 70 65 
+ 1752      6E 5F 64 72 
+ 1753                 		.ascii "pio_i2c_pull_mode_weak_pull_down\000"
+ 1754 0325 70 69 6F 5F 	.LASF39:
+ 1754      6D 6F 64 65 
+ 1754      5F 70 69 6F 
+ 1754      5F 63 6F 6E 
+ 1754      74 72 6F 6C 
+ 1755                 		.ascii "pio_mode_strong_pull_up\000"
+ 1756 0331 62 65 65 70 	.LASF65:
+ 1756      5F 73 68 6F 
+ 1756      72 74 00 
+ 1757                 		.ascii "app_panic_read_tx_pwr_level\000"
+ 1758 0337 70 69 6F 5F 	.LASF36:
+ 1758      70 77 6D 5F 
+ 1758      6D 6F 64 65 
+ 1758      5F 70 75 73 
+ 1758      68 5F 70 75 
+ 1759                 		.ascii "pio_mode_weak_pull_down\000"
+ 1760 0342 70 69 6F 5F 	.LASF47:
+ 1760      6D 6F 64 65 
+ 1760      5F 65 64 67 
+ 1760      65 5F 63 61 
+ 1760      70 74 75 72 
+ 1761                 		.ascii "pio_i2c_pull_mode_weak_sticky\000"
+ 1762 034d 70 69 6F 5F 	.LASF70:
+ 1762      69 32 63 5F 
+ 1762      70 75 6C 6C 
+ 1762      5F 6D 6F 64 
+ 1762      65 5F 77 65 
+ 1763                 		.ascii "app_panic_unexpected_beep_type\000"
+ 1764 035e 70 69 6F 5F 	.LASF26:
+ 1764      6D 6F 64 65 
+ 1764      5F 73 74 72 
+ 1764      6F 6E 67 5F 
+ 1764      70 75 6C 6C 
+ 1765                 		.ascii "pio_mode_pio_control_txd\000"
+ 1766 036a 61 70 70 5F 	.LASF82:
+ 1766      70 61 6E 69 
+ 1766      63 5F 72 65 
+ 1766      61 64 5F 74 
+ 1766      78 5F 70 77 
+ 1767                 		.ascii "APP_HW_DATA_T\000"
+ 1768 0378 70 69 6F 5F 	.LASF52:
+ 1768      6D 6F 64 65 
+ 1768      5F 77 65 61 
+ 1768      6B 5F 70 75 
+ 1768      6C 6C 5F 64 
+ 1769                 		.ascii "pio_event_mode_both\000"
+ 1770 0384 70 69 6F 5F 	.LASF21:
+ 1770      69 32 63 5F 
+ 1770      70 75 6C 6C 
+ 1770      5F 6D 6F 64 
+ 1770      65 5F 77 65 
+ 1771                 		.ascii "pio_mode_uart\000"
+ 1772 0393 61 70 70 5F 	.LASF94:
+ 1772      70 61 6E 69 
+ 1772      63 5F 75 6E 
+ 1772      65 78 70 65 
+ 1772      63 74 65 64 
+ 1773                 		.ascii "GNU C 4.3.4 CSR version 21 for xap [1468380]\000"
+ 1774 03a2 70 69 6F 5F 	.LASF66:
+ 1774      6D 6F 64 65 
+ 1774      5F 70 69 6F 
+ 1774      5F 63 6F 6E 
+ 1774      74 72 6F 6C 
+ 1775                 		.ascii "app_panic_delete_whitelist\000"
+ 1776 03af 41 50 50 5F 		.ident	"GCC: (GNU) 4.3.4 CSR version 21 for xap [1468380]"
+ 1776      48 57 5F 44 
+ 1776      41 54 41 5F 
+ 1776      54 00 
+ 1777                 	...

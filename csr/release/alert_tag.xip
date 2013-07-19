@@ -1,0 +1,62 @@
+<project buildenvironment="{067c869e-5bd9-4595-9f4c-60348133ad8e}" buildenvironmentname="uEnergy" executionenvironmentoption="XAP2+ P0 ELF DWARF BINUTILS UENERGYSDK" buildenvironmentoption="UENERGYSDK" executionenvironmentname="uEnergy" name="uEnergy" executionenvironment="{39e65239-59f4-4d78-b84a-26eaebfaa4de}" >
+ <folder name="C Files" >
+  <extension name="c" />
+  <file path="alert_client.c" />
+  <file path="alert_client_gatt.c" />
+  <file path="alert_client_hw.c" />
+  <file path="alert_notification_service_data.c" />
+  <file path="gatt_service_data.c" />
+  <file path="local_debug.c" />
+  <file path="nvm_access.c" />
+  <file path="phone_alert_service_data.c" />
+ </folder>
+ <folder name="Header Files" >
+  <extension name="h" />
+  <file path="phone_alert_service_data.h" />
+  <file path="alert_client.h" />
+  <file path="alert_client_gatt.h" />
+  <file path="alert_client_hw.h" />
+  <file path="alert_notification_service_data.h" />
+  <file path="app_gatt.h" />
+  <file path="appearance.h" />
+  <file path="dev_info_uuids.h" />
+  <file path="gap_conn_params.h" />
+  <file path="gap_uuids.h" />
+  <file path="gatt_service_data.h" />
+  <file path="local_debug.h" />
+  <file path="nvm_access.h" />
+ </folder>
+ <folder name="Assembler Files" >
+  <extension name="asm" />
+ </folder>
+ <folder name="GATT db files" >
+  <extension name="db" />
+  <file path="app_gatt_db.db" />
+  <file path="dev_info_service_db.db" />
+  <file path="gap_service_db.db" />
+  <file path="gatt_service_db.db" />
+ </folder>
+ <file path="alert_tag_csr100x.keyr" />
+ <file path="alert_tag_csr101x_A05.keyr" />
+ <properties currentconfiguration="Release" >
+  <configuration name="Debug" >
+   <property key="csr100x_keyr" >alert_tag_csr100x.keyr</property>
+   <property key="csr101x_a05_keyr" >alert_tag_csr101x_A05.keyr</property>
+   <property key="debugtransport" ></property>
+   <property key="defines" ></property>
+   <property key="libs" ></property>
+   <property key="master_db" >app_gatt_db.db</property>
+   <property key="output" ></property>
+  </configuration>
+  <configuration name="Release" >
+   <property key="csr100x_keyr" >alert_tag_csr100x.keyr</property>
+   <property key="csr101x_a05_keyr" >alert_tag_csr101x_A05.keyr</property>
+   <property key="debugtransport" ></property>
+   <property key="defines" ></property>
+   <property key="libs" ></property>
+   <property key="master_db" >app_gatt_db.db</property>
+   <property key="output" ></property>
+   <property key="swapintodata" >150</property>
+  </configuration>
+ </properties>
+</project>

@@ -1,0 +1,10 @@
+-nostdlib
+-LC:/CSR_uEnergy_SDK-2.1.0/tools/lib/CSR100x
+-gdwarf-2
+-g
+-msmall-mode
+-mconst-switch-tables
+-mas-mode
+-mno-initc
+-Wl,--defsym,SWAP_INTO_DATA=150,-T,C:/CSR_uEnergy_SDK-2.1.0/tools/lib/CSR100x/xap.ld,--gc-sections
+-lgcc
