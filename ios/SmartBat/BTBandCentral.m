@@ -61,14 +61,15 @@
     //找到了就停止扫描
 //    [central stopScan];
     
-    NSLog(@"%@", advertisementData);
+    NSLog(@"AD:%@", advertisementData);
     
     //付给私有变量，不然就释放了
     //以peripheral的hash为key，存起来
 //    [self.p setObject:peripheral forKey:[NSString stringWithFormat:@"%d",peripheral.hash]];
     
     BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
-    find.name = [advertisementData valueForKey:@"kCBAdvDataLocalName"];
+//    find.name = [advertisementData valueForKey:@"kCBAdvDataLocalName"];
+    find.name = peripheral.name;
     
     [_allPeripherals setObject:find forKey:[NSNumber numberWithInt:peripheral.hash]];
     
@@ -137,7 +138,7 @@
     
     //代理peripheral
     [peripheral setDelegate:self];
-    [peripheral discoverServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID], [CBUUID UUIDWithString:BATTERY_SERVICE_UUID]]];
+    [peripheral discoverServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID]]];
     
     NSLog(@"hello：%@", _allPeripherals);
 }
@@ -177,9 +178,6 @@
             
             //开始设备同步
             [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
-            
-            //读取设备名称
-            [self read:[CBUUID UUIDWithString:METRONOME_NAME_UUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:nil];
             
             //读取电量
             [self read:[CBUUID UUIDWithString:BATTERY_LEVEL_UUID] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
@@ -342,7 +340,7 @@
 -(void)scan{
     
 //    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:METRONOME_SERVICE_UUID]] options:nil];
-    [_cm scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
+    [_cm scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @YES}];
     
     NSLog(@"scan ForPeripherals");
 }

@@ -58,21 +58,17 @@
 //蓝牙服务uuid
 #define CHARACTERISTICS_COUNT           7
 
-#define METRONOME_SERVICE_UUID          @"2300"
+#define METRONOME_SERVICE_UUID          @"2200"
 
-#define METRONOME_NAME_UUID             @"2301"
-#define METRONOME_SHOCK_UUID            @"2302"
-#define METRONOME_SPARK_UUID            @"2303"
+#define METRONOME_STATUS_UUID           @"2201"
 
-#define METRONOME_PLAY_UUID             @"2311"
-#define METRONOME_DURATION_UUID         @"2312"
-#define METRONOME_MEASURE_UUID          @"2313"
-#define METRONOME_SYNC_UUID             @"2314"
-#define METRONOME_ZERO_UUID             @"2315"
+#define METRONOME_PLAY_UUID             @"2202"
+#define METRONOME_DURATION_UUID         @"2203"
+#define METRONOME_MEASURE_UUID          @"2204"
+#define METRONOME_SYNC_UUID             @"2205"
+#define METRONOME_ZERO_UUID             @"2206"
 
-#define BATTERY_SERVICE_UUID            @"2400"
-
-#define BATTERY_LEVEL_UUID              @"2401"
+#define BATTERY_LEVEL_UUID              @"2211"
 
 //蓝牙延时传输间隔
 #define BLUETOOTH_DELAY                 0.5
