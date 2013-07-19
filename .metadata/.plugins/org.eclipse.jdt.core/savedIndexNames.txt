@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/Users/poppy/Documents/code/SmartBat/.metadata/.plugins/org.eclipse.jdt.core
+3689772550.index
+3090238721.index
+746897196.index
