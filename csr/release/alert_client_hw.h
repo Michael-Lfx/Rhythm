@@ -33,7 +33,7 @@
 /* All the LED Blinking and Buzzer code has been put under these compiler flags
  * Disable these flags at the time of current consumption measurement 
  */
-#define ENABLE_BUZZER
+//#define ENABLE_BUZZER
 /* This has been disabled to save space*/
 #define ENABLE_LEDBLINK 
 
@@ -45,7 +45,7 @@
 #endif /* ENABLE_BUZZER */
 
 
-#define BUTTON_PIO                                      (11)
+#define BUTTON_PIO                                      (3)
 
 #define PIO_BIT_MASK(pio)                               (0x01 << (pio))
 
@@ -60,6 +60,14 @@
 #ifdef ENABLE_LEDBLINK
 /* Setup PIOs */
 #define LED_PIO                                         (4)
+
+#define LED1_PIO                                        (1)
+#define LED2_PIO                                        (4)
+
+#define RLED_PIO                                        (9)
+#define GLED_PIO                                        (10)
+#define BLED_PIO                                        (11)
+
 #define LED_PWM_INDEX_1                                 (1)
 
 /* PWM parameters for advertising */

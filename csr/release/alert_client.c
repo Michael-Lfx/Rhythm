@@ -2388,10 +2388,12 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
     {
         case GATT_ADD_DB_CFM:
             handleSignalGattDbCfm((GATT_ADD_DB_CFM_T*)event_data);
+            writeString("1");
         break;
         
         case GATT_CONNECT_CFM:
             handleSignalGattConnectCFM((GATT_CONNECT_CFM_T *)event_data);
+            writeString("2");
         break;
 
         case GATT_SERV_INFO_IND:
@@ -2399,12 +2401,14 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
              * the server.
              */
             handleGattServInfoInd((GATT_SERV_INFO_IND_T *)event_data);
+            writeString("3");
         break;
 
         case GATT_DISC_ALL_PRIM_SERV_CFM:
             /* This signal comes on completion of primary service discovery */
             handleGattDiscAllPrimServCfm
                                 ((GATT_DISC_ALL_PRIM_SERV_CFM_T *)event_data);
+                                writeString("4");
         break;
 
         case GATT_CHAR_DECL_INFO_IND:
@@ -2412,6 +2416,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
              * discovering all the characterstics 
              */
             handleGattCharDeclInfoInd((GATT_CHAR_DECL_INFO_IND_T *)event_data);
+            writeString("5");
         break;
 
         case GATT_DISC_SERVICE_CHAR_CFM:
@@ -2419,6 +2424,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
         
             handleGattDiscServCharCfm
                     ((GATT_DISC_SERVICE_CHAR_CFM_T *) event_data);
+                    writeString("6");
         break;
 
         case GATT_CHAR_DESC_INFO_IND:
@@ -2428,6 +2434,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
         {
             handleGattCharDescriptorInfoInd(
                                 (GATT_CHAR_DESC_INFO_IND_T *)event_data);
+            writeString("7");
         }
         break;
 
@@ -2436,6 +2443,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
              * discovery 
              */
             {
+              writeString("8");
                 if(((GATT_DISC_ALL_CHAR_DESC_CFM_T *)event_data)->result == 
                                                 sys_status_success)
                 {
@@ -2453,6 +2461,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
 
         case GATT_READ_CHAR_VAL_CFM:
             {
+                writeString("9");
                 if(((GATT_READ_CHAR_VAL_CFM_T *)event_data)->result == 
                                                     sys_status_success)
                 {
@@ -2491,6 +2500,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
 
         case GATT_WRITE_CHAR_VAL_CFM:
             {
+                writeString("10");
                 if(((GATT_WRITE_CHAR_VAL_CFM_T *)event_data)->result == 
                                                     sys_status_success)
                 {
@@ -2555,42 +2565,44 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
         break;
 
         case LM_EV_ENCRYPTION_CHANGE:
+            writeString("11");
             handleSignalLMEncryptionChange(event_data);
         break;
 
         case LS_CONNECTION_PARAM_UPDATE_CFM:
             handleSignalLsConnUpdateSignalCfm(
                             (LS_CONNECTION_PARAM_UPDATE_CFM_T *)event_data);
+            writeString("12");
         break;
 
         case LS_CONNECTION_PARAM_UPDATE_IND:
             handleSignalLsConnParamUpdateInd(
-                            (LS_CONNECTION_PARAM_UPDATE_IND_T *)event_data);
+                            (LS_CONNECTION_PARAM_UPDATE_IND_T *)event_data);writeString("13");
         break;
 
         case SM_DIV_APPROVE_IND:
 
         
-            handleSignalSmDivApproveInd((SM_DIV_APPROVE_IND_T *)event_data);
+            handleSignalSmDivApproveInd((SM_DIV_APPROVE_IND_T *)event_data);writeString("14");
         break;
 
         case SM_KEYS_IND:
         
-            handleSignalSmKeysInd((SM_KEYS_IND_T *)event_data);
+            handleSignalSmKeysInd((SM_KEYS_IND_T *)event_data);writeString("15");
         break;
 
         case SM_PAIRING_AUTH_IND:
 
         
             /* Authorize or Reject the pairing request */
-            handleSignalSmPairingAuthInd((SM_PAIRING_AUTH_IND_T*)event_data);
+            handleSignalSmPairingAuthInd((SM_PAIRING_AUTH_IND_T*)event_data);writeString("16");
         break;
 
         case SM_SIMPLE_PAIRING_COMPLETE_IND:
 
         
             handleSignalSmSimplePairingCompleteInd(
-                            (SM_SIMPLE_PAIRING_COMPLETE_IND_T *)event_data);
+                            (SM_SIMPLE_PAIRING_COMPLETE_IND_T *)event_data);writeString("17");
         break;
 
         case GATT_DISCONNECT_IND:
@@ -2617,11 +2629,13 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
              */
              handleSignalLmDisconnectComplete(
                     &((LM_EV_DISCONNECT_COMPLETE_T *)event_data)->data);
+             writeString("18");
         }
         break;
 
         case GATT_CANCEL_CONNECT_CFM:
             handleSignalGattCancelConnectCFM();
+            writeString("19");
         break;
 
         case GATT_NOT_CHAR_VAL_IND:
@@ -2629,7 +2643,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
             /* Depending on the handle , it will get handled in corresponding
              * function.
              */
-            
+            writeString("20");
             handleANSGattCharValInd((GATT_CHAR_VAL_IND_T *)event_data);
             HandlePASGattCharValInd((GATT_CHAR_VAL_IND_T *)event_data);
             handleGattServiceCharValInd((GATT_CHAR_VAL_IND_T *)event_data);
@@ -2639,6 +2653,8 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data)
         case LM_EV_NUMBER_COMPLETED_PACKETS: /* FALLTHROUGH */ 
         case GATT_CHAR_VAL_NOT_CFM: /* FALLTHROUGH */ 
         case GATT_ACCESS_IND: /* GATT access indication */
+
+        writeString("21");
             break;
 
         default:

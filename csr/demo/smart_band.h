@@ -9,37 +9,6 @@
 
 #define UUID_GATT                                      0x1801
 
-/* Device Information service */
-#define UUID_DEVICE_INFO_SERVICE                                          0x180A
-
-/* System ID UUID */
-#define UUID_DEVICE_INFO_SYSTEM_ID                                        0x2A23
-/* Model number UUID */
-#define UUID_DEVICE_INFO_MODEL_NUMBER                                     0x2A24
-/* Serial number UUID */
-#define UUID_DEVICE_INFO_SERIAL_NUMBER                                    0x2A25
-/* Hardware revision UUID */
-#define UUID_DEVICE_INFO_HARDWARE_REVISION                                0x2A27
-/* Firmware revision UUID */
-#define UUID_DEVICE_INFO_FIRMWARE_REVISION                                0x2A26
-/* Software revision UUID */
-#define UUID_DEVICE_INFO_SOFTWARE_REVISION                                0x2A28
-/* Manufacturer name UUID */
-#define UUID_DEVICE_INFO_MANUFACTURER_NAME                                0x2A29
-/* PnP ID UUID */
-#define UUID_DEVICE_INFO_PNP_ID                                           0x2A50
-
-#define HARDWARE_REVISION "CSR100x A04"
-
-/* Vendor Id Source */
-#define VENDOR_ID_SRC_BT                                                  0x01
-#define VENDOR_ID_SRC_USB                                                 0x02
-
-/* Vendor Id */
-#define VENDOR_ID                                                         0x000A
-#define PRODUCT_ID                                                        0x014C
-#define PRODUCT_VER                                                       0x0100
-
 #define UUID_ALERT_NOTIFICATION_SERVICE               (0x1811)
 #define UUID_NEW_ALERT_SUPPORTED_CATEGORY             (0x2A47)
 #define UUID_NEW_ALERT_CHARACTERISTIC                 (0x2A46)
@@ -99,22 +68,29 @@
 /*
     custorm characteristic
   */
-#define UUID_METRONOME_SERVICE				0x2300
-// #define UUID_METRONOME_SERVICE				0x2320
+#define UUID_METRONOME_SERVICE				0x2200
 
-#define UUID_METRONOME_NAME					0x2301
-#define UUID_METRONOME_SHOCK				0x2302
-#define UUID_METRONOME_SPARK				0x2303
+// 2 hex
+// 0 - shock
+// 1 - spark
+#define UUID_METRONOME_STATUS				0x2201
 
-#define UUID_METRONOME_PLAY                 0x2311
-#define UUID_METRONOME_DURATION             0x2312
-#define UUID_METRONOME_MEASURE				0x2313
-#define UUID_METRONOME_SYNC					0x2314
-#define UUID_METRONOME_ZERO					0x2315
+// 0 means stop
+#define UUID_METRONOME_PLAY                 0x2202
 
-#define UUID_BATTERY_SERVICE                0x2400
-    
-#define UUID_BATTERY_LEVEL                  0x2401
+// accuracy to 0.000001
+#define UUID_METRONOME_DURATION             0x2203
+
+// 8 hex
+// 100 - heavy
+#define UUID_METRONOME_MEASURE				0x2204
+
+// serial number
+#define UUID_METRONOME_SYNC					0x2205
+#define UUID_METRONOME_ZERO					0x2206
+
+// 0 to 100
+#define UUID_BATTERY_LEVEL                  0x2211
 
 #define PIO_BUTTON      11
 #define PIO_LED0        10

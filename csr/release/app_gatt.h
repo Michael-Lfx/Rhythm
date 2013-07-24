@@ -32,7 +32,7 @@
 /* This macro is required to be disabled if user does not want to see messages
  * on UART
  */
-//#define DEBUG_THRU_UART
+#define DEBUG_THRU_UART
 
 /* Invalid UCID indicating we are not currently connected */
 #define GATT_INVALID_UCID               (0xFFFF)

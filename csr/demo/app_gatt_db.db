@@ -58,96 +58,21 @@ primary_service {
 
 },
 
-primary_service {
-    uuid : UUID_DEVICE_INFO_SERVICE,
-    name : "DEVICE_INFO_SERVICE", /* Name will be used in handle name */
-
-    /* Serial number characteristic of device info service */
-    characteristic {
-        uuid : UUID_DEVICE_INFO_SERIAL_NUMBER,
-        properties : read,      /* Characteristic can only be read */
-        flags : [FLAG_ENCR_R],
-        name : "DEVICE_INFO_SERIAL_NUMBER",
-        value : "BLE-ALERT-001"
-       
-    },
-
-    /* Hardware revision charcteristic of device info service */
-    characteristic {
-        uuid : UUID_DEVICE_INFO_HARDWARE_REVISION,
-        properties : read,      /*Characteristic can only be read */
-        flags : [FLAG_ENCR_R],
-        name : "DEVICE_INFO_HARDWARE_REVISION",
-        value : HARDWARE_REVISION
-
-    },
-
-    /* Firmware revision charcteristic */
-    characteristic {
-        uuid : UUID_DEVICE_INFO_FIRMWARE_REVISION,
-        properties : read,      /*Characteristic can only be read */
-        flags : [FLAG_ENCR_R],
-        name : "DEVICE_INFO_FIRMWARE_REVISION",
-        value : "CSR uEnergy SDK 2.1.0"
-
-    },
-
-    /* Software revision characteristic */
-    characteristic {
-        uuid : UUID_DEVICE_INFO_SOFTWARE_REVISION,
-        properties : read,      /*Characteristic can only be read */
-        flags : [FLAG_ENCR_R],
-        name : "DEVICE_INFO_SOFTWARE_REVISION",
-        value : "Application version 2.1.0.0"
-
-    },
-
-    /* Manufacturer name charcteristic */
-    characteristic {
-        uuid : UUID_DEVICE_INFO_MANUFACTURER_NAME,
-        properties : read,      /*Characteristic can only be read */
-        flags : [FLAG_ENCR_R],
-        name : "DEVICE_INFO_MANUFACTURER_NAME",
-        value : "Cambridge Silicon Radio"
-    },
-
-    /* Device info PNP id */
-    characteristic {
-        uuid : UUID_DEVICE_INFO_PNP_ID,
-        properties : read,      /*Characteristic can only be read */
-        flags : [FLAG_ENCR_R],
-        name : "DEVICE_INFO_END",
-        value : [VENDOR_ID_SRC_BT, VENDOR_ID,
-                 PRODUCT_ID,
-                 PRODUCT_VER]
-    }  
-},
+/*
+    YUE Metronome device service and characteristics
+*/
 
 primary_service {
     uuid: UUID_METRONOME_SERVICE,
     name : "METRONOME_SERVICE",
     
     characteristic {
-        uuid : UUID_METRONOME_NAME,
-        name : "METRONOME_NAME",
-        properties : [read, write],
+        uuid : UUID_METRONOME_STATUS,
+        name : "METRONOME_STATUS",
+        properties : [write],
         flags : FLAG_IRQ,
-        size_value : NAME_MAX_LENGTH
+        size_value : 1
     },
-    
-    // characteristic {
-    //     uuid : UUID_METRONOME_SHOCK,
-    //     name : "METRONOME_SHOCK",
-    //     properties : [write],
-    //     size_value : 1
-    // },
-    
-    // characteristic {
-    //     uuid : UUID_METRONOME_SPARK,
-    //     name : "METRONOME_SPARK",
-    //     properties : [write],
-    //     size_value : 1
-    // },
 
     characteristic {
         uuid : UUID_METRONOME_PLAY,
@@ -187,13 +112,8 @@ primary_service {
         properties : [read],
         flags : FLAG_IRQ,
         size_value : 1
-    }
-},
-    
-primary_service {   
-    uuid: UUID_BATTERY_SERVICE,
-    name : "BATTERY_SERVICE",
-    
+    },
+
     characteristic {
         uuid : UUID_BATTERY_LEVEL,
         name : "BATTERY_LEVEL",

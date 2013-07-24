@@ -150,7 +150,7 @@ static void gattSetAdvertParams(bool fast_connection)
 
     /* Add tx power value of device to the scan response data */
     if (LsStoreAdvScanData(TX_POWER_VALUE_LENGTH, device_tx_power, 
-                          ad_src_advertise) != ls_err_none)
+                          ad_src_scan_rsp) != ls_err_none)
     {
         /* Some error has occurred */
         ReportPanic(app_panic_set_scan_rsp_data);
@@ -158,13 +158,13 @@ static void gattSetAdvertParams(bool fast_connection)
 
     /* Add complete device name to scan response data */
     if (LsStoreAdvScanData(sizeof(device_name), device_name, 
-                      ad_src_advertise) != ls_err_none)
+                      ad_src_scan_rsp) != ls_err_none)
     {
         /* control should never come here  */
         ReportPanic(app_panic_set_scan_rsp_data);
     }
 
-    if(LsStoreAdvScanData(sizeof(advert_data), advert_data, ad_src_advertise) != ls_err_none){
+    if(LsStoreAdvScanData(sizeof(advert_data), advert_data, ad_src_scan_rsp) != ls_err_none){
 
     }
 
