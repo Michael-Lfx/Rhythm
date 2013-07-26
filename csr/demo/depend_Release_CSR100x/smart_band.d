@@ -35,5 +35,6 @@ depend_Release_CSR100x/smart_band.o: smart_band.c \
   C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/pio.h \
   C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/battery.h \
   C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/debug.h \
-  C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/uart.h smart_band.h \
+  C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/uart.h \
+  C:/CSR_uEnergy_SDK-2.1.0/tools/include/CSR100x/reset.h smart_band.h \
   depend_Release_CSR100x/app_gatt_db.h

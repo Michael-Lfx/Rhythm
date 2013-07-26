@@ -53,8 +53,8 @@
  */
 
 /* Minimum and maximum connection interval in number of frames */
-#define PREFERRED_MAX_CON_INTERVAL          0x0014 /* 20 ms */
-#define PREFERRED_MIN_CON_INTERVAL          0x0014 /* 20 ms */
+#define PREFERRED_MAX_CON_INTERVAL          0x003c /* 20 ms */
+#define PREFERRED_MIN_CON_INTERVAL          0x003c /* 20 ms */
 
 /* Slave latency in number of connection intervals */
 #define PREFERRED_SLAVE_LATENCY             0x0004 /* 4 conn_intervals */
@@ -92,9 +92,7 @@
 // 0 to 100
 #define UUID_BATTERY_LEVEL                  0x2211
 
-#define PIO_BUTTON      11
-#define PIO_LED0        10
-#define PIO_LED1        4 
+     
 
 #define PIO_DIR_OUTPUT  TRUE 
 #define PIO_DIR_INPUT   FALSE

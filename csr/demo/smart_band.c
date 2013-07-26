@@ -16,6 +16,7 @@
 #include <pio.h>
 #include <battery.h>
 #include <debug.h>
+#include <reset.h>
 
 #include "smart_band.h"
 #include "app_gatt_db.h"
@@ -31,14 +32,22 @@
  *  PIO11   Button
  */
 
-#define BUZZER_PIO              (3)
-#define BUTTON_PIO              (11)
+#define BUZZER_PIO              (14)
+// #define BUZZER_PIO              (3)
 
+#define BUTTON_PIO              3
+// #define BUTTON_PIO              11
 
 #define LED2_PIO                (4)
-#define LED1_PIO                (12)
+// #define LED1_PIO                (12)
+#define LED1_PIO                (1)
 
-#define SHOCK_PIO               (10)
+#define SHOCK_PIO               (0)
+// #define SHOCK_PIO               (10)
+
+#define RLED_PIO                10
+#define GLED_PIO                11
+#define BLED_PIO                9
 
 #define PIO_BIT_MASK(pio)       (0x01UL << (pio))
 
@@ -140,9 +149,12 @@ typedef struct
     timer_id shock;
     timer_id spark;
     timer_id read;
+    timer_id button;
 }TIMER;
 
 TIMER timer;
+
+bool long_press_keep = FALSE;
 
 uint32 spark_pio_mask;
 
@@ -309,6 +321,17 @@ static void readTimerHandler(timer_id tid){
 //     GattWriteCharValueReq(st_ucid, GATT_WRITE_REQUEST, characteristics_handle.alert_notification_control_point, 2, notification_enabled);
 // }
 
+static void buttonTimerHandler(timer_id tid){
+
+    long_press_keep = FALSE;
+
+    //long press
+    buzzer();
+
+    WarmReset();
+}
+
+
 /*----------------------------------------------------------------------------*
  *  NAME
  *      handleSignalGattConnectCfm
@@ -401,6 +424,8 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
             case HANDLE_METRONOME_SYNC:
                 
+                DebugWriteUint8((uint8)p_access_e->value[0]);
+
                 if((uint8)p_access_e->value[0] == 0){
                     phone_previous_time = 0;
                     MemSet(&zero, 0 , sizeof(ZERO));
@@ -443,6 +468,9 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
             case HANDLE_METRONOME_ZERO:
                 GattAccessRsp(p_access_e->cid, p_access_e->handle, rc, 1, &zero.sn);
+
+                PioSet(BLED_PIO, 1);
+                PioSet(GLED_PIO, 0);
 
                 break;
 
@@ -697,12 +725,13 @@ void AppInit (sleep_state last_sleep_state){
     TimerDelete(timer.shock);
     TimerDelete(timer.spark);
     TimerDelete(timer.read);
+    TimerDelete(timer.button);
 
     /*init button*/
-    PioSetMode(PIO_BUTTON, pio_mode_user);
-    PioSetDir(PIO_BUTTON, PIO_DIR_INPUT);
-    PioSetPullModes(PIO_BIT_MASK(PIO_BUTTON), pio_mode_weak_pull_up);
-    PioSetEventMask(PIO_BIT_MASK(PIO_BUTTON), pio_event_mode_falling);
+    PioSetMode(BUTTON_PIO, pio_mode_user);
+    PioSetDir(BUTTON_PIO, PIO_DIR_INPUT);
+    PioSetPullModes(PIO_BIT_MASK(BUTTON_PIO), pio_mode_weak_pull_up);
+    PioSetEventMask(PIO_BIT_MASK(BUTTON_PIO), pio_event_mode_both);
 
     /*init buzzer*/
     PioSetModes(BUZZER_PIO_MASK, pio_mode_pwm0);
@@ -724,6 +753,25 @@ void AppInit (sleep_state last_sleep_state){
 
     PioSetMode(SHOCK_PIO, pio_mode_user);
     PioSetDir(SHOCK_PIO, PIO_DIR_OUTPUT);
+
+    PioSetMode(RLED_PIO, pio_mode_user);
+    PioSetDir(RLED_PIO, PIO_DIR_OUTPUT);
+
+    PioSetMode(GLED_PIO, pio_mode_user);
+    PioSetDir(GLED_PIO, PIO_DIR_OUTPUT);
+
+    PioSetMode(BLED_PIO, pio_mode_user);
+    PioSetDir(BLED_PIO, PIO_DIR_OUTPUT);
+
+    PioSet(RLED_PIO, 0);
+    PioSet(GLED_PIO, 1);
+    PioSet(BLED_PIO, 0);
+
+    // uint32 init_mask = PIO_BIT_MASK(LED1_PIO)|PIO_BIT_MASK(LED2_PIO)|PIO_BIT_MASK(SHOCK_PIO)|PIO_BIT_MASK(RLED_PIO)|PIO_BIT_MASK(GLED_PIO)|PIO_BIT_MASK(BLED_PIO);
+    
+    // PioSetModes(init_mask, pio_mode_user);
+    // PioSetDirs(init_mask, init_mask);
+
 
     /*gatt init*/
     GattInit();
@@ -748,7 +796,7 @@ void AppInit (sleep_state last_sleep_state){
 
 void AppProcessSystemEvent (sys_event_id id, void *data){
 
-    const pio_changed_data *pPioData;
+    pio_changed_data *pPioData;
     
     // uint8 test[ATTR_LEN_METRONOME_PLAY] = {
     //     LE8_L(0xEFEF)
@@ -756,18 +804,38 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
     
     switch(id){
         case sys_event_pio_changed:
-            pPioData = (const pio_changed_data *)data;
-            if (pPioData->pio_cause & (1UL << PIO_BUTTON)){
-                if (pPioData->pio_state & (1UL << PIO_BUTTON)){
+
+            pPioData = (pio_changed_data *)data;
+
+            if (pPioData->pio_cause & PIO_BIT_MASK(BUTTON_PIO)){
+
+                uint32 pios = PioGets();
+
+                if (pios & PIO_BIT_MASK(BUTTON_PIO)){
                     /* At this point the button is released */
-                    buzzer();
+                    DebugWriteString("released\r\n");
+
+                    if(long_press_keep){
+
+                        TimerDelete(timer.button);
+                        long_press_keep = FALSE;
+
+                        //short press
+                        buzzer();
+                    }
                 }else{
                     // GattCharValueNotification(st_ucid, HANDLE_METRONOME_PLAY, ATTR_LEN_METRONOME_PLAY, test);
-                    buzzer();
+                    DebugWriteString("pressed\r\n");
+
+                    long_press_keep = TRUE;
+
+                    TimerDelete(timer.button);
+                    timer.button = TimerCreate(3000 * MILLISECOND, TRUE, buttonTimerHandler);
                 }
             }
+
             break;
-            default:
+        default:
             break;
     }
 }
@@ -894,6 +962,9 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             addDb();
 
             buzzer();
+
+            PioSet(BLED_PIO, 0);
+            PioSet(GLED_PIO, 1);
 
             break;
         case GATT_DISC_PRIM_SERV_BY_UUID_CFM:
