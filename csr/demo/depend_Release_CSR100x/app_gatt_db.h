@@ -35,6 +35,10 @@
 #define ATTR_LEN_METRONOME_ZERO         (1)
 #define HANDLE_BATTERY_LEVEL            (0x0017)
 #define ATTR_LEN_BATTERY_LEVEL          (1)
+#define HANDLE_PHONE_PLAY               (0x0019)
+#define ATTR_LEN_PHONE_PLAY             (1)
+#define HANDLE_PHONE_PLAY_C_CFG         (0x001a)
+#define ATTR_LEN_PHONE_PLAY_C_CFG       (0)
 
 extern uint16 *GattGetDatabase(uint16 *len);
 

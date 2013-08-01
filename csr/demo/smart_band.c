@@ -21,93 +21,94 @@
 #include "smart_band.h"
 #include "app_gatt_db.h"
 
-#define MAX_ADV_DATA_LEN        (31)
-#define LE8_L(x)                ((x) & 0xff)
-#define LE8_H(x)                (((x) >> 8) & 0xff)
-#define AD_TYPE_APPEARANCE      (0x19)
-#define TX_POWER_VALUE_LENGTH   (2)
+#define MAX_ADV_DATA_LEN                    (31)
+#define LE8_L(x)                            ((x) & 0xff)
+#define LE8_H(x)                            (((x) >> 8) & 0xff)
+#define AD_TYPE_APPEARANCE                  (0x19)
+#define TX_POWER_VALUE_LENGTH               (2)
 
 /* Setup PIOs
  *  PIO3    Buzzer
  *  PIO11   Button
  */
 
-#define BUZZER_PIO              (14)
-// #define BUZZER_PIO              (3)
+#define BUZZER_PIO                          3
+#define BUTTON_PIO                          11
+#define LED1_PIO                            12
+#define SHOCK_PIO                           10
+#define GLED_PIO                            13
 
-#define BUTTON_PIO              3
-// #define BUTTON_PIO              11
+// #define BUZZER_PIO                          14
+// #define BUTTON_PIO                          3
+// #define LED1_PIO                            1
+// #define SHOCK_PIO                           0
+// #define GLED_PIO                            11
 
-#define LED2_PIO                (4)
-// #define LED1_PIO                (12)
-#define LED1_PIO                (1)
+#define LED2_PIO                            4
+#define RLED_PIO                            10
+#define BLED_PIO                            9
 
-#define SHOCK_PIO               (0)
-// #define SHOCK_PIO               (10)
+#define PIO_BIT_MASK(pio)                   (0x01UL << (pio))
 
-#define RLED_PIO                10
-#define GLED_PIO                11
-#define BLED_PIO                9
-
-#define PIO_BIT_MASK(pio)       (0x01UL << (pio))
-
-#define BUZZER_PIO_MASK         (PIO_BIT_MASK(BUZZER_PIO))
-#define BUTTON_PIO_MASK         (PIO_BIT_MASK(BUTTON_PIO))
-#define SPARK_HEAVY_MASK        (PIO_BIT_MASK(LED1_PIO)|PIO_BIT_MASK(LED2_PIO))
-#define SPARK_LIGHT_MASK        (PIO_BIT_MASK(LED1_PIO))
+#define BUZZER_PIO_MASK                     (PIO_BIT_MASK(BUZZER_PIO))
+#define BUTTON_PIO_MASK                     (PIO_BIT_MASK(BUTTON_PIO))
+#define SPARK_HEAVY_MASK                    (PIO_BIT_MASK(LED1_PIO)|PIO_BIT_MASK(LED2_PIO))
+#define SPARK_LIGHT_MASK                    (PIO_BIT_MASK(LED1_PIO))
 
 /* PIO direction */
-#define PIO_DIRECTION_INPUT     (FALSE)
-#define PIO_DIRECTION_OUTPUT    (TRUE)
+#define PIO_DIRECTION_INPUT                 (FALSE)
+#define PIO_DIRECTION_OUTPUT                (TRUE)
 
 /* PIO state */
-#define PIO_STATE_HIGH          (TRUE)
-#define PIO_STATE_LOW           (FALSE)
+#define PIO_STATE_HIGH                      (TRUE)
+#define PIO_STATE_LOW                       (FALSE)
 
 /* Extra long button press timer */
-#define EXTRA_LONG_BUTTON_PRESS_TIMER \(4*SECOND)
+#define EXTRA_LONG_BUTTON_PRESS_TIMER       \(4*SECOND)
 
 /* The index (0-3) of the PWM unit to be configured */
-#define BUZZER_PWM_INDEX_0      (0)
+#define BUZZER_PWM_INDEX_0                  (0)
 
 /* PWM parameters for Buzzer */
 
 /* Dull on. off and hold times */
-#define DULL_BUZZ_ON_TIME       (2)    /* 60us */
-#define DULL_BUZZ_OFF_TIME      (15)   /* 450us */
-#define DULL_BUZZ_HOLD_TIME     (0)
+#define DULL_BUZZ_ON_TIME                   (2)    /* 60us */
+#define DULL_BUZZ_OFF_TIME                  (15)   /* 450us */
+#define DULL_BUZZ_HOLD_TIME                 (0)
 
 /* Bright on, off and hold times */
-#define BRIGHT_BUZZ_ON_TIME     (2)    /* 60us */
-#define BRIGHT_BUZZ_OFF_TIME    (15)   /* 450us */
-#define BRIGHT_BUZZ_HOLD_TIME   (0)    /* 0us */
+#define BRIGHT_BUZZ_ON_TIME                 (2)    /* 60us */
+#define BRIGHT_BUZZ_OFF_TIME                (15)   /* 450us */
+#define BRIGHT_BUZZ_HOLD_TIME               (0)    /* 0us */
 
-#define BUZZ_RAMP_RATE          (0xFF)
+#define BUZZ_RAMP_RATE                      (0xFF)
 
 /* TIMER values for Buzzer */
-#define SHORT_BEEP_TIMER_VALUE  (100* MILLISECOND)
-#define LONG_BEEP_TIMER_VALUE   (500* MILLISECOND)
-#define BEEP_GAP_TIMER_VALUE    (25* MILLISECOND)
+#define SHORT_BEEP_TIMER_VALUE              (100* MILLISECOND)
+#define LONG_BEEP_TIMER_VALUE               (500* MILLISECOND)
+#define BEEP_GAP_TIMER_VALUE                (25* MILLISECOND)
 
-#define MAX_APP_TIMERS          5
+#define MAX_APP_TIMERS                      7
 
-#define SYNC_ERROR_THRESHOLD    5
+#define SYNC_ERROR_THRESHOLD                5
 
-#define MEASURE_MAX_LENGTH      16
+#define MEASURE_MAX_LENGTH                  16
 
-#define BATTERY_FULL_BATTERY_VOLTAGE                  (4200)
-#define BATTERY_FLAT_BATTERY_VOLTAGE                  (3000)
+#define BATTERY_FULL_BATTERY_VOLTAGE        (3800)
+#define BATTERY_FLAT_BATTERY_VOLTAGE        (3000)
 
-#define SPARK_LATENCY           5
-#define SPARK_DURATION          100
-#define SHOCK_DURATION          150
+#define SPARK_LATENCY                       5
+#define SPARK_DURATION                      100
+#define SHOCK_DURATION                      150
 
-#define SETUP_CODE                  0x1985
-#define NVM_OFFSET_SETUP_CODE       1
+#define SETUP_CODE                          0x1985
+#define NVM_OFFSET_SETUP_CODE               1
 
-#define DEVICE_NAME_MAX_LENGTH      30      /*byte uint8*/
-#define NVM_OFFSET_DEVICE_NAME_LENGTH    1
-#define NVM_OFFSET_DEVICE_NAME      2
+#define DEVICE_NAME_MAX_LENGTH              30      /*byte uint8*/
+#define NVM_OFFSET_DEVICE_NAME_LENGTH       1
+#define NVM_OFFSET_DEVICE_NAME              2
+
+#define PRESS_RELEASE_LOCKER_INTERVAL       200
 
 /*define metro data*/
 typedef struct
@@ -123,6 +124,8 @@ typedef struct
 } METRO_DATA;
 
 METRO_DATA metro_data;
+
+bool is_connected = FALSE;
 
 typedef struct
 {
@@ -150,15 +153,17 @@ typedef struct
     timer_id spark;
     timer_id read;
     timer_id button;
+    timer_id press_locker;
+    timer_id release_locker;
 }TIMER;
 
 TIMER timer;
 
-bool long_press_keep = FALSE;
+bool long_press_keep = FALSE, fix_start_time = FALSE, press_locked = FALSE, release_locked = FALSE;
 
 uint32 spark_pio_mask;
 
-uint32 play_run_times, play_start_time, phone_previous_time, phone_current_time;
+uint32 play_run_times, play_start_time, phone_previous_time, phone_current_time, interval;
 
 /*sync struct*/
 typedef struct
@@ -172,7 +177,9 @@ ZERO zero;
 
 
 /*
+    ---------------------
     user defined function
+    ---------------------
 */
 
 /*net to host long*/
@@ -217,7 +224,7 @@ static uint8 readBatteryLevel(void)
         bat_voltage = BATTERY_FLAT_BATTERY_VOLTAGE;
     }
 
-    bat_voltage -= BATTERY_FLAT_BATTERY_VOLTAGE;
+    bat_voltage = bat_voltage - BATTERY_FLAT_BATTERY_VOLTAGE;
     
     /* Get battery level in percent */
     bat_level = (bat_voltage * 100) / (BATTERY_FULL_BATTERY_VOLTAGE - BATTERY_FLAT_BATTERY_VOLTAGE);
@@ -234,7 +241,9 @@ static uint8 readBatteryLevel(void)
 
 
 /*
-    timers
+    --------------
+    timer handlers
+    --------------
 */
 
 static void buzzerTimerHandler(timer_id tid){
@@ -283,13 +292,19 @@ static void metronomeHandler(timer_id tid){
 
         if(metro_data.measure[play_run_times % metro_data.measure_length] == 100){
             buzzer();
-            // ledHeavy();
             spark(SPARK_HEAVY_MASK);
             shock();
-            DebugWriteString("heavy!!!!\r\n");
+            // DebugWriteString("heavy!!!!\r\n");
         }else{
-            // ledLight();
             spark(SPARK_LIGHT_MASK);
+
+            if(play_run_times % metro_data.measure_length == metro_data.measure_length - 1 && fix_start_time){
+
+                play_run_times = -1;
+                play_start_time = zero.timestamp + interval + metro_data.micro_duration * metro_data.measure_length;
+
+                fix_start_time = FALSE;
+            }
         }
         
         play_run_times++;
@@ -297,13 +312,24 @@ static void metronomeHandler(timer_id tid){
         uint32 current = TimeGet32();
         uint32 next = (play_start_time + metro_data.micro_duration * play_run_times - current)/1000;
 
-        DebugWriteString("d:\r\n");
-        DebugWriteUint32(next);
-        DebugWriteString("\r\n");
+        // DebugWriteString("d:\r\n");
+        // DebugWriteUint32(next);
+        // DebugWriteString("\r\n");
 
         timer.metronome = TimerCreate((next* MILLISECOND), TRUE, metronomeHandler);
     }
 }
+
+static void pressLockerHandler(timer_id tid){
+    press_locked = FALSE;
+    release_locked = FALSE;
+}
+
+static void releaseLockerHandler(timer_id tid){
+    release_locked = FALSE;
+    press_locked = FALSE;
+}
+
 
 /*
     read and write timer handle
@@ -327,6 +353,8 @@ static void buttonTimerHandler(timer_id tid){
 
     //long press
     buzzer();
+
+    DebugWriteString("wo ca a !!!!\r\n");
 
     WarmReset();
 }
@@ -368,31 +396,43 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
             case HANDLE_METRONOME_PLAY:
 
-                clearTime();
-
                 if(p_access_e->size_value == 4){
-                    metro_data.play = 1;
-
-                    DebugWriteString("play!!!");
-
-                    uint32 interval = ntohl(p_access_e->value);
                     
-                    play_start_time = zero.timestamp + interval + metro_data.micro_duration * metro_data.measure_length;
+                    interval = ntohl(p_access_e->value);
 
-                    uint32 now = TimeGet32();
+                    if(metro_data.play == 0){
 
-                    DebugWriteUint32(play_start_time);
-                    DebugWriteString("\r\n");
+                        metro_data.play = 1;
 
-                    DebugWriteUint32(now);
-                    DebugWriteString("\r\n");
+                        clearTime();
 
-                    DebugWriteUint32(zero.timestamp);
-                    DebugWriteString("\r\n");
+                        DebugWriteString("play!!!");
 
-                    timer.metronome = TimerCreate((play_start_time - now) / 1000 * MILLISECOND, TRUE, metronomeHandler);
+                        play_run_times = 0;
 
-                    DebugWriteString("\r\n");
+                        play_start_time = zero.timestamp + interval + metro_data.micro_duration * metro_data.measure_length;
+
+                        uint32 now = TimeGet32();
+
+                        DebugWriteUint32(play_start_time);
+                        DebugWriteString("\r\n");
+
+                        DebugWriteUint32(now);
+                        DebugWriteString("\r\n");
+
+                        DebugWriteUint32(zero.timestamp);
+                        DebugWriteString("\r\n");
+
+                        TimerDelete(timer.metronome);
+                        timer.metronome = TimerCreate((play_start_time - now) / 1000 * MILLISECOND, TRUE, metronomeHandler);
+
+                        DebugWriteString("\r\n");
+
+                    }else{
+
+                        fix_start_time = TRUE;
+                    }
+
 
                 }else{
                     metro_data.play = 0;
@@ -472,6 +512,8 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
                 PioSet(BLED_PIO, 1);
                 PioSet(GLED_PIO, 0);
 
+                is_connected = TRUE;
+
                 break;
 
             case HANDLE_BATTERY_LEVEL:;
@@ -519,31 +561,21 @@ static void handleSignalGattAddDbCfm(GATT_ADD_DB_CFM_T *event_data)
     GapSetAdvInterval(20 * MILLISECOND, 30 * MILLISECOND);
    
     /*clear up response data*/
-    if(LsStoreAdvScanData(0, NULL, ad_src_advertise)!=ls_err_none){
-        
-    };
-    if(LsStoreAdvScanData(0, NULL, ad_src_scan_rsp)!=ls_err_none){
-      
-    };
+    LsStoreAdvScanData(0, NULL, ad_src_advertise);
+    LsStoreAdvScanData(0, NULL, ad_src_scan_rsp);
     
     /*service uuid*/
     
-    if(LsStoreAdvScanData(sizeof(advert_data), advert_data, ad_src_advertise)!=ls_err_none){
-       
-    };
+    LsStoreAdvScanData(sizeof(advert_data), advert_data, ad_src_advertise);
 
     /*device appearance*/
-    if(LsStoreAdvScanData(ATTR_LEN_DEVICE_APPEARANCE + 1, device_appearance, ad_src_advertise)!=ls_err_none){
-     
-    };
+    LsStoreAdvScanData(ATTR_LEN_DEVICE_APPEARANCE + 1, device_appearance, ad_src_advertise);
 
     /*what's that*/
     LsReadTransmitPowerLevel(&tx_power_level);
     device_tx_power[TX_POWER_VALUE_LENGTH - 1] = (uint8 )tx_power_level;
 
-    if(LsStoreAdvScanData(TX_POWER_VALUE_LENGTH, device_tx_power, ad_src_advertise)!=ls_err_none){
-       
-    };
+    LsStoreAdvScanData(TX_POWER_VALUE_LENGTH, device_tx_power, ad_src_advertise);
 
     /*device_name*/
     
@@ -582,9 +614,7 @@ static void handleSignalGattAddDbCfm(GATT_ADD_DB_CFM_T *event_data)
     ra.uap = Random16()>>8;
     ra.nap = Random16();
 
-    if(GapSetRandomAddress(&ra)!=ls_err_none){
-        
-    };
+    GapSetRandomAddress(&ra);
 
     GattConnectReq(NULL,  L2CAP_CONNECTION_SLAVE_UNDIRECTED | L2CAP_OWN_ADDR_TYPE_RANDOM);
 }
@@ -703,15 +733,23 @@ static void handleSignalSmKeysInd(SM_KEYS_IND_T *event_data){
     // SMRequestSecurityLevel(&connect_bd_addr);
 }
 
+static void handleSignalGattCharValNotCfm(GATT_CHAR_VAL_IND_CFM_T *p_event_data){
+
+
+}
+
 
 /*
+    -------------------
     app system function
+    -------------------
 */
 
 void AppPowerOnReset(void){
 }
 
 void AppInit (sleep_state last_sleep_state){
+
     static uint16 app_timers[ SIZEOF_APP_TIMER * MAX_APP_TIMERS ];
 
     /*init debug*/
@@ -726,6 +764,8 @@ void AppInit (sleep_state last_sleep_state){
     TimerDelete(timer.spark);
     TimerDelete(timer.read);
     TimerDelete(timer.button);
+    TimerDelete(timer.press_locker);
+    TimerDelete(timer.release_locker);
 
     /*init button*/
     PioSetMode(BUTTON_PIO, pio_mode_user);
@@ -767,12 +807,6 @@ void AppInit (sleep_state last_sleep_state){
     PioSet(GLED_PIO, 1);
     PioSet(BLED_PIO, 0);
 
-    // uint32 init_mask = PIO_BIT_MASK(LED1_PIO)|PIO_BIT_MASK(LED2_PIO)|PIO_BIT_MASK(SHOCK_PIO)|PIO_BIT_MASK(RLED_PIO)|PIO_BIT_MASK(GLED_PIO)|PIO_BIT_MASK(BLED_PIO);
-    
-    // PioSetModes(init_mask, pio_mode_user);
-    // PioSetDirs(init_mask, init_mask);
-
-
     /*gatt init*/
     GattInit();
 
@@ -784,10 +818,6 @@ void AppInit (sleep_state last_sleep_state){
     /*init Nvm*/
     NvmConfigureI2cEeprom();
 
-    uint16 rname;
-    NvmRead(&rname, 1, 0);
-    DebugWriteUint16(rname);
-
     clearEnv();
     clearTime();
 
@@ -795,46 +825,71 @@ void AppInit (sleep_state last_sleep_state){
 }
 
 void AppProcessSystemEvent (sys_event_id id, void *data){
-
-    pio_changed_data *pPioData;
-    
-    // uint8 test[ATTR_LEN_METRONOME_PLAY] = {
-    //     LE8_L(0xEFEF)
-    //         };
     
     switch(id){
-        case sys_event_pio_changed:
 
-            pPioData = (pio_changed_data *)data;
+        case sys_event_pio_changed:;
+
+            const pio_changed_data *pPioData = (const pio_changed_data *)data;
 
             if (pPioData->pio_cause & PIO_BIT_MASK(BUTTON_PIO)){
 
-                uint32 pios = PioGets();
+                if (pPioData->pio_state & PIO_BIT_MASK(BUTTON_PIO)){
+                    
+                    if(!release_locked){
 
-                if (pios & PIO_BIT_MASK(BUTTON_PIO)){
-                    /* At this point the button is released */
-                    DebugWriteString("released\r\n");
+                        release_locked = TRUE;
 
-                    if(long_press_keep){
+                        TimerDelete(timer.release_locker);
+                        timer.release_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, releaseLockerHandler);
+
+                        DebugWriteString("released\r\n");
+
+                        if(long_press_keep){
+
+                            TimerDelete(timer.button);
+                            long_press_keep = FALSE;
+
+                            //short press do something
+
+                            if(is_connected){
+
+                                uint8 phone_play;
+
+                                if(metro_data.play){
+                                    phone_play = 0;
+                                }else{
+                                    phone_play = 1;
+                                }
+
+                                GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &phone_play);
+                            }
+
+                        }
+                    }
+
+                }else{
+
+                    if(!press_locked){
+
+                        press_locked = TRUE;
+
+                        TimerDelete(timer.press_locker);
+                        timer.press_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, pressLockerHandler);
+
+                        DebugWriteString("pressed\r\n");
+
+                        long_press_keep = TRUE;
 
                         TimerDelete(timer.button);
-                        long_press_keep = FALSE;
-
-                        //short press
-                        buzzer();
+                        timer.button = TimerCreate(3000 * MILLISECOND, TRUE, buttonTimerHandler);
                     }
-                }else{
-                    // GattCharValueNotification(st_ucid, HANDLE_METRONOME_PLAY, ATTR_LEN_METRONOME_PLAY, test);
-                    DebugWriteString("pressed\r\n");
-
-                    long_press_keep = TRUE;
-
-                    TimerDelete(timer.button);
-                    timer.button = TimerCreate(3000 * MILLISECOND, TRUE, buttonTimerHandler);
+                    
                 }
             }
 
             break;
+
         default:
             break;
     }
@@ -848,12 +903,14 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
     switch(event_code){
         
         case GATT_ADD_DB_CFM:
+
             DebugWriteString("----\r\nGATT_ADD_DB_CFM:\r\n");
 
             handleSignalGattAddDbCfm((GATT_ADD_DB_CFM_T*)event_data);
             break;
             
         case GATT_CONNECT_CFM:
+
             DebugWriteString("GATT_CONNECT_CFM:\r\n");
             
             p_conn_e = (GATT_CONNECT_CFM_T *) event_data;
@@ -867,14 +924,28 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             
         case GATT_ACCESS_IND:
 
+            DebugWriteString("acc_ind:\r\n");
+
             p_access_e = ((GATT_ACCESS_IND_T*) event_data);
+
+            if(p_access_e->handle == HANDLE_PHONE_PLAY_C_CFG || p_access_e->handle == HANDLE_PHONE_PLAY){
+                DebugWriteString("oh yeah:\r\n");
+                uint8 play = 0x01;
+                GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &play);
+            }
                         
             handleSignalGattAccessInd((GATT_ACCESS_IND_T*) p_access_e);
             
             break;
 
+        case GATT_CHAR_VAL_NOT_CFM:
+
+            handleSignalGattCharValNotCfm((GATT_CHAR_VAL_IND_CFM_T *)event_data);
+
+            break;
         
         case SM_SIMPLE_PAIRING_COMPLETE_IND:
+
             DebugWriteString("22:\r\n");
 
             handleSignalSmSimplePairingCompleteInd((SM_SIMPLE_PAIRING_COMPLETE_IND_T *)event_data);
@@ -887,6 +958,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             
 
         case SM_KEYS_IND:
+
             DebugWriteString("21:\r\n");
 
             handleSignalSmKeysInd((SM_KEYS_IND_T *)event_data);
@@ -925,6 +997,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             
 
         case GATT_WRITE_CHAR_VAL_CFM:
+
             DebugWriteString("GATT_WRITE_CHAR_VAL_CFM:\r\n");
             DebugWriteUint16(((GATT_WRITE_CHAR_VAL_CFM_T *)event_data)->result );
             //     SMRequestSecurityLevel(&connect_bd_addr);
@@ -932,6 +1005,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             break;
 
         case GATT_READ_CHAR_VAL_CFM:
+
             DebugWriteString("GATT_READ_CHAR_VAL_CFM:\r\n");
 
             handleGattReadCharValCFM((GATT_READ_CHAR_VAL_CFM_T *)event_data);
@@ -954,17 +1028,21 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             DebugWriteString("4:\r\n");
             break;
         case GATT_DISCONNECT_IND:
-            DebugWriteString("GATT_DISCONNECT_IND:\r\n");
+            // DebugWriteString("GATT_DISCONNECT_IND:\r\n");
             
-            clearEnv();
-            clearTime();
+            // clearEnv();
+            // clearTime();
 
-            addDb();
+            // addDb();
 
-            buzzer();
+            // buzzer();
 
-            PioSet(BLED_PIO, 0);
-            PioSet(GLED_PIO, 1);
+            // PioSet(BLED_PIO, 0);
+            // PioSet(GLED_PIO, 1);
+
+            is_connected = FALSE;
+
+            WarmReset();
 
             break;
         case GATT_DISC_PRIM_SERV_BY_UUID_CFM:

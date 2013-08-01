@@ -120,5 +120,18 @@ primary_service {
         properties : [read],
         flags : FLAG_IRQ,
         size_value : 1
+    },
+
+    characteristic {
+        uuid : UUID_PHONE_PLAY,
+        name : "PHONE_PLAY",
+        properties : [notify],
+        flags : [FLAG_IRQ],
+        size_value : 1,
+
+        client_config {
+            flags : [FLAG_IRQ],
+            name : "PHONE_PLAY_C_CFG"
+        }
     }
 }

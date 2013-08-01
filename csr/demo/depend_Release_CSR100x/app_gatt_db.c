@@ -54,6 +54,12 @@ uint16 gattDatabase[] = {
     0x3005, 0x0217, 0x0011, 0x2200,
     /* 0017: . */
     0xd401, 0x0000,
+    /* 0018: Characteristic Declaration 2221 */
+    0x3005, 0x1019, 0x0021, 0x2200,
+    /* 0019: . */
+    0xd401, 0x0000,
+    /* 001a: Client Characteristic Configuration */
+    0x6400,
 };
 
 uint16 *GattGetDatabase(uint16 *len)

@@ -92,7 +92,8 @@
 // 0 to 100
 #define UUID_BATTERY_LEVEL                  0x2211
 
-     
+// notify phone to play&stop
+#define UUID_PHONE_PLAY						0x2221
 
 #define PIO_DIR_OUTPUT  TRUE 
 #define PIO_DIR_INPUT   FALSE
