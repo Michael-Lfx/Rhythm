@@ -320,16 +320,18 @@ static void metronomeHandler(timer_id tid){
     }
 }
 
-static void pressLockerHandler(timer_id tid){
-    press_locked = FALSE;
+static void unlockBotton(void){
     release_locked = FALSE;
+    press_locked = FALSE;
+}
+
+static void pressLockerHandler(timer_id tid){
+    unlockBotton();
 }
 
 static void releaseLockerHandler(timer_id tid){
-    release_locked = FALSE;
-    press_locked = FALSE;
+    unlockBotton();
 }
-
 
 /*
     read and write timer handle
@@ -350,6 +352,8 @@ static void readTimerHandler(timer_id tid){
 static void buttonTimerHandler(timer_id tid){
 
     long_press_keep = FALSE;
+
+    unlockBotton();
 
     //long press
     buzzer();
@@ -863,6 +867,22 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
                                 }
 
                                 GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &phone_play);
+                            }else{
+
+                                if(metro_data.play){
+                                    TimerDelete(timer.metronome);
+
+                                    metro_data.play = 0;
+                                }else{
+                                    metro_data.play = 1;
+                                    play_run_times = 0;
+                                    
+
+                                    uint32 current = TimeGet32();
+                                    play_start_time = current + 100000;
+
+                                    timer.metronome = TimerCreate(100 * MILLISECOND, TRUE, metronomeHandler);
+                                }
                             }
 
                         }
@@ -1033,16 +1053,16 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             // clearEnv();
             // clearTime();
 
-            // addDb();
+            addDb();
 
             // buzzer();
 
-            // PioSet(BLED_PIO, 0);
-            // PioSet(GLED_PIO, 1);
+            PioSet(BLED_PIO, 0);
+            PioSet(GLED_PIO, 1);
 
             is_connected = FALSE;
 
-            WarmReset();
+            // WarmReset();
 
             break;
         case GATT_DISC_PRIM_SERV_BY_UUID_CFM:
