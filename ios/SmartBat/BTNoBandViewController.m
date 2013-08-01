@@ -74,6 +74,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSArray* bleOne = [self.bandCM bleList:indexPath.row];
+    NSLog(@"wo ca");
+    if (bleOne == NULL) {
+        
+        return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"OYNO"];
+    }
     
     Boolean isConnected = [[bleOne objectAtIndex:IS_CONNECTED_INDEX] intValue];
     

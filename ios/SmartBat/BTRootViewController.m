@@ -83,7 +83,7 @@
     [_noBandViewCtrl setViewX:screenWidth];
     [self.view addSubview:_noBandViewCtrl.view];
     
-    NSLog(@"%@", _scrollView.subviews);
+    NSLog(@"%@", self.view.subviews);
     
     //查询最新版本
     _appStore = [[BTAppStore alloc] init];

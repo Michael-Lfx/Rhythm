@@ -72,7 +72,7 @@
 
 - (IBAction)playPressed:(UIButton *)sender {
     
-    if ([[self.globals.systemStatus valueForKey:@"playStatus"]boolValue] == NO) {
+    if ([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue] == NO) {
         [self.metronomeCoreController start] ;
 
     }else{
@@ -322,7 +322,7 @@
     
     NSLog(@"d is: %d", d);
     
-    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:METRONOME_DURATION_UUID]];
+    [self.bandCM writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_DURATION]];
     
     NSLog(@"ARR: %@", self.globals.currentMeasure);
     
@@ -334,7 +334,7 @@
         measure[i] = [[self.globals.currentMeasure objectAtIndex:i] intValue];
     }
     
-    [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:METRONOME_MEASURE_UUID]];
+    [self.bandCM writeAll:[NSData dataWithBytes:measure length:sizeof(measure)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_MEASURE]];
 }
 
 -(void)bleWaitForRestart{

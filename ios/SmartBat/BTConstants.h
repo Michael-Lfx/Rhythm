@@ -56,19 +56,21 @@
 #define NOTETYPE_MAX                    0.5f
 
 //蓝牙服务uuid
-#define CHARACTERISTICS_COUNT           7
+#define CHARACTERISTICS_COUNT           8
 
-#define METRONOME_SERVICE_UUID          @"2200"
+#define UUID_METRONOME_SERVICE          @"2200"
 
-#define METRONOME_STATUS_UUID           @"2201"
+#define UUID_METRONOME_STATUS           @"2201"
 
-#define METRONOME_PLAY_UUID             @"2202"
-#define METRONOME_DURATION_UUID         @"2203"
-#define METRONOME_MEASURE_UUID          @"2204"
-#define METRONOME_SYNC_UUID             @"2205"
-#define METRONOME_ZERO_UUID             @"2206"
+#define UUID_METRONOME_PLAY             @"2202"
+#define UUID_METRONOME_DURATION         @"2203"
+#define UUID_METRONOME_MEASURE          @"2204"
+#define UUID_METRONOME_SYNC             @"2205"
+#define UUID_METRONOME_ZERO             @"2206"
 
-#define BATTERY_LEVEL_UUID              @"2211"
+#define UUID_BATTERY_LEVEL              @"2211"
+
+#define UUID_PHONE_PLAY                 @"2221"
 
 //蓝牙延时传输间隔
 #define BLUETOOTH_DELAY                 0.5
@@ -80,7 +82,7 @@
 #define SYNC_COUNT                      12
 
 //同步间隔
-#define SYNC_AGAIN                      60.0
+#define SYNC_AGAIN                      120.0
 
 //定时器锁常量
 #define DEFAULT_INTERVAL                0.01
