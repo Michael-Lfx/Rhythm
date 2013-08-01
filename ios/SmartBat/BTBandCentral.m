@@ -490,7 +490,7 @@
         //算出基于同步点的时间间隔，微米级别
         uint32_t start = (timestamp - bp.zero) * 1000000;
         
-        NSLog(@"let's play : %d", start);
+        NSLog(@"let's play : %d, %f, %f", start , timestamp, bp.zero);
         
         if (tmp) {
             [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
@@ -530,11 +530,7 @@
         return NULL;
     }
     
-    NSLog(@"21111");
-    
     BTBandPeripheral* bp = [ev objectAtIndex:index];
-    
-    NSLog(@"21111");
     
     //0 是否连接
     NSNumber* isConnected = [NSNumber numberWithBool:bp.handle.isConnected];

@@ -281,6 +281,7 @@
             
             [self sendDurationAndMeasure];
             
+            NSLog(@"wo 2");
             [self playBluetooth:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue]];
         }else{
             [self pauseBluetooth];
@@ -296,6 +297,7 @@
             
             [self sendDurationAndMeasure];
             
+            NSLog(@"wo 1");
             [self playBluetooth:[[self.globals.beatInfo valueForKey:@"hitTime"] doubleValue]];
         }
     }
