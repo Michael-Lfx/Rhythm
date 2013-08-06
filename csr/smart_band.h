@@ -95,6 +95,13 @@
 // notify phone to play&stop
 #define UUID_PHONE_PLAY						0x2221
 
+//modify device name
+#define UUID_CUSTORM_NAME					0x2231
+
+
+
+#define DEVICE_NAME_MAX_LENGTH              32      /*byte uint8*/
+
 #define PIO_DIR_OUTPUT  TRUE 
 #define PIO_DIR_INPUT   FALSE
 

@@ -133,5 +133,13 @@ primary_service {
             flags : [FLAG_IRQ],
             name : "PHONE_PLAY_C_CFG"
         }
+    },
+
+    characteristic {
+        uuid : UUID_CUSTORM_NAME,
+        name : "CUSTORM_NAME",
+        properties : [write],
+        flags : [FLAG_IRQ],
+        size_value : DEVICE_NAME_MAX_LENGTH
     }
 }

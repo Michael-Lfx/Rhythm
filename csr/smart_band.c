@@ -27,22 +27,21 @@
 #define AD_TYPE_APPEARANCE                  (0x19)
 #define TX_POWER_VALUE_LENGTH               (2)
 
-/* Setup PIOs
- *  PIO3    Buzzer
- *  PIO11   Button
+/* 
+    dSetup PIOs
  */
 
-#define BUZZER_PIO                          3
-#define BUTTON_PIO                          11
-#define LED1_PIO                            12
-#define SHOCK_PIO                           10
-#define GLED_PIO                            13
+// #define BUZZER_PIO                          3
+// #define BUTTON_PIO                          11
+// #define LED1_PIO                            12
+// #define SHOCK_PIO                           10
+// #define GLED_PIO                            13
 
-// #define BUZZER_PIO                          14
-// #define BUTTON_PIO                          3
-// #define LED1_PIO                            1
-// #define SHOCK_PIO                           0
-// #define GLED_PIO                            11
+#define BUZZER_PIO                          14
+#define BUTTON_PIO                          3
+#define LED1_PIO                            1
+#define SHOCK_PIO                           0
+#define GLED_PIO                            11
 
 #define LED2_PIO                            4
 #define RLED_PIO                            10
@@ -102,9 +101,8 @@
 #define SHOCK_DURATION                      150
 
 #define SETUP_CODE                          0x1985
-#define NVM_OFFSET_SETUP_CODE               1
+#define NVM_OFFSET_SETUP_CODE               0
 
-#define DEVICE_NAME_MAX_LENGTH              30      /*byte uint8*/
 #define NVM_OFFSET_DEVICE_NAME_LENGTH       1
 #define NVM_OFFSET_DEVICE_NAME              2
 
@@ -119,8 +117,8 @@ typedef struct
     uint8       measure_length;
     uint32      micro_duration;
     uint32      milli_duration;
-    uint8       device_name[DEVICE_NAME_MAX_LENGTH];
-    uint8       device_name_length;
+    uint16      device_name[DEVICE_NAME_MAX_LENGTH / 2];
+    uint16      device_name_length;
 } METRO_DATA;
 
 METRO_DATA metro_data;
@@ -237,8 +235,6 @@ static uint8 readBatteryLevel(void)
 
     return (uint8)bat_level;
 }
-
-
 
 /*
     --------------
@@ -358,7 +354,7 @@ static void buttonTimerHandler(timer_id tid){
     //long press
     buzzer();
 
-    DebugWriteString("wo ca a !!!!\r\n");
+    DebugWriteString("wo ca!!\r\n");
 
     WarmReset();
 }
@@ -387,7 +383,7 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
             case HANDLE_METRONOME_DURATION:
 
-                DebugWriteString("METRONOME_DURATION: ");
+                DebugWriteString("DURATION: ");
                 
                 /*from app*/
                 metro_data.micro_duration = ntohl(p_access_e->value);
@@ -410,7 +406,7 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
                         clearTime();
 
-                        DebugWriteString("play!!!");
+                        DebugWriteString("play!");
 
                         play_run_times = 0;
 
@@ -441,7 +437,7 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
                 }else{
                     metro_data.play = 0;
 
-                    DebugWriteString("stop!!!\r\n");
+                    DebugWriteString("stop!\r\n");
                 }
 
                 break;
@@ -467,8 +463,6 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
                 break;
 
             case HANDLE_METRONOME_SYNC:
-                
-                DebugWriteUint8((uint8)p_access_e->value[0]);
 
                 if((uint8)p_access_e->value[0] == 0){
                     phone_previous_time = 0;
@@ -490,13 +484,57 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
                             zero.sn = (uint8)p_access_e->value[0];
                             zero.timestamp = phone_current_time;
                         }else if(minus == 90){
-                            DebugWriteString("!finded\r\n");
+                            DebugWriteString("!f\r\n");
                             zero.finded = 1;
                         }
                     }
                 }
                 
                 phone_previous_time = phone_current_time;
+
+                break;
+
+            case HANDLE_CUSTORM_NAME:
+
+                DebugWriteString("fuck!\r\n");
+
+                uint16 setup_code = SETUP_CODE;
+                DebugWriteUint16(NvmWrite(&setup_code, sizeof(setup_code), NVM_OFFSET_SETUP_CODE));
+                NvmDisable();
+                // PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
+
+                // metro_data.device_name_length = p_access_e->size_value;
+                // DebugWriteUint16(sizeof(p_access_e->size_value));
+                // uint16 length = p_access_e->size_value;
+
+                // DebugWriteUint16(NvmWrite(&length, sizeof(length), NVM_OFFSET_DEVICE_NAME_LENGTH));
+                // NvmDisable();
+                // PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
+
+                /*word*/
+
+                DebugWriteString("\r\n");
+
+                for(i =0; i < p_access_e->size_value; i++){
+                    DebugWriteUint8(p_access_e->value[i]);
+                }
+
+                DebugWriteString("\r\n");
+
+
+                MemCopyPack(metro_data.device_name, p_access_e->value, p_access_e->size_value);
+
+                for(i =0; i < DEVICE_NAME_MAX_LENGTH/2; i++){
+                    DebugWriteUint16(metro_data.device_name[i]);
+                }
+
+                DebugWriteString("\r\n");
+
+                DebugWriteUint16(NvmWrite(metro_data.device_name, DEVICE_NAME_MAX_LENGTH/2, NVM_OFFSET_DEVICE_NAME));
+                NvmDisable();
+                // PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
+
+                WarmReset();
 
                 break;
 
@@ -586,21 +624,58 @@ static void handleSignalGattAddDbCfm(GATT_ADD_DB_CFM_T *event_data)
     /*Check device name in nvm*/
     uint16 setup_code;
     NvmRead(&setup_code, sizeof(setup_code), NVM_OFFSET_SETUP_CODE);
+    NvmDisable();
+
+    DebugWriteString("sc:");
+    DebugWriteUint16(setup_code);
+    DebugWriteString("\r\n");
 
     if(setup_code == SETUP_CODE){
 
-        NvmRead((uint16 *)&metro_data.device_name_length, 1, NVM_OFFSET_DEVICE_NAME_LENGTH);
-        NvmRead((uint16 *)metro_data.device_name, DEVICE_NAME_MAX_LENGTH/2, NVM_OFFSET_DEVICE_NAME);
+        DebugWriteString("\r\n");
 
-        uint8 device_name[metro_data.device_name_length + 1];
+        // NvmRead(&metro_data.device_name_length, 1, NVM_OFFSET_DEVICE_NAME_LENGTH);
+        // NvmDisable();
+
+        
+
+        uint8 device_name[DEVICE_NAME_MAX_LENGTH + 1];
+        MemSet(&device_name, 0, DEVICE_NAME_MAX_LENGTH + 1);
 
         device_name[0] = AD_TYPE_LOCAL_NAME_COMPLETE;
 
         /*word*/
-        MemCopy(device_name, metro_data.device_name, metro_data.device_name_length / 2);
-        
+        // MemCopyUnPack(&device_name[1], metro_data.device_name, DEVICE_NAME_MAX_LENGTH / 2);
+
+        NvmRead(metro_data.device_name, DEVICE_NAME_MAX_LENGTH/2, NVM_OFFSET_DEVICE_NAME);
+        NvmDisable();
+
+        DebugWriteString("\r\n");
+
+        int i, count = 0;
+
+        for(i = 0; i < DEVICE_NAME_MAX_LENGTH/2; i++){
+            DebugWriteUint16(metro_data.device_name[i]);
+        }
+
+        MemCopyUnPack(&device_name[1], metro_data.device_name, DEVICE_NAME_MAX_LENGTH/2);
+
+        DebugWriteString("\r\n");
+
+        for(i = 0; i < DEVICE_NAME_MAX_LENGTH + 1; i++){
+            DebugWriteUint8(device_name[i]);
+
+            count++;
+            if(device_name[i] == 0x00){
+                break;
+            }
+        }
+
+        // DebugWriteUint16(metro_data.device_name_length);
+        DebugWriteString("\r\n");
+
         /*byte*/
-        LsStoreAdvScanData(sizeof(device_name),  device_name, ad_src_advertise);
+        LsStoreAdvScanData(count,  device_name, ad_src_advertise);
     }else{
 
         uint8 device_name[] = {
@@ -742,6 +817,22 @@ static void handleSignalGattCharValNotCfm(GATT_CHAR_VAL_IND_CFM_T *p_event_data)
 
 }
 
+static void localSwitch(void){
+    if(metro_data.play){
+        TimerDelete(timer.metronome);
+
+        metro_data.play = 0;
+    }else{
+        metro_data.play = 1;
+        play_run_times = 0;
+        
+
+        uint32 current = TimeGet32();
+        play_start_time = current + 100000;
+
+        timer.metronome = TimerCreate(100 * MILLISECOND, TRUE, metronomeHandler);
+    }
+}
 
 /*
     -------------------
@@ -822,6 +913,8 @@ void AppInit (sleep_state last_sleep_state){
     /*init Nvm*/
     NvmConfigureI2cEeprom();
 
+    NvmDisable();
+
     clearEnv();
     clearTime();
 
@@ -847,7 +940,7 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
                         TimerDelete(timer.release_locker);
                         timer.release_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, releaseLockerHandler);
 
-                        DebugWriteString("released\r\n");
+                        DebugWriteString("r!\r\n");
 
                         if(long_press_keep){
 
@@ -869,20 +962,7 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
                                 GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &phone_play);
                             }else{
 
-                                if(metro_data.play){
-                                    TimerDelete(timer.metronome);
-
-                                    metro_data.play = 0;
-                                }else{
-                                    metro_data.play = 1;
-                                    play_run_times = 0;
-                                    
-
-                                    uint32 current = TimeGet32();
-                                    play_start_time = current + 100000;
-
-                                    timer.metronome = TimerCreate(100 * MILLISECOND, TRUE, metronomeHandler);
-                                }
+                                localSwitch();
                             }
 
                         }
@@ -897,7 +977,7 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
                         TimerDelete(timer.press_locker);
                         timer.press_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, pressLockerHandler);
 
-                        DebugWriteString("pressed\r\n");
+                        DebugWriteString("p\r\n");
 
                         long_press_keep = TRUE;
 
@@ -924,14 +1004,14 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
         
         case GATT_ADD_DB_CFM:
 
-            DebugWriteString("----\r\nGATT_ADD_DB_CFM:\r\n");
+            DebugWriteString("~-ADD_DB\r\n");
 
             handleSignalGattAddDbCfm((GATT_ADD_DB_CFM_T*)event_data);
             break;
             
         case GATT_CONNECT_CFM:
 
-            DebugWriteString("GATT_CONNECT_CFM:\r\n");
+            DebugWriteString("CONNECT:\r\n");
             
             p_conn_e = (GATT_CONNECT_CFM_T *) event_data;
             st_ucid = p_conn_e->cid;
@@ -949,7 +1029,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             p_access_e = ((GATT_ACCESS_IND_T*) event_data);
 
             if(p_access_e->handle == HANDLE_PHONE_PLAY_C_CFG || p_access_e->handle == HANDLE_PHONE_PLAY){
-                DebugWriteString("oh yeah:\r\n");
+                DebugWriteString("yeah:\r\n");
                 uint8 play = 0x01;
                 GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &play);
             }
@@ -987,7 +1067,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
 
         case GATT_DISC_ALL_PRIM_SERV_CFM:
             
-            DebugWriteString("GATT_DISC_ALL_PRIM_SERV_CFM:\r\n");
+            DebugWriteString("ALL_SERV:\r\n");
 
             handleGattDiscAllPrimServCfm((GATT_DISC_ALL_PRIM_SERV_CFM_T *)event_data);
 
@@ -1018,7 +1098,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
 
         case GATT_WRITE_CHAR_VAL_CFM:
 
-            DebugWriteString("GATT_WRITE_CHAR_VAL_CFM:\r\n");
+            DebugWriteString("WRITE:\r\n");
             DebugWriteUint16(((GATT_WRITE_CHAR_VAL_CFM_T *)event_data)->result );
             //     SMRequestSecurityLevel(&connect_bd_addr);
             // }
@@ -1026,7 +1106,7 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
 
         case GATT_READ_CHAR_VAL_CFM:
 
-            DebugWriteString("GATT_READ_CHAR_VAL_CFM:\r\n");
+            DebugWriteString("READ:\r\n");
 
             handleGattReadCharValCFM((GATT_READ_CHAR_VAL_CFM_T *)event_data);
 
@@ -1046,9 +1126,21 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
             break;
         case LM_EV_DISCONNECT_COMPLETE:
             DebugWriteString("4:\r\n");
+
+            WarmReset();
+
+            addDb();
+
+            // buzzer();
+
+            PioSet(BLED_PIO, 0);
+            PioSet(GLED_PIO, 1);
+
+            is_connected = FALSE;
+
             break;
         case GATT_DISCONNECT_IND:
-            // DebugWriteString("GATT_DISCONNECT_IND:\r\n");
+            DebugWriteString("DISCONNECT\r\n");
             
             // clearEnv();
             // clearTime();
