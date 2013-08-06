@@ -19,6 +19,7 @@
         self.p = [NSMutableDictionary dictionaryWithCapacity:7];
         self.globals = [BTGlobals sharedGlobals];
         self.globals.bleListCount = 0;
+        self.setupBand = nil;
         
         //获取上下文
         UIApplication *app = [UIApplication sharedApplication];
@@ -73,6 +74,10 @@
         
         BTBandPeripheral* find = [[BTBandPeripheral alloc] initWithPeripheral:peripheral];
         find.name = [advertisementData valueForKey:@"kCBAdvDataLocalName"];
+        
+        if (find.name == nil) {
+            find.name = @"";
+        }
 //        find.name = peripheral.name;
         
         [_allPeripherals setObject:find forKey:[NSNumber numberWithInt:peripheral.hash]];
@@ -80,21 +85,28 @@
         //连接上一个以后增加
         self.globals.bleListCount++;
         
-        //查找之前是否连接过
-        //读取BTEntity下的数据
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTBleList" inManagedObjectContext:_context];
-        
-        NSFetchRequest* request = [[NSFetchRequest alloc] init];
-        [request setEntity:entity];
-        
-        NSError* error;
-        _localBleLIst = [_context executeFetchRequest:request error:&error];
-        
-        for (BTBleList* old in _localBleLIst) {
-            if ([old.name isEqualToString:find.name]){
-                [_cm connectPeripheral:peripheral options:nil];
+        if ([find.name isEqual:[[NSString alloc] initWithData:_setupName encoding:NSASCIIStringEncoding]]) {
+            NSLog(@"find me");
+            
+            [_cm connectPeripheral:peripheral options:nil];
+        }else{
+            //查找之前是否连接过
+            //读取BTEntity下的数据
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTBleList" inManagedObjectContext:_context];
+            
+            NSFetchRequest* request = [[NSFetchRequest alloc] init];
+            [request setEntity:entity];
+            
+            NSError* error;
+            _localBleLIst = [_context executeFetchRequest:request error:&error];
+            
+            for (BTBleList* old in _localBleLIst) {
+                if ([old.name isEqualToString:find.name]){
+                    [_cm connectPeripheral:peripheral options:nil];
+                }
             }
         }
+        
         
         NSLog(@"%@", _localBleLIst);
         
@@ -125,7 +137,7 @@
     }
     
     //从来没有连接过
-    if (never) {
+    if (never && ![find.name isEqual: @"YUE"]) {
         //新建一条记录
         BTBleList* first = [NSEntityDescription insertNewObjectForEntityForName:@"BTBleList" inManagedObjectContext:_context];
         
@@ -169,34 +181,64 @@
     
     NSLog(@"Discover Characteristics sum: %d", service.characteristics.count);
     
-    BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
-    
-    for (CBCharacteristic* c in service.characteristics) {
+    if (_setupBand != nil && [peripheral isEqual:_setupBand.handle]) {
         
-        [bp.allCharacteristics setObject:c forKey:c.UUID];
+        //初始化手环操作
+        NSLog(@"find a new band!!!");
         
-//      [peripheral setNotifyValue:YES forCharacteristic:c];
-        
-        if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_PHONE_PLAY]]) {
-            [peripheral setNotifyValue:YES forCharacteristic:c];
-            NSLog(@"%@", c.UUID);
+        for (CBCharacteristic* c in service.characteristics) {
+            if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_CUSTORM_NAME]]) {
+                
+                NSLog(@"right");
+                
+                [peripheral writeValue:_setupName forCharacteristic:c type:CBCharacteristicWriteWithResponse];
+            }
         }
         
-        //连接完成！！
-        if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
-            NSLog(@"ge zaile ");
+    }else{
+        
+        //正常连接操作
+        
+        BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+        
+        for (CBCharacteristic* c in service.characteristics) {
             
-            //开始设备同步
-            [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+            [bp.allCharacteristics setObject:c forKey:c.UUID];
             
-            //读取电量
-            [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+            //设置通知到phone play
+            if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_PHONE_PLAY]]) {
+                [peripheral setNotifyValue:YES forCharacteristic:c];
+                NSLog(@"%@", c.UUID);
+            }
+            
+            //连接完成！！
+            if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
+                NSLog(@"ge zaile ");
                 
-                //读取完名称和电量后
-                self.globals.bleListCount+=0;
+                //开始设备同步
+                [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
-            }];
+                //读取电量
+                [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+                    
+                    //读取完名称和电量后
+                    self.globals.bleListCount+=0;
+                    
+                    if ([bp.name isEqual:[[NSString alloc] initWithData:_setupName encoding:NSASCIIStringEncoding]]) {
+                        
+                        NSLog(@"finish");
+                        
+                        _setupblock(0);
+                        
+                        _setupblock = nil;
+                        _setupBand = nil;
+                        _setupName = nil;
+                    }
+                    
+                }];
+            }
         }
+        
     }
 }
 
@@ -264,6 +306,10 @@
         NSLog(@"WriteValueForCharacteristic error: %@", error.localizedDescription);
     }
 //    NSLog(@"write value: %@", characteristic.value);
+    
+    if (_setupBand != nil && [characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_CUSTORM_NAME]]) {
+        NSLog(@"we did it:%@", characteristic.value);
+    }
 }
 
 //某个peripheral断开连接
@@ -559,6 +605,21 @@
         [_cm cancelPeripheralConnection:bp.handle];
     }
     
+}
+
+//定位将要进行初始化的peripheral
+-(void)willSetup:(NSUInteger)index{
+    //根据index找到对应的peripheral
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    _setupBand = [[enumeratorValue allObjects] objectAtIndex:index];
+}
+
+//初始化手环
+-(void)setup:(NSData*)data withBlock:(void(^)(int result))block{
+    _setupName = data;
+    _setupblock = block;
+    
+    [_cm connectPeripheral:_setupBand.handle options:nil];
 }
 
 @end

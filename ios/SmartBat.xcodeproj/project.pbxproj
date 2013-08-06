@@ -126,6 +126,7 @@
 		7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7289357D175DA97100EED04E /* BTBaseViewController.m */; };
 		72893583175DAA7400EED04E /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893582175DAA7400EED04E /* BTGlobals.m */; };
 		7289358A175DAC9900EED04E /* BTTempoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893589175DAC9900EED04E /* BTTempoViewController.m */; };
+		72A58E8A17AB6237004DAE2A /* BTSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A58E8917AB6237004DAE2A /* BTSetupViewController.m */; };
 		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
 		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
 		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
@@ -347,6 +348,8 @@
 		72893582175DAA7400EED04E /* BTGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTGlobals.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72893588175DAC9900EED04E /* BTTempoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTTempoViewController.h; path = ../BTTempoViewController.h; sourceTree = "<group>"; };
 		72893589175DAC9900EED04E /* BTTempoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTTempoViewController.m; path = ../BTTempoViewController.m; sourceTree = "<group>"; };
+		72A58E8817AB6237004DAE2A /* BTSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSetupViewController.h; sourceTree = "<group>"; };
+		72A58E8917AB6237004DAE2A /* BTSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSetupViewController.m; sourceTree = "<group>"; };
 		72B0F179176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		72B0F17A176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		72B45B32175DD7DC0071A082 /* BTSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSettingsViewController.h; sourceTree = "<group>"; };
@@ -750,12 +753,14 @@
 				72893574175DA8D900EED04E /* BTMainViewController.h */,
 				723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */,
 				723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */,
+				72A58E8817AB6237004DAE2A /* BTSetupViewController.h */,
 				72893588175DAC9900EED04E /* BTTempoViewController.h */,
 				72FAC806176326C100A6DAE0 /* BTAppStore.m */,
 				72B45B39175DDD110071A082 /* BTCommonViewController.m */,
 				72893575175DA8D900EED04E /* BTMainViewController.m */,
 				723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */,
 				723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */,
+				72A58E8917AB6237004DAE2A /* BTSetupViewController.m */,
 				72893589175DAC9900EED04E /* BTTempoViewController.m */,
 				7289357F175DA97700EED04E /* Base Class */,
 				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
@@ -1170,6 +1175,7 @@
 				F4CE3E3D1764BB4600F314D8 /* OALAudioTrackNotifications.m in Sources */,
 				F4CE3E3E1764BB4600F314D8 /* OALAudioTracks.m in Sources */,
 				F4CE3E3F1764BB4600F314D8 /* OALSimpleAudio.m in Sources */,
+				72A58E8A17AB6237004DAE2A /* BTSetupViewController.m in Sources */,
 				F4CE3E401764BB4600F314D8 /* ALBuffer.m in Sources */,
 				F4CE3E411764BB4600F314D8 /* ALCaptureDevice.m in Sources */,
 				F4CE3E421764BB4600F314D8 /* ALChannelSource.m in Sources */,

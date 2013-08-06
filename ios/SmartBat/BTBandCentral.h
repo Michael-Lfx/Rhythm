@@ -28,6 +28,10 @@
 @property(strong, nonatomic) BTGlobals* globals;
 @property(strong, nonatomic) NSMutableDictionary* allPeripherals;
 
+@property(strong, nonatomic) BTBandPeripheral* setupBand;
+@property(strong, nonatomic) NSData* setupName;
+@property(strong, nonatomic) void (^setupblock)(int result);
+
 +(BTBandCentral*)sharedBandCentral;
 
 -(void)write:(NSData*)value withUUID:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid;
@@ -43,6 +47,9 @@
 
 -(NSArray*)bleList:(NSUInteger)index;
 -(void)connectSelectedPeripheral:(NSUInteger)index;
+
+-(void)willSetup:(NSUInteger)index;
+-(void)setup:(NSData*)data withBlock:(void(^)(int result))block;
 
 @end
  

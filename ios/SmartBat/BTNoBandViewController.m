@@ -98,15 +98,15 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    //手环名称
-    UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
-    bandName.text = [bleOne objectAtIndex:BAND_NAME_INDEX];
-    
     if (isConnected) {
         //连接后显示电量
         UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:BATTERY_LEVEL_TAG];
         batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:BATTERY_LEVEL_INDEX]];
         batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+        
+        //手环名称
+        UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
+        bandName.text = [bleOne objectAtIndex:BAND_NAME_INDEX];
     }
     
     return cell;
@@ -114,7 +114,15 @@
 
 //选中某行
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.bandCM connectSelectedPeripheral:[indexPath row]];
+//    [self.bandCM connectSelectedPeripheral:[indexPath row]];
+    [self.bandCM willSetup:[indexPath row]];
+    
+    _setupViewCtrl = nil;
+    _setupViewCtrl = [BTSetupViewController buildView];
+    _setupViewCtrl.view.tag = SETUP_VIEW_TAG;
+    [self.view.superview insertSubview:_setupViewCtrl.view belowSubview:self.view];
+    
+    [self pickupSettings:nil];
 }
 
 @end

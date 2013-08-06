@@ -24,6 +24,7 @@
 #define TEMPO_VIEW_TAG                  12
 #define COMMON_VIEW_TAG                 13
 #define NO_BAND_VIEW_TAG                14
+#define SETUP_VIEW_TAG                  15
 #define PAGE_CONTROL_TAG                1
 #define COMMON_BUTTON_TAG               2
 #define BAND_BUTTON_TAG                 3
@@ -56,7 +57,7 @@
 #define NOTETYPE_MAX                    0.5f
 
 //蓝牙服务uuid
-#define CHARACTERISTICS_COUNT           8
+#define CHARACTERISTICS_COUNT           9
 
 #define UUID_METRONOME_SERVICE          @"2200"
 
@@ -71,6 +72,11 @@
 #define UUID_BATTERY_LEVEL              @"2211"
 
 #define UUID_PHONE_PLAY                 @"2221"
+
+#define UUID_CUSTORM_NAME				@"2231"
+
+//手环名称最大字节数
+#define DEVICE_NAME_MAX_LENGTH          30
 
 //蓝牙延时传输间隔
 #define BLUETOOTH_DELAY                 0.5

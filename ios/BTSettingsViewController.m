@@ -30,7 +30,7 @@
     
     //初始化关闭按钮
     UIButton *pickupBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [pickupBtn setFrame:CGRectMake(200, 30, 100, 30)];
+    [pickupBtn setFrame:CGRectMake(200, 20, 100, 40)];
     [pickupBtn setTitle:@"pickup" forState:UIControlStateNormal];
     [pickupBtn addTarget:self action:@selector(pickupSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:pickupBtn];
