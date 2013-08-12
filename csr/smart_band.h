@@ -100,14 +100,10 @@
 
 
 
-#define DEVICE_NAME_MAX_LENGTH              32      /*byte uint8*/
+#define DEVICE_NAME_MAX_LENGTH              16      /*byte uint8*/
 
 #define PIO_DIR_OUTPUT  TRUE 
 #define PIO_DIR_INPUT   FALSE
-
-#define NAME_MAX_LENGTH         20
-
-
 
 
 #endif

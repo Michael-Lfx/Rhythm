@@ -93,7 +93,7 @@
 
 #define MEASURE_MAX_LENGTH                  16
 
-#define BATTERY_FULL_BATTERY_VOLTAGE        (3800)
+#define BATTERY_FULL_BATTERY_VOLTAGE        (3720)
 #define BATTERY_FLAT_BATTERY_VOLTAGE        (3000)
 
 #define SPARK_LATENCY                       5
@@ -103,8 +103,7 @@
 #define SETUP_CODE                          0x1985
 #define NVM_OFFSET_SETUP_CODE               0
 
-#define NVM_OFFSET_DEVICE_NAME_LENGTH       1
-#define NVM_OFFSET_DEVICE_NAME              2
+#define NVM_OFFSET_METRO_DATA              1
 
 #define PRESS_RELEASE_LOCKER_INTERVAL       200
 
@@ -118,29 +117,19 @@ typedef struct
     uint32      micro_duration;
     uint32      milli_duration;
     uint16      device_name[DEVICE_NAME_MAX_LENGTH / 2];
-    uint16      device_name_length;
 } METRO_DATA;
 
 METRO_DATA metro_data;
 
-bool is_connected = FALSE;
-
+/*sync struct*/
 typedef struct
 {
-    uint16 alert_notification_control_point;
-    uint16 unread_alert;
-    uint16 new_alert;
-    uint16 supported_new_alert_category;
-    uint16 supported_unread_alert_category;
-} CHARACTERISTICS_HANDLE;
+    bool        finded;
+    uint8       sn;
+    uint32      timestamp;
+} ZERO;
 
-CHARACTERISTICS_HANDLE characteristics_handle;
-
-uint16 st_ucid, div;
-TYPED_BD_ADDR_T     connect_bd_addr;
-
-bool has_notification_service = FALSE;
-uint16 service_start_handle, service_end_handle;
+ZERO zero;
 
 /*define timer*/
 typedef struct
@@ -157,21 +146,31 @@ typedef struct
 
 TIMER timer;
 
+typedef struct
+{
+    uint16 alert_notification_control_point;
+    uint16 unread_alert;
+    uint16 new_alert;
+    uint16 supported_new_alert_category;
+    uint16 supported_unread_alert_category;
+} CHARACTERISTICS_HANDLE;
+
+CHARACTERISTICS_HANDLE characteristics_handle;
+
+bool is_connected = FALSE;
+
+uint16      st_ucid, div;
+TYPED_BD_ADDR_T     connect_bd_addr;
+
+bool has_notification_service = FALSE;
+uint16 service_start_handle, service_end_handle;
+
 bool long_press_keep = FALSE, fix_start_time = FALSE, press_locked = FALSE, release_locked = FALSE;
 
 uint32 spark_pio_mask;
 
 uint32 play_run_times, play_start_time, phone_previous_time, phone_current_time, interval;
 
-/*sync struct*/
-typedef struct
-{
-    bool        finded;
-    uint8       sn;
-    uint32      timestamp;
-} ZERO;
-
-ZERO zero;
 
 
 /*
@@ -288,11 +287,20 @@ static void metronomeHandler(timer_id tid){
 
         if(metro_data.measure[play_run_times % metro_data.measure_length] == 100){
             buzzer();
-            spark(SPARK_HEAVY_MASK);
-            shock();
+
+            if(metro_data.status & 2){
+                spark(SPARK_HEAVY_MASK);
+            }
+
+            if(metro_data.status & 1){
+                shock();
+            }
+            
             // DebugWriteString("heavy!!!!\r\n");
         }else{
-            spark(SPARK_LIGHT_MASK);
+            if(metro_data.status & 2){
+                spark(SPARK_LIGHT_MASK);
+            }
 
             if(play_run_times % metro_data.measure_length == metro_data.measure_length - 1 && fix_start_time){
 
@@ -307,10 +315,6 @@ static void metronomeHandler(timer_id tid){
 
         uint32 current = TimeGet32();
         uint32 next = (play_start_time + metro_data.micro_duration * play_run_times - current)/1000;
-
-        // DebugWriteString("d:\r\n");
-        // DebugWriteUint32(next);
-        // DebugWriteString("\r\n");
 
         timer.metronome = TimerCreate((next* MILLISECOND), TRUE, metronomeHandler);
     }
@@ -397,10 +401,15 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
             case HANDLE_METRONOME_PLAY:
 
                 if(p_access_e->size_value == 4){
+
+                    DebugWriteUint16(NvmWrite((uint16 *)&metro_data, sizeof(METRO_DATA), NVM_OFFSET_METRO_DATA));
+                    NvmDisable();
                     
                     interval = ntohl(p_access_e->value);
 
                     if(metro_data.play == 0){
+
+                        PioSets(SPARK_HEAVY_MASK, 0x00UL);
 
                         metro_data.play = 1;
 
@@ -501,15 +510,6 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
                 uint16 setup_code = SETUP_CODE;
                 DebugWriteUint16(NvmWrite(&setup_code, sizeof(setup_code), NVM_OFFSET_SETUP_CODE));
                 NvmDisable();
-                // PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
-
-                // metro_data.device_name_length = p_access_e->size_value;
-                // DebugWriteUint16(sizeof(p_access_e->size_value));
-                // uint16 length = p_access_e->size_value;
-
-                // DebugWriteUint16(NvmWrite(&length, sizeof(length), NVM_OFFSET_DEVICE_NAME_LENGTH));
-                // NvmDisable();
-                // PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
 
                 /*word*/
 
@@ -521,6 +521,7 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
                 DebugWriteString("\r\n");
 
+                MemSet(metro_data.device_name, 0, DEVICE_NAME_MAX_LENGTH/2);
 
                 MemCopyPack(metro_data.device_name, p_access_e->value, p_access_e->size_value);
 
@@ -530,9 +531,8 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
                 DebugWriteString("\r\n");
 
-                DebugWriteUint16(NvmWrite(metro_data.device_name, DEVICE_NAME_MAX_LENGTH/2, NVM_OFFSET_DEVICE_NAME));
+                DebugWriteUint16(NvmWrite((uint16 *)&metro_data, sizeof(METRO_DATA), NVM_OFFSET_METRO_DATA));
                 NvmDisable();
-                // PioSetI2CPullMode(pio_i2c_pull_mode_strong_pull_down);
 
                 WarmReset();
 
@@ -553,6 +553,8 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
                 PioSet(BLED_PIO, 1);
                 PioSet(GLED_PIO, 0);
+
+                PioSets(SPARK_HEAVY_MASK, SPARK_HEAVY_MASK);
 
                 is_connected = TRUE;
 
@@ -634,20 +636,20 @@ static void handleSignalGattAddDbCfm(GATT_ADD_DB_CFM_T *event_data)
 
         DebugWriteString("\r\n");
 
-        // NvmRead(&metro_data.device_name_length, 1, NVM_OFFSET_DEVICE_NAME_LENGTH);
+        // NvmRead(&metro_data.device_name_length, 1, NVM_OFFSET_METRO_DATA_LENGTH);
         // NvmDisable();
 
         
 
         uint8 device_name[DEVICE_NAME_MAX_LENGTH + 1];
-        MemSet(&device_name, 0, DEVICE_NAME_MAX_LENGTH + 1);
+        MemSet(device_name, 0, DEVICE_NAME_MAX_LENGTH + 1);
 
         device_name[0] = AD_TYPE_LOCAL_NAME_COMPLETE;
 
         /*word*/
         // MemCopyUnPack(&device_name[1], metro_data.device_name, DEVICE_NAME_MAX_LENGTH / 2);
 
-        NvmRead(metro_data.device_name, DEVICE_NAME_MAX_LENGTH/2, NVM_OFFSET_DEVICE_NAME);
+        NvmRead((uint16 *)&metro_data, sizeof(METRO_DATA), NVM_OFFSET_METRO_DATA);
         NvmDisable();
 
         DebugWriteString("\r\n");
@@ -726,7 +728,7 @@ static void handleSignalGattConnectCFM(GATT_CONNECT_CFM_T *event_data){
     //     DebugWriteString("wo");
     // }
 
-    // GattDiscoverAllPrimaryServices(st_ucid);
+    GattDiscoverAllPrimaryServices(st_ucid);
 }
 
 static void handleGattServInfoInd(GATT_SERV_INFO_IND_T *ind){
@@ -818,11 +820,14 @@ static void handleSignalGattCharValNotCfm(GATT_CHAR_VAL_IND_CFM_T *p_event_data)
 }
 
 static void localSwitch(void){
-    if(metro_data.play){
-        TimerDelete(timer.metronome);
 
+    if(metro_data.play){
+
+        TimerDelete(timer.metronome);
         metro_data.play = 0;
+
     }else{
+
         metro_data.play = 1;
         play_run_times = 0;
         
@@ -865,8 +870,8 @@ void AppInit (sleep_state last_sleep_state){
     /*init button*/
     PioSetMode(BUTTON_PIO, pio_mode_user);
     PioSetDir(BUTTON_PIO, PIO_DIR_INPUT);
-    PioSetPullModes(PIO_BIT_MASK(BUTTON_PIO), pio_mode_weak_pull_up);
-    PioSetEventMask(PIO_BIT_MASK(BUTTON_PIO), pio_event_mode_both);
+    PioSetPullModes(BUTTON_PIO_MASK, pio_mode_weak_pull_up);
+    PioSetEventMask(BUTTON_PIO_MASK, pio_event_mode_both);
 
     /*init buzzer*/
     PioSetModes(BUZZER_PIO_MASK, pio_mode_pwm0);
@@ -929,9 +934,9 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
 
             const pio_changed_data *pPioData = (const pio_changed_data *)data;
 
-            if (pPioData->pio_cause & PIO_BIT_MASK(BUTTON_PIO)){
+            if (pPioData->pio_cause & BUTTON_PIO_MASK){
 
-                if (pPioData->pio_state & PIO_BIT_MASK(BUTTON_PIO)){
+                if (pPioData->pio_state & BUTTON_PIO_MASK){
                     
                     if(!release_locked){
 
@@ -1151,6 +1156,8 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
 
             PioSet(BLED_PIO, 0);
             PioSet(GLED_PIO, 1);
+
+            PioSets(SPARK_HEAVY_MASK, 0x00UL);
 
             is_connected = FALSE;
 
