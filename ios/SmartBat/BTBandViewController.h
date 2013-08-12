@@ -10,7 +10,7 @@
 #import "OALSimpleAudio.h"
 #import "BTSetupViewController.h"
 
-@interface BTNoBandViewController : BTSettingsViewController <UITableViewDelegate, UITableViewDataSource>
+@interface BTBandViewController : BTSettingsViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property(strong, nonatomic) BTBandCentral* cm;
 @property(strong, nonatomic) BTSetupViewController* setupViewCtrl;

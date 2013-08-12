@@ -63,7 +63,7 @@
 		723D531517991CC4001DA281 /* BTMidiTempoEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 723D530D17991CC4001DA281 /* BTMidiTempoEvent.m */; };
 		723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12B175DEDFD00DEF5E0 /* BTConstants.m */; };
 		723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */; };
-		723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */; };
+		723FA138175E37A500DEF5E0 /* BTBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTBandViewController.m */; };
 		725CB5931760A4D70020FC78 /* band-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5901760A4D70020FC78 /* band-button.png */; };
 		725CB5941760A4D70020FC78 /* beat-note-plus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5911760A4D70020FC78 /* beat-note-plus-button.png */; };
 		725CB5951760A4D70020FC78 /* common-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5921760A4D70020FC78 /* common-button.png */; };
@@ -276,8 +276,8 @@
 		723FA12B175DEDFD00DEF5E0 /* BTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConstants.m; sourceTree = "<group>"; };
 		723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTRootViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTRootViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTNoBandViewController.h; sourceTree = "<group>"; };
-		723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTNoBandViewController.m; sourceTree = "<group>"; };
+		723FA136175E37A500DEF5E0 /* BTBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBandViewController.h; sourceTree = "<group>"; };
+		723FA137175E37A500DEF5E0 /* BTBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBandViewController.m; sourceTree = "<group>"; };
 		725CB5901760A4D70020FC78 /* band-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "band-button.png"; sourceTree = "<group>"; };
 		725CB5911760A4D70020FC78 /* beat-note-plus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beat-note-plus-button.png"; sourceTree = "<group>"; };
 		725CB5921760A4D70020FC78 /* common-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common-button.png"; sourceTree = "<group>"; };
@@ -751,14 +751,14 @@
 				72FAC805176326C100A6DAE0 /* BTAppStore.h */,
 				72B45B38175DDD110071A082 /* BTCommonViewController.h */,
 				72893574175DA8D900EED04E /* BTMainViewController.h */,
-				723FA136175E37A500DEF5E0 /* BTNoBandViewController.h */,
+				723FA136175E37A500DEF5E0 /* BTBandViewController.h */,
 				723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */,
 				72A58E8817AB6237004DAE2A /* BTSetupViewController.h */,
 				72893588175DAC9900EED04E /* BTTempoViewController.h */,
 				72FAC806176326C100A6DAE0 /* BTAppStore.m */,
 				72B45B39175DDD110071A082 /* BTCommonViewController.m */,
 				72893575175DA8D900EED04E /* BTMainViewController.m */,
-				723FA137175E37A500DEF5E0 /* BTNoBandViewController.m */,
+				723FA137175E37A500DEF5E0 /* BTBandViewController.m */,
 				723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */,
 				72A58E8917AB6237004DAE2A /* BTSetupViewController.m */,
 				72893589175DAC9900EED04E /* BTTempoViewController.m */,
@@ -1153,7 +1153,7 @@
 				72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */,
 				723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */,
 				723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */,
-				723FA138175E37A500DEF5E0 /* BTNoBandViewController.m in Sources */,
+				723FA138175E37A500DEF5E0 /* BTBandViewController.m in Sources */,
 				F49E6D14175F3D1D00E2EDCB /* BTSimpleFileSoundEngine.mm in Sources */,
 				F49E6D23175F7ECF00E2EDCB /* BTMetronomeCoreController.m in Sources */,
 				723D531517991CC4001DA281 /* BTMidiTempoEvent.m in Sources */,

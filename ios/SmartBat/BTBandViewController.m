@@ -6,13 +6,13 @@
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
-#import "BTNoBandViewController.h"
+#import "BTBandViewController.h"
 
-@interface BTNoBandViewController ()
+@interface BTBandViewController ()
 
 @end
 
-@implementation BTNoBandViewController
+@implementation BTBandViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

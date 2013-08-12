@@ -23,7 +23,7 @@
 #define MAIN_VIEW_TAG                   11
 #define TEMPO_VIEW_TAG                  12
 #define COMMON_VIEW_TAG                 13
-#define NO_BAND_VIEW_TAG                14
+#define BAND_VIEW_TAG                14
 #define SETUP_VIEW_TAG                  15
 #define PAGE_CONTROL_TAG                1
 #define COMMON_BUTTON_TAG               2
@@ -76,7 +76,7 @@
 #define UUID_CUSTORM_NAME				@"2231"
 
 //手环名称最大字节数
-#define DEVICE_NAME_MAX_LENGTH          30
+#define DEVICE_NAME_MAX_LENGTH          16
 
 //蓝牙延时传输间隔
 #define BLUETOOTH_DELAY                 0.5

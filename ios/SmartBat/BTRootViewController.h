@@ -12,7 +12,7 @@
 #import "BTTempoViewController.h"
 #import "BTCommonViewController.h"
 #import "BTConstants.h"
-#import "BTNoBandViewController.h"
+#import "BTBandViewController.h"
 #import "BTGlobals.h"
 #import "BTAppStore.h"
 
@@ -20,7 +20,7 @@
     BTTempoViewController* _tempViewCtrl;
     BTMainViewController* _mainViewCtrl;
     BTCommonViewController* _commonViewCtrl;
-    BTNoBandViewController* _noBandViewCtrl;
+    BTBandViewController* _bandViewCtrl;
     UIScrollView* _scrollView;
     UIPageControl* _pageControl;
     BTAppStore* _appStore;

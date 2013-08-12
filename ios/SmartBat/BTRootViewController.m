@@ -78,10 +78,10 @@
     [_commonViewCtrl setViewX:-screenWidth];
     [self.view addSubview:_commonViewCtrl.view];
     
-    _noBandViewCtrl = [BTNoBandViewController buildView];
-    _noBandViewCtrl.view.tag = NO_BAND_VIEW_TAG;
-    [_noBandViewCtrl setViewX:screenWidth];
-    [self.view addSubview:_noBandViewCtrl.view];
+    _bandViewCtrl = [BTBandViewController buildView];
+    _bandViewCtrl.view.tag = BAND_VIEW_TAG;
+    [_bandViewCtrl setViewX:screenWidth];
+    [self.view addSubview:_bandViewCtrl.view];
     
     NSLog(@"%@", self.view.subviews);
     
@@ -113,7 +113,7 @@
     if(sender.tag == COMMON_BUTTON_TAG){
         [_commonViewCtrl callMeDisplay];
     }else{
-        [_noBandViewCtrl callMeDisplay];
+        [_bandViewCtrl callMeDisplay];
     }
 }
 @end

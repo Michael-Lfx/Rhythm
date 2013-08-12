@@ -488,10 +488,10 @@
             </objects>
             <point key="canvasLocation" x="777" y="-544"/>
         </scene>
-        <!--No Band View Controller-->
+        <!--Band View Controller-->
         <scene sceneID="ZnS-ea-Ovm">
             <objects>
-                <viewController storyboardIdentifier="BTNoBandViewController" id="JaO-aH-h8A" customClass="BTNoBandViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BTBandViewController" id="JaO-aH-h8A" customClass="BTBandViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HxB-Ko-VTr"/>
                         <viewControllerLayoutGuide type="bottom" id="EUI-aX-ZXZ"/>
@@ -561,6 +561,24 @@
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="0.32096482729999998" blue="0.2220772261" alpha="1" colorSpace="calibratedRGB"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="bleListCellScan" id="kc8-hq-eCS">
+                                        <rect key="frame" x="0.0" y="110" width="280" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kc8-hq-eCS" id="Xrj-dM-Iyx">
+                                            <rect key="frame" x="-1" y="0.0" width="282" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qkA-wy-7BD">
+                                                    <rect key="frame" x="48" y="11" width="186" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="1" green="0.83413857199999997" blue="0.4966765702" alpha="1" colorSpace="calibratedRGB"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>

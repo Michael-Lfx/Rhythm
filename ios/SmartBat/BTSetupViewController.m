@@ -38,7 +38,7 @@
 }
 
 - (IBAction)back:(UIButton *)sender {
-    UIView* bandView = [self.view.superview viewWithTag:NO_BAND_VIEW_TAG];
+    UIView* bandView = [self.view.superview viewWithTag:BAND_VIEW_TAG];
     
     NSLog(@"%@", bandView); 
     
