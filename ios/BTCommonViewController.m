@@ -30,7 +30,19 @@
     
     //设置common设置页屏幕右侧隐藏
     _originX = -[[UIScreen mainScreen] applicationFrame].size.width;
+    
+    [self.globals addObserver:self forKeyPath:@"isConnectBLE" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 }
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"isConnectBLE"])
+    {
+
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -38,4 +50,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)setShock:(UISwitch *)sender {
+    
+    self.globals.bleShock = sender.on;
+    
+}
+
+- (IBAction)setSpark:(UISwitch *)sender {
+    
+    self.globals.bleSpark = sender.on;
+    
+}
 @end

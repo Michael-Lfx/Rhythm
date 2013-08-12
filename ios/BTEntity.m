@@ -2,7 +2,7 @@
 //  BTEntity.m
 //  SmartBat
 //
-//  Created by kaka' on 13-6-6.
+//  Created by kaka' on 13-8-12.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -11,12 +11,14 @@
 
 @implementation BTEntity
 
-@dynamic beatPerMinute;
 @dynamic beatPerMeasure;
+@dynamic beatPerMinute;
+@dynamic bleShock;
+@dynamic bleSpark;
+@dynamic hasAskGrade;
+@dynamic installDate;
+@dynamic lastCheckVersionDate;
 @dynamic noteType;
 @dynamic subdivision;
-@dynamic lastCheckVersionDate;
-@dynamic installDate;
-@dynamic hasAskGrade;
 
 @end

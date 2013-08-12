@@ -53,6 +53,9 @@ double const kSubdivisionDuration = 0.5;
             _installDate = _lastCheckVersionDate;
             _currentSubdivisionDuration = kSubdivisionDuration;
             
+            _bleShock = YES;
+            _bleSpark = YES;
+            
             //首次写入即可
             _globalsInEntity.installDate = [NSNumber numberWithInt:_lastCheckVersionDate];
             
@@ -73,6 +76,9 @@ double const kSubdivisionDuration = 0.5;
             _hasAskGrade = [_globalsInEntity.hasAskGrade intValue];
             _installDate = [_globalsInEntity.installDate intValue];
             
+            _bleShock = [_globalsInEntity.bleShock boolValue];
+            _bleSpark = [_globalsInEntity.bleSpark boolValue];
+            
             
             NSLog(@"%@", _globalsInEntity);
         }
@@ -92,6 +98,9 @@ double const kSubdivisionDuration = 0.5;
     _globalsInEntity.subdivision= [NSNumber numberWithInt:_subdivision];
     _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
     _globalsInEntity.hasAskGrade = [NSNumber numberWithInt:_hasAskGrade];
+    
+    _globalsInEntity.bleSpark = [NSNumber numberWithBool:_bleSpark];
+    _globalsInEntity.bleShock = [NSNumber numberWithBool:_bleShock];
     
     NSError* error;
     if(![_context save:&error]){

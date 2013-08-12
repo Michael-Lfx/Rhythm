@@ -23,7 +23,7 @@
 #define MAIN_VIEW_TAG                   11
 #define TEMPO_VIEW_TAG                  12
 #define COMMON_VIEW_TAG                 13
-#define BAND_VIEW_TAG                14
+#define BAND_VIEW_TAG                   14
 #define SETUP_VIEW_TAG                  15
 #define PAGE_CONTROL_TAG                1
 #define COMMON_BUTTON_TAG               2
@@ -33,6 +33,12 @@
 //设备列表tag
 #define BAND_NAME_TAG                   1
 #define BATTERY_LEVEL_TAG               2
+
+//设置页tag
+#define SPARK_SETTING_LABEL_TAG         20
+#define SPARK_SETTING_SWITCH_TAG        21
+#define SHOCK_SETTING_LABEL_TAG         10
+#define SHOCK_SETTING_SWITCH_TAG        11
 
 //设备列表数组里索引
 #define IS_CONNECTED_INDEX              0

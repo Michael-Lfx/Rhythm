@@ -81,12 +81,20 @@
     }
     
     Boolean isConnected = [[bleOne objectAtIndex:IS_CONNECTED_INDEX] intValue];
+    NSString* name = [bleOne objectAtIndex:BAND_NAME_INDEX];
     
     NSString *CellIdentifier;
     
     if (isConnected) {
+        
         CellIdentifier = @"bleListCellConnected";
+        
+    }else if([name isEqual:@"YUE"]){
+        
+        CellIdentifier = @"bleListCellSetup";
+        
     }else{
+        
         CellIdentifier = @"bleListCellScan";
     }
     
@@ -103,10 +111,12 @@
         UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:BATTERY_LEVEL_TAG];
         batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:BATTERY_LEVEL_INDEX]];
         batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
-        
+    }
+    
+    if (isConnected || [CellIdentifier isEqual:@"bleListCellScan"]) {
         //手环名称
         UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
-        bandName.text = [bleOne objectAtIndex:BAND_NAME_INDEX];
+        bandName.text = name;
     }
     
     return cell;
@@ -114,15 +124,28 @@
 
 //选中某行
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    [self.bandCM connectSelectedPeripheral:[indexPath row]];
-    [self.bandCM willSetup:[indexPath row]];
+
     
-    _setupViewCtrl = nil;
-    _setupViewCtrl = [BTSetupViewController buildView];
-    _setupViewCtrl.view.tag = SETUP_VIEW_TAG;
-    [self.view.superview insertSubview:_setupViewCtrl.view belowSubview:self.view];
+    NSString* cellId = [tableView cellForRowAtIndexPath:indexPath].reuseIdentifier;
     
-    [self pickupSettings:nil];
+    NSLog(@"%@", cellId);
+    
+    if ([cellId isEqual:@"bleListCellSetup"]) {
+        
+        [self.bandCM willSetup:[indexPath row]];
+        
+        _setupViewCtrl = nil;
+        _setupViewCtrl = [BTSetupViewController buildView];
+        _setupViewCtrl.view.tag = SETUP_VIEW_TAG;
+        [self.view.superview insertSubview:_setupViewCtrl.view belowSubview:self.view];
+        
+        [self pickupSettings:nil];
+        
+    }else if([cellId isEqual:@"bleListCellScan"]){
+        
+        [self.bandCM connectSelectedPeripheral:[indexPath row]];
+    }
+    
 }
 
 @end

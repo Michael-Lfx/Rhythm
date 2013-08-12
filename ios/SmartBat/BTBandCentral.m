@@ -25,6 +25,9 @@
         UIApplication *app = [UIApplication sharedApplication];
         BTAppDelegate *delegate = (BTAppDelegate *)[app delegate];
         _context = delegate.managedObjectContext;
+        
+        [self.globals addObserver:self forKeyPath:@"bleShock" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+        [self.globals addObserver:self forKeyPath:@"bleSpark" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     }
     
     return self;
@@ -45,6 +48,7 @@
             
             //关掉蓝牙开关时清零
             self.globals.bleListCount = 0;
+            self.globals.isConnectedBLE = NO;
             
             [_allPeripherals removeAllObjects];
             
@@ -218,11 +222,16 @@
                 //开始设备同步
                 [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
+                uint8_t status = [self getUint8Status];
+                
+                [self write:[NSData dataWithBytes:&status length:sizeof(status)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_STATUS] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+                
                 //读取电量
                 [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                     
                     //读取完名称和电量后
                     self.globals.bleListCount+=0;
+                    self.globals.isConnectedBLE = YES;
                     
                     if ([bp.name isEqual:[[NSString alloc] initWithData:_setupName encoding:NSASCIIStringEncoding]]) {
                         
@@ -321,6 +330,10 @@
     //设备总数减少
     self.globals.bleListCount--;
     
+    if (self.globals.bleListCount == 0) {
+        self.globals.isConnectedBLE = NO;
+    }
+    
     //断开连接后自动重新搜索
     [self scan];
 }
@@ -409,7 +422,7 @@
 -(void)scan{
     
 //    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_METRONOME_SERVICE]] options:nil];
-    [_cm scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
+    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_METRONOME_SERVICE]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
     
     NSLog(@"scan ForPeripherals");
 }
@@ -620,6 +633,28 @@
     _setupblock = block;
     
     [_cm connectPeripheral:_setupBand.handle options:nil];
+}
+
+-(uint8_t)getUint8Status{
+    
+    uint8_t status = 0;
+    
+    status += (self.globals.bleShock) ? 1 : 0;
+    status += (self.globals.bleSpark) ? 2 : 0;
+    
+    NSLog(@"%d", status);
+    
+    return status;
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"bleShock"] || [keyPath isEqualToString:@"bleSpark"])
+    {
+        uint8_t status = [self getUint8Status];
+        
+        [self writeAll:[NSData dataWithBytes:&status length:sizeof(status)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_STATUS]];
+    }
 }
 
 @end

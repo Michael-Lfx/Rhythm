@@ -117,6 +117,7 @@
 		725CB5FA1760AD330020FC78 /* SubnoteSmall_27.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5D71760AD330020FC78 /* SubnoteSmall_27.png */; };
 		725CB5FD1760AFB40020FC78 /* root-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5FB1760AFAD0020FC78 /* root-bg.png */; };
 		725CB5FE1760AFB40020FC78 /* small-line.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5FC1760AFB10020FC78 /* small-line.png */; };
+		727A12B217B8C72600E59686 /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A12B117B8C72600E59686 /* BTEntity.m */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -135,7 +136,6 @@
 		72ED3B961764D96D00C810AC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 72ED3B931764D96D00C810AC /* Default@2x.png */; };
 		72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72F044DF1785815F0056AA63 /* Model.xcdatamodeld */; };
 		72F044E41785815F0056AA63 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E21785815F0056AA63 /* BTBleList.m */; };
-		72F044E71785817D0056AA63 /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E61785817D0056AA63 /* BTEntity.m */; };
 		72F5537B1768AA4A00615B61 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */; };
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
@@ -331,6 +331,8 @@
 		725CB5D71760AD330020FC78 /* SubnoteSmall_27.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SubnoteSmall_27.png; sourceTree = "<group>"; };
 		725CB5FB1760AFAD0020FC78 /* root-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "root-bg.png"; sourceTree = "<group>"; };
 		725CB5FC1760AFB10020FC78 /* small-line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small-line.png"; sourceTree = "<group>"; };
+		727A12B017B8C72600E59686 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
+		727A12B117B8C72600E59686 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
 		72893556175DA8D900EED04E /* SmartBat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartBat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -364,8 +366,6 @@
 		72F044E01785815F0056AA63 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		72F044E11785815F0056AA63 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTBleList.h; path = SmartBat/BTBleList.h; sourceTree = "<group>"; };
 		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTBleList.m; path = SmartBat/BTBleList.m; sourceTree = "<group>"; };
-		72F044E51785817D0056AA63 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTEntity.h; path = SmartBat/BTEntity.h; sourceTree = "<group>"; };
-		72F044E61785817D0056AA63 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTEntity.m; path = SmartBat/BTEntity.m; sourceTree = "<group>"; };
 		72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		72F805A11760C16E00776D95 /* beat-note-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beat-note-minus-button.png"; sourceTree = "<group>"; };
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
@@ -781,9 +781,9 @@
 		72F044E8178581860056AA63 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				72F044E51785817D0056AA63 /* BTEntity.h */,
-				72F044E61785817D0056AA63 /* BTEntity.m */,
 				72F044DF1785815F0056AA63 /* Model.xcdatamodeld */,
+				727A12B017B8C72600E59686 /* BTEntity.h */,
+				727A12B117B8C72600E59686 /* BTEntity.m */,
 				72F044E11785815F0056AA63 /* BTBleList.h */,
 				72F044E21785815F0056AA63 /* BTBleList.m */,
 			);
@@ -1170,7 +1170,6 @@
 				F4CE3E3A1764BB4600F314D8 /* OALAudioActions.m in Sources */,
 				F4CE3E3B1764BB4600F314D8 /* OALUtilityActions.m in Sources */,
 				723D531117991CC4001DA281 /* BTMidiEvent.m in Sources */,
-				72F044E71785817D0056AA63 /* BTEntity.m in Sources */,
 				F4CE3E3C1764BB4600F314D8 /* OALAudioTrack.m in Sources */,
 				F4CE3E3D1764BB4600F314D8 /* OALAudioTrackNotifications.m in Sources */,
 				F4CE3E3E1764BB4600F314D8 /* OALAudioTracks.m in Sources */,
@@ -1203,6 +1202,7 @@
 				72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */,
 				723D530F17991CC4001DA281 /* BTMidiChannelEvent.m in Sources */,
 				7232FAF917633ED90097CA34 /* ASIAuthenticationDialog.m in Sources */,
+				727A12B217B8C72600E59686 /* BTEntity.m in Sources */,
 				7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */,
 				723D530E17991CC4001DA281 /* BTMidiAudioManager.m in Sources */,
 				7232FAFB17633ED90097CA34 /* ASIDataDecompressor.m in Sources */,

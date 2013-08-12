@@ -49,6 +49,13 @@
 @property(assign, nonatomic) NSInteger bleListCount;
 @property(strong, nonatomic) NSMutableArray* bleList;
 
+//手机是否连接设备
+@property(assign, nonatomic) Boolean isConnectedBLE;
+
+//手环状态
+@property(assign, nonatomic) Boolean bleShock;
+@property(assign, nonatomic) Boolean bleSpark;
+
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;
 
