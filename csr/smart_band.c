@@ -31,17 +31,17 @@
     dSetup PIOs
  */
 
-// #define BUZZER_PIO                          3
-// #define BUTTON_PIO                          11
-// #define LED1_PIO                            12
-// #define SHOCK_PIO                           10
-// #define GLED_PIO                            13
+#define BUZZER_PIO                          3
+#define BUTTON_PIO                          11
+#define LED1_PIO                            12
+#define SHOCK_PIO                           10
+#define GLED_PIO                            13
 
-#define BUZZER_PIO                          14
-#define BUTTON_PIO                          3
-#define LED1_PIO                            1
-#define SHOCK_PIO                           0
-#define GLED_PIO                            11
+// #define BUZZER_PIO                          14
+// #define BUTTON_PIO                          3
+// #define LED1_PIO                            1
+// #define SHOCK_PIO                           0
+// #define GLED_PIO                            11
 
 #define LED2_PIO                            4
 #define RLED_PIO                            10
@@ -87,7 +87,7 @@
 #define LONG_BEEP_TIMER_VALUE               (500* MILLISECOND)
 #define BEEP_GAP_TIMER_VALUE                (25* MILLISECOND)
 
-#define MAX_APP_TIMERS                      7
+#define MAX_APP_TIMERS                      9
 
 #define SYNC_ERROR_THRESHOLD                5
 
@@ -103,7 +103,7 @@
 #define SETUP_CODE                          0x1985
 #define NVM_OFFSET_SETUP_CODE               0
 
-#define NVM_OFFSET_METRO_DATA              1
+#define NVM_OFFSET_METRO_DATA               1
 
 #define PRESS_RELEASE_LOCKER_INTERVAL       200
 
@@ -140,6 +140,7 @@ typedef struct
     timer_id spark;
     timer_id read;
     timer_id button;
+    timer_id switch_locker;
     timer_id press_locker;
     timer_id release_locker;
 }TIMER;
@@ -165,7 +166,7 @@ TYPED_BD_ADDR_T     connect_bd_addr;
 bool has_notification_service = FALSE;
 uint16 service_start_handle, service_end_handle;
 
-bool long_press_keep = FALSE, fix_start_time = FALSE, press_locked = FALSE, release_locked = FALSE;
+bool long_press_keep = FALSE, fix_start_time = FALSE, press_locked = FALSE, release_locked = FALSE, switch_locked = FALSE;
 
 uint32 spark_pio_mask;
 
@@ -331,6 +332,11 @@ static void pressLockerHandler(timer_id tid){
 
 static void releaseLockerHandler(timer_id tid){
     unlockBotton();
+}
+
+static void switchLockerHandler(timer_id tid){
+    DebugWriteString("unlocked!!!\r\n");
+    switch_locked = FALSE;
 }
 
 /*
@@ -866,6 +872,7 @@ void AppInit (sleep_state last_sleep_state){
     TimerDelete(timer.button);
     TimerDelete(timer.press_locker);
     TimerDelete(timer.release_locker);
+    TimerDelete(timer.switch_locker);
 
     /*init button*/
     PioSetMode(BUTTON_PIO, pio_mode_user);
@@ -936,61 +943,76 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
 
             if (pPioData->pio_cause & BUTTON_PIO_MASK){
 
-                if (pPioData->pio_state & BUTTON_PIO_MASK){
+                if(!switch_locked){
+
+                    if (pPioData->pio_state & BUTTON_PIO_MASK){
                     
-                    if(!release_locked){
+                        if(!release_locked){
 
-                        release_locked = TRUE;
+                            release_locked = TRUE;
 
-                        TimerDelete(timer.release_locker);
-                        timer.release_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, releaseLockerHandler);
+                            TimerDelete(timer.release_locker);
+                            timer.release_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, releaseLockerHandler);
 
-                        DebugWriteString("r!\r\n");
+                            DebugWriteString("r!\r\n");
 
-                        if(long_press_keep){
+                            if(long_press_keep){
 
-                            TimerDelete(timer.button);
-                            long_press_keep = FALSE;
+                                TimerDelete(timer.button);
+                                long_press_keep = FALSE;
 
-                            //short press do something
+                                //short press do something
 
-                            if(is_connected){
+                                if(is_connected){
 
-                                uint8 phone_play;
+                                    uint8 phone_play;
 
-                                if(metro_data.play){
-                                    phone_play = 0;
+                                    if(metro_data.play){
+                                        phone_play = 0;
+                                    }else{
+                                        phone_play = 1;
+                                    }
+
+                                    GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &phone_play);
+
+                                    DebugWriteString("send!!!!\r\n");
+
                                 }else{
-                                    phone_play = 1;
+
+                                    localSwitch();
                                 }
 
-                                GattCharValueNotification(st_ucid, HANDLE_PHONE_PLAY, ATTR_LEN_PHONE_PLAY, &phone_play);
-                            }else{
-
-                                localSwitch();
                             }
 
+                            switch_locked = TRUE;
+
+                            TimerDelete(timer.switch_locker);
+                            DebugWriteString("fuck  !!!!\r\n");
+                            timer.switch_locker = TimerCreate(200 * MILLISECOND, TRUE, switchLockerHandler);
+                            timer.switch_locker = TimerCreate(200 * MILLISECOND, TRUE, switchLockerHandler);
                         }
+
+                    }else{
+
+                        if(!press_locked){
+
+                            press_locked = TRUE;
+
+                            TimerDelete(timer.press_locker);
+                            timer.press_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, pressLockerHandler);
+
+                            DebugWriteString("p\r\n");
+
+                            long_press_keep = TRUE;
+
+                            TimerDelete(timer.button);
+                            timer.button = TimerCreate(3000 * MILLISECOND, TRUE, buttonTimerHandler);
+                        }
+                        
                     }
 
-                }else{
-
-                    if(!press_locked){
-
-                        press_locked = TRUE;
-
-                        TimerDelete(timer.press_locker);
-                        timer.press_locker = TimerCreate(PRESS_RELEASE_LOCKER_INTERVAL, TRUE, pressLockerHandler);
-
-                        DebugWriteString("p\r\n");
-
-                        long_press_keep = TRUE;
-
-                        TimerDelete(timer.button);
-                        timer.button = TimerCreate(3000 * MILLISECOND, TRUE, buttonTimerHandler);
-                    }
-                    
                 }
+                
             }
 
             break;
