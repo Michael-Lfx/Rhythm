@@ -302,7 +302,7 @@
     //取出缓存中的block并执行
     void (^block)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral)  = [bp.allCallback objectForKey:characteristic.UUID];
     
-    if (block) {
+    if (block) { 
         block(characteristic.value, characteristic, peripheral);
     }
     
