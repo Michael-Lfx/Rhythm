@@ -375,7 +375,7 @@
     for (BTBandPeripheral* bp in enumeratorValue) {
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
         
-        if (tmp) {
+        if (tmp && bp.handle.isConnected) {
             [bp.handle writeValue:value forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
         }
     }
@@ -393,7 +393,7 @@
         //根据uuid找到具体的characteristic
         CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:cuuid];
         
-        if (tmp) {
+        if (tmp && bp.handle.isConnected) {
             //把block句柄放到缓存里
             //注意：没有加锁，可能有问题
             if (block) {
@@ -542,18 +542,23 @@
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     for (BTBandPeripheral* bp in enumeratorValue) {
-        bp.play = 1;
-        
-        CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:UUID_METRONOME_PLAY]];
-        
-        //算出基于同步点的时间间隔，微米级别
-        uint32_t start = (timestamp - bp.zero) * 1000000;
-        
-        NSLog(@"let's play : %d, %f, %f", start , timestamp, bp.zero);
-        
-        if (tmp) {
-            [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+        if (bp.handle.isConnected) {
+            
+            bp.play = 1;
+            
+            CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:UUID_METRONOME_PLAY]];
+            
+            //算出基于同步点的时间间隔，微米级别
+            uint32_t start = (timestamp - bp.zero) * 1000000;
+            
+            NSLog(@"let's play : %d, %f, %f", start , timestamp, bp.zero);
+            NSLog(@"%hhd", bp.handle.isConnected);
+            
+            if (tmp && bp.handle.isConnected) {
+                [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
+            }
         }
+        
     }
 }
 
@@ -562,7 +567,7 @@
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     for (BTBandPeripheral* bp in enumeratorValue) {
-        if (bp.play == 1) {
+        if (bp.play == 1 && bp.handle.isConnected) {
             bp.play = 0;
             
             CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:UUID_METRONOME_PLAY]];
