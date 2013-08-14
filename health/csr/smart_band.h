@@ -9,13 +9,6 @@
 
 #define UUID_GATT                                      0x1801
 
-#define UUID_ALERT_NOTIFICATION_SERVICE               (0x1811)
-#define UUID_NEW_ALERT_SUPPORTED_CATEGORY             (0x2A47)
-#define UUID_NEW_ALERT_CHARACTERISTIC                 (0x2A46)
-#define UUID_SUPPORTED_UNREAD_ALERT_CATEGORY          (0x2A48)
-#define UUID_UNREAD_ALERT_CHARACTERISTIC              (0x2A45)
-#define UUID_ALERT_NOTIFICATION_CONTROL_POINT         (0x2A44)
-
 /*============================================================================*
  *  Public Definitions
  *============================================================================*/
@@ -63,48 +56,21 @@
 #define PREFERRED_SUPERVISION_TIMEOUT       0x03e8 /* 10 seconds */
 
 /* Generic Heart Rate Sensor appearance value */
-#define APPEARANCE_METRONOME_VALUE              0x0200
+#define APPEARANCE_HEALTH_VALUE			0x0200
 
 /*
     custorm characteristic
   */
-#define UUID_METRONOME_SERVICE				0x2200
-
-// 2 hex
-// 0 - shock
-// 1 - spark
-#define UUID_METRONOME_STATUS				0x2201
-
-// 0 means stop
-#define UUID_METRONOME_PLAY                 0x2202
-
-// accuracy to 0.000001
-#define UUID_METRONOME_DURATION             0x2203
-
-// 8 hex
-// 100 - heavy
-#define UUID_METRONOME_MEASURE				0x2204
-
-// serial number
-#define UUID_METRONOME_SYNC					0x2205
-#define UUID_METRONOME_ZERO					0x2206
-
-// 0 to 100
-#define UUID_BATTERY_LEVEL                  0x2211
-
-// notify phone to play&stop
-#define UUID_PHONE_PLAY						0x2221
-
-//modify device name
-#define UUID_CUSTORM_NAME					0x2231
-
-
-
-#define DEVICE_NAME_MAX_LENGTH              16      /*byte uint8*/
+#define UUID_HEALTH_SERVICE					0x2300
+#define UUID_SYNC							0x2301
+#define UUID_ZERO                			0x2302
+#define UUID_DATA                			0x2303
+#define UUID_BATTERY_LEVEL                  0x2304
 
 #define PIO_DIR_OUTPUT  TRUE 
 #define PIO_DIR_INPUT   FALSE
 
+#define DEVICE_NAME_MAX_LENGTH              16      /*byte uint8*/
 
 #endif
 

@@ -19,7 +19,7 @@ primary_service {
 	    /* Value is kept zero as the device name buffer is managed by 
 	     * application 
 	     */
-	    value : "Smart Band"
+	    value : "Health Band"
     },
      
     /* Device name characteristic supports IRQ flag, thereby reads 
@@ -33,7 +33,7 @@ primary_service {
 	    uuid : UUID_APPEARANCE,
 	    name : "DEVICE_APPEARANCE",
 	    properties : read,
-            value : APPEARANCE_METRONOME_VALUE
+            value : APPEARANCE_HEALTH_VALUE
     },
     
     /* Peripheral preferred connection parameters characteristic */
@@ -59,59 +59,40 @@ primary_service {
 },
 
 /*
-    YUE Metronome device service and characteristics
+    YUE HEALTH device service and characteristics
 */
 
 primary_service {
-    uuid: UUID_METRONOME_SERVICE,
-    name : "METRONOME_SERVICE",
+    uuid: UUID_HEALTH_SERVICE,
+    name : "HEALTH_SERVICE",
     
     characteristic {
-        uuid : UUID_METRONOME_STATUS,
-        name : "METRONOME_STATUS",
+        uuid : UUID_SYNC,
+        name : "SYNC",
         properties : [write],
         flags : FLAG_IRQ,
         size_value : 1
     },
 
     characteristic {
-        uuid : UUID_METRONOME_PLAY,
-        name : "METRONOME_PLAY",
-        properties : [write],
-        flags : FLAG_IRQ,
-        size_value : 4
-    },
-    
-    characteristic {
-        uuid : UUID_METRONOME_DURATION,
-        name : "METRONOME_DURATION",
-        properties : [write],
-        flags : FLAG_IRQ,
-        size_value : 4
-    },
-    
-    characteristic {
-        uuid : UUID_METRONOME_MEASURE,
-        name : "METRONOME_MEASURE",
-        properties : [write],
-        flags : FLAG_IRQ,
-        size_value : 16
-    },
-    
-    characteristic {
-        uuid : UUID_METRONOME_SYNC,
-        name : "METRONOME_SYNC",
+        uuid : UUID_ZERO,
+        name : "ZERO",
         properties : [write],
         flags : FLAG_IRQ,
         size_value : 1
     },
-    
+
     characteristic {
-        uuid : UUID_METRONOME_ZERO,
-        name : "METRONOME_ZERO",
-        properties : [read],
-        flags : FLAG_IRQ,
-        size_value : 1
+        uuid : UUID_DATA,
+        name : "DATA",
+        properties : [notify],
+        flags : [FLAG_IRQ],
+        size_value : 6,
+
+        client_config {
+            flags : [FLAG_IRQ],
+            name : "DATA_C_CFG"
+        }
     },
 
     characteristic {
@@ -120,26 +101,5 @@ primary_service {
         properties : [read],
         flags : FLAG_IRQ,
         size_value : 1
-    },
-
-    characteristic {
-        uuid : UUID_PHONE_PLAY,
-        name : "PHONE_PLAY",
-        properties : [notify],
-        flags : [FLAG_IRQ],
-        size_value : 1,
-
-        client_config {
-            flags : [FLAG_IRQ],
-            name : "PHONE_PLAY_C_CFG"
-        }
-    },
-
-    characteristic {
-        uuid : UUID_CUSTORM_NAME,
-        name : "CUSTORM_NAME",
-        properties : [write],
-        flags : [FLAG_IRQ],
-        size_value : DEVICE_NAME_MAX_LENGTH
     }
 }
