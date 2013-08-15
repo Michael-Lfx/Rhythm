@@ -31,17 +31,17 @@
     dSetup PIOs
  */
 
-// #define BUZZER_PIO                          3
-// #define BUTTON_PIO                          11
-// #define LED1_PIO                            12
-// #define SHOCK_PIO                           10
-// #define GLED_PIO                            13
+#define BUZZER_PIO                          3
+#define BUTTON_PIO                          11
+#define LED1_PIO                            12
+#define SHOCK_PIO                           10
+#define GLED_PIO                            13
 
-#define BUZZER_PIO                          14
-#define BUTTON_PIO                          3
-#define LED1_PIO                            1
-#define SHOCK_PIO                           0
-#define GLED_PIO                            11
+// #define BUZZER_PIO                          14
+// #define BUTTON_PIO                          3
+// #define LED1_PIO                            1
+// #define SHOCK_PIO                           0
+// #define GLED_PIO                            11
 
 #define LED2_PIO                            4
 #define RLED_PIO                            10
@@ -107,14 +107,32 @@
 
 #define PRESS_RELEASE_LOCKER_INTERVAL       200
 
+#define MICRO_A_MIN                         60000000
+
+#define DATA_SIZE                           720
+
+#define UINT32_MINS                         71
+
+#define CLICK_INTERVAL                      15
+
 /*define timer*/
 typedef struct
 {
     uint16  device_name[DEVICE_NAME_MAX_LENGTH / 2];
-    uint32  hour_zero;
+    uint32  hour_zero_low;
+    uint16  hour_zero_high;
 }HEALTH;
 
 HEALTH health;
+
+typedef struct
+{
+    uint16  offset;
+    uint8   count;
+    uint32  last;
+}CURRENT;
+
+CURRENT current;
 
 /*define timer*/
 typedef struct
@@ -136,7 +154,7 @@ bool long_press_keep = FALSE, fix_start_time = FALSE, press_locked = FALSE, rele
 
 uint32 spark_pio_mask;
 
-uint8 click_data[360];
+uint16 click_data[DATA_SIZE / 2];
 
 /*
     ---------------------
@@ -211,9 +229,13 @@ static void buzzer(void){
 
 /*spark timer*/
 static void sparkStopTimerHandler(timer_id tid){
-    PioSets(spark_pio_mask, 0x00UL);
+    PioSet(LED1_PIO, FALSE);
+}
 
-    spark_pio_mask = 0x00UL;
+static void spark(void){
+    PioSet(LED1_PIO, TRUE);
+
+    timer.buzzer = TimerCreate((SPARK_DURATION* MILLISECOND), TRUE, sparkStopTimerHandler);
 }
 
 static void unlockBotton(void){
@@ -280,9 +302,17 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
             case HANDLE_ZERO:;
 
+                //minutes
+
                 uint32 interval = ntohl(p_access_e->value);
 
-                health.hour_zero = TimeSub(TimeGet32(), interval);
+                uint16 high;
+
+                uint32 low = TimeGet48(&high);
+
+                health.hour_zero_high = high;
+
+                health.hour_zero_low = TimeSub(low / MICRO_A_MIN, interval);
 
                 DebugWriteUint16(NvmWrite((uint16 *)&health, sizeof(HEALTH), NVM_OFFSET_HEALTH));
 
@@ -428,9 +458,54 @@ static void handleSignalGattAddDbCfm(GATT_ADD_DB_CFM_T *event_data)
     GattConnectReq(NULL,  L2CAP_CONNECTION_SLAVE_UNDIRECTED | L2CAP_OWN_ADDR_TYPE_RANDOM);
 }
 
-static void click(void){
+static void save2Data(uint16 offset, uint8 count){
 
-    timer.spark = TimerCreate((SPARK_DURATION* MILLISECOND), TRUE, sparkStopTimerHandler);
+    uint16 sn = offset / 2, hl = offset % 2;
+
+    uint16 temp = click_data[sn];
+
+    if(hl){
+        temp |= count;
+    }else{
+        temp |= count << 8;
+    }
+
+}
+
+static bool click(void){
+
+    buzzer();
+    spark();
+
+    uint16 high;
+    uint32 low = TimeGet48(&high);
+
+    if(((int32)low - (int32)current.last) / 1000000 < CLICK_INTERVAL){
+        return FALSE;
+    }
+
+    uint16 offset = (((int16)high - (int16)health.hour_zero_high) * UINT32_MINS + ((int32)low / MICRO_A_MIN - (int32)health.hour_zero_low)) /60;
+
+    if(current.offset != offset){
+        save2Data(current.offset, current.count);
+
+        uint16 i;
+
+        for (i = current.offset + 1; i < offset; ++i)
+        {
+            save2Data(i, 0);
+        }
+
+        current.offset = offset;
+        current.count = 0;
+    }
+
+    current.count++;
+    current.last = low;
+
+    DebugWriteUint16 (offset);
+
+    return TRUE;
 }
 
 /*
@@ -485,13 +560,10 @@ void AppInit (sleep_state last_sleep_state){
     /*init Nvm*/
     NvmConfigureI2cEeprom();
 
-    uint16 size;
-
-    NvmSize(&size);
-
-    DebugWriteUint16(size);
-
     NvmDisable();
+
+    MemSet(click_data, 0, sizeof(click_data));
+    MemSet(&current, 0, sizeof(CURRENT));
 
     addDb();
 }
@@ -503,6 +575,8 @@ void AppProcessSystemEvent (sys_event_id id, void *data){
         case sys_event_pio_changed:;
 
             const pio_changed_data *pPioData = (const pio_changed_data *)data;
+
+            DebugWriteString("wo ca!!\r\n");
 
             if (pPioData->pio_cause & BUTTON_PIO_MASK){
 
