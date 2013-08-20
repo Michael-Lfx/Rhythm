@@ -28,6 +28,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //测试电量时，屏幕常亮
+    [UIApplication sharedApplication].idleTimerDisabled=YES;
+    
     int screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
     int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
     int scrollY, scrollHeight;

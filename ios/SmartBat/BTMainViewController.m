@@ -283,7 +283,13 @@
             
             NSLog(@"wo 2");
             [self playBluetooth:[[self.globals.systemStatus valueForKey:@"playStatusChangedTime"] doubleValue]];
+            
+            [UIApplication sharedApplication].idleTimerDisabled=YES;
+            
         }else{
+            
+            [UIApplication sharedApplication].idleTimerDisabled=NO;
+            
             [self pauseBluetooth];
         }
     }
