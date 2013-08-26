@@ -1,5 +1,5 @@
 //
-//  BTTempoViewController.h
+//  BTAskViewController.h
 //  SmartBat
 //
 //  Created by kaka' on 13-6-4.
@@ -8,7 +8,7 @@
 
 #import "BTSwipeViewController.h"
 
-@interface BTTempoViewController : BTSwipeViewController{
+@interface BTAskViewController : BTSwipeViewController{
     
 }
 

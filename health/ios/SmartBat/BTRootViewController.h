@@ -9,15 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "BTBaseViewController.h"
 #import "BTMainViewController.h"
-#import "BTTempoViewController.h"
+#import "BTAskViewController.h"
 #import "BTCommonViewController.h"
 #import "BTConstants.h"
 #import "BTBandViewController.h"
 #import "BTGlobals.h"
 #import "BTAppStore.h"
+#import "BTNewsViewController.h"
 
 @interface BTRootViewController : BTBaseViewController <UIScrollViewDelegate>{
-    BTTempoViewController* _tempViewCtrl;
+    BTAskViewController* _askViewCtrl;
+    BTNewsViewController* _newsViewCtrl;
     BTMainViewController* _mainViewCtrl;
     BTCommonViewController* _commonViewCtrl;
     BTBandViewController* _bandViewCtrl;

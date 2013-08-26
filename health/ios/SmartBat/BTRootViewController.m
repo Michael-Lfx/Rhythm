@@ -60,8 +60,8 @@
     
     
     _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(142, scrollHeight - pageY, 36, 36)];
-    _pageControl.currentPage = 0;
-    _pageControl.numberOfPages = 2;
+    _pageControl.currentPage = 1;
+    _pageControl.numberOfPages = 3;
     [self.view addSubview:_pageControl];
     
     UIButton *band = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -90,19 +90,26 @@
     //把丫放到分页符下面
     [self.view insertSubview:_scrollView belowSubview:_pageControl];
     
+    _newsViewCtrl = [BTNewsViewController buildView];
+    _newsViewCtrl.view.tag = NEWS_VIEW_TAG;
+    [_newsViewCtrl setViewHeight:IP4_HEIGHT];
+    [_scrollView addSubview:_newsViewCtrl.view];
+    
     _mainViewCtrl = [BTMainViewController buildView];
     _mainViewCtrl.view.tag = MAIN_VIEW_TAG;
+    [_mainViewCtrl setViewX:screenWidth];
     [_mainViewCtrl setViewHeight:IP4_HEIGHT];
     [_scrollView addSubview:_mainViewCtrl.view];
     
-    _tempViewCtrl = [BTTempoViewController buildView];
-    _tempViewCtrl.view.tag = TEMPO_VIEW_TAG;
-    [_tempViewCtrl setViewX:screenWidth];
-    [_tempViewCtrl setViewHeight:IP4_HEIGHT];
-    [_scrollView addSubview:_tempViewCtrl.view];
+    _askViewCtrl = [BTAskViewController buildView];
+    _askViewCtrl.view.tag = TEMPO_VIEW_TAG;
+    [_askViewCtrl setViewX:screenWidth * 2];
+    [_askViewCtrl setViewHeight:IP4_HEIGHT];
+    [_scrollView addSubview:_askViewCtrl.view];
     
     //这里设置n个屏的总长度
-    _scrollView.contentSize = CGSizeMake(screenWidth * 2, scrollHeight);
+    _scrollView.contentSize = CGSizeMake(screenWidth * 3, scrollHeight);
+    [_scrollView scrollRectToVisible:CGRectMake(screenWidth, 0, screenWidth, scrollHeight) animated:false];
     
     //初始化设置页view
     //放到最上面，出现时遮住分页符、设置按钮神马的

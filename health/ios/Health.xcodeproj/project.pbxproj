@@ -70,6 +70,7 @@
 		725CB5FD1760AFB40020FC78 /* root-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5FB1760AFAD0020FC78 /* root-bg.png */; };
 		725CB5FE1760AFB40020FC78 /* small-line.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5FC1760AFB10020FC78 /* small-line.png */; };
 		727A12B217B8C72600E59686 /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A12B117B8C72600E59686 /* BTEntity.m */; };
+		727CCA5617CB4A0E009E2F32 /* BTNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 727CCA5517CB4A0E009E2F32 /* BTNewsViewController.m */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -78,7 +79,7 @@
 		72893576175DA8D900EED04E /* BTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893575175DA8D900EED04E /* BTMainViewController.m */; };
 		7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7289357D175DA97100EED04E /* BTBaseViewController.m */; };
 		72893583175DAA7400EED04E /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893582175DAA7400EED04E /* BTGlobals.m */; };
-		7289358A175DAC9900EED04E /* BTTempoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893589175DAC9900EED04E /* BTTempoViewController.m */; };
+		7289358A175DAC9900EED04E /* BTAskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893589175DAC9900EED04E /* BTAskViewController.m */; };
 		72A58E8A17AB6237004DAE2A /* BTSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A58E8917AB6237004DAE2A /* BTSetupViewController.m */; };
 		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
 		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
@@ -162,7 +163,6 @@
 		723FA12B175DEDFD00DEF5E0 /* BTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConstants.m; sourceTree = "<group>"; };
 		723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTRootViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTRootViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		723FA136175E37A500DEF5E0 /* BTBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBandViewController.h; sourceTree = "<group>"; };
 		723FA137175E37A500DEF5E0 /* BTBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBandViewController.m; sourceTree = "<group>"; };
 		725CB5901760A4D70020FC78 /* band-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "band-button.png"; sourceTree = "<group>"; };
 		725CB5911760A4D70020FC78 /* beat-note-plus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beat-note-plus-button.png"; sourceTree = "<group>"; };
@@ -184,11 +184,14 @@
 		725CB5FC1760AFB10020FC78 /* small-line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small-line.png"; sourceTree = "<group>"; };
 		727A12B017B8C72600E59686 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
 		727A12B117B8C72600E59686 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
+		727CCA5317CB479F009E2F32 /* BTBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBandViewController.h; sourceTree = "<group>"; };
+		727CCA5417CB4A0E009E2F32 /* BTNewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTNewsViewController.h; sourceTree = SOURCE_ROOT; };
+		727CCA5517CB4A0E009E2F32 /* BTNewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTNewsViewController.m; sourceTree = SOURCE_ROOT; };
 		72893556175DA8D900EED04E /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7289355D175DA8D900EED04E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		72893561175DA8D900EED04E /* SmartBat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SmartBat-Info.plist"; sourceTree = "<group>"; };
+		72893561175DA8D900EED04E /* Health-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Health-Info.plist"; sourceTree = "<group>"; };
 		72893565175DA8D900EED04E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		72893567175DA8D900EED04E /* Health-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Health-Prefix.pch"; sourceTree = "<group>"; };
 		72893568175DA8D900EED04E /* BTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppDelegate.h; sourceTree = "<group>"; };
@@ -199,8 +202,8 @@
 		7289357D175DA97100EED04E /* BTBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = BTBaseViewController.m; path = SmartBat/BTBaseViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		72893581175DAA7400EED04E /* BTGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTGlobals.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		72893582175DAA7400EED04E /* BTGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTGlobals.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		72893588175DAC9900EED04E /* BTTempoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTTempoViewController.h; path = ../BTTempoViewController.h; sourceTree = "<group>"; };
-		72893589175DAC9900EED04E /* BTTempoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTTempoViewController.m; path = ../BTTempoViewController.m; sourceTree = "<group>"; };
+		72893588175DAC9900EED04E /* BTAskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTAskViewController.h; path = ../BTAskViewController.h; sourceTree = "<group>"; };
+		72893589175DAC9900EED04E /* BTAskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTAskViewController.m; path = ../BTAskViewController.m; sourceTree = "<group>"; };
 		72A58E8817AB6237004DAE2A /* BTSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSetupViewController.h; sourceTree = "<group>"; };
 		72A58E8917AB6237004DAE2A /* BTSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSetupViewController.m; sourceTree = "<group>"; };
 		72B0F179176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -402,7 +405,7 @@
 				3F58AB481761EAF000A55317 /* iTunesArtwork */,
 				72893565175DA8D900EED04E /* main.m */,
 				72893567175DA8D900EED04E /* Health-Prefix.pch */,
-				72893561175DA8D900EED04E /* SmartBat-Info.plist */,
+				72893561175DA8D900EED04E /* Health-Info.plist */,
 				3F6C48A4177C40F500D846B9 /* Icon */,
 				723FA14D175F209800DEF5E0 /* Images */,
 			);
@@ -438,19 +441,21 @@
 			isa = PBXGroup;
 			children = (
 				72FAC805176326C100A6DAE0 /* BTAppStore.h */,
+				72893588175DAC9900EED04E /* BTAskViewController.h */,
+				727CCA5317CB479F009E2F32 /* BTBandViewController.h */,
 				72B45B38175DDD110071A082 /* BTCommonViewController.h */,
 				72893574175DA8D900EED04E /* BTMainViewController.h */,
-				723FA136175E37A500DEF5E0 /* BTBandViewController.h */,
+				727CCA5417CB4A0E009E2F32 /* BTNewsViewController.h */,
 				723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */,
 				72A58E8817AB6237004DAE2A /* BTSetupViewController.h */,
-				72893588175DAC9900EED04E /* BTTempoViewController.h */,
 				72FAC806176326C100A6DAE0 /* BTAppStore.m */,
+				72893589175DAC9900EED04E /* BTAskViewController.m */,
+				723FA137175E37A500DEF5E0 /* BTBandViewController.m */,
 				72B45B39175DDD110071A082 /* BTCommonViewController.m */,
 				72893575175DA8D900EED04E /* BTMainViewController.m */,
-				723FA137175E37A500DEF5E0 /* BTBandViewController.m */,
+				727CCA5517CB4A0E009E2F32 /* BTNewsViewController.m */,
 				723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */,
 				72A58E8917AB6237004DAE2A /* BTSetupViewController.m */,
-				72893589175DAC9900EED04E /* BTTempoViewController.m */,
 				7289357F175DA97700EED04E /* Base Class */,
 				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
 			);
@@ -625,12 +630,13 @@
 				7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */,
 				72893583175DAA7400EED04E /* BTGlobals.m in Sources */,
 				720834FC176C825600DBDE38 /* BTBandPeripheral.m in Sources */,
-				7289358A175DAC9900EED04E /* BTTempoViewController.m in Sources */,
+				7289358A175DAC9900EED04E /* BTAskViewController.m in Sources */,
 				72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */,
 				72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */,
 				72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */,
 				723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */,
 				723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */,
+				727CCA5617CB4A0E009E2F32 /* BTNewsViewController.m in Sources */,
 				723FA138175E37A500DEF5E0 /* BTBandViewController.m in Sources */,
 				72F044E41785815F0056AA63 /* BTBleList.m in Sources */,
 				72A58E8A17AB6237004DAE2A /* BTSetupViewController.m in Sources */,
@@ -762,7 +768,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartBat/Health-Prefix.pch";
 				HEADER_SEARCH_PATHS = TheAmazingAudioEngine/TheAmazingAudioEngine;
-				INFOPLIST_FILE = "SmartBat/SmartBat-Info.plist";
+				INFOPLIST_FILE = "SmartBat/Health-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -783,7 +789,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartBat/Health-Prefix.pch";
 				HEADER_SEARCH_PATHS = TheAmazingAudioEngine/TheAmazingAudioEngine;
-				INFOPLIST_FILE = "SmartBat/SmartBat-Info.plist";
+				INFOPLIST_FILE = "SmartBat/Health-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

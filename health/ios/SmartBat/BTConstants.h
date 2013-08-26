@@ -20,6 +20,7 @@
 #define THRESHOLD_2_COMPLETE_DURETION   0.2f
 
 //主要view的tag
+#define NEWS_VIEW_TAG                   10
 #define MAIN_VIEW_TAG                   11
 #define TEMPO_VIEW_TAG                  12
 #define COMMON_VIEW_TAG                 13
