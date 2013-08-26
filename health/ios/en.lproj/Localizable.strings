@@ -1,0 +1,17 @@
+/* 
+  localizable.strings
+  SmartBat
+
+  Created by kaka' on 13-6-9.
+  Copyright (c) 2013年 kaka'. All rights reserved.
+*/
+
+//英文
+
+"New Version!" = "New Version!";
+"Later" = "Later";
+"Update" = "Update";
+
+"Please give me a rate" = "Please give me a rate";
+"No" = "No";
+"Let's go" = "Let's go";
