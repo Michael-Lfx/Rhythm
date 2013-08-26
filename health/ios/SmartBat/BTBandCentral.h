@@ -13,7 +13,6 @@
 #import "BTGlobals.h"
 #import "BTBleList.h"
 #import "BTAppDelegate.h"
-#import "BTMetronomeCoreController.h"
 #import <mach/mach_time.h>
 
 @interface BTBandCentral : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>{

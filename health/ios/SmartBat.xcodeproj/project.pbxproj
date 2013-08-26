@@ -184,7 +184,7 @@
 		725CB5FC1760AFB10020FC78 /* small-line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small-line.png"; sourceTree = "<group>"; };
 		727A12B017B8C72600E59686 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
 		727A12B117B8C72600E59686 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
-		72893556175DA8D900EED04E /* SmartBat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartBat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		72893556175DA8D900EED04E /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7289355D175DA8D900EED04E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -257,6 +257,11 @@
 		3F6C48A4177C40F500D846B9 /* Icon */ = {
 			isa = PBXGroup;
 			children = (
+				72ED3B911764D96D00C810AC /* Default-568h@2x.png */,
+				72ED3B921764D96D00C810AC /* Default.png */,
+				72ED3B931764D96D00C810AC /* Default@2x.png */,
+				3F58AB461761EAF000A55317 /* Icon.png */,
+				3F58AB471761EAF000A55317 /* Icon@2x.png */,
 				3F6C48A5177C410800D846B9 /* 480.png */,
 				3F6C48A6177C410800D846B9 /* 1024.png */,
 				3F6C48A7177C410800D846B9 /* 22.png */,
@@ -343,14 +348,14 @@
 				F4CE3E531764C8F000F314D8 /* Library */,
 				72F044E8178581860056AA63 /* Model */,
 				72893557175DA8D900EED04E /* Products */,
-				7289355F175DA8D900EED04E /* SmartBat */,
+				7289355F175DA8D900EED04E /* Health */,
 			);
 			sourceTree = "<group>";
 		};
 		72893557175DA8D900EED04E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				72893556175DA8D900EED04E /* SmartBat.app */,
+				72893556175DA8D900EED04E /* Health.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -376,7 +381,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		7289355F175DA8D900EED04E /* SmartBat */ = {
+		7289355F175DA8D900EED04E /* Health */ = {
 			isa = PBXGroup;
 			children = (
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
@@ -387,22 +392,18 @@
 				72893560175DA8D900EED04E /* Supporting Files */,
 				72893584175DAA9B00EED04E /* Views */,
 			);
+			name = Health;
 			path = SmartBat;
 			sourceTree = "<group>";
 		};
 		72893560175DA8D900EED04E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3F58AB481761EAF000A55317 /* iTunesArtwork */,
 				72893565175DA8D900EED04E /* main.m */,
 				72893567175DA8D900EED04E /* SmartBat-Prefix.pch */,
-				3F6C48A4177C40F500D846B9 /* Icon */,
 				72893561175DA8D900EED04E /* SmartBat-Info.plist */,
-				72ED3B911764D96D00C810AC /* Default-568h@2x.png */,
-				72ED3B921764D96D00C810AC /* Default.png */,
-				72ED3B931764D96D00C810AC /* Default@2x.png */,
-				3F58AB461761EAF000A55317 /* Icon.png */,
-				3F58AB471761EAF000A55317 /* Icon@2x.png */,
-				3F58AB481761EAF000A55317 /* iTunesArtwork */,
+				3F6C48A4177C40F500D846B9 /* Icon */,
 				723FA14D175F209800DEF5E0 /* Images */,
 			);
 			name = "Supporting Files";
@@ -500,9 +501,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		72893555175DA8D900EED04E /* SmartBat */ = {
+		72893555175DA8D900EED04E /* Health */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 72893579175DA8D900EED04E /* Build configuration list for PBXNativeTarget "SmartBat" */;
+			buildConfigurationList = 72893579175DA8D900EED04E /* Build configuration list for PBXNativeTarget "Health" */;
 			buildPhases = (
 				72893552175DA8D900EED04E /* Sources */,
 				72893553175DA8D900EED04E /* Frameworks */,
@@ -512,9 +513,9 @@
 			);
 			dependencies = (
 			);
-			name = SmartBat;
+			name = Health;
 			productName = SmartBat;
-			productReference = 72893556175DA8D900EED04E /* SmartBat.app */;
+			productReference = 72893556175DA8D900EED04E /* Health.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -526,6 +527,11 @@
 				CLASSPREFIX = BT;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "kaka'";
+				TargetAttributes = {
+					72893555175DA8D900EED04E = {
+						DevelopmentTeam = VRRQ8TGN77;
+					};
+				};
 			};
 			buildConfigurationList = 72893551175DA8D900EED04E /* Build configuration list for PBXProject "SmartBat" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -544,7 +550,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				72893555175DA8D900EED04E /* SmartBat */,
+				72893555175DA8D900EED04E /* Health */,
 			);
 		};
 /* End PBXProject section */
@@ -747,6 +753,8 @@
 		7289357A175DA8D900EED04E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../json-framework\"",
@@ -757,6 +765,7 @@
 				INFOPLIST_FILE = "SmartBat/SmartBat-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -765,6 +774,8 @@
 		7289357B175DA8D900EED04E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../json-framework\"",
@@ -775,6 +786,7 @@
 				INFOPLIST_FILE = "SmartBat/SmartBat-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -792,7 +804,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		72893579175DA8D900EED04E /* Build configuration list for PBXNativeTarget "SmartBat" */ = {
+		72893579175DA8D900EED04E /* Build configuration list for PBXNativeTarget "Health" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7289357A175DA8D900EED04E /* Debug */,

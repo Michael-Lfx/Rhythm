@@ -7,7 +7,6 @@
 //
 
 #import "BTSettingsViewController.h"
-#import "OALSimpleAudio.h"
 #import "BTSetupViewController.h"
 
 @interface BTBandViewController : BTSettingsViewController <UITableViewDelegate, UITableViewDataSource>

@@ -63,23 +63,15 @@
 #define NOTETYPE_MAX                    0.5f
 
 //蓝牙服务uuid
-#define CHARACTERISTICS_COUNT           9
+#define CHARACTERISTICS_COUNT           4
 
-#define UUID_METRONOME_SERVICE          @"2200"
+#define UUID_HEALTH_SERVICE             @"2300"
 
-#define UUID_METRONOME_STATUS           @"2201"
-
-#define UUID_METRONOME_PLAY             @"2202"
-#define UUID_METRONOME_DURATION         @"2203"
-#define UUID_METRONOME_MEASURE          @"2204"
-#define UUID_METRONOME_SYNC             @"2205"
-#define UUID_METRONOME_ZERO             @"2206"
-
-#define UUID_BATTERY_LEVEL              @"2211"
-
-#define UUID_PHONE_PLAY                 @"2221"
-
-#define UUID_CUSTORM_NAME				@"2231"
+#define UUID_SYNC                       @"2301"
+#define UUID_ZERO                		@"2302"
+#define UUID_DATA                		@"2303"
+#define UUID_BATTERY_LEVEL              @"2304"
+#define UUID_CUSTORM_NAME               @"2305"
 
 //手环名称最大字节数
 #define DEVICE_NAME_MAX_LENGTH          16

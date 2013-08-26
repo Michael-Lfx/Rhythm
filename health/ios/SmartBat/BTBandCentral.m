@@ -159,7 +159,7 @@
     
     //代理peripheral
     [peripheral setDelegate:self];
-    [peripheral discoverServices:@[[CBUUID UUIDWithString:UUID_METRONOME_SERVICE]]];
+    [peripheral discoverServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]]];
     
     NSLog(@"hello：%@", _allPeripherals);
 }
@@ -209,22 +209,12 @@
             
             [bp.allCharacteristics setObject:c forKey:c.UUID];
             
-            //设置通知到phone play
-            if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_PHONE_PLAY]]) {
-                [peripheral setNotifyValue:YES forCharacteristic:c];
-                NSLog(@"%@", c.UUID);
-            }
-            
             //连接完成！！
             if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
                 NSLog(@"ge zaile ");
                 
                 //开始设备同步
                 [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
-                
-                uint8_t status = [self getUint8Status];
-                
-                [self write:[NSData dataWithBytes:&status length:sizeof(status)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_STATUS] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
                 //读取电量
                 [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
@@ -285,19 +275,6 @@
     [bp.allValues setObject:characteristic.value forKey:characteristic.UUID];
     
     NSLog(@"c:%@, v:%@", characteristic.UUID, characteristic.value);
-    
-    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_PHONE_PLAY]]) {
-        
-        uint8_t phone_play;
-        [characteristic.value getBytes:&phone_play];
-        
-        if (phone_play == 1) {
-            [[BTMetronomeCoreController getController] start];
-        }else if(phone_play == 0){
-            //这里写0，因为可能蹦出来其他数值
-            [[BTMetronomeCoreController getController] stop];
-        }
-    }
     
     //取出缓存中的block并执行
     void (^block)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral)  = [bp.allCallback objectForKey:characteristic.UUID];
@@ -422,7 +399,7 @@
 -(void)scan{
     
 //    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_METRONOME_SERVICE]] options:nil];
-    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_METRONOME_SERVICE]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
+    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
     
     NSLog(@"scan ForPeripherals");
 }
@@ -453,7 +430,6 @@
     [NSThread setThreadPriority:1.0];
     
     //取得主线程
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
     uint8_t count = 0;
     Boolean isLock = NO;
     double sendTime = 0.0, now = 0.0;
@@ -479,12 +455,6 @@
             }
         }
         
-        //让主线程发蓝牙请求
-        dispatch_async(mainQueue, ^{
-            
-            [self write:[NSData dataWithBytes:&count length:sizeof(count)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_SYNC] fromPeripheral:puuid];
-        });
-        
         //计算序号
         count++;
         isLock = YES;
@@ -499,42 +469,7 @@
         [NSThread sleepForTimeInterval:sendTime - now - LOCK_TIME];
     }
     
-    //让主线程发蓝牙请求
-    dispatch_async(mainQueue, ^{
-        
-        //最后读取蓝牙里算出的最匹配时间点
-        [self read:[CBUUID UUIDWithString:UUID_METRONOME_ZERO] fromPeripheral:puuid withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-            
-            //读取设备中时刻最接近的序号
-            uint8_t sn;
-            [value getBytes:&sn];
-            
-            NSLog(@"cb: %d", sn);
-            
-            if (sn == 0) {
-                //如果没有找到同步点，立即再同步一次
-                [self sync:puuid];
-            }else{
-                //设定手机端的同步时刻
-                BTBandPeripheral *bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
-                
-                //纳秒级别
-                bp.zero = syncStart +  SYNC_INTERVAL * sn;
-                
-                NSLog(@"zero is: %f", bp.zero);
-                
-                //如果设备正在播放，并且设备处在暂停状态，就等马上启动
-                if ([[self.globals.systemStatus valueForKey:@"playStatus"] boolValue] /*&& !bp.play*/){
-                    NSLog(@"wait for restart");
-                    
-                    self.globals.waitForRestart = YES;
-                }
-                  
-                //一段时间再次同步
-                [NSTimer scheduledTimerWithTimeInterval:SYNC_AGAIN target:self selector:@selector(sync60:) userInfo:puuid repeats:NO];
-            }
-        }];
-    });
+    
 }
 
 //所有设备播放
@@ -544,19 +479,7 @@
     for (BTBandPeripheral* bp in enumeratorValue) {
         if (bp.handle.isConnected) {
             
-            bp.play = 1;
             
-            CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:UUID_METRONOME_PLAY]];
-            
-            //算出基于同步点的时间间隔，微米级别
-            uint32_t start = (timestamp - bp.zero) * 1000000;
-            
-            NSLog(@"let's play : %d, %f, %f", start , timestamp, bp.zero);
-            NSLog(@"%hhd", bp.handle.isConnected);
-            
-            if (tmp && bp.handle.isConnected) {
-                [bp.handle writeValue:[NSData dataWithBytes:&start length:sizeof(start)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
-            }
         }
         
     }
@@ -567,19 +490,7 @@
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     
     for (BTBandPeripheral* bp in enumeratorValue) {
-        if (bp.play == 1 && bp.handle.isConnected) {
-            bp.play = 0;
-            
-            CBCharacteristic* tmp = [bp.allCharacteristics objectForKey:[CBUUID UUIDWithString:UUID_METRONOME_PLAY]];
-            
-            NSLog(@"let's pause");
-            
-            uint8_t rs = bp.play;
-            
-            if (tmp) {
-                [bp.handle writeValue:[NSData dataWithBytes:&rs length:sizeof(rs)] forCharacteristic:tmp type:CBCharacteristicWriteWithResponse];
-            }
-        }
+        
     }
 }
 
@@ -656,9 +567,8 @@
 {
     if([keyPath isEqualToString:@"bleShock"] || [keyPath isEqualToString:@"bleSpark"])
     {
-        uint8_t status = [self getUint8Status];
         
-        [self writeAll:[NSData dataWithBytes:&status length:sizeof(status)] withUUID:[CBUUID UUIDWithString:UUID_METRONOME_STATUS]];
+        
     }
 }
 
