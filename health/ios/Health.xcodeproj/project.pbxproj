@@ -74,6 +74,21 @@
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
+<<<<<<< HEAD
+		72893566175DA8D900EED04E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893565175DA8D900EED04E /* main.m */; };
+		7289356A175DA8D900EED04E /* BTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893569175DA8D900EED04E /* BTAppDelegate.m */; };
+		72893576175DA8D900EED04E /* BTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893575175DA8D900EED04E /* BTMainViewController.m */; };
+		7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7289357D175DA97100EED04E /* BTBaseViewController.m */; };
+		72893583175DAA7400EED04E /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893582175DAA7400EED04E /* BTGlobals.m */; };
+		7289358A175DAC9900EED04E /* BTAskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72893589175DAC9900EED04E /* BTAskViewController.m */; };
+		72A58E8A17AB6237004DAE2A /* BTSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A58E8917AB6237004DAE2A /* BTSetupViewController.m */; };
+		72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */; };
+		72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B36175DDA840071A082 /* BTSwipeViewController.m */; };
+		72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B45B39175DDD110071A082 /* BTCommonViewController.m */; };
+		72ED3B941764D96D00C810AC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 72ED3B911764D96D00C810AC /* Default-568h@2x.png */; };
+		72ED3B951764D96D00C810AC /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 72ED3B921764D96D00C810AC /* Default.png */; };
+		72ED3B961764D96D00C810AC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 72ED3B931764D96D00C810AC /* Default@2x.png */; };
+=======
 		72910FBA17CC7073000F7155 /* BTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72910FB917CC7073000F7155 /* BTMainViewController.m */; };
 		72910FBD17CC707D000F7155 /* BTAskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72910FBC17CC707D000F7155 /* BTAskViewController.m */; };
 		72910FC017CC70A9000F7155 /* BTCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72910FBF17CC70A9000F7155 /* BTCommonViewController.m */; };
@@ -125,15 +140,13 @@
 		72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456117CC626F00751F8A /* BTBandPeripheral.m */; };
 		72EE456617CC628700751F8A /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456517CC628700751F8A /* BTGlobals.m */; };
 		72EE456917CC629000751F8A /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456817CC629000751F8A /* BTConstants.m */; };
+>>>>>>> parent of 16e5bdc... 调整文件结构
 		72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72F044DF1785815F0056AA63 /* Model.xcdatamodeld */; };
 		72F044E41785815F0056AA63 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E21785815F0056AA63 /* BTBleList.m */; };
 		72F5537B1768AA4A00615B61 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */; };
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
 		72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FAC806176326C100A6DAE0 /* BTAppStore.m */; };
-		F4218AF117CC64B10061B9B7 /* BTFMMoniterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4218AF017CC64B10061B9B7 /* BTFMMoniterController.m */; };
-		F4218AF517CC70770061B9B7 /* BTFHMoniterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4218AF417CC70770061B9B7 /* BTFHMoniterController.m */; };
-		F4218AF817CC724B0061B9B7 /* BTFHRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = F4218AF717CC724B0061B9B7 /* BTFHRecord.m */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
 		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
@@ -232,6 +245,37 @@
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7289355D175DA8D900EED04E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+<<<<<<< HEAD
+		72893561175DA8D900EED04E /* Health-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Health-Info.plist"; sourceTree = "<group>"; };
+		72893565175DA8D900EED04E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		72893567175DA8D900EED04E /* Health-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Health-Prefix.pch"; sourceTree = "<group>"; };
+		72893568175DA8D900EED04E /* BTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppDelegate.h; sourceTree = "<group>"; };
+		72893569175DA8D900EED04E /* BTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppDelegate.m; sourceTree = "<group>"; };
+		72893574175DA8D900EED04E /* BTMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMainViewController.h; sourceTree = "<group>"; };
+		72893575175DA8D900EED04E /* BTMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTMainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		7289357C175DA97100EED04E /* BTBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BTBaseViewController.h; path = SmartBat/BTBaseViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		7289357D175DA97100EED04E /* BTBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = BTBaseViewController.m; path = SmartBat/BTBaseViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		72893581175DAA7400EED04E /* BTGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTGlobals.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		72893582175DAA7400EED04E /* BTGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTGlobals.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		72893588175DAC9900EED04E /* BTAskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTAskViewController.h; path = ../BTAskViewController.h; sourceTree = "<group>"; };
+		72893589175DAC9900EED04E /* BTAskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTAskViewController.m; path = ../BTAskViewController.m; sourceTree = "<group>"; };
+		72A58E8817AB6237004DAE2A /* BTSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSetupViewController.h; sourceTree = "<group>"; };
+		72A58E8917AB6237004DAE2A /* BTSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSetupViewController.m; sourceTree = "<group>"; };
+		72B0F179176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		72B0F17A176C9AE00093490F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		72B45B32175DD7DC0071A082 /* BTSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSettingsViewController.h; sourceTree = "<group>"; };
+		72B45B33175DD7DC0071A082 /* BTSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSettingsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		72B45B35175DDA840071A082 /* BTSwipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSwipeViewController.h; sourceTree = "<group>"; };
+		72B45B36175DDA840071A082 /* BTSwipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTSwipeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		72B45B38175DDD110071A082 /* BTCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTCommonViewController.h; path = ../BTCommonViewController.h; sourceTree = "<group>"; };
+		72B45B39175DDD110071A082 /* BTCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCommonViewController.m; path = ../BTCommonViewController.m; sourceTree = "<group>"; };
+		72ED3B911764D96D00C810AC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		72ED3B921764D96D00C810AC /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		72ED3B931764D96D00C810AC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		72F044E01785815F0056AA63 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		72F044E11785815F0056AA63 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTBleList.h; path = SmartBat/BTBleList.h; sourceTree = "<group>"; };
+		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTBleList.m; path = SmartBat/BTBleList.m; sourceTree = "<group>"; };
+=======
 		72910FB817CC7073000F7155 /* BTMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTMainViewController.h; sourceTree = SOURCE_ROOT; };
 		72910FB917CC7073000F7155 /* BTMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTMainViewController.m; sourceTree = SOURCE_ROOT; };
 		72910FBB17CC707D000F7155 /* BTAskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAskViewController.h; sourceTree = SOURCE_ROOT; };
@@ -310,17 +354,12 @@
 		72F044E01785815F0056AA63 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		72F044E11785815F0056AA63 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBleList.h; sourceTree = "<group>"; };
 		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBleList.m; sourceTree = "<group>"; };
+>>>>>>> parent of 16e5bdc... 调整文件结构
 		72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		72F805A11760C16E00776D95 /* beat-note-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beat-note-minus-button.png"; sourceTree = "<group>"; };
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
 		72FAC805176326C100A6DAE0 /* BTAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppStore.h; sourceTree = "<group>"; };
 		72FAC806176326C100A6DAE0 /* BTAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppStore.m; sourceTree = "<group>"; };
-		F4218AEF17CC64B10061B9B7 /* BTFMMoniterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFMMoniterController.h; sourceTree = "<group>"; };
-		F4218AF017CC64B10061B9B7 /* BTFMMoniterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFMMoniterController.m; sourceTree = "<group>"; };
-		F4218AF317CC70770061B9B7 /* BTFHMoniterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFHMoniterController.h; sourceTree = "<group>"; };
-		F4218AF417CC70770061B9B7 /* BTFHMoniterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFHMoniterController.m; sourceTree = "<group>"; };
-		F4218AF617CC724B0061B9B7 /* BTFHRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFHRecord.h; sourceTree = "<group>"; };
-		F4218AF717CC724B0061B9B7 /* BTFHRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFHRecord.m; sourceTree = "<group>"; };
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -483,8 +522,6 @@
 		7289355F175DA8D900EED04E /* Health */ = {
 			isa = PBXGroup;
 			children = (
-				F4218AF217CC6E1F0061B9B7 /* FHMoniter */,
-				F4218AEE17CC64070061B9B7 /* FMMoniter */,
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
 				72893569175DA8D900EED04E /* BTAppDelegate.m */,
 				72F553731768A25500615B61 /* BTLE */,
@@ -538,6 +575,25 @@
 		72893584175DAA9B00EED04E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
+				72FAC805176326C100A6DAE0 /* BTAppStore.h */,
+				72893588175DAC9900EED04E /* BTAskViewController.h */,
+				727CCA5317CB479F009E2F32 /* BTBandViewController.h */,
+				72B45B38175DDD110071A082 /* BTCommonViewController.h */,
+				72893574175DA8D900EED04E /* BTMainViewController.h */,
+				727CCA5417CB4A0E009E2F32 /* BTNewsViewController.h */,
+				723FA12D175DF4C500DEF5E0 /* BTRootViewController.h */,
+				72A58E8817AB6237004DAE2A /* BTSetupViewController.h */,
+				72FAC806176326C100A6DAE0 /* BTAppStore.m */,
+				72893589175DAC9900EED04E /* BTAskViewController.m */,
+				723FA137175E37A500DEF5E0 /* BTBandViewController.m */,
+				72B45B39175DDD110071A082 /* BTCommonViewController.m */,
+				72893575175DA8D900EED04E /* BTMainViewController.m */,
+				727CCA5517CB4A0E009E2F32 /* BTNewsViewController.m */,
+				723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */,
+				72A58E8917AB6237004DAE2A /* BTSetupViewController.m */,
+				7289357F175DA97700EED04E /* Base Class */,
+=======
 				72910FCD17CC7126000F7155 /* BTAppStore.h */,
 				72910FCE17CC7126000F7155 /* BTAppStore.m */,
 				72910FCF17CC7126000F7155 /* BTSetupViewController.h */,
@@ -555,6 +611,7 @@
 				72910FB917CC7073000F7155 /* BTMainViewController.m */,
 				72910FC117CC70B2000F7155 /* BTRootViewController.h */,
 				72910FC217CC70B2000F7155 /* BTRootViewController.m */,
+>>>>>>> parent of 16e5bdc... 调整文件结构
 				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
 			);
 			name = Views;
@@ -574,12 +631,19 @@
 			isa = PBXGroup;
 			children = (
 				72F044DF1785815F0056AA63 /* Model.xcdatamodeld */,
+<<<<<<< HEAD
+				727A12B017B8C72600E59686 /* BTEntity.h */,
+				727A12B117B8C72600E59686 /* BTEntity.m */,
+				72F044E11785815F0056AA63 /* BTBleList.h */,
+				72F044E21785815F0056AA63 /* BTBleList.m */,
+=======
 				72F044E11785815F0056AA63 /* BTBleList.h */,
 				72F044E21785815F0056AA63 /* BTBleList.m */,
 				72EE455517CC4C4900751F8A /* BTClickData.h */,
 				72EE455617CC4C4900751F8A /* BTClickData.m */,
 				72EE455817CC4C8600751F8A /* BTEntity.h */,
 				72EE455917CC4C8600751F8A /* BTEntity.m */,
+>>>>>>> parent of 16e5bdc... 调整文件结构
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -723,6 +787,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
+				72893566175DA8D900EED04E /* main.m in Sources */,
+				72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */,
+				7289356A175DA8D900EED04E /* BTAppDelegate.m in Sources */,
+				72893576175DA8D900EED04E /* BTMainViewController.m in Sources */,
+				7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */,
+				72893583175DAA7400EED04E /* BTGlobals.m in Sources */,
+				720834FC176C825600DBDE38 /* BTBandPeripheral.m in Sources */,
+				7289358A175DAC9900EED04E /* BTAskViewController.m in Sources */,
+				72B45B34175DD7DC0071A082 /* BTSettingsViewController.m in Sources */,
+				72B45B37175DDA840071A082 /* BTSwipeViewController.m in Sources */,
+				72B45B3A175DDD110071A082 /* BTCommonViewController.m in Sources */,
+				723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */,
+				723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */,
+				727CCA5617CB4A0E009E2F32 /* BTNewsViewController.m in Sources */,
+				723FA138175E37A500DEF5E0 /* BTBandViewController.m in Sources */,
+=======
 				72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */,
 				72EE455717CC4C4900751F8A /* BTClickData.m in Sources */,
 				72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */,
@@ -730,6 +811,7 @@
 				72EE456217CC626F00751F8A /* BTBandCentral.m in Sources */,
 				72EE456617CC628700751F8A /* BTGlobals.m in Sources */,
 				72E53E3317CC630E002D2708 /* main.m in Sources */,
+>>>>>>> parent of 16e5bdc... 调整文件结构
 				72F044E41785815F0056AA63 /* BTBleList.m in Sources */,
 				72A58E8A17AB6237004DAE2A /* BTSetupViewController.m in Sources */,
 				720834F9176C7EB000DBDE38 /* BTBandCentral.m in Sources */,
@@ -738,7 +820,10 @@
 				727A12B217B8C72600E59686 /* BTEntity.m in Sources */,
 				7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */,
 				7232FAFB17633ED90097CA34 /* ASIDataDecompressor.m in Sources */,
+<<<<<<< HEAD
+=======
 				72910FD217CC7126000F7155 /* BTSetupViewController.m in Sources */,
+>>>>>>> parent of 16e5bdc... 调整文件结构
 				7232FAFC17633ED90097CA34 /* ASIDownloadCache.m in Sources */,
 				7232FAFD17633ED90097CA34 /* ASIFormDataRequest.m in Sources */,
 				7232FAFE17633ED90097CA34 /* ASIHTTPRequest.m in Sources */,
