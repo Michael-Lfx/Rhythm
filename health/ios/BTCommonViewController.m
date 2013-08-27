@@ -50,5 +50,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)setShock:(UISwitch *)sender {
+    
+    self.globals.bleShock = sender.on;
+    
+}
 
+- (IBAction)setSpark:(UISwitch *)sender {
+    
+    self.globals.bleSpark = sender.on;
+    
+}
 @end

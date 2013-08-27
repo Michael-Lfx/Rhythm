@@ -1,8 +1,8 @@
 //
 //  BTEntity.m
-//  Health
+//  SmartBat
 //
-//  Created by kaka' on 13-8-27.
+//  Created by kaka' on 13-8-12.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -11,8 +11,14 @@
 
 @implementation BTEntity
 
+@dynamic beatPerMeasure;
+@dynamic beatPerMinute;
+@dynamic bleShock;
+@dynamic bleSpark;
 @dynamic hasAskGrade;
 @dynamic installDate;
 @dynamic lastCheckVersionDate;
+@dynamic noteType;
+@dynamic subdivision;
 
 @end

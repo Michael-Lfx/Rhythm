@@ -551,6 +551,18 @@
     [_cm connectPeripheral:_setupBand.handle options:nil];
 }
 
+-(uint8_t)getUint8Status{
+    
+    uint8_t status = 0;
+    
+    status += (self.globals.bleShock) ? 1 : 0;
+    status += (self.globals.bleSpark) ? 2 : 0;
+    
+    NSLog(@"%d", status);
+    
+    return status;
+}
+
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if([keyPath isEqualToString:@"bleShock"] || [keyPath isEqualToString:@"bleSpark"])

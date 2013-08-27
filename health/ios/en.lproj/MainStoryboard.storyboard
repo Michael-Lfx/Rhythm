@@ -78,7 +78,6 @@
                     <view key="view" contentMode="scaleToFill" id="SEz-wE-7Fc">
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-<<<<<<< HEAD
                         <subviews>
                             <tableViewCell contentMode="scaleToFill" fixedFrame="YES" selectionStyle="default" indentationWidth="10" translatesAutoresizingMaskIntoConstraints="NO" id="CTw-05-dKu">
                                 <rect key="frame" x="0.0" y="99" width="320" height="44"/>
@@ -131,8 +130,6 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </subviews>
-=======
->>>>>>> 16e5bdc7ca388bf8e7d0bd5468c67f51367e79c1
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -144,7 +141,7 @@
         <!--Main View Controller-->
         <scene sceneID="5">
             <objects>
-                <viewController storyboardIdentifier="BTMainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2" customClass="BTMainViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BTMainViewController" id="2" customClass="BTMainViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lzC-5r-tFQ"/>
                         <viewControllerLayoutGuide type="bottom" id="cno-BT-916"/>

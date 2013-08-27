@@ -10,5 +10,7 @@
 
 @interface BTCommonViewController : BTSettingsViewController
 
+- (IBAction)setShock:(UISwitch *)sender;
+- (IBAction)setSpark:(UISwitch *)sender;
 
 @end
