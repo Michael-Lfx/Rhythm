@@ -51,26 +51,27 @@
     int buttonY = 0, pageY = 30;
     
     if (systemVer >= 7) {
-        
+        screenHeight += 20;
         scrollY += 10;
         buttonY = 15;
-        pageY = 10;
     }
     
     
     
-    _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(142, scrollHeight - pageY, 36, 36)];
+    _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(142, screenHeight - pageY, 36, 36)];
     _pageControl.currentPage = 0;
     _pageControl.numberOfPages = 2;
     [self.view addSubview:_pageControl];
     
     UIButton *band = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    band.tag = BAND_BUTTON_TAG;
     [band setFrame:CGRectMake(0, buttonY, 54, 54)];
     [band setBackgroundImage:[UIImage imageNamed:@"band-button.png"] forState:UIControlStateNormal];
     [band addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:band];
     
     UIButton *common = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    common.tag = COMMON_BUTTON_TAG;
     [common setFrame:CGRectMake(266, buttonY, 54, 54)];
     [common setBackgroundImage:[UIImage imageNamed:@"common-button.png"] forState:UIControlStateNormal];
     [common addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
