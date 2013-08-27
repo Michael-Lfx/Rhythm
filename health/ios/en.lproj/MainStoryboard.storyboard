@@ -89,7 +89,7 @@
         <!--Main View Controller-->
         <scene sceneID="5">
             <objects>
-                <viewController storyboardIdentifier="BTMainViewController" id="2" customClass="BTMainViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BTMainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2" customClass="BTMainViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lzC-5r-tFQ"/>
                         <viewControllerLayoutGuide type="bottom" id="cno-BT-916"/>
