@@ -44,17 +44,11 @@ double const kSubdivisionDuration = 0.5;
             _globalsInEntity = [NSEntityDescription insertNewObjectForEntityForName:@"BTEntity" inManagedObjectContext:_context];
             
             //从常量初始化全局变量
-            _beatPerMinute = kBeatPerMinuteInit;
-            _beatPerMeasure = kBeatPerMeasureInit;
-            _noteType = kNoteType;
-            _subdivision = kSubdivision;
+
             _lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
             _hasAskGrade = 0;
             _installDate = _lastCheckVersionDate;
-            _currentSubdivisionDuration = kSubdivisionDuration;
             
-            _bleShock = YES;
-            _bleSpark = YES;
             
             //首次写入即可
             _globalsInEntity.installDate = [NSNumber numberWithInt:_lastCheckVersionDate];
@@ -68,16 +62,10 @@ double const kSubdivisionDuration = 0.5;
             _globalsInEntity = [globalFromModel objectAtIndex:0];
             
             //从数据库数据来初始化该实例的全局变量
-            _beatPerMinute = [_globalsInEntity.beatPerMinute intValue];
-            _beatPerMeasure = [_globalsInEntity.beatPerMeasure intValue];
-            _noteType = [_globalsInEntity.noteType floatValue];
-            _subdivision = [_globalsInEntity.subdivision intValue];
+
             _lastCheckVersionDate = [_globalsInEntity.lastCheckVersionDate intValue];
             _hasAskGrade = [_globalsInEntity.hasAskGrade intValue];
             _installDate = [_globalsInEntity.installDate intValue];
-            
-            _bleShock = [_globalsInEntity.bleShock boolValue];
-            _bleSpark = [_globalsInEntity.bleSpark boolValue];
             
             
             NSLog(@"%@", _globalsInEntity);
@@ -92,15 +80,9 @@ double const kSubdivisionDuration = 0.5;
 }
 
 -(void)globalsIntoEntity{
-    _globalsInEntity.beatPerMinute = [NSNumber numberWithInt:_beatPerMinute];
-    _globalsInEntity.beatPerMeasure = [NSNumber numberWithInt:_beatPerMeasure];
-    _globalsInEntity.noteType = [NSNumber numberWithFloat:_noteType];
-    _globalsInEntity.subdivision= [NSNumber numberWithInt:_subdivision];
     _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
     _globalsInEntity.hasAskGrade = [NSNumber numberWithInt:_hasAskGrade];
     
-    _globalsInEntity.bleSpark = [NSNumber numberWithBool:_bleSpark];
-    _globalsInEntity.bleShock = [NSNumber numberWithBool:_bleShock];
     
     NSError* error;
     if(![_context save:&error]){
