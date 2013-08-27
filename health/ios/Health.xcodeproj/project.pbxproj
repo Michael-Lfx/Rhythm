@@ -93,12 +93,9 @@
 		72F805A31760C16E00776D95 /* beat-note-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A11760C16E00776D95 /* beat-note-minus-button.png */; };
 		72F805A41760C16E00776D95 /* subdivision-minus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F805A21760C16E00776D95 /* subdivision-minus-button.png */; };
 		72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FAC806176326C100A6DAE0 /* BTAppStore.m */; };
-<<<<<<< HEAD
-=======
 		F4218AF117CC64B10061B9B7 /* BTFMMoniterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4218AF017CC64B10061B9B7 /* BTFMMoniterController.m */; };
 		F4218AF517CC70770061B9B7 /* BTFHMoniterController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4218AF417CC70770061B9B7 /* BTFHMoniterController.m */; };
 		F4218AF817CC724B0061B9B7 /* BTFHRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = F4218AF717CC724B0061B9B7 /* BTFHRecord.m */; };
->>>>>>> parent of e6ec580... Merge branch 'master' of https://github.com/lanyu7/Rhythm
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
 		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
@@ -231,15 +228,12 @@
 		72F805A21760C16E00776D95 /* subdivision-minus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subdivision-minus-button.png"; sourceTree = "<group>"; };
 		72FAC805176326C100A6DAE0 /* BTAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppStore.h; sourceTree = "<group>"; };
 		72FAC806176326C100A6DAE0 /* BTAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppStore.m; sourceTree = "<group>"; };
-<<<<<<< HEAD
-=======
 		F4218AEF17CC64B10061B9B7 /* BTFMMoniterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFMMoniterController.h; sourceTree = "<group>"; };
 		F4218AF017CC64B10061B9B7 /* BTFMMoniterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFMMoniterController.m; sourceTree = "<group>"; };
 		F4218AF317CC70770061B9B7 /* BTFHMoniterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFHMoniterController.h; sourceTree = "<group>"; };
 		F4218AF417CC70770061B9B7 /* BTFHMoniterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFHMoniterController.m; sourceTree = "<group>"; };
 		F4218AF617CC724B0061B9B7 /* BTFHRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFHRecord.h; sourceTree = "<group>"; };
 		F4218AF717CC724B0061B9B7 /* BTFHRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFHRecord.m; sourceTree = "<group>"; };
->>>>>>> parent of e6ec580... Merge branch 'master' of https://github.com/lanyu7/Rhythm
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -402,11 +396,8 @@
 		7289355F175DA8D900EED04E /* Health */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-=======
 				F4218AF217CC6E1F0061B9B7 /* FHMoniter */,
 				F4218AEE17CC64070061B9B7 /* FMMoniter */,
->>>>>>> parent of e6ec580... Merge branch 'master' of https://github.com/lanyu7/Rhythm
 				72893568175DA8D900EED04E /* BTAppDelegate.h */,
 				72893569175DA8D900EED04E /* BTAppDelegate.m */,
 				72F553731768A25500615B61 /* BTLE */,
