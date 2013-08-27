@@ -59,12 +59,14 @@
     [self.view addSubview:_pageControl];
     
     UIButton *band = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    band.tag = BAND_BUTTON_TAG;
     [band setFrame:CGRectMake(0, buttonY, 54, 54)];
     [band setBackgroundImage:[UIImage imageNamed:@"band-button.png"] forState:UIControlStateNormal];
     [band addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:band];
     
     UIButton *common = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    common.tag = COMMON_BUTTON_TAG;
     [common setFrame:CGRectMake(266, buttonY, 54, 54)];
     [common setBackgroundImage:[UIImage imageNamed:@"common-button.png"] forState:UIControlStateNormal];
     [common addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
@@ -144,6 +146,7 @@
 
 //调用设置页面
 - (IBAction)callSettings:(UIButton *)sender {
+    NSLog(@"tag: %d", sender.tag);
     if(sender.tag == COMMON_BUTTON_TAG){
         [_commonViewCtrl callMeDisplay];
     }else{

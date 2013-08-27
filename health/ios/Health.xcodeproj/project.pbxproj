@@ -38,6 +38,7 @@
 		72910FD817CC714C000F7155 /* BTBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72910FD717CC714C000F7155 /* BTBaseViewController.m */; };
 		72910FDD17CC7182000F7155 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 72910FD917CC7182000F7155 /* InfoPlist.strings */; };
 		72910FDE17CC7182000F7155 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 72910FDB17CC7182000F7155 /* Localizable.strings */; };
+		72910FE517CC72C4000F7155 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72910FE317CC72C4000F7155 /* Model.xcdatamodeld */; };
 		72E53E3117CC6302002D2708 /* Health-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E2F17CC6302002D2708 /* Health-Info.plist */; };
 		72E53E3317CC630E002D2708 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E53E3217CC630E002D2708 /* main.m */; };
 		72E53E5217CC6334002D2708 /* band-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E3517CC6334002D2708 /* band-button.png */; };
@@ -76,7 +77,6 @@
 		72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456117CC626F00751F8A /* BTBandPeripheral.m */; };
 		72EE456617CC628700751F8A /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456517CC628700751F8A /* BTGlobals.m */; };
 		72EE456917CC629000751F8A /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456817CC629000751F8A /* BTConstants.m */; };
-		72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72F044DF1785815F0056AA63 /* Model.xcdatamodeld */; };
 		72F044E41785815F0056AA63 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E21785815F0056AA63 /* BTBleList.m */; };
 		72F5537B1768AA4A00615B61 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
@@ -147,6 +147,7 @@
 		72910FE017CC719C000F7155 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
 		72910FE117CC71A4000F7155 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
 		72910FE217CC71A4000F7155 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
+		72910FE417CC72C4000F7155 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		72E53E2F17CC6302002D2708 /* Health-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Health-Info.plist"; sourceTree = SOURCE_ROOT; };
 		72E53E3017CC6302002D2708 /* Health-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Health-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		72E53E3217CC630E002D2708 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
@@ -194,7 +195,6 @@
 		72EE456517CC628700751F8A /* BTGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTGlobals.m; sourceTree = SOURCE_ROOT; };
 		72EE456717CC629000751F8A /* BTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTConstants.h; sourceTree = SOURCE_ROOT; };
 		72EE456817CC629000751F8A /* BTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConstants.m; sourceTree = SOURCE_ROOT; };
-		72F044E01785815F0056AA63 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		72F044E11785815F0056AA63 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBleList.h; sourceTree = "<group>"; };
 		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBleList.m; sourceTree = "<group>"; };
 		72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
@@ -390,23 +390,23 @@
 		72893584175DAA9B00EED04E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7289357F175DA97700EED04E /* Base Class */,
 				72910FCD17CC7126000F7155 /* BTAppStore.h */,
 				72910FCE17CC7126000F7155 /* BTAppStore.m */,
-				72910FCF17CC7126000F7155 /* BTSetupViewController.h */,
-				72910FD017CC7126000F7155 /* BTSetupViewController.m */,
-				7289357F175DA97700EED04E /* Base Class */,
 				72910FBB17CC707D000F7155 /* BTAskViewController.h */,
+				72910FBC17CC707D000F7155 /* BTAskViewController.m */,
 				72910FC717CC70F1000F7155 /* BTBandViewController.h */,
 				72910FC817CC70F1000F7155 /* BTBandViewController.m */,
-				72910FC917CC70F1000F7155 /* BTNewsViewController.h */,
-				72910FCA17CC70F1000F7155 /* BTNewsViewController.m */,
-				72910FBC17CC707D000F7155 /* BTAskViewController.m */,
 				72910FBE17CC70A9000F7155 /* BTCommonViewController.h */,
 				72910FBF17CC70A9000F7155 /* BTCommonViewController.m */,
 				72910FB817CC7073000F7155 /* BTMainViewController.h */,
 				72910FB917CC7073000F7155 /* BTMainViewController.m */,
+				72910FC917CC70F1000F7155 /* BTNewsViewController.h */,
+				72910FCA17CC70F1000F7155 /* BTNewsViewController.m */,
 				72910FC117CC70B2000F7155 /* BTRootViewController.h */,
 				72910FC217CC70B2000F7155 /* BTRootViewController.m */,
+				72910FCF17CC7126000F7155 /* BTSetupViewController.h */,
+				72910FD017CC7126000F7155 /* BTSetupViewController.m */,
 				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
 			);
 			name = Views;
@@ -415,10 +415,10 @@
 		72F044E8178581860056AA63 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				72F044DF1785815F0056AA63 /* Model.xcdatamodeld */,
 				72F044E11785815F0056AA63 /* BTBleList.h */,
 				72F044E21785815F0056AA63 /* BTBleList.m */,
 				72EE455517CC4C4900751F8A /* BTClickData.h */,
+				72910FE317CC72C4000F7155 /* Model.xcdatamodeld */,
 				72EE455617CC4C4900751F8A /* BTClickData.m */,
 				72EE455817CC4C8600751F8A /* BTEntity.h */,
 				72EE455917CC4C8600751F8A /* BTEntity.m */,
@@ -550,7 +550,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */,
 				72EE455717CC4C4900751F8A /* BTClickData.m in Sources */,
 				72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */,
 				72910FD117CC7126000F7155 /* BTAppStore.m in Sources */,
@@ -568,6 +567,7 @@
 				7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */,
 				7232FAFB17633ED90097CA34 /* ASIDataDecompressor.m in Sources */,
 				72910FD217CC7126000F7155 /* BTSetupViewController.m in Sources */,
+				72910FE517CC72C4000F7155 /* Model.xcdatamodeld in Sources */,
 				7232FAFC17633ED90097CA34 /* ASIDownloadCache.m in Sources */,
 				7232FAFD17633ED90097CA34 /* ASIFormDataRequest.m in Sources */,
 				72EE456917CC629000751F8A /* BTConstants.m in Sources */,
@@ -750,14 +750,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		72F044DF1785815F0056AA63 /* Model.xcdatamodeld */ = {
+		72910FE317CC72C4000F7155 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				72F044E01785815F0056AA63 /* Model.xcdatamodel */,
+				72910FE417CC72C4000F7155 /* Model.xcdatamodel */,
 			);
-			currentVersion = 72F044E01785815F0056AA63 /* Model.xcdatamodel */;
-			name = Model.xcdatamodeld;
-			path = SmartBat/Model.xcdatamodeld;
+			currentVersion = 72910FE417CC72C4000F7155 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
