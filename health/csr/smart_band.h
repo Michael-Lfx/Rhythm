@@ -66,6 +66,7 @@
 #define UUID_ZERO                			0x2302
 #define UUID_DATA                			0x2303
 #define UUID_BATTERY_LEVEL                  0x2304
+#define UUID_CUSTORM_NAME                  	0x2305
 
 #define PIO_DIR_OUTPUT  TRUE 
 #define PIO_DIR_INPUT   FALSE

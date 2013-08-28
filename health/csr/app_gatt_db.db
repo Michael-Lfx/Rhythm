@@ -101,5 +101,13 @@ primary_service {
         properties : [read],
         flags : FLAG_IRQ,
         size_value : 1
+    },
+
+    characteristic {
+        uuid : UUID_CUSTORM_NAME,
+        name : "CUSTORM_NAME",
+        properties : [write],
+        flags : [FLAG_IRQ],
+        size_value : DEVICE_NAME_MAX_LENGTH
     }
 }

@@ -289,6 +289,7 @@ static void switchLockerHandler(timer_id tid){
 static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 {
     sys_status rc = sys_status_success;
+    
 
     if(p_access_e->flags & ATT_ACCESS_WRITE){
 
@@ -315,6 +316,43 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
                 health.hour_zero_low = TimeSub(low / MICRO_A_MIN, interval);
 
                 DebugWriteUint16(NvmWrite((uint16 *)&health, sizeof(HEALTH), NVM_OFFSET_HEALTH));
+
+                break;
+
+            case HANDLE_CUSTORM_NAME:
+
+                DebugWriteString("fuck!\r\n");
+
+                uint16 setup_code = SETUP_CODE;
+                DebugWriteUint16(NvmWrite(&setup_code, sizeof(setup_code), NVM_OFFSET_SETUP_CODE));
+                NvmDisable();
+
+                /*word*/
+
+                DebugWriteString("\r\n");
+                
+                uint16 i;
+                
+                for(i =0; i < p_access_e->size_value; i++){
+                    DebugWriteUint8(p_access_e->value[i]);
+                }
+
+                DebugWriteString("\r\n");
+
+                MemSet(health.device_name, 0, DEVICE_NAME_MAX_LENGTH/2);
+
+                MemCopyPack(health.device_name, p_access_e->value, p_access_e->size_value);
+
+                for(i =0; i < DEVICE_NAME_MAX_LENGTH/2; i++){
+                    DebugWriteUint16(health.device_name[i]);
+                }
+
+                DebugWriteString("\r\n");
+
+                DebugWriteUint16(NvmWrite((uint16 *)&health, sizeof(HEALTH), NVM_OFFSET_HEALTH));
+                NvmDisable();
+
+                WarmReset();
 
                 break;
 
