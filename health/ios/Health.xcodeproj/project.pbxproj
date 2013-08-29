@@ -22,6 +22,8 @@
 		7232FB0B1763405A0097CA34 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */; };
 		7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7232FB35176447D50097CA34 /* MainStoryboard.storyboard */; };
 		725CB5AD1760A5DF0020FC78 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725CB5AC1760A5DF0020FC78 /* CoreData.framework */; };
+		7277F30917CDED96001EB9E3 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30717CDED96001EB9E3 /* fishhook.c */; };
+		7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -115,6 +117,9 @@
 		7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		7232FB4E176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		725CB5AC1760A5DF0020FC78 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		7277F30717CDED96001EB9E3 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		7277F30817CDED96001EB9E3 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = QuietAssertMacros.c; sourceTree = "<group>"; };
 		72893556175DA8D900EED04E /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -442,7 +447,10 @@
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				7277F30717CDED96001EB9E3 /* fishhook.c */,
+				7277F30817CDED96001EB9E3 /* fishhook.h */,
 				7232FAA1176339070097CA34 /* asi-http-request */,
+				7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -569,6 +577,7 @@
 				72EE455717CC4C4900751F8A /* BTClickData.m in Sources */,
 				72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */,
 				72910FD117CC7126000F7155 /* BTAppStore.m in Sources */,
+				7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */,
 				72EE456217CC626F00751F8A /* BTBandCentral.m in Sources */,
 				72EE456617CC628700751F8A /* BTGlobals.m in Sources */,
 				72E53E3317CC630E002D2708 /* main.m in Sources */,
@@ -582,6 +591,7 @@
 				72EE455D17CC61FA00751F8A /* BTAppDelegate.m in Sources */,
 				7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */,
 				7232FAFB17633ED90097CA34 /* ASIDataDecompressor.m in Sources */,
+				7277F30917CDED96001EB9E3 /* fishhook.c in Sources */,
 				72910FD217CC7126000F7155 /* BTSetupViewController.m in Sources */,
 				72910FE517CC72C4000F7155 /* Model.xcdatamodeld in Sources */,
 				7232FAFC17633ED90097CA34 /* ASIDownloadCache.m in Sources */,

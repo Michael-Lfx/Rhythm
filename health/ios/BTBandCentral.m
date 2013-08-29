@@ -214,7 +214,7 @@
                 NSLog(@"ge zaile ");
                 
                 //开始设备同步
-                [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+//                [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
                 //读取电量
                 [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
