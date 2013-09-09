@@ -216,6 +216,27 @@
                 //开始设备同步
 //                [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
+                //检查之前是否定位过零点
+                [self read:[CBUUID UUIDWithString:UUID_ZERO] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+                    
+                    NSLog(@"ZERO IS: %@", value);
+                    
+                    int16_t z;
+                    
+                    [value getBytes:&z];
+                    
+                    NSLog(@"%d", z);
+                    
+                    if (z == 0) {
+                        NSLog(@"wo ca");
+                        
+                        uint16_t pass = (int)[[NSDate date] timeIntervalSince1970]%3600;
+                        
+                        [self write:[NSData dataWithBytes:&pass length:sizeof(pass)] withUUID:[CBUUID UUIDWithString:UUID_ZERO] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
+                    }
+                    
+                }];
+                
                 //读取电量
                 [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
                     
@@ -291,7 +312,7 @@
     if (error) {
         NSLog(@"WriteValueForCharacteristic error: %@", error.localizedDescription);
     }
-//    NSLog(@"write value: %@", characteristic.value);
+    NSLog(@"write value: %@", characteristic.value);
     
     if (_setupBand != nil && [characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_CUSTORM_NAME]]) {
         NSLog(@"we did it:%@", characteristic.value);

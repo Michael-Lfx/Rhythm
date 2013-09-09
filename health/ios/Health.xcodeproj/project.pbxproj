@@ -408,13 +408,13 @@
 				72910FBF17CC70A9000F7155 /* BTCommonViewController.m */,
 				72910FB817CC7073000F7155 /* BTMainViewController.h */,
 				72910FB917CC7073000F7155 /* BTMainViewController.m */,
-				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
 				72910FC917CC70F1000F7155 /* BTNewsViewController.h */,
 				72910FCA17CC70F1000F7155 /* BTNewsViewController.m */,
 				72910FC117CC70B2000F7155 /* BTRootViewController.h */,
 				72910FC217CC70B2000F7155 /* BTRootViewController.m */,
 				72910FCF17CC7126000F7155 /* BTSetupViewController.h */,
 				72910FD017CC7126000F7155 /* BTSetupViewController.m */,
+				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -447,9 +447,9 @@
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				7232FAA1176339070097CA34 /* asi-http-request */,
 				7277F30717CDED96001EB9E3 /* fishhook.c */,
 				7277F30817CDED96001EB9E3 /* fishhook.h */,
-				7232FAA1176339070097CA34 /* asi-http-request */,
 				7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */,
 			);
 			name = Library;

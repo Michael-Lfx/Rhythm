@@ -64,6 +64,8 @@
 		723FA12C175DEDFD00DEF5E0 /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12B175DEDFD00DEF5E0 /* BTConstants.m */; };
 		723FA12F175DF4C500DEF5E0 /* BTRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */; };
 		723FA138175E37A500DEF5E0 /* BTBandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 723FA137175E37A500DEF5E0 /* BTBandViewController.m */; };
+		724661D017DD7CE600A69E36 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 724661CE17DD7CE600A69E36 /* fishhook.c */; };
+		724661D217DD7D0B00A69E36 /* QuietAssertMacros.c in Sources */ = {isa = PBXBuildFile; fileRef = 724661D117DD7D0B00A69E36 /* QuietAssertMacros.c */; };
 		725CB5931760A4D70020FC78 /* band-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5901760A4D70020FC78 /* band-button.png */; };
 		725CB5941760A4D70020FC78 /* beat-note-plus-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5911760A4D70020FC78 /* beat-note-plus-button.png */; };
 		725CB5951760A4D70020FC78 /* common-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 725CB5921760A4D70020FC78 /* common-button.png */; };
@@ -278,6 +280,9 @@
 		723FA12E175DF4C500DEF5E0 /* BTRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTRootViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		723FA136175E37A500DEF5E0 /* BTBandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBandViewController.h; sourceTree = "<group>"; };
 		723FA137175E37A500DEF5E0 /* BTBandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBandViewController.m; sourceTree = "<group>"; };
+		724661CE17DD7CE600A69E36 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		724661CF17DD7CE600A69E36 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
+		724661D117DD7D0B00A69E36 /* QuietAssertMacros.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = QuietAssertMacros.c; sourceTree = "<group>"; };
 		725CB5901760A4D70020FC78 /* band-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "band-button.png"; sourceTree = "<group>"; };
 		725CB5911760A4D70020FC78 /* beat-note-plus-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "beat-note-plus-button.png"; sourceTree = "<group>"; };
 		725CB5921760A4D70020FC78 /* common-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "common-button.png"; sourceTree = "<group>"; };
@@ -971,6 +976,9 @@
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				724661D117DD7D0B00A69E36 /* QuietAssertMacros.c */,
+				724661CE17DD7CE600A69E36 /* fishhook.c */,
+				724661CF17DD7CE600A69E36 /* fishhook.h */,
 				F46541C6178013AE0035C351 /* Novocaine */,
 				7232FAA1176339070097CA34 /* asi-http-request */,
 				F4CE3DF41764BB4500F314D8 /* ObjectAL (iOS) */,
@@ -1143,6 +1151,7 @@
 				72893566175DA8D900EED04E /* main.m in Sources */,
 				72F044E31785815F0056AA63 /* Model.xcdatamodeld in Sources */,
 				7289356A175DA8D900EED04E /* BTAppDelegate.m in Sources */,
+				724661D217DD7D0B00A69E36 /* QuietAssertMacros.c in Sources */,
 				72893576175DA8D900EED04E /* BTMainViewController.m in Sources */,
 				7289357E175DA97100EED04E /* BTBaseViewController.m in Sources */,
 				72893583175DAA7400EED04E /* BTGlobals.m in Sources */,
@@ -1197,6 +1206,7 @@
 				F4CE3E501764BB4600F314D8 /* OALAudioFile.m in Sources */,
 				F4CE3E511764BB4600F314D8 /* OALTools.m in Sources */,
 				723D531317991CC4001DA281 /* BTMidiPlayer.m in Sources */,
+				724661D017DD7CE600A69E36 /* fishhook.c in Sources */,
 				723D531017991CC4001DA281 /* BTMidiClock.m in Sources */,
 				F4536FCE1769C98B00D1ED41 /* BTBeat.m in Sources */,
 				72FAC807176326C100A6DAE0 /* BTAppStore.m in Sources */,
