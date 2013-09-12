@@ -159,8 +159,11 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
     // 处理推送消息
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"通知" message:@"我的信息" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+    NSString* info = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+    
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"通知" message:info delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
     [alert show];
+    
     NSLog(@"%@", userInfo);
 }
 
