@@ -24,6 +24,8 @@
 		7277F30917CDED96001EB9E3 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30717CDED96001EB9E3 /* fishhook.c */; };
 		7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */; };
 		727C7F4717E1893200D8FF02 /* main-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4617E1893200D8FF02 /* main-bg.png */; };
+		727C7F4917E18FA400D8FF02 /* ask-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4817E18FA400D8FF02 /* ask-bg.png */; };
+		727C7F4B17E18FAC00D8FF02 /* news-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4A17E18FAC00D8FF02 /* news-bg.png */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -121,6 +123,8 @@
 		7277F30817CDED96001EB9E3 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
 		7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = QuietAssertMacros.c; sourceTree = "<group>"; };
 		727C7F4617E1893200D8FF02 /* main-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-bg.png"; sourceTree = SOURCE_ROOT; };
+		727C7F4817E18FA400D8FF02 /* ask-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ask-bg.png"; sourceTree = SOURCE_ROOT; };
+		727C7F4A17E18FAC00D8FF02 /* news-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "news-bg.png"; sourceTree = SOURCE_ROOT; };
 		72893556175DA8D900EED04E /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -246,6 +250,7 @@
 				72E53E3717CC6334002D2708 /* root-bg.png */,
 				72E53E3817CC6334002D2708 /* Default-568h@2x.png */,
 				72E53E3917CC6334002D2708 /* Default.png */,
+				727C7F4A17E18FAC00D8FF02 /* news-bg.png */,
 				72E53E3A17CC6334002D2708 /* Default@2x.png */,
 				72E53E3B17CC6334002D2708 /* Icon-full_04.png */,
 				72E53E3C17CC6334002D2708 /* Icon.png */,
@@ -254,6 +259,7 @@
 				72E53E3F17CC6334002D2708 /* 29.png */,
 				72E53E4017CC6334002D2708 /* 29@2x.png */,
 				72E53E4117CC6334002D2708 /* 30.png */,
+				727C7F4817E18FA400D8FF02 /* ask-bg.png */,
 				72E53E4217CC6334002D2708 /* 40.png */,
 				72E53E4317CC6334002D2708 /* 44.png */,
 				72E53E4417CC6334002D2708 /* 50.png */,
@@ -549,6 +555,7 @@
 				72E53E6017CC6334002D2708 /* 44.png in Resources */,
 				72910FDE17CC7182000F7155 /* Localizable.strings in Resources */,
 				72E53E5D17CC6334002D2708 /* 29@2x.png in Resources */,
+				727C7F4917E18FA400D8FF02 /* ask-bg.png in Resources */,
 				72E53E5217CC6334002D2708 /* band-button.png in Resources */,
 				72E53E5717CC6334002D2708 /* Default@2x.png in Resources */,
 				72E53E6517CC6334002D2708 /* 72.png in Resources */,
@@ -562,6 +569,8 @@
 				72E53E6A17CC6334002D2708 /* 480.png in Resources */,
 				72E53E5C17CC6334002D2708 /* 29.png in Resources */,
 				72E53E5A17CC6334002D2708 /* Icon@2x.png in Resources */,
+				727C7F4B17E18FAC00D8FF02 /* news-bg.png in Resources */,
+				7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */,
 				727C7F4717E1893200D8FF02 /* main-bg.png in Resources */,
 				72E53E5F17CC6334002D2708 /* 40.png in Resources */,
 				F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */,
