@@ -20,7 +20,6 @@
 		7232FB07176340310097CA34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB06176340300097CA34 /* SystemConfiguration.framework */; };
 		7232FB091763403A0097CA34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB081763403A0097CA34 /* MobileCoreServices.framework */; };
 		7232FB0B1763405A0097CA34 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */; };
-		7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7232FB35176447D50097CA34 /* MainStoryboard.storyboard */; };
 		725CB5AD1760A5DF0020FC78 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725CB5AC1760A5DF0020FC78 /* CoreData.framework */; };
 		7277F30917CDED96001EB9E3 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30717CDED96001EB9E3 /* fishhook.c */; };
 		7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */; };
@@ -82,6 +81,7 @@
 		72EE456917CC629000751F8A /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456817CC629000751F8A /* BTConstants.m */; };
 		72F044E41785815F0056AA63 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E21785815F0056AA63 /* BTBleList.m */; };
 		72F5537B1768AA4A00615B61 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */; };
+		F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F450FF4F17E84BB6005AB96C /* MainStoryboard.storyboard */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
 		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
@@ -116,7 +116,6 @@
 		7232FB06176340300097CA34 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7232FB081763403A0097CA34 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
-		7232FB4E176457360097CA34 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		725CB5AC1760A5DF0020FC78 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7277F30717CDED96001EB9E3 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 		7277F30817CDED96001EB9E3 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
@@ -205,6 +204,7 @@
 		72F044E11785815F0056AA63 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBleList.h; sourceTree = "<group>"; };
 		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBleList.m; sourceTree = "<group>"; };
 		72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		F450FF5017E84BB6005AB96C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -417,7 +417,7 @@
 				72910FC217CC70B2000F7155 /* BTRootViewController.m */,
 				72910FCF17CC7126000F7155 /* BTSetupViewController.h */,
 				72910FD017CC7126000F7155 /* BTSetupViewController.m */,
-				7232FB35176447D50097CA34 /* MainStoryboard.storyboard */,
+				F450FF4F17E84BB6005AB96C /* MainStoryboard.storyboard */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -562,9 +562,9 @@
 				72E53E6A17CC6334002D2708 /* 480.png in Resources */,
 				72E53E5C17CC6334002D2708 /* 29.png in Resources */,
 				72E53E5A17CC6334002D2708 /* Icon@2x.png in Resources */,
-				7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */,
 				727C7F4717E1893200D8FF02 /* main-bg.png in Resources */,
 				72E53E5F17CC6334002D2708 /* 40.png in Resources */,
+				F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */,
 				72E53E5517CC6334002D2708 /* Default-568h@2x.png in Resources */,
 				72E53E5E17CC6334002D2708 /* 30.png in Resources */,
 				72E53E3117CC6302002D2708 /* Health-Info.plist in Resources */,
@@ -616,15 +616,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		7232FB35176447D50097CA34 /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7232FB4E176457360097CA34 /* en */,
-			);
-			name = MainStoryboard.storyboard;
-			path = /Users/lanyu/dev/Rhythm/health/ios;
-			sourceTree = "<absolute>";
-		};
 		72910FD917CC7182000F7155 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -643,6 +634,14 @@
 				72910FE217CC71A4000F7155 /* zh-Hant */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F450FF4F17E84BB6005AB96C /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F450FF5017E84BB6005AB96C /* en */,
+			);
+			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
