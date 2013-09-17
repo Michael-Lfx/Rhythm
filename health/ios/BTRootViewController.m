@@ -40,7 +40,7 @@
     NSLog(@"%d", screenHeight);
     
     //如果是ip5的话，scrollview上面少40像素，里面的子view保持460高度不变
-    scrollY = 54;
+    scrollY = 0;
     
     int buttonY = 0, pageY = 40;
     
