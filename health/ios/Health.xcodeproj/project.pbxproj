@@ -84,6 +84,7 @@
 		72F044E41785815F0056AA63 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E21785815F0056AA63 /* BTBleList.m */; };
 		72F5537B1768AA4A00615B61 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */; };
 		F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F450FF4F17E84BB6005AB96C /* MainStoryboard.storyboard */; };
+		F48E95A117E84D7600EBCDB0 /* BTHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = F48E95A017E84D7600EBCDB0 /* BTHistogram.m */; };
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
 		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
@@ -209,6 +210,8 @@
 		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBleList.m; sourceTree = "<group>"; };
 		72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		F450FF5017E84BB6005AB96C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
+		F48E959F17E84D7600EBCDB0 /* BTHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHistogram.h; sourceTree = SOURCE_ROOT; };
+		F48E95A017E84D7600EBCDB0 /* BTHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHistogram.m; sourceTree = SOURCE_ROOT; };
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -355,6 +358,7 @@
 				72EE455B17CC61FA00751F8A /* BTAppDelegate.h */,
 				72EE455C17CC61FA00751F8A /* BTAppDelegate.m */,
 				72F553731768A25500615B61 /* BTLE */,
+				F4BAED1017F16C9500C9A8EC /* SportsMoniter */,
 				F4E629BF17CC86A6002E6980 /* FHMoniter */,
 				F4E629BE17CC8685002E6980 /* FMMoniter */,
 				72893580175DA9E900EED04E /* Globals */,
@@ -453,6 +457,13 @@
 			name = BTLE;
 			sourceTree = "<group>";
 		};
+		F4BAED1017F16C9500C9A8EC /* SportsMoniter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SportsMoniter;
+			sourceTree = "<group>";
+		};
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +478,8 @@
 		F4E629BE17CC8685002E6980 /* FMMoniter */ = {
 			isa = PBXGroup;
 			children = (
+				F48E959F17E84D7600EBCDB0 /* BTHistogram.h */,
+				F48E95A017E84D7600EBCDB0 /* BTHistogram.m */,
 			);
 			name = FMMoniter;
 			sourceTree = "<group>";
@@ -570,7 +583,6 @@
 				72E53E5C17CC6334002D2708 /* 29.png in Resources */,
 				72E53E5A17CC6334002D2708 /* Icon@2x.png in Resources */,
 				727C7F4B17E18FAC00D8FF02 /* news-bg.png in Resources */,
-				7232FB39176447D60097CA34 /* MainStoryboard.storyboard in Resources */,
 				727C7F4717E1893200D8FF02 /* main-bg.png in Resources */,
 				72E53E5F17CC6334002D2708 /* 40.png in Resources */,
 				F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */,
@@ -619,6 +631,7 @@
 				7232FB0017633ED90097CA34 /* ASINetworkQueue.m in Sources */,
 				7232FB0317633FE40097CA34 /* Reachability.m in Sources */,
 				72910FC317CC70B2000F7155 /* BTRootViewController.m in Sources */,
+				F48E95A117E84D7600EBCDB0 /* BTHistogram.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
