@@ -19,3 +19,8 @@ DerivedData
 .metadata/
 csr/depend_Release_CSR100x
 health/csr/depend_Release_CSR100x
+*.r51
+*.d51
+*.pbi
+*.map
+*.pbd
