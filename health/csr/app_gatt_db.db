@@ -77,9 +77,9 @@ primary_service {
     characteristic {
         uuid : UUID_ZERO,
         name : "ZERO",
-        properties : [write],
+        properties : [write, read],
         flags : FLAG_IRQ,
-        size_value : 1
+        size_value : 2
     },
 
     characteristic {

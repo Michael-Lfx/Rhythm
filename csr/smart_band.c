@@ -98,7 +98,7 @@
 
 #define SPARK_LATENCY                       5
 #define SPARK_DURATION                      100
-#define SHOCK_DURATION                      150
+#define SHOCK_DURATION                      200
 
 #define SETUP_CODE                          0x1985
 #define NVM_OFFSET_SETUP_CODE               0
@@ -557,8 +557,8 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
             case HANDLE_METRONOME_ZERO:
                 GattAccessRsp(p_access_e->cid, p_access_e->handle, rc, 1, &zero.sn);
 
-                PioSet(BLED_PIO, 1);
-                PioSet(GLED_PIO, 0);
+                // PioSet(BLED_PIO, 1);
+                // PioSet(GLED_PIO, 0);
 
                 PioSets(SPARK_HEAVY_MASK, SPARK_HEAVY_MASK);
 
@@ -901,18 +901,18 @@ void AppInit (sleep_state last_sleep_state){
     PioSetMode(SHOCK_PIO, pio_mode_user);
     PioSetDir(SHOCK_PIO, PIO_DIR_OUTPUT);
 
-    PioSetMode(RLED_PIO, pio_mode_user);
-    PioSetDir(RLED_PIO, PIO_DIR_OUTPUT);
+    // PioSetMode(RLED_PIO, pio_mode_user);
+    // PioSetDir(RLED_PIO, PIO_DIR_OUTPUT);
 
-    PioSetMode(GLED_PIO, pio_mode_user);
-    PioSetDir(GLED_PIO, PIO_DIR_OUTPUT);
+    // PioSetMode(GLED_PIO, pio_mode_user);
+    // PioSetDir(GLED_PIO, PIO_DIR_OUTPUT);
 
-    PioSetMode(BLED_PIO, pio_mode_user);
-    PioSetDir(BLED_PIO, PIO_DIR_OUTPUT);
+    // PioSetMode(BLED_PIO, pio_mode_user);
+    // PioSetDir(BLED_PIO, PIO_DIR_OUTPUT);
 
-    PioSet(RLED_PIO, 0);
-    PioSet(GLED_PIO, 1);
-    PioSet(BLED_PIO, 0);
+    // PioSet(RLED_PIO, 0);
+    // PioSet(GLED_PIO, 1);
+    // PioSet(BLED_PIO, 0);
 
     /*gatt init*/
     GattInit();
@@ -1160,8 +1160,8 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
 
             // buzzer();
 
-            PioSet(BLED_PIO, 0);
-            PioSet(GLED_PIO, 1);
+            // PioSet(BLED_PIO, 0);
+            // PioSet(GLED_PIO, 1);
 
             is_connected = FALSE;
 
@@ -1176,8 +1176,8 @@ bool AppProcessLmEvent(lm_event_code event_code, LM_EVENT_T *event_data){
 
             // buzzer();
 
-            PioSet(BLED_PIO, 0);
-            PioSet(GLED_PIO, 1);
+            // PioSet(BLED_PIO, 0);
+            // PioSet(GLED_PIO, 1);
 
             PioSets(SPARK_HEAVY_MASK, 0x00UL);
 

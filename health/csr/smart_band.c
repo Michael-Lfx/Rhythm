@@ -119,7 +119,7 @@
 typedef struct
 {
     uint16  device_name[DEVICE_NAME_MAX_LENGTH / 2];
-    uint32  hour_zero_low;
+    int32   hour_zero_low;
     uint16  hour_zero_high;
 }HEALTH;
 
@@ -229,11 +229,11 @@ static void buzzer(void){
 
 /*spark timer*/
 static void sparkStopTimerHandler(timer_id tid){
-    PioSet(LED1_PIO, FALSE);
+    PioSet(LED2_PIO, FALSE);
 }
 
 static void spark(void){
-    PioSet(LED1_PIO, TRUE);
+    PioSet(LED2_PIO, TRUE);
 
     timer.buzzer = TimerCreate((SPARK_DURATION* MILLISECOND), TRUE, sparkStopTimerHandler);
 }
@@ -374,6 +374,20 @@ static void handleSignalGattAccessInd(GATT_ACCESS_IND_T* p_access_e)
 
                 break;
 
+            case HANDLE_ZERO:;
+
+                uint8 z[2] = {
+                    LE8_L(health.hour_zero_low),
+                    LE8_H(health.hour_zero_low)
+                };
+
+                DebugWriteString("low:");
+                DebugWriteUint16(health.hour_zero_low);
+
+                GattAccessRsp(p_access_e->cid, p_access_e->handle, rc, 2, z);
+
+                break;
+
             default:
                 GattAccessRsp(p_access_e->cid, p_access_e->handle, rc, 0, NULL);
 
@@ -508,6 +522,8 @@ static void save2Data(uint16 offset, uint8 count){
         temp |= count << 8;
     }
 
+    click_data[sn] = temp;
+
 }
 
 static bool click(void){
@@ -521,6 +537,8 @@ static bool click(void){
     if(((int32)low - (int32)current.last) / 1000000 < CLICK_INTERVAL){
         return FALSE;
     }
+
+    DebugWriteString("\r\nclick\r\n");
 
     uint16 offset = (((int16)high - (int16)health.hour_zero_high) * UINT32_MINS + ((int32)low / MICRO_A_MIN - (int32)health.hour_zero_low)) /60;
 
@@ -542,6 +560,17 @@ static bool click(void){
     current.last = low;
 
     DebugWriteUint16 (offset);
+    DebugWriteUint8(current.count);
+
+
+    int i;
+
+    for (i = 0; i < DATA_SIZE / 2; ++i)
+    {
+        if(click_data[i]){
+            DebugWriteUint16(click_data[i]);
+        }
+    }
 
     return TRUE;
 }
@@ -556,6 +585,8 @@ void AppPowerOnReset(void){
 }
 
 void AppInit (sleep_state last_sleep_state){
+
+    SleepModeChange(sleep_mode_deep);
 
     static uint16 app_timers[ SIZEOF_APP_TIMER * MAX_APP_TIMERS ];
 
