@@ -64,15 +64,15 @@
 #define NOTETYPE_MAX                    0.5f
 
 //蓝牙服务uuid
-#define CHARACTERISTICS_COUNT           4
+#define CHARACTERISTICS_COUNT          5
 
 #define UUID_HEALTH_SERVICE             @"2300"
 
 #define UUID_SYNC                       @"2301"
-#define UUID_ZERO                		@"2302"
-#define UUID_DATA                		@"2303"
-#define UUID_BATTERY_LEVEL              @"2304"
-#define UUID_CUSTORM_NAME               @"2305"
+#define UUID_CLOCK                		@"2302"
+#define UUID_DATA_LENGTH                @"2303"
+#define UUID_DATA_BODY                  @"2304"
+#define UUID_BATTERY_LEVEL              @"2305"
 
 //手环名称最大字节数
 #define DEVICE_NAME_MAX_LENGTH          16

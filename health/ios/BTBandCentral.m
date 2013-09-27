@@ -67,7 +67,7 @@
     NSLog(@"AD count:%lu", (unsigned long)advertisementData.count);
     
     //找到了就停止扫描
-//    [central stopScan];
+    [central stopScan];
     
     if (advertisementData.count) {
         //付给私有变量，不然就释放了
@@ -159,7 +159,8 @@
     
     //代理peripheral
     [peripheral setDelegate:self];
-    [peripheral discoverServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]]];
+//    [peripheral discoverServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]]];
+    [peripheral discoverServices:nil];
     
     NSLog(@"hello：%@", _allPeripherals);
 }
@@ -170,10 +171,17 @@
         NSLog(@"DiscoverServices error: %@", error.localizedDescription);
     }
     
+    
+    
     for (CBService *s in peripheral.services) {
         
-        [peripheral discoverCharacteristics:nil forService:s];
-    }
+//        if ([s.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]]) {
+            NSLog(@"s:%@", s.UUID);
+            
+            [peripheral discoverCharacteristics:nil forService:s];
+        }
+        
+//    }
 }
 
 //发现所有characteristic后的回调
@@ -190,14 +198,7 @@
         //初始化手环操作
         NSLog(@"find a new band!!!");
         
-        for (CBCharacteristic* c in service.characteristics) {
-            if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_CUSTORM_NAME]]) {
-                
-                NSLog(@"right");
-                
-                [peripheral writeValue:_setupName forCharacteristic:c type:CBCharacteristicWriteWithResponse];
-            }
-        }
+
         
     }else{
         
@@ -207,55 +208,49 @@
         
         for (CBCharacteristic* c in service.characteristics) {
             
+            NSLog(@"c:%@", c.UUID);
+            
             [bp.allCharacteristics setObject:c forKey:c.UUID];
             
             //连接完成！！
             if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
                 NSLog(@"ge zaile ");
                 
+//                uint8_t v = 22;
+                
+//                [self writeAll:[NSData dataWithBytes:&v length:sizeof(v)] withUUID:[CBUUID UUIDWithString:UUID_SYNC]];
+                
+                [self readAll:[CBUUID UUIDWithString:UUID_CLOCK] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+                    
+                    uint8_t bk;
+                    
+                    [value getBytes:&bk];
+                    
+                    NSLog(@"sync is:%d",bk);
+                }];
+                
                 //开始设备同步
 //                [self sync:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
                 
-                //检查之前是否定位过零点
-                [self read:[CBUUID UUIDWithString:UUID_ZERO] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-                    
-                    NSLog(@"ZERO IS: %@", value);
-                    
-                    int16_t z;
-                    
-                    [value getBytes:&z];
-                    
-                    NSLog(@"%d", z);
-                    
-                    if (z == 0) {
-                        NSLog(@"wo ca");
-                        
-                        uint16_t pass = (int)[[NSDate date] timeIntervalSince1970]%3600;
-                        
-                        [self write:[NSData dataWithBytes:&pass length:sizeof(pass)] withUUID:[CBUUID UUIDWithString:UUID_ZERO] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
-                    }
-                    
-                }];
-                
                 //读取电量
-                [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-                    
-                    //读取完名称和电量后
-                    self.globals.bleListCount+=0;
-                    self.globals.isConnectedBLE = YES;
-                    
-                    if ([bp.name isEqual:[[NSString alloc] initWithData:_setupName encoding:NSASCIIStringEncoding]]) {
-                        
-                        NSLog(@"finish");
-                        
-                        _setupblock(0);
-                        
-                        _setupblock = nil;
-                        _setupBand = nil;
-                        _setupName = nil;
-                    }
-                    
-                }];
+//                [self read:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL] fromPeripheral:[CBUUID UUIDWithCFUUID:peripheral.UUID] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+//                    
+//                    //读取完名称和电量后
+//                    self.globals.bleListCount+=0;
+//                    self.globals.isConnectedBLE = YES;
+//                    
+//                    if ([bp.name isEqual:[[NSString alloc] initWithData:_setupName encoding:NSASCIIStringEncoding]]) {
+//                        
+//                        NSLog(@"finish");
+//                        
+//                        _setupblock(0);
+//                        
+//                        _setupblock = nil;
+//                        _setupBand = nil;
+//                        _setupName = nil;
+//                    }
+//                    
+//                }];
             }
         }
         
@@ -314,13 +309,12 @@
     }
     NSLog(@"write value: %@", characteristic.value);
     
-    if (_setupBand != nil && [characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_CUSTORM_NAME]]) {
-        NSLog(@"we did it:%@", characteristic.value);
-    }
 }
 
 //某个peripheral断开连接
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    
+    NSLog(@"dis:%@ err:%@", peripheral, error);
 
     //从缓存中移除
     [_allPeripherals removeObjectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
@@ -333,7 +327,7 @@
     }
     
     //断开连接后自动重新搜索
-    [self scan];
+//    [self scan];
 }
 
 
@@ -419,8 +413,9 @@
 //主动重新搜索
 -(void)scan{
     
-//    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_METRONOME_SERVICE]] options:nil];
-    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
+    [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]] options:nil];
+    
+//    [_cm scanForPeripheralsWithServices:nil options:nil];
     
     NSLog(@"scan ForPeripherals");
 }
