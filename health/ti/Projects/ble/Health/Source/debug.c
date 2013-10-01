@@ -56,7 +56,10 @@ void serialInitTransport(){
 }
 
 void DebugWrite( uint8 data[] ){
+  uint8 wrap[] = "\r\n";
+
   HalUARTWrite( DEBUG_UART_PORT, data, osal_strlen((char*)data));
+  HalUARTWrite( DEBUG_UART_PORT, wrap, osal_strlen((char*)wrap));
 }
 
 /******************************************************************************

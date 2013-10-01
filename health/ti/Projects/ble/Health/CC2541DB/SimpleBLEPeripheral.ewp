@@ -1335,7 +1335,6 @@
           <state>HAL_UART_DMA=1</state>
           <state>HAL_KEY=FALSE</state>
           <state>xFAC_TEST=TRUE</state>
-          <state>OSAL_SNV_UINT16_ID</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

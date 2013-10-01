@@ -7,14 +7,12 @@
 #include "bcomdef.h"
 #include "OSAL.h"
 #include "OSAL_PwrMgr.h"
-#include "osal_snv.h"
 
 #include "OnBoard.h"
 #include "hal_adc.h"
 #include "hal_led.h"
 #include "hal_key.h"
 #include "hal_lcd.h"
-#include "hal_flash.h"
 
 #include "battservice.h"
 
@@ -130,7 +128,7 @@ static gaprole_States_t gapProfileState = GAPROLE_INIT;
 uint8 scanRspData[] =
 {
   // complete name
-  0x09,   // length of this data
+  0x0A,   // length of this data
   GAP_ADTYPE_LOCAL_NAME_COMPLETE,
   'A', 
   '1', 
@@ -246,29 +244,32 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   Debug_init(task_id);
   
   #if (defined HAL_UART) && (HAL_UART == TRUE)
-    DebugWrite("wo ca\r\n");
+    DebugWrite("Status OK");
   #endif
     
   // use low 6 bytes mac address of ti2541 to be our sn
   char hex[] = "0123456789ABCDEF";
   uint8 ownAddress[B_ADDR_LEN];
   
+  // read unique ieee address
   LL_ReadBDADDR(ownAddress);
-  // HalLcdWriteStringValue( "mac:", LO_UINT8(ownAddress[0]), 16, HAL_LCD_LINE_5 );
   
-  scanRspData[5] = hex[HI_UINT8(ownAddress[2])];
-  scanRspData[6] = hex[LO_UINT8(ownAddress[2])];
-  scanRspData[7] = hex[HI_UINT8(ownAddress[1])];
-  scanRspData[8] = hex[LO_UINT8(ownAddress[1])];
-  scanRspData[9] = hex[HI_UINT8(ownAddress[0])];
-  scanRspData[10] = hex[LO_UINT8(ownAddress[0])];
-
-  attDeviceName[3] = hex[HI_UINT8(ownAddress[2])];
-  attDeviceName[4] = hex[LO_UINT8(ownAddress[2])];
-  attDeviceName[5] = hex[HI_UINT8(ownAddress[1])];
-  attDeviceName[6] = hex[LO_UINT8(ownAddress[1])];
-  attDeviceName[7] = hex[HI_UINT8(ownAddress[0])];
-  attDeviceName[8] = hex[LO_UINT8(ownAddress[0])];
+  uint8 sn[] = {
+    hex[HI_UINT8(ownAddress[2])],
+    hex[LO_UINT8(ownAddress[2])],
+    hex[HI_UINT8(ownAddress[1])],
+    hex[LO_UINT8(ownAddress[1])],
+    hex[HI_UINT8(ownAddress[0])],
+    hex[LO_UINT8(ownAddress[0])]
+  };
+  
+  // rewrite device name
+  osal_memcpy(&scanRspData[5], sn, 6);
+  osal_memcpy(&attDeviceName[3], sn, 6);
+  
+  #if (defined HAL_UART) && (HAL_UART == TRUE)
+    DebugWrite(attDeviceName);
+  #endif
 
   // Setup the GAP
   VOID GAP_SetParamValue( TGAP_CONN_PAUSE_PERIPHERAL, DEFAULT_CONN_PAUSE_PERIPHERAL );
