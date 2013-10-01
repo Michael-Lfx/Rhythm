@@ -1,41 +1,4 @@
-/**************************************************************************************************
-  Filename:       simpleBLEPeripheral.c
-  Revised:        $Date: 2010-08-06 08:56:11 -0700 (Fri, 06 Aug 2010) $
-  Revision:       $Revision: 23333 $
 
-  Description:    This file contains the Simple BLE Peripheral sample application
-                  for use with the CC2540 Bluetooth Low Energy Protocol Stack.
-
-  Copyright 2010 - 2013 Texas Instruments Incorporated. All rights reserved.
-
-  IMPORTANT: Your use of this Software is limited to those specific rights
-  granted under the terms of a software license agreement between the user
-  who downloaded the software, his/her employer (which must be your employer)
-  and Texas Instruments Incorporated (the "License").  You may not use this
-  Software unless you agree to abide by the terms of the License. The License
-  limits your use, and you acknowledge, that the Software may not be modified,
-  copied or distributed unless embedded on a Texas Instruments microcontroller
-  or used solely and exclusively in conjunction with a Texas Instruments radio
-  frequency transceiver, which is integrated into your product.  Other than for
-  the foregoing purpose, you may not use, reproduce, copy, prepare derivative
-  works of, modify, distribute, perform, display or sell this Software and/or
-  its documentation for any purpose.
-
-  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED 揂S IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
-  INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
-  NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
-  TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
-  NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR OTHER
-  LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
-  INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE
-  OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
-  OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
-  (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-
-  Should you have any questions regarding your right to use this Software,
-  contact Texas Instruments Incorporated at www.TI.com.
-**************************************************************************************************/
 
 /*********************************************************************
  * INCLUDES
@@ -44,16 +7,17 @@
 #include "bcomdef.h"
 #include "OSAL.h"
 #include "OSAL_PwrMgr.h"
+#include "osal_snv.h"
 
 #include "OnBoard.h"
 #include "hal_adc.h"
 #include "hal_led.h"
 #include "hal_key.h"
 #include "hal_lcd.h"
+#include "hal_flash.h"
 
 #include "battservice.h"
 
-//开启调试模式时才加载
 #if (defined HAL_UART) && (HAL_UART == TRUE)
   #include "debug.h"
 #endif
@@ -163,30 +127,20 @@ static uint8 simpleBLEPeripheral_TaskID;   // Task ID for internal task/event pr
 static gaprole_States_t gapProfileState = GAPROLE_INIT;
 
 // GAP - SCAN RSP data (max size = 31 bytes)
-static uint8 scanRspData[] =
+uint8 scanRspData[] =
 {
   // complete name
-  0x14,   // length of this data
+  0x09,   // length of this data
   GAP_ADTYPE_LOCAL_NAME_COMPLETE,
-  0x53,   // 'S'
-  0x69,   // 'i'
-  0x6d,   // 'm'
-  0x70,   // 'p'
-  0x6c,   // 'l'
-  0x65,   // 'e'
-  0x42,   // 'B'
-  0x4c,   // 'L'
-  0x45,   // 'E'
-  0x50,   // 'P'
-  0x65,   // 'e'
-  0x72,   // 'r'
-  0x69,   // 'i'
-  0x70,   // 'p'
-  0x68,   // 'h'
-  0x65,   // 'e'
-  0x72,   // 'r'
-  0x61,   // 'a'
-  0x6c,   // 'l'
+  'A', 
+  '1', 
+  '-', 
+  '0', 
+  '0', 
+  '0', 
+  '0', 
+  '0', 
+  '0', 
 
   // connection interval range
   0x05,   // length of this data
@@ -223,7 +177,7 @@ static uint8 advertData[] =
 };
 
 // GAP GATT Attributes
-static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Simple BLE Peripheral";
+uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "A1-000000";
 
 /*********************************************************************
  * LOCAL FUNCTIONS
@@ -294,6 +248,27 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   #if (defined HAL_UART) && (HAL_UART == TRUE)
     DebugWrite("wo ca\r\n");
   #endif
+    
+  // use low 6 bytes mac address of ti2541 to be our sn
+  char hex[] = "0123456789ABCDEF";
+  uint8 ownAddress[B_ADDR_LEN];
+  
+  LL_ReadBDADDR(ownAddress);
+  // HalLcdWriteStringValue( "mac:", LO_UINT8(ownAddress[0]), 16, HAL_LCD_LINE_5 );
+  
+  scanRspData[5] = hex[HI_UINT8(ownAddress[2])];
+  scanRspData[6] = hex[LO_UINT8(ownAddress[2])];
+  scanRspData[7] = hex[HI_UINT8(ownAddress[1])];
+  scanRspData[8] = hex[LO_UINT8(ownAddress[1])];
+  scanRspData[9] = hex[HI_UINT8(ownAddress[0])];
+  scanRspData[10] = hex[LO_UINT8(ownAddress[0])];
+
+  attDeviceName[3] = hex[HI_UINT8(ownAddress[2])];
+  attDeviceName[4] = hex[LO_UINT8(ownAddress[2])];
+  attDeviceName[5] = hex[HI_UINT8(ownAddress[1])];
+  attDeviceName[6] = hex[LO_UINT8(ownAddress[1])];
+  attDeviceName[7] = hex[HI_UINT8(ownAddress[0])];
+  attDeviceName[8] = hex[LO_UINT8(ownAddress[0])];
 
   // Setup the GAP
   VOID GAP_SetParamValue( TGAP_CONN_PAUSE_PERIPHERAL, DEFAULT_CONN_PAUSE_PERIPHERAL );
@@ -383,8 +358,32 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof ( uint8 ), &charValue4 );
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR5, SIMPLEPROFILE_CHAR5_LEN, charValue5 );
   }
-
-
+  
+  #if (defined FAC_TEST) && (FAC_TEST == TRUE)
+  
+    P0DIR |= BV(0)|BV(1)|BV(2)|BV(3)|BV(4);
+    P0SEL &= ~(BV(0)|BV(1)|BV(2)|BV(3)|BV(4));
+    
+    P0_0 = 1;
+    P0_1 = 1;
+    P0_2 = 1;
+    P0_3 = 1;
+    P0_4 = 1;
+    
+    // P1DIR |= BV(0)|BV(1);
+    // P1SEL &= ~(BV(0)|BV(1));
+    
+    // P1_0 = 1;
+    // P1_1 = 1;
+    
+    osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
+    
+  #endif
+    
+    
+  
+  
+  
 #if defined( CC2540_MINIDK )
 
   SK_AddService( GATT_ALL_SERVICES ); // Simple Keys Profile
@@ -509,6 +508,22 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 
     return (events ^ SBP_PERIODIC_EVT);
   }
+  
+#if (defined FAC_TEST) && (FAC_TEST == TRUE)
+  
+  if ( events & SBP_LED_STOP_EVT )
+  {
+   
+    P0_0 = 0;
+    P0_1 = 0;
+    P0_2 = 0;
+    P0_3 = 0;
+    P0_4 = 0;
+
+    return (events ^ SBP_LED_STOP_EVT);
+  }
+  
+#endif
 
 #if defined ( PLUS_BROADCASTER )
   if ( events & SBP_ADV_IN_CONNECTION_EVT )
@@ -643,6 +658,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
         systemId[7] = ownAddress[5];
         systemId[6] = ownAddress[4];
         systemId[5] = ownAddress[3];
+        
 
         DevInfo_SetParameter(DEVINFO_SYSTEM_ID, DEVINFO_SYSTEM_ID_LEN, systemId);
 

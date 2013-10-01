@@ -1330,10 +1330,12 @@
           <state>POWER_SAVING</state>
           <state>xPLUS_BROADCASTER</state>
           <state>HAL_LCD=TRUE</state>
-          <state>HAL_LED=FALSE</state>
+          <state>HAL_LED=TRUE</state>
           <state>HAL_UART=TRUE</state>
           <state>HAL_UART_DMA=1</state>
           <state>HAL_KEY=FALSE</state>
+          <state>xFAC_TEST=TRUE</state>
+          <state>OSAL_SNV_UINT16_ID</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
