@@ -29,10 +29,6 @@
 #include "devinfoservice.h"
 #include "health_profile.h"
 
-#if defined( CC2540_MINIDK )
-  #include "simplekeys.h"
-#endif
-
 #if defined ( PLUS_BROADCASTER )
   #include "peripheralBroadcaster.h"
 #else
@@ -65,11 +61,7 @@
 // Limited discoverable mode advertises for 30.72s, and then stops
 // General discoverable mode advertises indefinitely
 
-#if defined ( CC2540_MINIDK )
-#define DEFAULT_DISCOVERABLE_MODE             GAP_ADTYPE_FLAGS_LIMITED
-#else
 #define DEFAULT_DISCOVERABLE_MODE             GAP_ADTYPE_FLAGS_GENERAL
-#endif  // defined ( CC2540_MINIDK )
 
 // Minimum connection interval (units of 1.25ms, 80=100ms) if automatic parameter update request is enabled
 #define DEFAULT_DESIRED_MIN_CONN_INTERVAL     80
@@ -96,6 +88,9 @@
 
 // Length of bd addr as a string   
 #define B_ADDR_STR_LEN                        15
+
+// Length of sn as a string
+#define SN_LEN                                6
 
 #if defined ( PLUS_BROADCASTER )
   #define ADV_IN_CONN_WAIT                    500 // delay 500 ms
@@ -128,7 +123,7 @@ static gaprole_States_t gapProfileState = GAPROLE_INIT;
 uint8 scanRspData[] =
 {
   // complete name
-  0x0A,   // length of this data
+  0x0A,   // length of this data, p.s. contain header and body
   GAP_ADTYPE_LOCAL_NAME_COMPLETE,
   'A', 
   '1', 
@@ -143,9 +138,9 @@ uint8 scanRspData[] =
   // connection interval range
   0x05,   // length of this data
   GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE,
-  LO_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),   // 100ms
+  LO_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),
   HI_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),
-  LO_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),   // 1s
+  LO_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),
   HI_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),
 
   // Tx power level
@@ -184,10 +179,6 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void performPeriodicTask( void );
 static void simpleProfileChangeCB( uint8 paramID );
-
-#if defined( CC2540_MINIDK )
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys );
-#endif
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
 static char *bdAddr2Str ( uint8 *pAddr );
@@ -254,7 +245,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   // read unique ieee address
   LL_ReadBDADDR(ownAddress);
   
-  uint8 sn[] = {
+  uint8 sn[SN_LEN] = {
     hex[HI_UINT8(ownAddress[2])],
     hex[LO_UINT8(ownAddress[2])],
     hex[HI_UINT8(ownAddress[1])],
@@ -264,8 +255,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   };
   
   // rewrite device name
-  osal_memcpy(&scanRspData[5], sn, 6);
-  osal_memcpy(&attDeviceName[3], sn, 6);
+  osal_memcpy(&scanRspData[5], sn, SN_LEN);
+  osal_memcpy(&attDeviceName[3], sn, SN_LEN);
   
   #if (defined HAL_UART) && (HAL_UART == TRUE)
     DebugWrite(attDeviceName);
@@ -276,13 +267,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
   // Setup the GAP Peripheral Role Profile
   {
-    #if defined( CC2540_MINIDK )
-      // For the CC2540DK-MINI keyfob, device doesn't start advertising until button is pressed
-      uint8 initial_advertising_enable = FALSE;
-    #else
-      // For other hardware platforms, device starts advertising upon initialization
-      uint8 initial_advertising_enable = TRUE;
-    #endif
+    // For other hardware platforms, device starts advertising upon initialization
+    uint8 initial_advertising_enable = TRUE;
 
     // By setting this to zero, the device will go into the waiting state after
     // being discoverable for 30.72 second, and will not being advertising again
@@ -380,39 +366,6 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
     
   #endif
-    
-    
-  
-  
-  
-#if defined( CC2540_MINIDK )
-
-  SK_AddService( GATT_ALL_SERVICES ); // Simple Keys Profile
-
-  // Register for all key events - This app will handle all key events
-  RegisterForKeys( simpleBLEPeripheral_TaskID );
-
-  // makes sure LEDs are off
-  HalLedSet( (HAL_LED_1 | HAL_LED_2), HAL_LED_MODE_OFF );
-
-  // For keyfob board set GPIO pins into a power-optimized state
-  // Note that there is still some leakage current from the buzzer,
-  // accelerometer, LEDs, and buttons on the PCB.
-
-  P0SEL = 0; // Configure Port 0 as GPIO
-  P1SEL = 0; // Configure Port 1 as GPIO
-  P2SEL = 0; // Configure Port 2 as GPIO
-
-  P0DIR = 0xFC; // Port 0 pins P0.0 and P0.1 as input (buttons),
-                // all others (P0.2-P0.7) as output
-  P1DIR = 0xFF; // All port 1 pins (P1.0-P1.7) as output
-  P2DIR = 0x1F; // All port 1 pins (P2.0-P2.4) as output
-
-  P0 = 0x03; // All pins on port 0 to low except for P0.0 and P0.1 (buttons)
-  P1 = 0;   // All pins on port 1 to low
-  P2 = 0;   // All pins on port 2 to low
-
-#endif // #if defined( CC2540_MINIDK )
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
 
@@ -554,77 +507,12 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
 {
   switch ( pMsg->event )
   {
-  #if defined( CC2540_MINIDK )
-    case KEY_CHANGE:
-      simpleBLEPeripheral_HandleKeys( ((keyChange_t *)pMsg)->state, ((keyChange_t *)pMsg)->keys );
-      break;
-  #endif // #if defined( CC2540_MINIDK )
 
   default:
     // do nothing
     break;
   }
 }
-
-#if defined( CC2540_MINIDK )
-/*********************************************************************
- * @fn      simpleBLEPeripheral_HandleKeys
- *
- * @brief   Handles all key events for this device.
- *
- * @param   shift - true if in shift/alt.
- * @param   keys - bit field for key events. Valid entries:
- *                 HAL_KEY_SW_2
- *                 HAL_KEY_SW_1
- *
- * @return  none
- */
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
-{
-  uint8 SK_Keys = 0;
-
-  VOID shift;  // Intentionally unreferenced parameter
-
-  if ( keys & HAL_KEY_SW_1 )
-  {
-    SK_Keys |= SK_KEY_LEFT;
-  }
-
-  if ( keys & HAL_KEY_SW_2 )
-  {
-
-    SK_Keys |= SK_KEY_RIGHT;
-
-    // if device is not in a connection, pressing the right key should toggle
-    // advertising on and off
-    if( gapProfileState != GAPROLE_CONNECTED )
-    {
-      uint8 current_adv_enabled_status;
-      uint8 new_adv_enabled_status;
-
-      //Find the current GAP advertisement status
-      GAPRole_GetParameter( GAPROLE_ADVERT_ENABLED, &current_adv_enabled_status );
-
-      if( current_adv_enabled_status == FALSE )
-      {
-        new_adv_enabled_status = TRUE;
-      }
-      else
-      {
-        new_adv_enabled_status = FALSE;
-      }
-
-      //change the GAP advertisement status to opposite of current status
-      GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &new_adv_enabled_status );
-    }
-
-  }
-
-  // Set the value of the keys state to the Simple Keys Profile;
-  // This will send out a notification of the keys state if enabled
-  SK_SetParameter( SK_KEY_ATTR, sizeof ( uint8 ), &SK_Keys );
-}
-#endif // #if defined( CC2540_MINIDK )
 
 /*********************************************************************
  * @fn      peripheralStateNotificationCB
@@ -723,10 +611,8 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 
   gapProfileState = newState;
 
-#if !defined( CC2540_MINIDK )
   VOID gapProfileState;     // added to prevent compiler warning with
                             // "CC2540 Slave" configurations
-#endif
 
 
 }
