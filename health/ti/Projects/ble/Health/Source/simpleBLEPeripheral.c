@@ -89,9 +89,6 @@
 // Length of bd addr as a string   
 #define B_ADDR_STR_LEN                        15
 
-// Length of sn as a string
-#define SN_LEN                                6
-
 #if defined ( PLUS_BROADCASTER )
   #define ADV_IN_CONN_WAIT                    500 // delay 500 ms
 #endif
@@ -245,7 +242,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   // read unique ieee address
   LL_ReadBDADDR(ownAddress);
   
-  uint8 sn[SN_LEN] = {
+  uint8 sn[] = {
     hex[HI_UINT8(ownAddress[2])],
     hex[LO_UINT8(ownAddress[2])],
     hex[HI_UINT8(ownAddress[1])],
@@ -255,8 +252,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   };
   
   // rewrite device name
-  osal_memcpy(&scanRspData[5], sn, SN_LEN);
-  osal_memcpy(&attDeviceName[3], sn, SN_LEN);
+  osal_memcpy(&scanRspData[5], sn, sizeof(sn));
+  osal_memcpy(&attDeviceName[3], sn, sizeof(sn));
   
   #if (defined HAL_UART) && (HAL_UART == TRUE)
     DebugWrite(attDeviceName);
@@ -680,6 +677,15 @@ static void simpleProfileChangeCB( uint8 paramID )
 
       #if (defined HAL_LCD) && (HAL_LCD == TRUE)
         HalLcdWriteStringValue( "Char 3:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
+      #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+
+      break;
+      
+    case HEALTH_CLOCK:
+      SimpleProfile_GetParameter( HEALTH_CLOCK, &newValue );
+
+      #if (defined HAL_LCD) && (HAL_LCD == TRUE)
+        HalLcdWriteStringValue( "CLOCK:", (uint32)(newValue), 10,  HAL_LCD_LINE_3 );
       #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
 
       break;

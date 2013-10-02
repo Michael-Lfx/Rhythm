@@ -24,3 +24,4 @@ health/csr/depend_Release_CSR100x
 *.pbi
 *.map
 *.pbd
+*.hex

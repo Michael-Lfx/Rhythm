@@ -139,10 +139,10 @@ static uint8 healthSyncUserDesp[17] = "Characteristic 1\0";
 
 
 // Simple Profile Characteristic 2 Properties
-static uint8 healthClockProps = GATT_PROP_READ;
+static uint8 healthClockProps = GATT_PROP_READ | GATT_PROP_WRITE;
 
 // Characteristic 2 Value
-static uint8 healthClock = 0;
+static uint8 healthClock[4] = {0,0,0,0};
 
 // Simple Profile Characteristic 2 User Description
 static uint8 healthClockUserDesp[17] = "Characteristic 2\0";
@@ -233,9 +233,9 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
       // Characteristic Value 2
       { 
         { ATT_BT_UUID_SIZE, healthClockUUID },
-        GATT_PERMIT_READ, 
+        GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
         0, 
-        &healthClock 
+        healthClock 
       },
 
       // Characteristic 2 User Description
@@ -445,9 +445,10 @@ bStatus_t SimpleProfile_SetParameter( uint8 param, uint8 len, void *value )
       break;
 
     case HEALTH_CLOCK:
-      if ( len == sizeof ( uint8 ) ) 
+      if ( len == sizeof ( uint32 ) ) 
       {
-        healthClock = *((uint8*)value);
+        //healthClock = *((uint32*)value);
+        VOID osal_memcpy( healthClock, value, 4 );
       }
       else
       {
@@ -524,7 +525,8 @@ bStatus_t SimpleProfile_GetParameter( uint8 param, void *value )
       break;
 
     case HEALTH_CLOCK:
-      *((uint8*)value) = healthClock;
+      //*((uint8*)value) = healthClock;
+      VOID osal_memcpy( value, healthClock, 4 );
       break;      
 
     case HEALTH_DATA_HEADER:
@@ -660,6 +662,7 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t *
     switch ( uuid )
     {
       case HEALTH_SYNC_UUID:
+      case HEALTH_CLOCK_UUID:
       case HEALTH_DATA_HEADER_UUID:
 
         //Validate the value
@@ -668,7 +671,7 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t *
         {
           if ( len != 1 )
           {
-            status = ATT_ERR_INVALID_VALUE_SIZE;
+            //status = ATT_ERR_INVALID_VALUE_SIZE;
           }
         }
         else
@@ -686,9 +689,12 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t *
           {
             notifyApp = HEALTH_SYNC;        
           }
-          else
+          else if( pAttr->pValue == &healthDataHeader )
           {
             notifyApp = HEALTH_DATA_HEADER;           
+          }
+          else{
+            notifyApp = HEALTH_CLOCK;
           }
         }
              
