@@ -61,20 +61,16 @@ extern "C"
 #define SIMPLEPROFILE_CHAR5                   4  // RW uint8 - Profile Characteristic 4 value
   
 // Simple Profile Service UUID
-#define HEALTH_SERV_UUID             0x2300
+#define HEALTH_SERV_UUID              0x2300
     
 // Key Pressed UUID
-#define HEALTH_SYNC_UUID            0x2301
-#define HEALTH_CLOCK_UUID            0x2302
-#define HEALTH_DATA_HEADER_UUID            0x2303
-#define HEALTH_DATA_BODY_UUID            0x2304
-#define SIMPLEPROFILE_CHAR5_UUID            0x2305
+#define HEALTH_SYNC_UUID              0x2301
+#define HEALTH_CLOCK_UUID             0x2302
+#define HEALTH_DATA_HEADER_UUID       0x2303
+#define HEALTH_DATA_BODY_UUID         0x2304
   
 // Simple Keys Profile Services bit fields
-#define SIMPLEPROFILE_SERVICE               0x00000001
-
-// Length of Characteristic 5 in bytes
-#define SIMPLEPROFILE_CHAR5_LEN           5  
+#define SIMPLEPROFILE_SERVICE               0x00000001  
 
 /*********************************************************************
  * TYPEDEFS

@@ -100,12 +100,6 @@ CONST uint8 healthDataBodyUUID[ATT_BT_UUID_SIZE] =
   LO_UINT16(HEALTH_DATA_BODY_UUID), HI_UINT16(HEALTH_DATA_BODY_UUID)
 };
 
-// Characteristic 5 UUID: 0xFFF5
-CONST uint8 simpleProfilechar5UUID[ATT_BT_UUID_SIZE] =
-{ 
-  LO_UINT16(SIMPLEPROFILE_CHAR5_UUID), HI_UINT16(SIMPLEPROFILE_CHAR5_UUID)
-};
-
 /*********************************************************************
  * EXTERNAL VARIABLES
  */
@@ -172,16 +166,6 @@ static gattCharCfg_t healthDataBodyConfig[GATT_MAX_NUM_CONN];
                                         
 // Simple Profile Characteristic 4 User Description
 static uint8 healthDataBodyUserDesp[17] = "Characteristic 4\0";
-
-
-// Simple Profile Characteristic 5 Properties
-static uint8 simpleProfileChar5Props = GATT_PROP_READ;
-
-// Characteristic 5 Value
-static uint8 simpleProfileChar5[SIMPLEPROFILE_CHAR5_LEN] = { 0, 0, 0, 0, 0 };
-
-// Simple Profile Characteristic 5 User Description
-static uint8 simpleProfileChar5UserDesp[17] = "Characteristic 5\0";
 
 
 /*********************************************************************
@@ -300,31 +284,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         GATT_PERMIT_READ, 
         0, 
         healthDataBodyUserDesp 
-      },
-      
-    // Characteristic 5 Declaration
-    { 
-      { ATT_BT_UUID_SIZE, characterUUID },
-      GATT_PERMIT_READ, 
-      0,
-      &simpleProfileChar5Props 
-    },
-
-      // Characteristic Value 5
-      { 
-        { ATT_BT_UUID_SIZE, simpleProfilechar5UUID },
-        GATT_PERMIT_AUTHEN_READ, 
-        0, 
-        simpleProfileChar5 
-      },
-
-      // Characteristic 5 User Description
-      { 
-        { ATT_BT_UUID_SIZE, charUserDescUUID },
-        GATT_PERMIT_READ, 
-        0, 
-        simpleProfileChar5UserDesp 
-      },
+      }
 
 
 };
@@ -447,7 +407,6 @@ bStatus_t SimpleProfile_SetParameter( uint8 param, uint8 len, void *value )
     case HEALTH_CLOCK:
       if ( len == sizeof ( healthClock ) ) 
       {
-        //healthClock = *((uint32*)value);
         VOID osal_memcpy( healthClock, value, sizeof(healthClock) );
       }
       else
@@ -476,17 +435,6 @@ bStatus_t SimpleProfile_SetParameter( uint8 param, uint8 len, void *value )
         GATTServApp_ProcessCharCfg( healthDataBodyConfig, &healthDataBody, FALSE,
                                     simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),
                                     INVALID_TASK_ID );
-      }
-      else
-      {
-        ret = bleInvalidRange;
-      }
-      break;
-
-    case SIMPLEPROFILE_CHAR5:
-      if ( len == SIMPLEPROFILE_CHAR5_LEN ) 
-      {
-        VOID osal_memcpy( simpleProfileChar5, value, SIMPLEPROFILE_CHAR5_LEN );
       }
       else
       {
@@ -525,13 +473,6 @@ bStatus_t SimpleProfile_GetParameter( uint8 param, void *value )
       break;
 
     case HEALTH_CLOCK:
-      //*((uint8*)value) = healthClock;
-      #if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "CLOCK:", healthClock[0], 10,  HAL_LCD_LINE_4 );
-        HalLcdWriteStringValue( "CLOCK:", healthClock[1], 10,  HAL_LCD_LINE_5 );
-        HalLcdWriteStringValue( "CLOCK:", healthClock[2], 10,  HAL_LCD_LINE_6 );
-        HalLcdWriteStringValue( "CLOCK:", healthClock[3], 10,  HAL_LCD_LINE_7 );
-      #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
       VOID osal_memcpy( value, healthClock, sizeof(healthClock) );
       break;      
 
@@ -541,11 +482,7 @@ bStatus_t SimpleProfile_GetParameter( uint8 param, void *value )
 
     case HEALTH_DATA_BODY:
       *((uint8*)value) = healthDataBody;
-      break;
-
-    case SIMPLEPROFILE_CHAR5:
-      VOID osal_memcpy( value, simpleProfileChar5, SIMPLEPROFILE_CHAR5_LEN );
-      break;      
+      break;  
       
     default:
       ret = INVALIDPARAMETER;
@@ -611,11 +548,6 @@ static uint8 simpleProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t *pAttr
           HalLcdWriteStringValue( "read:", pValue[0], 10,  HAL_LCD_LINE_3 );
         #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
         
-        break;
-
-      case SIMPLEPROFILE_CHAR5_UUID:
-        *pLen = SIMPLEPROFILE_CHAR5_LEN;
-        VOID osal_memcpy( pValue, pAttr->pValue, SIMPLEPROFILE_CHAR5_LEN );
         break;
         
       default:

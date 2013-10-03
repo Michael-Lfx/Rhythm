@@ -7,6 +7,7 @@
 #include "bcomdef.h"
 #include "OSAL.h"
 #include "OSAL_PwrMgr.h"
+#include "OSAL_Clock.h"
 
 #include "OnBoard.h"
 #include "hal_adc.h"
@@ -120,8 +121,15 @@ static gaprole_States_t gapProfileState = GAPROLE_INIT;
 uint8 scanRspData[] =
 {
   // complete name
-  0x0A,   // length of this data, p.s. contain header and body
+  0x11,   // length of this data, p.s. contain header and body
   GAP_ADTYPE_LOCAL_NAME_COMPLETE,
+  'A', 
+  'd', 
+  'd', 
+  'i', 
+  'n', 
+  'g', 
+  ' ', 
   'A', 
   '1', 
   '-', 
@@ -167,7 +175,7 @@ static uint8 advertData[] =
 };
 
 // GAP GATT Attributes
-uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "A1-000000";
+uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Adding A1-000000";
 
 /*********************************************************************
  * LOCAL FUNCTIONS
@@ -252,8 +260,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   };
   
   // rewrite device name
-  osal_memcpy(&scanRspData[5], sn, sizeof(sn));
-  osal_memcpy(&attDeviceName[3], sn, sizeof(sn));
+  osal_memcpy(&scanRspData[12], sn, sizeof(sn));
+  osal_memcpy(&attDeviceName[10], sn, sizeof(sn));
   
   #if (defined HAL_UART) && (HAL_UART == TRUE)
     DebugWrite(attDeviceName);
@@ -335,12 +343,10 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     uint8 charValue2 = 2;
     uint8 charValue3 = 3;
     uint8 charValue4 = 4;
-    uint8 charValue5[SIMPLEPROFILE_CHAR5_LEN] = { 1, 2, 3, 4, 5 };
     SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( uint8 ), &charValue1 );
     SimpleProfile_SetParameter( HEALTH_CLOCK, sizeof ( uint8 ), &charValue2 );
     SimpleProfile_SetParameter( HEALTH_DATA_HEADER, sizeof ( uint8 ), &charValue3 );
     SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof ( uint8 ), &charValue4 );
-    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR5, SIMPLEPROFILE_CHAR5_LEN, charValue5 );
   }
   
   #if (defined FAC_TEST) && (FAC_TEST == TRUE)
@@ -660,7 +666,7 @@ static void performPeriodicTask( void )
 static void simpleProfileChangeCB( uint8 paramID )
 {
   uint8 newValue;
-  uint8 value32[4];
+  uint32 clock;
 
   switch( paramID )
   {
@@ -683,23 +689,25 @@ static void simpleProfileChangeCB( uint8 paramID )
       break;
       
     case HEALTH_CLOCK:
-      SimpleProfile_GetParameter( HEALTH_CLOCK, value32 );
+      SimpleProfile_GetParameter( HEALTH_CLOCK, &clock );
+
+      // 
+      osal_setClock(clock);
+
+      UTCTime now;
       
-      uint16 clock;
-      
-      uint32 c1;
-      
-      SimpleProfile_GetParameter( HEALTH_CLOCK, &c1 );
-      
-      uint16 biger;
-      
-      biger = (c1>400000000)?1:0;
-      
-      //clock = ((uint32)value32[0]<<24) | ((uint32)value32[1]<<16) | ((uint32)value32[2]<<8) | ((uint32)value32[3]);
-      clock = ((uint16)value32[1]<<8) | ((uint16)value32[0]);
-      
+      now = osal_getClock();
+
+      UTCTimeStruct date;
+
+      osal_ConvertUTCTime(&date, now);
+
       #if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "CLOCK:", biger, 10,  HAL_LCD_LINE_3 );
+        HalLcdWriteStringValue( "year:", date.year, 10,  HAL_LCD_LINE_4 );
+        HalLcdWriteStringValue( "month:", date.month, 10,  HAL_LCD_LINE_5 );
+        HalLcdWriteStringValue( "day:", date.day, 10,  HAL_LCD_LINE_6 );
+        HalLcdWriteStringValue( "hour:", date.hour, 10,  HAL_LCD_LINE_7 );
+        HalLcdWriteStringValue( "minutes:", date.minutes, 10,  HAL_LCD_LINE_7 );
       #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
       
       break;
