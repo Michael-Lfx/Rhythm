@@ -203,6 +203,15 @@
             uint32_t seconds = (uint32_t)[[NSDate date] timeIntervalSinceDate:date2000];
             
             NSLog(@"senconds:%d", seconds);
+            NSLog(@"senconds:%d", seconds&0xff);
+            NSLog(@"senconds:%d", (seconds>>8)&0xff);
+            NSLog(@"senconds:%d", (seconds>>16)&0xff);
+            NSLog(@"senconds:%d", (seconds>>24)&0xff);
+            
+            uint16_t c1 = (seconds>>8)&0xff, c2 = seconds&0xff;
+            
+            NSLog(@"s16:%d", (c1<<8)|c2);
+        
             
             NSLog(@"ge zaile ");
             
