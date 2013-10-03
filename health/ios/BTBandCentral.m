@@ -215,7 +215,7 @@
             
             NSLog(@"ge zaile ");
             
-            [self writeAll:[NSData dataWithBytes:&seconds length:sizeof(seconds)] withUUID:[CBUUID UUIDWithString:UUID_CLOCK]];
+            [self writeAll:[NSData dataWithBytes:&seconds length:sizeof(seconds)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_CLOCK]];
             
         }
     }
@@ -403,8 +403,7 @@
     //1 设备名称
     NSString* bandName = bp.name;
     //2 电池电量
-    uint8_t d;
-    [[bp.allValues objectForKey:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]] getBytes:&d];
+    uint8_t d = 0;
     NSNumber *batteryLevel = [NSNumber numberWithInt:d];
     
     NSLog(@"%@, %@, %@", isConnected, bandName, batteryLevel);
