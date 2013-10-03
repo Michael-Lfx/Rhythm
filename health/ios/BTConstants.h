@@ -70,7 +70,7 @@
 
 #define UUID_HEALTH_SYNC                @"2301"
 #define UUID_HEALTH_CLOCK               @"2302"
-#define UUID_HEALTH_DATA_LENGTH         @"2303"
+#define UUID_HEALTH_DATA_HEADER         @"2303"
 #define UUID_HEALTH_DATA_BODY           @"2304"
 
 //手环名称最大字节数

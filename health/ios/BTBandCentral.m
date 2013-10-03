@@ -192,30 +192,27 @@
         //连接完成！！
         if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
             
+            NSLog(@"ge zaile ");
+            
             NSDateFormatter* df = [[NSDateFormatter alloc] init];
-            
             [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
-            
+            // 跟手机设置同一个时区
             [df setTimeZone:[NSTimeZone localTimeZone]];
             
             NSDate* date2000 = [df dateFromString:@"2000/01/01 00:00:00"];
-            
             uint32_t seconds = (uint32_t)[[NSDate date] timeIntervalSinceDate:date2000];
             
-            NSLog(@"senconds:%d", seconds);
-            NSLog(@"senconds:%d", seconds&0xff);
-            NSLog(@"senconds:%d", (seconds>>8)&0xff);
-            NSLog(@"senconds:%d", (seconds>>16)&0xff);
-            NSLog(@"senconds:%d", (seconds>>24)&0xff);
-            
-            uint16_t c1 = (seconds>>8)&0xff, c2 = seconds&0xff;
-            
-            NSLog(@"s16:%d", (c1<<8)|c2);
-        
-            
-            NSLog(@"ge zaile ");
-            
             [self writeAll:[NSData dataWithBytes:&seconds length:sizeof(seconds)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_CLOCK]];
+            
+            [self readAll:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+                
+                uint16_t length;
+                
+                [value getBytes:&length];
+                
+                NSLog(@"length:%d", length);
+                
+            }];
             
         }
     }
