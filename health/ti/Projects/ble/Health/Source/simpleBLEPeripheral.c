@@ -660,6 +660,7 @@ static void performPeriodicTask( void )
 static void simpleProfileChangeCB( uint8 paramID )
 {
   uint8 newValue;
+  uint8 value32[4];
 
   switch( paramID )
   {
@@ -682,12 +683,25 @@ static void simpleProfileChangeCB( uint8 paramID )
       break;
       
     case HEALTH_CLOCK:
-      SimpleProfile_GetParameter( HEALTH_CLOCK, &newValue );
-
+      SimpleProfile_GetParameter( HEALTH_CLOCK, value32 );
+      
+      uint16 clock;
+      
+      uint32 c1;
+      
+      SimpleProfile_GetParameter( HEALTH_CLOCK, &c1 );
+      
+      uint16 biger;
+      
+      biger = (c1>400000000)?1:0;
+      
+      //clock = ((uint32)value32[0]<<24) | ((uint32)value32[1]<<16) | ((uint32)value32[2]<<8) | ((uint32)value32[3]);
+      clock = ((uint16)value32[1]<<8) | ((uint16)value32[0]);
+      
       #if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "CLOCK:", (uint32)(newValue), 10,  HAL_LCD_LINE_3 );
+        HalLcdWriteStringValue( "CLOCK:", biger, 10,  HAL_LCD_LINE_3 );
       #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-
+      
       break;
 
     default:

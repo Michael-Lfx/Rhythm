@@ -445,10 +445,10 @@ bStatus_t SimpleProfile_SetParameter( uint8 param, uint8 len, void *value )
       break;
 
     case HEALTH_CLOCK:
-      if ( len == sizeof ( uint32 ) ) 
+      if ( len == sizeof ( healthClock ) ) 
       {
         //healthClock = *((uint32*)value);
-        VOID osal_memcpy( healthClock, value, 4 );
+        VOID osal_memcpy( healthClock, value, sizeof(healthClock) );
       }
       else
       {
@@ -526,7 +526,13 @@ bStatus_t SimpleProfile_GetParameter( uint8 param, void *value )
 
     case HEALTH_CLOCK:
       //*((uint8*)value) = healthClock;
-      VOID osal_memcpy( value, healthClock, 4 );
+      #if (defined HAL_LCD) && (HAL_LCD == TRUE)
+        HalLcdWriteStringValue( "CLOCK:", healthClock[0], 10,  HAL_LCD_LINE_4 );
+        HalLcdWriteStringValue( "CLOCK:", healthClock[1], 10,  HAL_LCD_LINE_5 );
+        HalLcdWriteStringValue( "CLOCK:", healthClock[2], 10,  HAL_LCD_LINE_6 );
+        HalLcdWriteStringValue( "CLOCK:", healthClock[3], 10,  HAL_LCD_LINE_7 );
+      #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+      VOID osal_memcpy( value, healthClock, sizeof(healthClock) );
       break;      
 
     case HEALTH_DATA_HEADER:
@@ -683,7 +689,9 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t *
         if ( status == SUCCESS )
         {
           uint8 *pCurValue = (uint8 *)pAttr->pValue;        
-          *pCurValue = pValue[0];
+          //*pCurValue = pValue[0];
+          
+          osal_memcpy(pCurValue, pValue, len);
 
           if( pAttr->pValue == &healthSync )
           {
@@ -693,7 +701,7 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t *
           {
             notifyApp = HEALTH_DATA_HEADER;           
           }
-          else{
+          else{ // Health CLock
             notifyApp = HEALTH_CLOCK;
           }
         }
