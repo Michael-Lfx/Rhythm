@@ -121,51 +121,22 @@ static simpleProfileCBs_t *simpleProfile_AppCBs = NULL;
 // Simple Profile Service attribute
 static CONST gattAttrType_t simpleProfileService = { ATT_BT_UUID_SIZE, simpleProfileServUUID };
 
-
-// Simple Profile Characteristic 1 Properties
 static uint8 healthSyncProps = GATT_PROP_READ | GATT_PROP_WRITE;
-
-// Characteristic 1 Value
 static uint8 healthSync = 0;
+static uint8 healthSyncUserDesp[17] = "Do Sync\0";
 
-// Simple Profile Characteristic 1 User Description
-static uint8 healthSyncUserDesp[17] = "Characteristic 1\0";
+static uint8 healthClockProps = GATT_PROP_WRITE;
+static uint8 healthClock[4] = {0,0,0,0};    // uint32
+static uint8 healthClockUserDesp[17] = "APP Set Clock\0";
 
+static uint8 healthDataHeaderProps = GATT_PROP_READ;
+static uint8 healthDataHeader[2] = {0,0};   // uint16
+static uint8 healthDataHeaderUserDesp[17] = "Data Header\0";
 
-// Simple Profile Characteristic 2 Properties
-static uint8 healthClockProps = GATT_PROP_READ | GATT_PROP_WRITE;
-
-// Characteristic 2 Value
-static uint8 healthClock[4] = {0,0,0,0};
-
-// Simple Profile Characteristic 2 User Description
-static uint8 healthClockUserDesp[17] = "Characteristic 2\0";
-
-
-// Simple Profile Characteristic 3 Properties
-static uint8 healthDataHeaderProps = GATT_PROP_WRITE;
-
-// Characteristic 3 Value
-static uint8 healthDataHeader = 0;
-
-// Simple Profile Characteristic 3 User Description
-static uint8 healthDataHeaderUserDesp[17] = "Characteristic 3\0";
-
-
-// Simple Profile Characteristic 4 Properties
-static uint8 healthDataBodyProps = GATT_PROP_NOTIFY;
-
-// Characteristic 4 Value
+static uint8 healthDataBodyProps = GATT_PROP_READ;
 static uint8 healthDataBody = 0;
-
-// Simple Profile Characteristic 4 Configuration Each client has its own
-// instantiation of the Client Characteristic Configuration. Reads of the
-// Client Characteristic Configuration only shows the configuration for
-// that client and writes only affect the configuration of that client.
 static gattCharCfg_t healthDataBodyConfig[GATT_MAX_NUM_CONN];
-                                        
-// Simple Profile Characteristic 4 User Description
-static uint8 healthDataBodyUserDesp[17] = "Characteristic 4\0";
+static uint8 healthDataBodyUserDesp[17] = "Data Body\0";
 
 
 /*********************************************************************
@@ -182,7 +153,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
     (uint8 *)&simpleProfileService            /* pValue */
   },
 
-    // Characteristic 1 Declaration
+    // Sync Declaration
     { 
       { ATT_BT_UUID_SIZE, characterUUID },
       GATT_PERMIT_READ, 
@@ -190,7 +161,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
       &healthSyncProps 
     },
 
-      // Characteristic Value 1
+      // Sync Value
       { 
         { ATT_BT_UUID_SIZE, healthSyncUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
@@ -198,7 +169,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         &healthSync 
       },
 
-      // Characteristic 1 User Description
+      // Sync User Description
       { 
         { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ, 
@@ -206,7 +177,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         healthSyncUserDesp 
       },      
 
-    // Characteristic 2 Declaration
+    // Clock Declaration
     { 
       { ATT_BT_UUID_SIZE, characterUUID },
       GATT_PERMIT_READ, 
@@ -214,15 +185,15 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
       &healthClockProps 
     },
 
-      // Characteristic Value 2
+      // Clock Value
       { 
         { ATT_BT_UUID_SIZE, healthClockUUID },
-        GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
+        GATT_PERMIT_WRITE, 
         0, 
         healthClock 
       },
 
-      // Characteristic 2 User Description
+      // Clock User Description
       { 
         { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ, 
@@ -230,7 +201,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         healthClockUserDesp 
       },           
       
-    // Characteristic 3 Declaration
+    // Data header Declaration
     { 
       { ATT_BT_UUID_SIZE, characterUUID },
       GATT_PERMIT_READ, 
@@ -238,15 +209,15 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
       &healthDataHeaderProps 
     },
 
-      // Characteristic Value 3
+      // Data header Value
       { 
         { ATT_BT_UUID_SIZE, healthDataHeaderUUID },
-        GATT_PERMIT_WRITE, 
+        GATT_PERMIT_READ, 
         0, 
-        &healthDataHeader 
+        healthDataHeader 
       },
 
-      // Characteristic 3 User Description
+      // Data header User Description
       { 
         { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ, 
@@ -254,7 +225,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         healthDataHeaderUserDesp 
       },
 
-    // Characteristic 4 Declaration
+    // Data body Declaration
     { 
       { ATT_BT_UUID_SIZE, characterUUID },
       GATT_PERMIT_READ, 
@@ -262,15 +233,15 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
       &healthDataBodyProps 
     },
 
-      // Characteristic Value 4
+      // Data body Value
       { 
         { ATT_BT_UUID_SIZE, healthDataBodyUUID },
-        0, 
+        GATT_PERMIT_READ, 
         0, 
         &healthDataBody 
       },
 
-      // Characteristic 4 configuration
+      // Data body configuration for notify
       { 
         { ATT_BT_UUID_SIZE, clientCharCfgUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
@@ -278,7 +249,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         (uint8 *)healthDataBodyConfig 
       },
       
-      // Characteristic 4 User Description
+      // Data body User Description
       { 
         { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ, 
@@ -416,9 +387,9 @@ bStatus_t SimpleProfile_SetParameter( uint8 param, uint8 len, void *value )
       break;
 
     case HEALTH_DATA_HEADER:
-      if ( len == sizeof ( uint8 ) ) 
+      if ( len == sizeof ( healthDataHeader ) ) 
       {
-        healthDataHeader = *((uint8*)value);
+        VOID osal_memcpy( healthDataHeader, value, sizeof(healthDataHeader) );
       }
       else
       {
@@ -477,7 +448,7 @@ bStatus_t SimpleProfile_GetParameter( uint8 param, void *value )
       break;      
 
     case HEALTH_DATA_HEADER:
-      *((uint8*)value) = healthDataHeader;
+      VOID osal_memcpy( value, healthDataHeader, sizeof(healthDataHeader) );
       break;  
 
     case HEALTH_DATA_BODY:
@@ -547,6 +518,13 @@ static uint8 simpleProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t *pAttr
         #if (defined HAL_LCD) && (HAL_LCD == TRUE)
           HalLcdWriteStringValue( "read:", pValue[0], 10,  HAL_LCD_LINE_3 );
         #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+        
+        break;
+        
+      case HEALTH_DATA_HEADER_UUID:
+        
+        *pLen = sizeof(pAttr->pValue);
+        osal_memcpy(pValue, pAttr->pValue, sizeof(pAttr->pValue));
         
         break;
         
@@ -629,7 +607,7 @@ static bStatus_t simpleProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t *
           {
             notifyApp = HEALTH_SYNC;        
           }
-          else if( pAttr->pValue == &healthDataHeader )
+          else if( pAttr->pValue == healthDataHeader )
           {
             notifyApp = HEALTH_DATA_HEADER;           
           }

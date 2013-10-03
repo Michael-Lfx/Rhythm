@@ -66,7 +66,7 @@
       <file>$PROJ_DIR$\CC2541\Obj\health_profile.pbi</file>
       <file>$PROJ_DIR$\CC2541\Obj\debug.pbi</file>
       <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_snv.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_cbtimer.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_cbTimer.h</file>
       <file>$PROJ_DIR$\CC2541\Exe\SimpleBLEPeripheral.hex</file>
       <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\_hal_uart_dma.c</file>
       <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\simpleGATTprofile.c</file>
@@ -704,10 +704,6 @@
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 109 23 179 155 18 17 22 30 29 24 144 142 184 27 162 152 154 166 160 158 159 119 147 164 187 185 100 189 102 153 125 127 121 129 134 124 186 105 149</file>
-        </tool>
-        <tool>
           <name>ICC8051</name>
           <file> 139 140 109 23 179 155 18 17 22 30 29 24 144 142 184 27 162 152 154 166 160 158 159 119 147 164 187 185 100 189 102 153 125 127 121 129 134 124 186 105 149</file>
         </tool>
@@ -1102,7 +1098,7 @@
       <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\SimpleBLEPeripheral.pbd</file>
       <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Exe\SimpleBLEPeripheral.d51</file>
       <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_snv.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_cbtimer.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_cbTimer.h</file>
       <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\simpleGATTprofile.c</file>
       <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\simpleGATTprofile.h</file>
       <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\include\ll_sleep.h</file>

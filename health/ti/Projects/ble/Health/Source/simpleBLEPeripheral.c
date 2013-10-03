@@ -339,14 +339,14 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
   // Setup the SimpleProfile Characteristic Values
   {
-    uint8 charValue1 = 1;
-    uint8 charValue2 = 2;
-    uint8 charValue3 = 3;
-    uint8 charValue4 = 4;
-    SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( uint8 ), &charValue1 );
-    SimpleProfile_SetParameter( HEALTH_CLOCK, sizeof ( uint8 ), &charValue2 );
-    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, sizeof ( uint8 ), &charValue3 );
-    SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof ( uint8 ), &charValue4 );
+    uint8   healthSync = 0;
+    uint32  healthClock = 0;
+    uint16  healthDataHeader = 1234;
+    uint8   healthDataBody = 0;
+    SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( uint8 ), &healthSync );
+    SimpleProfile_SetParameter( HEALTH_CLOCK, sizeof ( uint32 ), &healthClock );
+    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, sizeof ( uint16 ), &healthDataHeader );
+    SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof ( uint8 ), &healthDataBody );
   }
   
   #if (defined FAC_TEST) && (FAC_TEST == TRUE)
@@ -704,10 +704,10 @@ static void simpleProfileChangeCB( uint8 paramID )
 
       #if (defined HAL_LCD) && (HAL_LCD == TRUE)
         HalLcdWriteStringValue( "year:", date.year, 10,  HAL_LCD_LINE_4 );
-        HalLcdWriteStringValue( "month:", date.month, 10,  HAL_LCD_LINE_5 );
-        HalLcdWriteStringValue( "day:", date.day, 10,  HAL_LCD_LINE_6 );
+        HalLcdWriteStringValue( "month:", date.month+1, 10,  HAL_LCD_LINE_5 );
+        HalLcdWriteStringValue( "day:", date.day+1, 10,  HAL_LCD_LINE_6 );
         HalLcdWriteStringValue( "hour:", date.hour, 10,  HAL_LCD_LINE_7 );
-        HalLcdWriteStringValue( "minutes:", date.minutes, 10,  HAL_LCD_LINE_7 );
+        HalLcdWriteStringValue( "minutes:", date.minutes, 10,  HAL_LCD_LINE_8 );
       #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
       
       break;
