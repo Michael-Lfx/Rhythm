@@ -40,6 +40,12 @@ void serialCallback( uint8 port, uint8 event ){
 }
 
 void serialInitTransport(){
+  
+  // define uart0 to alt2 mode¡£use p1.4 and p1.5
+  PERCFG |= BV(0);
+  P1SEL = BV(4)|BV(5);
+  P2SEL&=~(BV(6)|BV(3));
+    
   halUARTCfg_t uartConfig;
   
   uartConfig.configured             = TRUE;
@@ -53,6 +59,8 @@ void serialInitTransport(){
   uartConfig.callBackFunc           = serialCallback;
   
   (void)HalUARTOpen(DEBUG_UART_PORT, &uartConfig);
+  
+  
 }
 
 void DebugWrite( uint8 data[] ){

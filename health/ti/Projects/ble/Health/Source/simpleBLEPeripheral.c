@@ -15,6 +15,8 @@
 #include "hal_key.h"
 #include "hal_lcd.h"
 
+#include "hal_i2c.h"
+
 #include "battservice.h"
 
 #if (defined HAL_UART) && (HAL_UART == TRUE)
@@ -89,6 +91,12 @@
 
 // Length of bd addr as a string   
 #define B_ADDR_STR_LEN                        15
+
+// Battery level is critical when it is less than this %
+#define DEFAULT_BATT_CRITICAL_LEVEL           6 
+
+// Battery measurement period in ms
+#define DEFAULT_BATT_PERIOD                   15000
 
 #if defined ( PLUS_BROADCASTER )
   #define ADV_IN_CONN_WAIT                    500 // delay 500 ms
@@ -171,6 +179,8 @@ static uint8 advertData[] =
   GAP_ADTYPE_16BIT_MORE,      // some of the UUID's, but not all
   LO_UINT16( HEALTH_SERV_UUID ),
   HI_UINT16( HEALTH_SERV_UUID ),
+  LO_UINT16(BATT_SERVICE_UUID),
+  HI_UINT16(BATT_SERVICE_UUID)
 
 };
 
@@ -184,6 +194,11 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void performPeriodicTask( void );
 static void simpleProfileChangeCB( uint8 paramID );
+
+static void heartRateBattPeriodicTask( void );
+static void heartRateBattCB(uint8 event);
+
+static void adxl345Init();
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
 static char *bdAddr2Str ( uint8 *pAddr );
@@ -349,7 +364,13 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof ( uint8 ), &healthDataBody );
   }
   
-  #if (defined FAC_TEST) && (FAC_TEST == TRUE)
+  // Setup Battery Characteristic Values
+  {
+    uint8 critical = DEFAULT_BATT_CRITICAL_LEVEL;
+    Batt_SetParameter( BATT_PARAM_CRITICAL_LEVEL, sizeof (uint8 ), &critical );
+  }
+  
+#if (defined FAC_TEST) && (FAC_TEST == TRUE)
   
     P0DIR |= BV(0)|BV(1)|BV(2)|BV(3)|BV(4);
     P0SEL &= ~(BV(0)|BV(1)|BV(2)|BV(3)|BV(4));
@@ -366,9 +387,11 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     // P1_0 = 1;
     // P1_1 = 1;
     
+    
+    
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
     
-  #endif
+#endif
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
 
@@ -386,6 +409,9 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
   // Register callback with SimpleGATTprofile
   VOID SimpleProfile_RegisterAppCBs( &simpleBLEPeripheral_SimpleProfileCBs );
+  
+  // Register for Battery service callback;
+  Batt_Register ( heartRateBattCB );
 
   // Enable clock divide on halt
   // This reduces active current while radio is active and CC254x MCU
@@ -450,6 +476,14 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
 
     return ( events ^ SBP_START_DEVICE_EVT );
+  }
+  
+  if ( events & BATT_PERIODIC_EVT )
+  {
+    // Perform periodic battery task
+    heartRateBattPeriodicTask();
+    
+    return (events ^ BATT_PERIODIC_EVT);
   }
 
   if ( events & SBP_PERIODIC_EVT )
@@ -621,6 +655,53 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 }
 
 /*********************************************************************
+ * @fn      heartRateBattCB
+ *
+ * @brief   Callback function for battery service.
+ *
+ * @param   event - service event
+ *
+ * @return  none
+ */
+static void heartRateBattCB(uint8 event)
+{
+  if (event == BATT_LEVEL_NOTI_ENABLED)
+  {
+    // if connected start periodic measurement
+    if (gapProfileState == GAPROLE_CONNECTED)
+    {
+      osal_start_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT, DEFAULT_BATT_PERIOD );
+    } 
+  }
+  else if (event == BATT_LEVEL_NOTI_DISABLED)
+  {
+    // stop periodic measurement
+    osal_stop_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT );
+  }
+}
+
+/*********************************************************************
+ * @fn      heartRateBattPeriodicTask
+ *
+ * @brief   Perform a periodic task for battery measurement.
+ *
+ * @param   none
+ *
+ * @return  none
+ */
+static void heartRateBattPeriodicTask( void )
+{
+  if (gapProfileState == GAPROLE_CONNECTED)
+  {
+    // perform battery level check
+    Batt_MeasLevel( );
+    
+    // Restart timer
+    osal_start_timerEx( simpleBLEPeripheral_TaskID, BATT_PERIODIC_EVT, DEFAULT_BATT_PERIOD );
+  }
+}
+
+/*********************************************************************
  * @fn      performPeriodicTask
  *
  * @brief   Perform a periodic application task. This function gets
@@ -716,6 +797,18 @@ static void simpleProfileChangeCB( uint8 paramID )
       // should not reach here!
       break;
   }
+}
+
+/*********************************************************************
+ * @fn      adxl345Init
+ *
+ * @param   none
+ *
+ * @return  none
+ */
+static void adxl345Init( void )
+{
+  HalI2CInit(0x1D, i2cClock_33KHZ);
 }
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)

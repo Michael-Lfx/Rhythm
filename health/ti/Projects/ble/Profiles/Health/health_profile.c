@@ -121,7 +121,7 @@ static simpleProfileCBs_t *simpleProfile_AppCBs = NULL;
 // Simple Profile Service attribute
 static CONST gattAttrType_t simpleProfileService = { ATT_BT_UUID_SIZE, simpleProfileServUUID };
 
-static uint8 healthSyncProps = GATT_PROP_READ | GATT_PROP_WRITE;
+static uint8 healthSyncProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
 static uint8 healthSync = 0;
 static uint8 healthSyncUserDesp[17] = "Do Sync\0";
 
