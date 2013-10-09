@@ -37,7 +37,11 @@ extern void Debug_init( uint8 task_id );
 
 extern void serialCallback( uint8 port, uint8 event );
 
-extern void DebugWrite( uint8* data );
+extern void DebugWrite( uint8 text[] );
+
+extern void DebugValue( uint32 value );
+
+extern void DebugFormat( uint8 text[], uint32 value );
 
 void serialInitTransport();
 

@@ -27,6 +27,9 @@
 
 #include "debug.h"
 
+#define DEBUG_RADIX                 10
+#define DEBUG_VALUE_MAX_LENGTH      24
+
 /*********************************************************************
  * FUNCTIONS
  */
@@ -63,11 +66,26 @@ void serialInitTransport(){
   
 }
 
-void DebugWrite( uint8 data[] ){
+void DebugWrite( uint8 text[] ){
   uint8 wrap[] = "\r\n";
 
-  HalUARTWrite( DEBUG_UART_PORT, data, osal_strlen((char*)data));
+  HalUARTWrite( DEBUG_UART_PORT, text, osal_strlen((char*)text));
   HalUARTWrite( DEBUG_UART_PORT, wrap, osal_strlen((char*)wrap));
+}
+
+void DebugValue( uint32 value ){
+  uint8 buf[DEBUG_VALUE_MAX_LENGTH];
+  
+  _ltoa( value, &buf[0], DEBUG_RADIX ); 
+  
+  DebugWrite(buf);
+}
+
+void DebugFormat( uint8 text[], uint32 value ){
+  
+  HalUARTWrite( DEBUG_UART_PORT, text, osal_strlen((char*)text));
+  
+  DebugValue(value);
 }
 
 /******************************************************************************

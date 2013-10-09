@@ -1334,7 +1334,7 @@
           <state>HAL_UART=TRUE</state>
           <state>HAL_UART_DMA=1</state>
           <state>HAL_KEY=FALSE</state>
-          <state>xFAC_TEST=TRUE</state>
+          <state>FAC_TEST=TRUE</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

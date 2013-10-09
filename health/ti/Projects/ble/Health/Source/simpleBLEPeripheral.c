@@ -102,6 +102,16 @@
   #define ADV_IN_CONN_WAIT                    500 // delay 500 ms
 #endif
 
+// define i2c address
+#define ADXL345_READ_ADDRESS                  0x3A
+#define ADXL345_WRITE_ADDRESS                 0x3B
+
+#define EEPROM_READ_ADDRESS                   0xA0
+#define EEPROM_WRITE_ADDRESS                  0xA1
+
+//define i2c clock rate
+#define I2C_CLOCK_RATE                        i2cClock_33KHZ
+
 /*********************************************************************
  * TYPEDEFS
  */
@@ -254,6 +264,10 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
   Debug_init(task_id);
   
+  adxl345Init();
+  
+  DebugFormat("value:",1234);
+  
   #if (defined HAL_UART) && (HAL_UART == TRUE)
     DebugWrite("Status OK");
   #endif
@@ -375,22 +389,14 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
     P0DIR |= BV(0)|BV(1)|BV(2)|BV(3)|BV(4);
     P0SEL &= ~(BV(0)|BV(1)|BV(2)|BV(3)|BV(4));
     
-    P0_0 = 1;
-    P0_1 = 1;
+    P0_0 = 0;
+    P0_1 = 0;
     P0_2 = 1;
-    P0_3 = 1;
-    P0_4 = 1;
+    P0_3 = 0;
+    P0_4 = 0;
     
-    // P1DIR |= BV(0)|BV(1);
-    // P1SEL &= ~(BV(0)|BV(1));
-    
-    // P1_0 = 1;
-    // P1_1 = 1;
-    
-    
-    
-    osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
-    
+    //osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
+     
 #endif
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
