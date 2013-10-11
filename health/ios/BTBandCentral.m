@@ -189,10 +189,25 @@
         
         [bp.allCharacteristics setObject:c forKey:c.UUID];
         
+        // 设置电量通知
+        
+        if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]]) {
+            [peripheral setNotifyValue:YES forCharacteristic:c];
+        }
+        
+        // 设置sync通知
+        
+        if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]]) {
+            [peripheral setNotifyValue:YES forCharacteristic:c];
+        }
+        
         //连接完成！！
+        
         if(bp.allCharacteristics.count == CHARACTERISTICS_COUNT){
             
             NSLog(@"ge zaile ");
+            
+            self.globals.bleListCount += 0;
             
             NSDateFormatter* df = [[NSDateFormatter alloc] init];
             [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
@@ -210,7 +225,7 @@
                 
                 [value getBytes:&length];
                 
-                NSLog(@"length:%d", length);
+                //NSLog(@"length:%d", length);
                 
             }];
             
@@ -251,7 +266,17 @@
     //把数据放到缓存里
     [bp.allValues setObject:characteristic.value forKey:characteristic.UUID];
     
-    NSLog(@"c:%@, v:%@", characteristic.UUID, characteristic.value);
+//    NSLog(@"c:%@, v:%@", characteristic.UUID, characteristic.value);
+    
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]]) {
+        int16_t x,y,z;
+        
+        [characteristic.value getBytes:&x range:NSMakeRange(0, 2)];
+        [characteristic.value getBytes:&y range:NSMakeRange(2, 2)];
+        [characteristic.value getBytes:&z range:NSMakeRange(4, 2)];
+//        NSLog(@"%@", characteristic.value);
+        NSLog(@"x:%d y:%d z:%d", x,y,z);
+    }
     
     //取出缓存中的block并执行
     void (^block)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral)  = [bp.allCallback objectForKey:characteristic.UUID];
