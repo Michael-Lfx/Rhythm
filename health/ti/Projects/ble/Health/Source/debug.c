@@ -27,7 +27,7 @@
 
 #include "debug.h"
 
-#define DEBUG_RADIX                 10
+#define DEBUG_RADIX                 16
 #define DEBUG_VALUE_MAX_LENGTH      24
 
 /*********************************************************************
