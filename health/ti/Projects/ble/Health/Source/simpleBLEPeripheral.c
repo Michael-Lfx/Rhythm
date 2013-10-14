@@ -53,6 +53,9 @@
  * CONSTANTS
  */
 
+#define HI_UINT32(x)        (((x) >> 16) & 0xffff)
+#define LO_UINT32(x)        ((x) & 0xffff)
+
 // How often to perform periodic event
 #define SBP_PERIODIC_EVT_PERIOD                   5000
 
@@ -111,7 +114,7 @@
 //define i2c clock rate
 #define I2C_CLOCK_RATE                        i2cClock_33KHZ
 
-
+// define for adxl345
 #define Reg_ID 0
 #define Reg_thresh_tap 0x1D
 #define Reg_OFSX 0x1E
@@ -158,6 +161,19 @@ int16 PACE_BOTTOM = 0;
 int16 time_count = 0;
 int16 cross_count = 0; //0
 int16 ACC_CUR = 0;
+
+
+// define for eeprom
+#define EEPROM_ADDRESS_BLOCK_SIZE           8
+#define EEPROM_ADDRESS_BLOCK_COUNT          4000
+
+#define EEPROM_ADDRESS_RESERVE_MAX          32768
+#define EEPROM_ADDRESS_DATA_MAX             (EEPROM_ADDRESS_BLOCK_SIZE * EEPROM_ADDRESS_BLOCK_COUNT)
+
+#define EEPROM_POSITION_STEP_DATA_START     (EEPROM_ADDRESS_DATA_MAX)
+#define EEPROM_POSITION_STEP_DATA_STOP      (EEPROM_POSITION_STEP_DATA_START + 2)
+
+
 /*********************************************************************
  * TYPEDEFS
  */
@@ -243,6 +259,19 @@ static uint8 advertData[] =
 // GAP GATT Attributes
 uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Adding A1-000000";
 
+// define for eeprom
+uint16 stepDataStart = 100, stepDataStop = 100;
+
+typedef struct
+{
+    UTCTimeStruct       tm;
+    UTCTime             hourSeconds;
+    uint16              count;
+    uint8               type;
+}one_data_t;
+
+one_data_t oneData;
+
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
@@ -257,8 +286,11 @@ static void heartRateBattCB(uint8 event);
 static void adxl345Init(void);
 static void adxl345Loop(void);
 
-static void GET_INT_DATA(void);
-static void GET_ACC_DATA(void);
+static void adxl345GetIntData(void);
+static void adxl345GetAccData(void);
+
+static void eepromWriteStep(void);
+static void eepromReadStep(void);
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
 static char *bdAddr2Str ( uint8 *pAddr );
@@ -594,37 +626,61 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
         P1_0 = 0;
         P1_1 = 0;
 
-        // HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
+        HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
 
-        // uint8 addr[] = {
-        //   1,    // high
-        //   2,    // low
-        //   3,
-        //   4
-        // };
+        uint8 aBuf[2] = {
+            LO_UINT16(stepDataStop),
+            HI_UINT16(stepDataStop)
+        };
 
-        // uint8 w[] = {3,4,5,6};
+        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
 
-        // HalI2CWrite(2, addr);
-        // HalI2CWrite(4, w);
+        uint8 w[] = {3,4};
 
-        // uint8 r[] = {0,0,0,0};
+        HalI2CWrite(2, aBuf);
 
-        // HalI2CWrite(2, addr);
-        // HalI2CRead(4, r);
+        asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
 
-        // uint8 d[6] = {
-        //   r[0],
-        //   r[1],
-        //   r[2],
-        //   r[3],
-        //   2,
-        //   0
-        // };
+        HalI2CWrite(1, w);
 
-        // SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( d ), d );
+        asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
 
-        // osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
+        uint8 r[] = {0,0};
+
+        HalI2CWrite(2, aBuf);
+
+        asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+
+        HalI2CRead(1, r);
+
+        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  r);
+
+
+        osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
 
         return (events ^ SBP_LED_STOP_EVT);
     }
@@ -832,22 +888,22 @@ static void heartRateBattPeriodicTask( void )
  */
 static void performPeriodicTask( void )
 {
-    uint8 valueToCopy;
-    uint8 stat;
+    // uint8 valueToCopy;
+    // uint8 stat;
 
-    // Call to retrieve the value of the third characteristic in the profile
-    stat = SimpleProfile_GetParameter( HEALTH_DATA_HEADER, &valueToCopy);
+    // // Call to retrieve the value of the third characteristic in the profile
+    // stat = SimpleProfile_GetParameter( HEALTH_DATA_HEADER, &valueToCopy);
 
-    if ( stat == SUCCESS )
-    {
-        /*
-         * Call to set that value of the fourth characteristic in the profile. Note
-         * that if notifications of the fourth characteristic have been enabled by
-         * a GATT client device, then a notification will be sent every time this
-         * function is called.
-         */
-        SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof(uint8), &valueToCopy);
-    }
+    // if ( stat == SUCCESS )
+    // {
+        
+    //      * Call to set that value of the fourth characteristic in the profile. Note
+    //      * that if notifications of the fourth characteristic have been enabled by
+    //      * a GATT client device, then a notification will be sent every time this
+    //      * function is called.
+         
+    //     SimpleProfile_SetParameter( HEALTH_DATA_BODY, sizeof(uint8), &valueToCopy);
+    // }
 }
 
 /*********************************************************************
@@ -875,15 +931,6 @@ static void simpleProfileChangeCB( uint8 paramID )
 
         break;
 
-    case HEALTH_DATA_HEADER:
-        SimpleProfile_GetParameter( HEALTH_DATA_HEADER, &newValue );
-
-#if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "Char 3:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
-#endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-
-        break;
-
     case HEALTH_CLOCK:
         SimpleProfile_GetParameter( HEALTH_CLOCK, &clock );
 
@@ -905,6 +952,12 @@ static void simpleProfileChangeCB( uint8 paramID )
         HalLcdWriteStringValue( "hour:", date.hour, 10,  HAL_LCD_LINE_7 );
         HalLcdWriteStringValue( "minutes:", date.minutes, 10,  HAL_LCD_LINE_8 );
 #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
+
+        break;
+
+    case HEALTH_DATA_BODY:
+
+        eepromReadStep();
 
         break;
 
@@ -1049,7 +1102,9 @@ static void adxl345Loop(void)
 
     P0_3 = !P0_3;
 
-    GET_ACC_DATA();
+    
+
+    adxl345GetAccData();
 
     //todo
     X_out = X_out >> 2;
@@ -1093,11 +1148,14 @@ static void adxl345Loop(void)
                     P0_0 = 1;
                     cross_count = 0;
 
-                    uint8 d[6];
+                    // uint8 d[6];
 
-                    osal_memcpy(&d[0], &pace_count, sizeof(int16));
+                    // osal_memcpy(&d[0], &pace_count, sizeof(int16));
 
-                    SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( d ), d );
+                    // SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( d ), d );
+
+                    eepromWriteStep();
+
                 }
                 else
                 {
@@ -1133,7 +1191,7 @@ static void adxl345Loop(void)
         if (ACC_CUR < PACE_BOTTOM) PACE_BOTTOM = ACC_CUR;
     }
 
-    GET_INT_DATA();//read INT registers
+    adxl345GetIntData();//read INT registers
     if (INT_STATUS & 0x40)
     {
         //tap happened
@@ -1152,7 +1210,7 @@ static void adxl345Loop(void)
 }
 
 
-static void GET_ACC_DATA(void)
+static void adxl345GetAccData(void)
 {
     HalI2CInit(ADXL345_ADDRESS, I2C_CLOCK_RATE);
 
@@ -1198,7 +1256,7 @@ static void GET_ACC_DATA(void)
     Z_out = (int16)((Z1 << 8) | Z0);
 }
 
-static void GET_INT_DATA(void)
+static void adxl345GetIntData(void)
 {
     HalI2CInit(ADXL345_ADDRESS, I2C_CLOCK_RATE);
 
@@ -1211,6 +1269,136 @@ static void GET_INT_DATA(void)
     INT_STATUS = pBuf[1];
 
     DebugValue(INT_STATUS);
+}
+
+static void eepromWriteStep(void){
+
+    UTCTime current;
+    UTCTimeStruct currentTm;
+
+    current = osal_getClock();
+    osal_ConvertUTCTime(&currentTm, current);
+
+    // currentTm.minutes = 0;
+    currentTm.seconds = 0;
+
+    if (oneData.hourSeconds == 0)       // data is empty
+    {
+        oneData.tm = currentTm;
+        oneData.hourSeconds = osal_ConvertUTCSecs(&oneData.tm);
+
+        oneData.count = 1;
+        oneData.type = 2;
+
+        // uint8 d[6];
+
+        // osal_memcpy(&d[0], &oneData.hourSeconds, sizeof(uint32));
+
+        // SimpleProfile_SetParameter( HEALTH_SYNC, sizeof ( d ), d );
+
+    }else if(oneData.tm.year != currentTm.year ||
+             oneData.tm.month != currentTm.month ||
+             oneData.tm.day != currentTm.day ||
+             oneData.tm.minutes != currentTm.minutes ||         // for test, one minutes
+             oneData.tm.hour != currentTm.hour){                // pass a hour, need to write
+
+        // write to eeprom
+        HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
+
+        uint8 aBuf[2], dBuf[8] = {
+            LO_UINT16(LO_UINT32(oneData.hourSeconds)),
+            HI_UINT16(LO_UINT32(oneData.hourSeconds)),
+            LO_UINT16(HI_UINT32(oneData.hourSeconds)),
+            HI_UINT16(HI_UINT32(oneData.hourSeconds)),
+            LO_UINT16(oneData.count),
+            HI_UINT16(oneData.count),
+            oneData.type,
+            0
+        };
+
+        for (int i = 0; i < 8; i++)
+        {
+            aBuf[0] = LO_UINT16(stepDataStop);
+            aBuf[1] = HI_UINT16(stepDataStop);
+
+            HalI2CWrite(2, aBuf);
+
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+
+            HalI2CWrite(1, &dBuf[i]);
+
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+
+            stepDataStop += 1;
+        }
+
+        uint16 length = (stepDataStop - stepDataStart)/8;
+
+        
+        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
+        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &length);
+        SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
+
+        // refresh oneData
+        oneData.tm = currentTm;
+        oneData.hourSeconds = osal_ConvertUTCSecs(&oneData.tm);
+
+        oneData.count = 1;
+
+    }else{      // in same hour
+
+        oneData.count ++;
+    }
+
+}
+
+static void eepromReadStep(void){
+
+    HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
+
+    uint8 aBuf[2], dBuf[8];
+
+    for (int i = 0; i < 8; i++)
+    {
+        aBuf[0] = LO_UINT16(stepDataStart);
+        aBuf[1] = HI_UINT16(stepDataStart);
+
+        HalI2CWrite(2, aBuf);
+
+        asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+            asm("nop");
+
+        HalI2CRead(1, &dBuf[i]);
+
+        stepDataStart += 1;
+    }
+
+    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
+    SimpleProfile_SetParameter( HEALTH_DATA_BODY, 8,  dBuf);
+    SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
 }
 
 /*********************************************************************
