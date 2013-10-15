@@ -67,7 +67,7 @@
     NSLog(@"AD count:%lu", (unsigned long)advertisementData.count);
     
     //找到了就停止扫描
-//    [central stopScan];
+    [central stopScan];
     
     if (advertisementData.count) {
         //付给私有变量，不然就释放了
@@ -190,14 +190,22 @@
         [bp.allCharacteristics setObject:c forKey:c.UUID];
         
         // 设置电量通知
-        
         if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]]) {
             [peripheral setNotifyValue:YES forCharacteristic:c];
         }
         
         // 设置sync通知
-        
         if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]]) {
+            [peripheral setNotifyValue:YES forCharacteristic:c];
+        }
+        
+        // 设置data header通知
+        if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]]) {
+            [peripheral setNotifyValue:YES forCharacteristic:c];
+        }
+        
+        // 设置data body通知
+        if ([c.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_BODY]]) {
             [peripheral setNotifyValue:YES forCharacteristic:c];
         }
         
@@ -209,25 +217,29 @@
             
             self.globals.bleListCount += 0;
             
-            NSDateFormatter* df = [[NSDateFormatter alloc] init];
-            [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
-            // 跟手机设置同一个时区
-            [df setTimeZone:[NSTimeZone localTimeZone]];
+//            NSDateFormatter* df = [[NSDateFormatter alloc] init];
+//            [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
+//            // 跟手机设置同一个时区
+//            [df setTimeZone:[NSTimeZone localTimeZone]];
+//            
+//            NSDate* date2000 = [df dateFromString:@"2000/01/01 00:00:00"];
+//            uint32_t seconds = (uint32_t)[[NSDate date] timeIntervalSinceDate:date2000];
             
-            NSDate* date2000 = [df dateFromString:@"2000/01/01 00:00:00"];
-            uint32_t seconds = (uint32_t)[[NSDate date] timeIntervalSinceDate:date2000];
+            uint32_t seconds = [BTUtils currentSeconds];
+            
+            NSLog(@"now:%d", seconds);
             
             [self writeAll:[NSData dataWithBytes:&seconds length:sizeof(seconds)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_CLOCK]];
             
-            [self readAll:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-                
-                uint16_t length;
-                
-                [value getBytes:&length];
-                
-                //NSLog(@"length:%d", length);
-                
-            }];
+//            [self readAll:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+//                
+//                uint16_t length;
+//                
+//                [value getBytes:&length];
+//                
+//                //NSLog(@"length:%d", length);
+//                
+//            }];
             
         }
     }
@@ -246,6 +258,10 @@
         
         NSLog(@"Notification began on %@", characteristic);
         
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        
 //        [peripheral readValueForCharacteristic:characteristic];
 
     } else{
@@ -260,6 +276,8 @@
         NSLog(@"UpdateValueForCharacteristic error: %@", error.localizedDescription);
     }
     
+    NSLog(@"update:%@", characteristic.UUID);
+    
     //根据uuid取到对象
     BTBandPeripheral* bp = [_allPeripherals objectForKey:[CBUUID UUIDWithCFUUID:peripheral.UUID]];
     
@@ -269,13 +287,42 @@
 //    NSLog(@"c:%@, v:%@", characteristic.UUID, characteristic.value);
     
     if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]]) {
-        int16_t x,y,z;
+//        int16_t x,y,z;
+//        
+//        [characteristic.value getBytes:&x range:NSMakeRange(0, 2)];
+//        [characteristic.value getBytes:&y range:NSMakeRange(2, 2)];
+//        [characteristic.value getBytes:&z range:NSMakeRange(4, 2)];
+        NSLog(@"%@", characteristic.value);
         
-        [characteristic.value getBytes:&x range:NSMakeRange(0, 2)];
-        [characteristic.value getBytes:&y range:NSMakeRange(2, 2)];
-        [characteristic.value getBytes:&z range:NSMakeRange(4, 2)];
-//        NSLog(@"%@", characteristic.value);
-        NSLog(@"x:%d y:%d z:%d", x,y,z);
+        uint32_t hourSencodes;
+        [characteristic.value getBytes:&hourSencodes range:NSMakeRange(0, 4)];
+        
+//        NSLog(@"x:%d y:%d z:%d", x,y,z);
+        NSLog(@"hour:%@", [BTUtils dateWithSeconds:(NSTimeInterval)hourSencodes]);
+        
+    }
+    
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]]) {
+
+        NSLog(@"%@", characteristic.value);
+
+        
+        uint16_t length;
+        [characteristic.value getBytes:&length];
+        
+        NSLog(@"length:%d", length);
+    }
+    
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_BODY]]) {
+        NSLog(@"v:%@",  characteristic.value);
+        
+        uint32_t seconds;
+        uint16_t count;
+        
+        [characteristic.value getBytes:&seconds range:NSMakeRange(0, 4)];
+        [characteristic.value getBytes:&count range:NSMakeRange(4, 2)];
+        
+        NSLog(@"%@, c:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count);
     }
     
     //取出缓存中的block并执行
@@ -461,6 +508,47 @@
     _setupblock = block;
     
     [_cm connectPeripheral:_setupBand.handle options:nil];
+}
+
+-(void)sync{
+    NSLog(@"wo ca");
+    
+    //遍历所有的peripheral
+    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
+    
+    uint16_t length;
+    
+    for (BTBandPeripheral* bp in enumeratorValue) {
+        
+        NSLog(@"%@", bp.allValues);
+        
+        NSData* d = [bp.allValues objectForKey:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]];
+        
+        
+        [d getBytes:&length];
+        
+        NSLog(@"sync length:%d", length);
+        
+    }
+    
+    uint16_t d = 22;
+    
+    [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]];
+    
+//    for (int i = 0; i < length; i++) {
+//        [self readAll:[CBUUID UUIDWithString:UUID_HEALTH_DATA_BODY] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
+//            
+//            NSLog(@"v:%@", value);
+//            
+//            uint32_t seconds;
+//            uint16_t count;
+//            
+//            [value getBytes:&seconds range:NSMakeRange(0, 4)];
+//            [value getBytes:&count range:NSMakeRange(4, 2)];
+//            
+//            NSLog(@"%@, c:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count);
+//        }];
+//    }
 }
 
 @end

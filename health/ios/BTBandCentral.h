@@ -14,6 +14,7 @@
 #import "BTBleList.h"
 #import "BTAppDelegate.h"
 #import <mach/mach_time.h>
+#import "BTUtils.h"
 
 @interface BTBandCentral : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>{
     NSManagedObjectContext* _context;
@@ -49,6 +50,8 @@
 
 -(void)willSetup:(NSUInteger)index;
 -(void)setup:(NSData*)data withBlock:(void(^)(int result))block;
+
+-(void)sync;
 
 @end
  

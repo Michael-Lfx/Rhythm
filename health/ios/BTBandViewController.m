@@ -147,5 +147,8 @@
     }
     
 }
+- (IBAction)sync:(UIButton *)sender {
+    [[BTBandCentral sharedBandCentral] sync];
+}
 
 @end

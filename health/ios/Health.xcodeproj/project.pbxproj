@@ -43,6 +43,7 @@
 		72910FDD17CC7182000F7155 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 72910FD917CC7182000F7155 /* InfoPlist.strings */; };
 		72910FDE17CC7182000F7155 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 72910FDB17CC7182000F7155 /* Localizable.strings */; };
 		72910FE517CC72C4000F7155 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72910FE317CC72C4000F7155 /* Model.xcdatamodeld */; };
+		729BA227180BDC5600C56C89 /* BTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 729BA226180BDC5600C56C89 /* BTUtils.m */; };
 		72E53E3117CC6302002D2708 /* Health-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E2F17CC6302002D2708 /* Health-Info.plist */; };
 		72E53E3317CC630E002D2708 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E53E3217CC630E002D2708 /* main.m */; };
 		72E53E5217CC6334002D2708 /* band-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E3517CC6334002D2708 /* band-button.png */; };
@@ -159,6 +160,8 @@
 		72910FE117CC71A4000F7155 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
 		72910FE217CC71A4000F7155 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
 		72910FE417CC72C4000F7155 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		729BA225180BDC5600C56C89 /* BTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUtils.h; sourceTree = SOURCE_ROOT; };
+		729BA226180BDC5600C56C89 /* BTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUtils.m; sourceTree = SOURCE_ROOT; };
 		72E53E2F17CC6302002D2708 /* Health-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Health-Info.plist"; sourceTree = SOURCE_ROOT; };
 		72E53E3017CC6302002D2708 /* Health-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Health-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		72E53E3217CC630E002D2708 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
@@ -403,6 +406,8 @@
 				72EE456517CC628700751F8A /* BTGlobals.m */,
 				72EE456717CC629000751F8A /* BTConstants.h */,
 				72EE456817CC629000751F8A /* BTConstants.m */,
+				729BA225180BDC5600C56C89 /* BTUtils.h */,
+				729BA226180BDC5600C56C89 /* BTUtils.m */,
 			);
 			name = Globals;
 			sourceTree = "<group>";
@@ -622,6 +627,7 @@
 				7232FAFC17633ED90097CA34 /* ASIDownloadCache.m in Sources */,
 				7232FAFD17633ED90097CA34 /* ASIFormDataRequest.m in Sources */,
 				72EE456917CC629000751F8A /* BTConstants.m in Sources */,
+				729BA227180BDC5600C56C89 /* BTUtils.m in Sources */,
 				72910FD817CC714C000F7155 /* BTBaseViewController.m in Sources */,
 				7232FAFE17633ED90097CA34 /* ASIHTTPRequest.m in Sources */,
 				72910FCC17CC70F1000F7155 /* BTNewsViewController.m in Sources */,
