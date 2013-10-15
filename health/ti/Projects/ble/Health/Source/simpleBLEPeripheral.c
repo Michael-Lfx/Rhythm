@@ -260,7 +260,7 @@ static uint8 advertData[] =
 uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Adding A1-000000";
 
 // define for eeprom
-uint16 stepDataStart = 100, stepDataStop = 100;
+uint16 stepDataStart = 0, stepDataStop = 0;
 
 typedef struct
 {
@@ -271,6 +271,8 @@ typedef struct
 }one_data_t;
 
 one_data_t oneData;
+
+uint8 db[800];
 
 /*********************************************************************
  * LOCAL FUNCTIONS
@@ -626,61 +628,61 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
         P1_0 = 0;
         P1_1 = 0;
 
-        HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
+        // HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
 
-        uint8 aBuf[2] = {
-            LO_UINT16(stepDataStop),
-            HI_UINT16(stepDataStop)
-        };
+        // uint8 aBuf[2] = {
+        //     LO_UINT16(stepDataStop),
+        //     HI_UINT16(stepDataStop)
+        // };
 
-        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
+        // SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
 
-        uint8 w[] = {3,4};
+        // uint8 w[] = {3,4};
 
-        HalI2CWrite(2, aBuf);
+        // HalI2CWrite(2, aBuf);
 
-        asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
+        // asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
 
-        HalI2CWrite(1, w);
+        // HalI2CWrite(1, w);
 
-        asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
+        // asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
 
-        uint8 r[] = {0,0};
+        // uint8 r[] = {0,0};
 
-        HalI2CWrite(2, aBuf);
+        // HalI2CWrite(2, aBuf);
 
-        asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
+        // asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
 
-        HalI2CRead(1, r);
+        // HalI2CRead(1, r);
 
-        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  r);
+        // SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  r);
 
 
-        osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
+        // osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, SBP_PERIODIC_EVT_PERIOD );
 
         return (events ^ SBP_LED_STOP_EVT);
     }
@@ -1303,9 +1305,10 @@ static void eepromWriteStep(void){
              oneData.tm.hour != currentTm.hour){                // pass a hour, need to write
 
         // write to eeprom
-        HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
+        // HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
 
-        uint8 aBuf[2], dBuf[8] = {
+        // uint8 aBuf[2];
+        uint8 dBuf[8] = {
             LO_UINT16(LO_UINT32(oneData.hourSeconds)),
             HI_UINT16(LO_UINT32(oneData.hourSeconds)),
             LO_UINT16(HI_UINT32(oneData.hourSeconds)),
@@ -1316,42 +1319,44 @@ static void eepromWriteStep(void){
             0
         };
 
-        for (int i = 0; i < 8; i++)
-        {
-            aBuf[0] = LO_UINT16(stepDataStop);
-            aBuf[1] = HI_UINT16(stepDataStop);
+        osal_memcpy(&db[stepDataStop], &dBuf[0], 8);
+        stepDataStop += 8;
 
-            HalI2CWrite(2, aBuf);
+        // for (int i = 0; i < 8; i++)
+        // {
+        //     aBuf[0] = LO_UINT16(stepDataStop);
+        //     aBuf[1] = HI_UINT16(stepDataStop);
 
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
+        //     HalI2CWrite(2, aBuf);
 
-            HalI2CWrite(1, &dBuf[i]);
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
 
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
+        //     HalI2CWrite(1, &dBuf[i]);
 
-            stepDataStop += 1;
-        }
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
+        //     asm("nop");
 
-        uint16 length = (stepDataStop - stepDataStart)/8;
+        //     stepDataStop += 1;
+        // }
 
-        
-        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
+        uint16 length = (stepDataStop - stepDataStart) / 8;
+
+        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStop);
         SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &length);
         SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
 
@@ -1370,35 +1375,39 @@ static void eepromWriteStep(void){
 
 static void eepromReadStep(void){
 
-    HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
+    // HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
 
-    uint8 aBuf[2], dBuf[8];
+    // uint8 aBuf[2];
+    uint8 dBuf[8];
 
-    for (int i = 0; i < 8; i++)
-    {
-        aBuf[0] = LO_UINT16(stepDataStart);
-        aBuf[1] = HI_UINT16(stepDataStart);
+    // for (int i = 0; i < 8; i++)
+    // {
+    //     aBuf[0] = LO_UINT16(stepDataStart);
+    //     aBuf[1] = HI_UINT16(stepDataStart);
 
-        HalI2CWrite(2, aBuf);
+    //     HalI2CWrite(2, aBuf);
 
-        asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
-            asm("nop");
+    //     asm("nop");
+    //         asm("nop");
+    //         asm("nop");
+    //         asm("nop");
+    //         asm("nop");
+    //         asm("nop");
+    //         asm("nop");
+    //         asm("nop");
+    //         asm("nop");
 
-        HalI2CRead(1, &dBuf[i]);
+    //     HalI2CRead(1, &dBuf[i]);
 
-        stepDataStart += 1;
-    }
+    //     stepDataStart += 1;
+    // }
 
-    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  aBuf);
+    osal_memcpy(&dBuf[0], &db[stepDataStart], 8);
+    stepDataStart += 8;
+
+    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStart);
     SimpleProfile_SetParameter( HEALTH_DATA_BODY, 8,  dBuf);
-    SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
+    // SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
 }
 
 /*********************************************************************
