@@ -121,7 +121,7 @@ static simpleProfileCBs_t *simpleProfile_AppCBs = NULL;
 // Simple Profile Service attribute
 static CONST gattAttrType_t simpleProfileService = { ATT_BT_UUID_SIZE, simpleProfileServUUID };
 
-static uint8 healthSyncProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
+static uint8 healthSyncProps = GATT_PROP_READ | GATT_PROP_NOTIFY | GATT_PROP_WRITE;
 static uint8 healthSync[8] = {0,0,0,0,0,0,0,0};     // uint16
 static gattCharCfg_t healthSyncConfig[GATT_MAX_NUM_CONN];
 static uint8 healthSyncUserDesp[17] = "Do Sync\0";
@@ -135,8 +135,9 @@ static uint8 healthDataHeader[2] = {0,0};   // uint16
 static gattCharCfg_t healthDataHeaderConfig[GATT_MAX_NUM_CONN];
 static uint8 healthDataHeaderUserDesp[17] = "Data Header\0";
 
-static uint8 healthDataBodyProps = GATT_PROP_READ;
+static uint8 healthDataBodyProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
 static uint8 healthDataBody[8] = {0,0,0,0,0,0,0,0};
+static gattCharCfg_t healthBodyHeaderConfig[GATT_MAX_NUM_CONN];
 static uint8 healthDataBodyUserDesp[17] = "Data Body\0";
 
 
@@ -226,7 +227,7 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
         healthDataHeader 
       },
 
-      // Sync configuration for notify
+      // Data header configuration for notify
       { 
         { ATT_BT_UUID_SIZE, clientCharCfgUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
@@ -253,9 +254,17 @@ static gattAttribute_t simpleProfileAttrTbl[SERVAPP_NUM_ATTR_SUPPORTED] =
       // Data body Value
       { 
         { ATT_BT_UUID_SIZE, healthDataBodyUUID },
-        GATT_PERMIT_READ, 
+        GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
         0, 
         healthDataBody 
+      },
+
+      // Data header configuration for notify
+      { 
+        { ATT_BT_UUID_SIZE, clientCharCfgUUID },
+        GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
+        0, 
+        (uint8 *)healthBodyHeaderConfig 
       },
       
       // Data body User Description
@@ -282,12 +291,13 @@ static void simpleProfile_HandleConnStatusCB( uint16 connHandle, uint8 changeTyp
 
 
 static void debugNotify(void);
-
 static void debugNotifyCB( linkDBItem_t *pLinkItem );
 
 static void dataHeaderNotify(void);
-
 static void dataHeaderNotifyCB( linkDBItem_t *pLinkItem );
+
+static void dataBodyNotify(void);
+static void dataBodyNotifyCB( linkDBItem_t *pLinkItem );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -423,7 +433,8 @@ bStatus_t SimpleProfile_SetParameter( uint8 param, uint8 len, void *value )
       {
         VOID osal_memcpy( healthDataBody, value, sizeof(healthDataBody) );
 
-        
+        dataBodyNotify();
+
         // See if Notification has been enabled
         // GATTServApp_ProcessCharCfg( healthDataBodyConfig, &healthDataBody, FALSE,
         //                             simpleProfileAttrTbl, GATT_NUM_ATTRS( simpleProfileAttrTbl ),
@@ -547,7 +558,7 @@ static uint8 simpleProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t *pAttr
       case HEALTH_DATA_BODY_UUID:
 
         // ready for read
-        simpleProfile_AppCBs->pfnSimpleProfileChange( HEALTH_DATA_BODY );
+        // simpleProfile_AppCBs->pfnSimpleProfileChange( HEALTH_DATA_BODY );
 
         // *pLen = sizeof(pAttr->pValue);
         *pLen = sizeof(healthDataBody);
@@ -747,9 +758,6 @@ static void dataHeaderNotifyCB( linkDBItem_t *pLinkItem )
 {
   if ( pLinkItem->stateFlags & LINK_CONNECTED )
   {
-    //uint16 value = GATTServApp_ReadCharCfg( pLinkItem->connectionHandle,
-                                            //healthDataBodyConfig );
-    //if ( value & GATT_CLIENT_CFG_NOTIFY )
     {
       attHandleValueNoti_t noti;
 
@@ -758,6 +766,30 @@ static void dataHeaderNotifyCB( linkDBItem_t *pLinkItem )
       //noti.value[0] = healthSync;
       
       osal_memcpy(noti.value, healthDataHeader, sizeof(healthDataHeader));
+
+      GATT_Notification( pLinkItem->connectionHandle, &noti, FALSE );
+    }
+  }
+}
+
+static void dataBodyNotify( void )
+{
+  // Execute linkDB callback to send notification
+  linkDB_PerformFunc( dataBodyNotifyCB );
+}
+
+static void dataBodyNotifyCB( linkDBItem_t *pLinkItem )
+{
+  if ( pLinkItem->stateFlags & LINK_CONNECTED )
+  {
+    {
+      attHandleValueNoti_t noti;
+
+      noti.handle = simpleProfileAttrTbl[13].handle;
+      noti.len = sizeof(healthDataBody);
+      //noti.value[0] = healthSync;
+      
+      osal_memcpy(noti.value, healthDataBody, sizeof(healthDataBody));
 
       GATT_Notification( pLinkItem->connectionHandle, &noti, FALSE );
     }

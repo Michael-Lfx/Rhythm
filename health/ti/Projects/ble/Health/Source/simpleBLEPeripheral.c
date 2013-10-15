@@ -165,7 +165,7 @@ int16 ACC_CUR = 0;
 
 // define for eeprom
 #define EEPROM_ADDRESS_BLOCK_SIZE           8
-#define EEPROM_ADDRESS_BLOCK_COUNT          4000
+#define EEPROM_ADDRESS_BLOCK_COUNT          100
 
 #define EEPROM_ADDRESS_RESERVE_MAX          32768
 #define EEPROM_ADDRESS_DATA_MAX             (EEPROM_ADDRESS_BLOCK_SIZE * EEPROM_ADDRESS_BLOCK_COUNT)
@@ -272,7 +272,7 @@ typedef struct
 
 one_data_t oneData;
 
-uint8 db[800];
+uint8 db[EEPROM_ADDRESS_DATA_MAX];
 
 /*********************************************************************
  * LOCAL FUNCTIONS
@@ -919,13 +919,18 @@ static void performPeriodicTask( void )
  */
 static void simpleProfileChangeCB( uint8 paramID )
 {
-    uint8 newValue;
+    uint16 newValue;
     uint32 clock;
 
     switch ( paramID )
     {
     case HEALTH_SYNC:
         SimpleProfile_GetParameter( HEALTH_SYNC, &newValue );
+
+        if (newValue == 22)
+        {
+            eepromReadStep();
+        }
 
 #if (defined HAL_LCD) && (HAL_LCD == TRUE)
         HalLcdWriteStringValue( "Char 1:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
@@ -936,7 +941,6 @@ static void simpleProfileChangeCB( uint8 paramID )
     case HEALTH_CLOCK:
         SimpleProfile_GetParameter( HEALTH_CLOCK, &clock );
 
-        //
         osal_setClock(clock);
 
         UTCTime now;
@@ -959,7 +963,7 @@ static void simpleProfileChangeCB( uint8 paramID )
 
     case HEALTH_DATA_BODY:
 
-        eepromReadStep();
+        // eepromReadStep();
 
         break;
 
@@ -1102,9 +1106,7 @@ static void adxl345Init( void )
 static void adxl345Loop(void)
 {
 
-    P0_3 = !P0_3;
-
-    
+    // P0_3 = !P0_3;
 
     adxl345GetAccData();
 
@@ -1320,7 +1322,20 @@ static void eepromWriteStep(void){
         };
 
         osal_memcpy(&db[stepDataStop], &dBuf[0], 8);
+
         stepDataStop += 8;
+
+        // arrive maxsize
+        if (stepDataStop >= EEPROM_ADDRESS_DATA_MAX)
+        {
+            stepDataStop = 0;
+        }
+
+        // space is full
+        if (stepDataStop == stepDataStart)
+        {
+            stepDataStart += 8;
+        }
 
         // for (int i = 0; i < 8; i++)
         // {
@@ -1356,7 +1371,7 @@ static void eepromWriteStep(void){
 
         uint16 length = (stepDataStop - stepDataStart) / 8;
 
-        SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStop);
+        // SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStop);
         SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &length);
         SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
 
@@ -1378,7 +1393,6 @@ static void eepromReadStep(void){
     // HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
 
     // uint8 aBuf[2];
-    uint8 dBuf[8];
 
     // for (int i = 0; i < 8; i++)
     // {
@@ -1402,12 +1416,23 @@ static void eepromReadStep(void){
     //     stepDataStart += 1;
     // }
 
-    osal_memcpy(&dBuf[0], &db[stepDataStart], 8);
-    stepDataStart += 8;
+    while(stepDataStart != stepDataStop){
+        uint8 dBuf[8];
 
-    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStart);
-    SimpleProfile_SetParameter( HEALTH_DATA_BODY, 8,  dBuf);
-    // SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
+        osal_memcpy(&dBuf[0], &db[stepDataStart], 8);
+
+        stepDataStart += 8;
+
+        // arrive maxsize
+        if (stepDataStart >= EEPROM_ADDRESS_DATA_MAX)
+        {
+            stepDataStart = 0;
+        }
+
+        // SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStart);
+        SimpleProfile_SetParameter( HEALTH_DATA_BODY, 8,  dBuf);
+        // SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
+    }
 }
 
 /*********************************************************************
