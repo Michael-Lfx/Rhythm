@@ -16,6 +16,7 @@
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
     // 跟手机设置同一个时区
+    // 以后如果加表功能，没有坑
     [df setTimeZone:[NSTimeZone localTimeZone]];
     
     NSDate* date2000 = [df dateFromString:@"2000/01/01 00:00:00"];
@@ -25,5 +26,38 @@
 +(NSDate*)dateWithSeconds:(NSTimeInterval)seconds{
     return [NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)(seconds + SECONDS_2000_1970)];
 }
+
++(int)getDateFormat:(NSTimeInterval)seconds with:(NSString*)formatter{
+    
+    NSDateFormatter* df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:formatter];
+    
+    // 初始化手环时间时已经转成当地时间
+    // 这里设置成格林威治时间
+    [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    
+    return [[df stringFromDate:[self dateWithSeconds:seconds]] intValue];
+}
+
++(int)getYear:(NSTimeInterval)seconds{
+    return [self getDateFormat:seconds with:@"yyyy"];
+}
+
++(int)getMonth:(NSTimeInterval)seconds{
+    return [self getDateFormat:seconds with:@"MM"];
+}
+
++(int)getDay:(NSTimeInterval)seconds{
+    return [self getDateFormat:seconds with:@"dd"];
+}
+
++(int)getHour:(NSTimeInterval)seconds{
+    return [self getDateFormat:seconds with:@"HH"];
+}
+
++(int)getMinutes:(NSTimeInterval)seconds{
+    return [self getDateFormat:seconds with:@"mm"];
+}
+
 
 @end

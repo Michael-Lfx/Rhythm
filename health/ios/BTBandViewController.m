@@ -36,6 +36,8 @@
     
     //监控全局变量beatPerMinute的变化
     [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    //监控全局变量dlPercent的变化
+    [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
     _bleList.delegate = self;
     _bleList.dataSource = self;
@@ -62,6 +64,23 @@
         
         //行数变化时，重新加载列表
         [_bleList reloadData];
+    }
+    
+    if([keyPath isEqualToString:@"dlPercent"])
+    {
+        NSLog(@"dl: %f", self.globals.dlPercent);
+        
+        [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
+            [_dlProgress setProgress:self.globals.dlPercent];
+        } completion:^(BOOL finished) {
+            
+        }];
+        
+        [_dlProgress setProgress:self.globals.dlPercent];
+        
+        if (self.globals.dlPercent == 1.0) {
+            [_dlProgress setHidden:YES];
+        }
     }
 }
 
@@ -149,6 +168,8 @@
 }
 - (IBAction)sync:(UIButton *)sender {
     [[BTBandCentral sharedBandCentral] sync];
+    
+    [_dlProgress setHidden:NO];
 }
 
 @end

@@ -32,6 +32,9 @@
 @property(strong, nonatomic) NSData* setupName;
 @property(strong, nonatomic) void (^setupblock)(int result);
 
+@property(assign, nonatomic) uint16_t dataLength;
+@property(assign, nonatomic) uint16_t currentTrans;
+
 +(BTBandCentral*)sharedBandCentral;
 
 -(void)write:(NSData*)value withUUID:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid;
@@ -41,9 +44,6 @@
 -(void)readAll:(CBUUID*)cuuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
 
 -(void)scan;
-
--(void)playAllAt:(double)timestamp;
--(void)pauseAll;
 
 -(NSArray*)bleList:(NSUInteger)index;
 -(void)connectSelectedPeripheral:(NSUInteger)index;

@@ -8,7 +8,8 @@
 
 #import "BTSettingsViewController.h"
 
-@interface BTCommonViewController : BTSettingsViewController
+@interface BTCommonViewController : BTSettingsViewController  <UITableViewDelegate, UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UITableView *dataTable;
 
 @end

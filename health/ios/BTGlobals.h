@@ -29,6 +29,13 @@
 //手机是否连接设备
 @property(assign, nonatomic) Boolean isConnectedBLE;
 
+//进度条
+@property(assign, nonatomic) float dlPercent;
+
+//数据缓存
+@property(strong, nonatomic) NSMutableArray* dataList;
+@property(assign, nonatomic) NSInteger dataListCount;
+
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;

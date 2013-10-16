@@ -18,7 +18,12 @@
         self.allPeripherals = [NSMutableDictionary dictionaryWithCapacity:7];
         self.p = [NSMutableDictionary dictionaryWithCapacity:7];
         self.globals = [BTGlobals sharedGlobals];
+        
         self.globals.bleListCount = 0;
+        
+        self.globals.dataList = [[NSMutableArray alloc] init];
+        self.globals.dataListCount = 0;
+        
         self.setupBand = nil;
         
         //获取上下文
@@ -302,17 +307,19 @@
         
     }
     
+    //接到数据总长度的通知
     if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]]) {
 
         NSLog(@"%@", characteristic.value);
 
+        [characteristic.value getBytes:&_dataLength];
         
-        uint16_t length;
-        [characteristic.value getBytes:&length];
+        NSLog(@"length:%d", _dataLength);
         
-        NSLog(@"length:%d", length);
+        
     }
     
+    //接到数据通知
     if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_BODY]]) {
         NSLog(@"v:%@",  characteristic.value);
         
@@ -323,6 +330,15 @@
         [characteristic.value getBytes:&count range:NSMakeRange(4, 2)];
         
         NSLog(@"%@, c:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count);
+        
+        [self.globals.dataList addObject:characteristic.value];
+        self.globals.dataListCount++;
+        
+        NSLog(@"data list count: %d", self.globals.dataList.count);
+        
+        _currentTrans++;
+        
+        self.globals.dlPercent = (float)_currentTrans / (float)_dataLength;
     }
     
     //取出缓存中的block并执行
@@ -531,7 +547,9 @@
         
     }
     
-    uint16_t d = 22;
+    _currentTrans = 0;
+    
+    uint16_t d = SYNC_CODE;
     
     [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]];
     
