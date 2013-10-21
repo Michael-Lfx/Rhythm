@@ -26,6 +26,7 @@
 		727C7F4717E1893200D8FF02 /* main-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4617E1893200D8FF02 /* main-bg.png */; };
 		727C7F4917E18FA400D8FF02 /* ask-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4817E18FA400D8FF02 /* ask-bg.png */; };
 		727C7F4B17E18FAC00D8FF02 /* news-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4A17E18FAC00D8FF02 /* news-bg.png */; };
+		7286D14D18151A2800C6D60B /* BTRawData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7286D14C18151A2800C6D60B /* BTRawData.m */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -75,7 +76,6 @@
 		72E53E6C17CC6334002D2708 /* 960.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E4F17CC6334002D2708 /* 960.png */; };
 		72E53E6D17CC6334002D2708 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E5017CC6334002D2708 /* 1024.png */; };
 		72E53E6E17CC6334002D2708 /* 1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E5117CC6334002D2708 /* 1136.png */; };
-		72EE455717CC4C4900751F8A /* BTClickData.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455617CC4C4900751F8A /* BTClickData.m */; };
 		72EE455A17CC4C8600751F8A /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455917CC4C8600751F8A /* BTEntity.m */; };
 		72EE455D17CC61FA00751F8A /* BTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455C17CC61FA00751F8A /* BTAppDelegate.m */; };
 		72EE456217CC626F00751F8A /* BTBandCentral.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455F17CC626F00751F8A /* BTBandCentral.m */; };
@@ -127,6 +127,8 @@
 		727C7F4617E1893200D8FF02 /* main-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-bg.png"; sourceTree = SOURCE_ROOT; };
 		727C7F4817E18FA400D8FF02 /* ask-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ask-bg.png"; sourceTree = SOURCE_ROOT; };
 		727C7F4A17E18FAC00D8FF02 /* news-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "news-bg.png"; sourceTree = SOURCE_ROOT; };
+		7286D14B18151A2800C6D60B /* BTRawData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRawData.h; sourceTree = "<group>"; };
+		7286D14C18151A2800C6D60B /* BTRawData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRawData.m; sourceTree = "<group>"; };
 		72893556175DA8D900EED04E /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -195,8 +197,6 @@
 		72E53E4F17CC6334002D2708 /* 960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 960.png; sourceTree = SOURCE_ROOT; };
 		72E53E5017CC6334002D2708 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024.png; sourceTree = SOURCE_ROOT; };
 		72E53E5117CC6334002D2708 /* 1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1136.png; sourceTree = SOURCE_ROOT; };
-		72EE455517CC4C4900751F8A /* BTClickData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTClickData.h; sourceTree = "<group>"; };
-		72EE455617CC4C4900751F8A /* BTClickData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClickData.m; sourceTree = "<group>"; };
 		72EE455817CC4C8600751F8A /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
 		72EE455917CC4C8600751F8A /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
 		72EE455B17CC61FA00751F8A /* BTAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -442,11 +442,11 @@
 			children = (
 				72F044E11785815F0056AA63 /* BTBleList.h */,
 				72F044E21785815F0056AA63 /* BTBleList.m */,
-				72EE455517CC4C4900751F8A /* BTClickData.h */,
-				72EE455617CC4C4900751F8A /* BTClickData.m */,
 				72EE455817CC4C8600751F8A /* BTEntity.h */,
 				72EE455917CC4C8600751F8A /* BTEntity.m */,
 				72910FE317CC72C4000F7155 /* Model.xcdatamodeld */,
+				7286D14B18151A2800C6D60B /* BTRawData.h */,
+				7286D14C18151A2800C6D60B /* BTRawData.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -604,7 +604,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72EE455717CC4C4900751F8A /* BTClickData.m in Sources */,
 				72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */,
 				72910FD117CC7126000F7155 /* BTAppStore.m in Sources */,
 				7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */,
@@ -637,6 +636,7 @@
 				7232FB0017633ED90097CA34 /* ASINetworkQueue.m in Sources */,
 				7232FB0317633FE40097CA34 /* Reachability.m in Sources */,
 				72910FC317CC70B2000F7155 /* BTRootViewController.m in Sources */,
+				7286D14D18151A2800C6D60B /* BTRawData.m in Sources */,
 				F48E95A117E84D7600EBCDB0 /* BTHistogram.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

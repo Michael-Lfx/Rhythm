@@ -325,14 +325,69 @@
         
         uint32_t seconds;
         uint16_t count;
+        uint8_t type;
         
         [characteristic.value getBytes:&seconds range:NSMakeRange(0, 4)];
         [characteristic.value getBytes:&count range:NSMakeRange(4, 2)];
+        [characteristic.value getBytes:&type range:NSMakeRange(6, 1)];
         
         NSLog(@"%@, c:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count);
         
-        [self.globals.dataList addObject:characteristic.value];
-        self.globals.dataListCount++;
+        if (count > 0) {
+            //分割出年月日小时
+            NSNumber* year = [BTUtils getYear:seconds];
+            NSNumber* month = [BTUtils getMonth:seconds];
+            NSNumber* day = [BTUtils getDay:seconds];
+            NSNumber* hour = [BTUtils getHour:seconds];
+            NSNumber* minute = [BTUtils getMinutes:seconds];
+            
+            //设置coredata
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTRawData" inManagedObjectContext:_context];
+            
+            NSFetchRequest* request = [[NSFetchRequest alloc] init];
+            [request setEntity:entity];
+            
+            //设置查询条件
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"year == %@ AND month == %@ AND day = %@ AND hour == %@ AND minute == %@ AND type == %@",year, month, day, hour, minute, [NSNumber numberWithInt:type]];
+            
+            [request setPredicate:predicate];
+            
+            NSError* error;
+            NSArray* raw = [_context executeFetchRequest:request error:&error];
+            
+            if (raw.count == 1) {
+                //已经有条目了
+                
+                NSLog(@"ther is ");
+                BTRawData* one = [raw objectAtIndex:0];
+                
+                one.count = [NSNumber numberWithInt:[one.count intValue] + count];
+                
+            }else if(raw.count == 0){
+                
+                //木有啊,就新建一条
+                
+                NSLog(@"there no");
+                
+                BTRawData* new = [NSEntityDescription insertNewObjectForEntityForName:@"BTRawData" inManagedObjectContext:_context];
+                
+                new.year = year;
+                new.month = month;
+                new.day = day;
+                new.hour = hour;
+                new.minute = minute;
+                new.type = [NSNumber numberWithInt:type];
+                new.count = [NSNumber numberWithInt:count];
+            }
+            
+            // 及时保存
+            if(![_context save:&error]){
+                NSLog(@"%@", [error localizedDescription]);
+            }
+            
+            [self.globals.dataList addObject:characteristic.value];
+            self.globals.dataListCount++;
+        }
         
         NSLog(@"data list count: %d", self.globals.dataList.count);
         

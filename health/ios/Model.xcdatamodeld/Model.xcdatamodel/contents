@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3389" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="BTBleList" representedClassName="BTBleList" syncable="YES">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BTBleList" representedClassName="BTBleList" isAbstract="YES" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="BTClickData" representedClassName="BTClickData" syncable="YES">
-        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="BTEntity" representedClassName="BTEntity" syncable="YES">
         <attribute name="hasAskGrade" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="installDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="lastCheckVersionDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="BTRawData" representedClassName="BTRawData" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="minute" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="BTBleList" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BTEntity" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BTClickData" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BTBleList" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="BTEntity" positionX="-72" positionY="144" width="128" height="90"/>
+        <element name="BTRawData" positionX="160" positionY="192" width="128" height="148"/>
     </elements>
 </model>

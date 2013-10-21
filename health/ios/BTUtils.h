@@ -13,10 +13,10 @@
 +(uint32_t)currentSeconds;
 +(NSDate*)dateWithSeconds:(NSTimeInterval)seconds;
 
-+(int)getYear:(NSTimeInterval)seconds;
-+(int)getMonth:(NSTimeInterval)seconds;
-+(int)getDay:(NSTimeInterval)seconds;
-+(int)getHour:(NSTimeInterval)seconds;
-+(int)getMinutes:(NSTimeInterval)seconds;
++(NSNumber*)getYear:(NSTimeInterval)seconds;
++(NSNumber*)getMonth:(NSTimeInterval)seconds;
++(NSNumber*)getDay:(NSTimeInterval)seconds;
++(NSNumber*)getHour:(NSTimeInterval)seconds;
++(NSNumber*)getMinutes:(NSTimeInterval)seconds;
 
 @end

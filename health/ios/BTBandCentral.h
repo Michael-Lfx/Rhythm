@@ -15,10 +15,12 @@
 #import "BTAppDelegate.h"
 #import <mach/mach_time.h>
 #import "BTUtils.h"
+#import "BTRawData.h"
 
 @interface BTBandCentral : NSObject <CBCentralManagerDelegate, CBPeripheralDelegate>{
     NSManagedObjectContext* _context;
     NSArray* _localBleLIst;
+    
 }
 
 @property(strong, nonatomic) CBCentralManager* cm;
