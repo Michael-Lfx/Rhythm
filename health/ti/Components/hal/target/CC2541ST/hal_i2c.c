@@ -23,7 +23,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -309,6 +309,37 @@ uint8 HalI2CWrite(uint8 len, uint8 *pBuf)
 void HalI2CDisable(void)
 {
   I2C_DISABLE();
+}
+
+/**************************************************************************************************
+ * fixed by weizhong
+ */
+
+static uint8 i2cMstReStrt(uint8 RD_WRn)
+{
+  I2C_STRT();
+
+  if (I2CSTAT == mstRepStart) /* A start condition has been transmitted */
+  {
+    I2C_WRITE(i2cAddr | RD_WRn);
+  }
+
+  return I2CSTAT;
+}
+
+uint8 HalI2CAckPolling(void)
+{
+   //send start condition
+  i2cMstStrt(0);
+  //wait until receive ack
+  while(I2CSTAT==mstAddrNackW){
+    for(uint8 cnt=0;cnt<10;cnt++);        //delay
+    if(i2cMstReStrt(0)==mstAddrAckW){     //if receive ack, send stop condition
+        I2C_STOP();
+        break;
+    }
+  }
+  return 1;
 }
 
 /*********************************************************************

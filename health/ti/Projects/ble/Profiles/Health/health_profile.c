@@ -122,21 +122,21 @@ static simpleProfileCBs_t *simpleProfile_AppCBs = NULL;
 static CONST gattAttrType_t simpleProfileService = { ATT_BT_UUID_SIZE, simpleProfileServUUID };
 
 static uint8 healthSyncProps = GATT_PROP_READ | GATT_PROP_NOTIFY | GATT_PROP_WRITE;
-static uint8 healthSync[8] = {0,0,0,0,0,0,0,0};     // uint16
+static uint8 healthSync[8] = {0,0,0,0,0,0,0,0};                                     // uint16
 static gattCharCfg_t healthSyncConfig[GATT_MAX_NUM_CONN];
 static uint8 healthSyncUserDesp[17] = "Do Sync\0";
 
 static uint8 healthClockProps = GATT_PROP_WRITE;
-static uint8 healthClock[4] = {0,0,0,0};    // uint32
+static uint8 healthClock[4] = {0,0,0,0};                                           // uint32
 static uint8 healthClockUserDesp[17] = "APP Set Clock\0";
 
 static uint8 healthDataHeaderProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
-static uint8 healthDataHeader[2] = {0,0};   // uint16
+static uint8 healthDataHeader[2] = {1,0};                                         // uint16, default is 1
 static gattCharCfg_t healthDataHeaderConfig[GATT_MAX_NUM_CONN];
 static uint8 healthDataHeaderUserDesp[17] = "Data Header\0";
 
 static uint8 healthDataBodyProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
-static uint8 healthDataBody[8] = {0,0,0,0,0,0,0,0};
+static uint8 healthDataBody[8] = {0,0,0,0,0,0,0,0};                               // uint[8]
 static gattCharCfg_t healthBodyHeaderConfig[GATT_MAX_NUM_CONN];
 static uint8 healthDataBodyUserDesp[17] = "Data Body\0";
 
