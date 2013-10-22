@@ -10,6 +10,7 @@
 #import "BTSwipeViewController.h"
 #import "BTBandCentral.h"
 #import "GraphView.h"
+#import "CircularProgressView.h"
 
 @interface BTMainViewController : BTSwipeViewController{
     

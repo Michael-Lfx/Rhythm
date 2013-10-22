@@ -10,6 +10,8 @@
 
 @interface BTMainViewController ()
 
+@property (strong, nonatomic) CircularProgressView *circularProgressView;
+
 @end
 
 @implementation BTMainViewController
@@ -40,6 +42,20 @@
     [graphView setLineWidth:0];
     [graphView setCurvedLines:YES];
     [self.view addSubview:graphView];
+    
+    
+    //set backcolor & progresscolor
+    UIColor *backColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0];
+    UIColor *progressColor = [UIColor colorWithRed:82.0/255.0 green:135.0/255.0 blue:237.0/255.0 alpha:1.0];
+    
+    //alloc CircularProgressView instance
+    self.circularProgressView = [[CircularProgressView alloc] initWithFrame:CGRectMake(41, 57, 238, 238) backColor:backColor progressColor:progressColor lineWidth:10];
+    
+    //add CircularProgressView
+    [self.view addSubview:self.circularProgressView];
+    
+    [self.circularProgressView updateProgressCircle:1000 withTotal:12000];
+
 
 }
 
@@ -108,6 +124,8 @@
                 [graphView setArray:_dailyData];
             }
             
+            //[self.circularProgressView updateProgressCircle:stepCount withTotal:12000];
+            
             
             
 //            [self updateValue: 50];
@@ -153,16 +171,6 @@
     
 }
 
-
--(void)drawRect:(CGRect)rect{
-    CGContextRef ref=UIGraphicsGetCurrentContext();//拿到当前被准备好的画板。在这个画板上画就是在当前视图上画
-    CGContextBeginPath(ref);//这里提到一个很重要的概念叫路径（path），其实就是告诉画板环境，我们要开始画了，你记下。
-    CGContextMoveToPoint(ref, 0, 0);//画线需要我解释吗？不用了吧？就是两点确定一条直线了。
-    CGContextAddLineToPoint(ref, 300,300);
-    CGFloat redColor[4]={1.0,0,0,1.0};
-    CGContextSetStrokeColor(ref, redColor);//设置了一下当前那个画笔的颜色。画笔啊！你记着我前面说的windows画图板吗？
-    CGContextStrokePath(ref);//告诉画板，对我移动的路径用画笔画一下。
-}
 
 - (void)didReceiveMemoryWarning
 {

@@ -94,6 +94,7 @@
 		F4C3A83917F5BB130020FEA2 /* egg-hao-part3.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C3A83817F5BB130020FEA2 /* egg-hao-part3.png */; };
 		F4CE3D8817630E0C00F314D8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CE3D8717630E0C00F314D8 /* Accelerate.framework */; };
 		F4CE3DEC1764B80E00F314D8 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CE3DEB1764B80D00F314D8 /* OpenAL.framework */; };
+		F4D9A0C218166FE6000EEA01 /* CircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D9A0C018166FE6000EEA01 /* CircularProgressView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -227,6 +228,8 @@
 		F4C3A83817F5BB130020FEA2 /* egg-hao-part3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "egg-hao-part3.png"; sourceTree = SOURCE_ROOT; };
 		F4CE3D8717630E0C00F314D8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F4CE3DEB1764B80D00F314D8 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		F4D9A0C018166FE6000EEA01 /* CircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularProgressView.m; sourceTree = "<group>"; };
+		F4D9A0C118166FE6000EEA01 /* CircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularProgressView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +493,8 @@
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				F4D9A0C018166FE6000EEA01 /* CircularProgressView.m */,
+				F4D9A0C118166FE6000EEA01 /* CircularProgressView.h */,
 				F4BAED1117F171BF00C9A8EC /* DynamicGraphView */,
 				7232FAA1176339070097CA34 /* asi-http-request */,
 				7277F30717CDED96001EB9E3 /* fishhook.c */,
@@ -659,6 +664,7 @@
 				7232FB0317633FE40097CA34 /* Reachability.m in Sources */,
 				72910FC317CC70B2000F7155 /* BTRootViewController.m in Sources */,
 				7286D14D18151A2800C6D60B /* BTRawData.m in Sources */,
+				F4D9A0C218166FE6000EEA01 /* CircularProgressView.m in Sources */,
 				F48E95A117E84D7600EBCDB0 /* BTHistogram.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
