@@ -115,36 +115,36 @@
 #define I2C_CLOCK_RATE                        i2cClock_33KHZ
 
 // define for adxl345
-#define Reg_ID 0
-#define Reg_thresh_tap 0x1D
-#define Reg_OFSX 0x1E
-#define Reg_OFSY 0x1F
-#define Reg_OFSZ 0x20
-#define Reg_DUR 0x21
-#define Reg_LATENT 0X22
-#define Reg_WINDOW 0X23
-#define Reg_THRESH_ACT 0X24
-#define Reg_THRESH_INACT 0X25
-#define Reg_TIME_INACT 0X26
-#define Reg_ACT_INACT_CTL 0X27
-#define Reg_THRESH_FF 0X28
-#define Reg_TIME_FF 0X29
-#define Reg_TAP_AXES 0X2A
-#define Reg_ACT_TAP_STATUS 0X2B
-#define Reg_BW_RATE 0X2C
-#define Reg_POWER_CTL 0x2D
-#define Reg_INT_ENABLE 0x2E
-#define Reg_INT_MAP 0X2F
-#define Reg_INT_SOURCE 0X30
-#define Reg_DATA_FORMAT 0X31
-#define Reg_DX0 0x32
-#define Reg_DX1 0x33
-#define Reg_DY0 0x34
-#define Reg_DY1 0x35
-#define Reg_DZ0 0x36
-#define Reg_DZ1 0x37
-#define Reg_FIFO_CTL 0X38
-#define Reg_FIFO_STATUS 0X39
+#define Reg_ID                  0
+#define Reg_thresh_tap          0x1D
+#define Reg_OFSX                0x1E
+#define Reg_OFSY                0x1F
+#define Reg_OFSZ                0x20
+#define Reg_DUR                 0x21
+#define Reg_LATENT              0X22
+#define Reg_WINDOW              0X23
+#define Reg_THRESH_ACT          0X24
+#define Reg_THRESH_INACT        0X25
+#define Reg_TIME_INACT          0X26
+#define Reg_ACT_INACT_CTL       0X27
+#define Reg_THRESH_FF           0X28
+#define Reg_TIME_FF             0X29
+#define Reg_TAP_AXES            0X2A
+#define Reg_ACT_TAP_STATUS      0X2B
+#define Reg_BW_RATE             0X2C
+#define Reg_POWER_CTL           0x2D
+#define Reg_INT_ENABLE          0x2E
+#define Reg_INT_MAP             0X2F
+#define Reg_INT_SOURCE          0X30
+#define Reg_DATA_FORMAT         0X31
+#define Reg_DX0                 0x32
+#define Reg_DX1                 0x33
+#define Reg_DY0                 0x34
+#define Reg_DY1                 0x35
+#define Reg_DZ0                 0x36
+#define Reg_DZ1                 0x37
+#define Reg_FIFO_CTL            0X38
+#define Reg_FIFO_STATUS         0X39
 
 uint8 X0, X1, Y0, Y1, Z1, Z0;
 int16 X_out, Y_out, Z_out;
@@ -172,6 +172,9 @@ int16 ACC_CUR = 0;
 
 #define EEPROM_POSITION_STEP_DATA_START     (EEPROM_ADDRESS_DATA_MAX)
 #define EEPROM_POSITION_STEP_DATA_STOP      (EEPROM_POSITION_STEP_DATA_START + 2)
+
+
+#define SYNC_CODE           22
 
 
 /*********************************************************************
@@ -468,14 +471,19 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
 #if (defined FAC_TEST) && (FAC_TEST == TRUE)
 
-    P0DIR |= BV(0) | BV(1) | BV(2) | BV(3) | BV(4);
-    P0SEL &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(4));
+    P0DIR |= BV(0) | BV(1) | BV(2) | BV(3);
+    P0SEL &= ~(BV(0) | BV(1) | BV(2) | BV(3));
 
-    P0_0 = 1;
-    P0_1 = 1;
-    P0_2 = 1;
-    P0_3 = 1;
-    P0_4 = 1;
+    P1DIR |= BV(0) | BV(1);
+    P1SEL &= ~(BV(0) | BV(1));
+
+    P0_0 = 0;
+    P0_1 = 0;
+    P0_2 = 0;
+
+    P1_0 = 1;
+    P1_1 = 1;
+
 
     P1DIR |= BV(0) | BV(1);
     P1SEL &= ~(BV(0) | BV(1));
@@ -583,7 +591,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
         adxl345Loop();
 
         // restart timer
-        osal_start_timerEx( simpleBLEPeripheral_TaskID, ADXL345_PERIODIC_EVT, 100 );
+        osal_start_timerEx( simpleBLEPeripheral_TaskID, ADXL345_PERIODIC_EVT, 50 );
 
         return (events ^ ADXL345_PERIODIC_EVT);
     }
@@ -619,11 +627,9 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     if ( events & SBP_LED_STOP_EVT )
     {
 
-        P0_0 = 0;
-        P0_1 = 0;
-        P0_2 = 0;
-        P0_3 = 0;
-        P0_4 = 0;
+        P0_0 = 1;
+        P0_1 = 1;
+        P0_2 = 1;
 
         P1_0 = 0;
         P1_1 = 0;
@@ -927,7 +933,7 @@ static void simpleProfileChangeCB( uint8 paramID )
     case HEALTH_SYNC:
         SimpleProfile_GetParameter( HEALTH_SYNC, &newValue );
 
-        if (newValue == 22)
+        if (newValue == SYNC_CODE)
         {
             eepromReadStep();
         }
@@ -1022,7 +1028,7 @@ static void adxl345Init( void )
     uint8 pBuf[2];
 
     pBuf[0] = Reg_thresh_tap;
-    pBuf[1] = 70;
+    pBuf[1] = 0x27;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_OFSX;
@@ -1038,7 +1044,7 @@ static void adxl345Init( void )
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_DUR;
-    pBuf[1] = 100;
+    pBuf[1] = 80;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_LATENT;
@@ -1140,7 +1146,14 @@ static void adxl345Loop(void)
                 time_count = 0;
                 PACE_PEAK = ACC_CUR;
                 PACE_BOTTOM = 0;
-                P0_0 = 0;
+                
+                P0_0 = 1;
+                P0_1 = 1;
+                P0_2 = 1;
+
+                P1_0 = 0;
+                P1_1 = 0;
+
             }
             else if (cross_count == 2)
             {
@@ -1149,7 +1162,14 @@ static void adxl345Loop(void)
                 {
                     // add one step
                     pace_count = pace_count + 1;
-                    P0_0 = 1;
+
+                    P0_0 = 0;
+                    P0_1 = 0;
+                    P0_2 = 0;
+
+                    P1_0 = 1;
+                    P1_1 = 1;
+
                     cross_count = 0;
 
                     // uint8 d[6];
@@ -1208,7 +1228,7 @@ static void adxl345Loop(void)
             i--;
         }
 
-        P0_4 = !P0_4;
+        P0_3 = !P0_3;
     }
     time_count++;
 }
@@ -1369,7 +1389,7 @@ static void eepromWriteStep(void){
         //     stepDataStop += 1;
         // }
 
-        uint16 length = (stepDataStop - stepDataStart) / 8;
+        uint16 length = ((stepDataStop - stepDataStart) / 8) + 1;
 
         // SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &stepDataStop);
         SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &length);
@@ -1433,6 +1453,27 @@ static void eepromReadStep(void){
         SimpleProfile_SetParameter( HEALTH_DATA_BODY, 8,  dBuf);
         // SimpleProfile_SetParameter( HEALTH_SYNC, 8, dBuf);
     }
+
+    if (stepDataStart == stepDataStop)
+    {
+        uint8 dBuf[8] = {
+            LO_UINT16(LO_UINT32(oneData.hourSeconds)),
+            HI_UINT16(LO_UINT32(oneData.hourSeconds)),
+            LO_UINT16(HI_UINT32(oneData.hourSeconds)),
+            HI_UINT16(HI_UINT32(oneData.hourSeconds)),
+            LO_UINT16(oneData.count),
+            HI_UINT16(oneData.count),
+            oneData.type,
+            0
+        };
+
+        SimpleProfile_SetParameter( HEALTH_DATA_BODY, 8,  dBuf);
+
+        oneData.count = 0;
+    }
+
+    uint16 length = 1;
+    SimpleProfile_SetParameter( HEALTH_DATA_HEADER, 2,  &length);
 }
 
 /*********************************************************************

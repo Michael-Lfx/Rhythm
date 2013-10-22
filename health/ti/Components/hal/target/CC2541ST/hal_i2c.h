@@ -21,7 +21,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -75,6 +75,10 @@ void     HalI2CInit(uint8 address, i2cClock_t clockRate);
 uint8    HalI2CRead(uint8 len, uint8 *pBuf);
 uint8    HalI2CWrite(uint8 len, uint8 *pBuf);
 void     HalI2CDisable(void);
+
+
+// fixed by weizhong
+uint8    HalI2CAckPolling(void);
 
 #endif
 /**************************************************************************************************

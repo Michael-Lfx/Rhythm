@@ -9,12 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "BTSwipeViewController.h"
 #import "BTBandCentral.h"
-
+#import "GraphView.h"
 
 @interface BTMainViewController : BTSwipeViewController{
     
+        GraphView *graphView;
 }
 
 @property(strong, nonatomic) NSMutableArray* dailyData;
+@property (strong, nonatomic) GraphView *graphView;
+@property (weak, nonatomic) IBOutlet UILabel *sportNum;
+@property (weak, nonatomic) IBOutlet UIImageView *sportLevel;
 
 @end
