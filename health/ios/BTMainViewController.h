@@ -18,6 +18,8 @@
 }
 
 @property(strong, nonatomic) NSMutableArray* dailyData;
+@property(assign, nonatomic) int stepCount;
+
 @property (strong, nonatomic) GraphView *graphView;
 @property (weak, nonatomic) IBOutlet UILabel *sportNum;
 @property (weak, nonatomic) IBOutlet UIImageView *sportLevel;

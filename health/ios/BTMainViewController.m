@@ -25,13 +25,6 @@
     
     [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
-    self.dailyData = [NSMutableArray arrayWithCapacity:60];
-    
-
-    for (int i = 0; i < 60; i++) {
-        [self.dailyData addObject:[NSNumber numberWithInt:0]];
-    }
-    
     graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 377, self.view.frame.size.width-20, 100)];
     [graphView setBackgroundColor:[UIColor clearColor]];
     [graphView setSpacing:10];
@@ -107,59 +100,35 @@
             NSError* error;
             NSArray* raw = [self.context executeFetchRequest:request error:&error];
             
-            self.dailyData = [NSMutableArray arrayWithCapacity:60];
+            //初始化数据
+            _dailyData = [NSMutableArray arrayWithCapacity:60];
             
             for (int i = 0; i < 60; i++) {
-                [self.dailyData addObject:[NSNumber numberWithInt:1]];
+                // 显示好看，空的设1
+                [_dailyData addObject:[NSNumber numberWithInt:1]];
             }
             
-            if (raw.count > 0) {
-                for (BTRawData* one in raw) {
-                    NSNumber* m = one.minute;
-                    [_dailyData insertObject:one.count atIndex:[m integerValue]];
-                }
+            _stepCount = 0;
+            
+            //如果有数据
+
+            for (BTRawData* one in raw) {
+                NSNumber* m = one.minute;
+                [_dailyData insertObject:one.count atIndex:[m integerValue]];
                 
-                NSLog(@"%@", _dailyData);
-                
-                [graphView setArray:_dailyData];
+                _stepCount += [one.count intValue];
             }
             
             //[self.circularProgressView updateProgressCircle:stepCount withTotal:12000];
             
+
+            NSLog(@"stepCount: %d", _stepCount);
+
             
-            
-//            [self updateValue: 50];
+            [graphView setArray:_dailyData];
+
         }
     }
-
-    
-    
-//    NSArray *points = @[@2.0f,
-//                        @8.0f,
-//                        @10.0f,
-//                        @3.0f,
-//                        @4.0f,
-//                        @8.0f,
-//                        @200.0f,
-//                        @1000.0f,
-//                        @1100.0f,
-//                        @800.0f,
-//                        @700.0f,
-//                        @500.0f,
-//                        @1400.0f,
-//                        @2000.0f,
-//                        @1200.0f,
-//                        @300.0f,
-//                        @200.0f,
-//                        @1000.0f,
-//                        @1200.0f,
-//                        @800.0f,
-//                        @1000.0f,
-//                        @500.0f,
-//                        @300.0f,
-//                        @10.0f];
-    
-    
     
 }
 
