@@ -33,6 +33,7 @@
     [graphView setLineWidth:0];
     [graphView setCurvedLines:YES];
     [self.view addSubview:graphView];
+
 }
 
 //监控参数，更新显示
@@ -114,6 +115,7 @@
 -(void) updateValue: (float) value
 {
     
+
     self.sportNum.text = [NSString stringWithFormat:@"%f.0",value];
     
 }
