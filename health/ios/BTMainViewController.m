@@ -23,10 +23,24 @@
     
     [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
-    self.dailyData = [[NSMutableArray alloc] initWithCapacity:24];
+    self.dailyData = [NSMutableArray arrayWithCapacity:60];
     
-    //[self updateValue: 50];
+
+    for (int i = 0; i < 60; i++) {
+        [self.dailyData addObject:[NSNumber numberWithInt:0]];
+    }
     
+    graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 377, self.view.frame.size.width-20, 100)];
+    [graphView setBackgroundColor:[UIColor clearColor]];
+    [graphView setSpacing:10];
+    [graphView setFill:YES];
+    [graphView setStrokeColor:[UIColor redColor]];
+    [graphView setZeroLineStrokeColor:[UIColor greenColor]];
+    [graphView setFillColor:[UIColor orangeColor]];
+    [graphView setLineWidth:0];
+    [graphView setCurvedLines:YES];
+    [self.view addSubview:graphView];
+
 }
 
 //监控参数，更新显示
@@ -77,55 +91,56 @@
             NSError* error;
             NSArray* raw = [self.context executeFetchRequest:request error:&error];
             
-            [_dailyData removeAllObjects]; 
+            self.dailyData = [NSMutableArray arrayWithCapacity:60];
+            
+            for (int i = 0; i < 60; i++) {
+                [self.dailyData addObject:[NSNumber numberWithInt:1]];
+            }
             
             if (raw.count > 0) {
                 for (BTRawData* one in raw) {
-                    [_dailyData addObject:one.count];
+                    NSNumber* m = one.minute;
+                    [_dailyData insertObject:one.count atIndex:[m integerValue]];
                 }
+                
+                NSLog(@"%@", _dailyData);
+                
+                [graphView setArray:_dailyData];
             }
             
-            NSLog(@"%@", _dailyData);
+            
+            
+//            [self updateValue: 50];
         }
     }
 
-    graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 377, self.view.frame.size.width-20, 100)];
-    [graphView setBackgroundColor:[UIColor clearColor]];
-    [graphView setSpacing:10];
-    [graphView setFill:YES];
-    [graphView setStrokeColor:[UIColor redColor]];
-    [graphView setZeroLineStrokeColor:[UIColor greenColor]];
-    [graphView setFillColor:[UIColor orangeColor]];
-    [graphView setLineWidth:0];
-    [graphView setCurvedLines:YES];
-    [self.view addSubview:graphView];
     
-    NSArray *points = @[@2.0f,
-                        @8.0f,
-                        @10.0f,
-                        @3.0f,
-                        @4.0f,
-                        @8.0f,
-                        @200.0f,
-                        @1000.0f,
-                        @1100.0f,
-                        @800.0f,
-                        @700.0f,
-                        @500.0f,
-                        @1400.0f,
-                        @2000.0f,
-                        @1200.0f,
-                        @300.0f,
-                        @200.0f,
-                        @1000.0f,
-                        @1200.0f,
-                        @800.0f,
-                        @1000.0f,
-                        @500.0f,
-                        @300.0f,
-                        @10.0f];
     
-    [graphView setArray:points];
+//    NSArray *points = @[@2.0f,
+//                        @8.0f,
+//                        @10.0f,
+//                        @3.0f,
+//                        @4.0f,
+//                        @8.0f,
+//                        @200.0f,
+//                        @1000.0f,
+//                        @1100.0f,
+//                        @800.0f,
+//                        @700.0f,
+//                        @500.0f,
+//                        @1400.0f,
+//                        @2000.0f,
+//                        @1200.0f,
+//                        @300.0f,
+//                        @200.0f,
+//                        @1000.0f,
+//                        @1200.0f,
+//                        @800.0f,
+//                        @1000.0f,
+//                        @500.0f,
+//                        @300.0f,
+//                        @10.0f];
+    
     
     
 }
@@ -133,14 +148,8 @@
 -(void) updateValue: (float) value
 {
     
-//    CGContextRef context = UIGraphicsGetCurrentContext();
-//    CGContextSetRGBStrokeColor(context,1,1,1,1.0);//画笔线的颜色
-//    CGContextSetLineWidth(context, 1.0);//线的宽度
-//    //void CGContextAddArc(CGContextRef c,CGFloat x, CGFloat y,CGFloat radius,CGFloat startAngle,CGFloat endAngle, int clockwise)1弧度＝180°/π （≈57.3°） 度＝弧度×180°/π 360°＝360×π/180 ＝2π 弧度
-//    // x,y为圆点坐标，radius半径，startAngle为开始的弧度，endAngle为 结束的弧度，clockwise 0为顺时针，1为逆时针。
-//    CGContextAddArc(context, 100, 20, 15, 0, 2*PI, 0); //添加一个圆
-//    CGContextDrawPath(context, kCGPathStroke); //绘制路径
-    
+
+    self.sportNum.text = [NSString stringWithFormat:@"%f.0",value];
     
 }
 
