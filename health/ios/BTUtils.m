@@ -27,7 +27,7 @@
     return [NSDate dateWithTimeIntervalSince1970:(NSTimeInterval)(seconds + SECONDS_2000_1970)];
 }
 
-+(NSNumber*)getDateFormat:(NSTimeInterval)seconds with:(NSString*)formatter{
++(NSNumber*)getDateFormat:(NSDate*)date with:(NSString*)formatter{
     
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
     [df setDateFormat:formatter];
@@ -36,27 +36,27 @@
     // 这里设置成格林威治时间
     [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     
-    return [NSNumber numberWithInt:[[df stringFromDate:[self dateWithSeconds:seconds]] intValue]];
+    return [NSNumber numberWithInt:[[df stringFromDate:date] intValue]];
 }
 
-+(NSNumber*)getYear:(NSTimeInterval)seconds{
-    return [self getDateFormat:seconds with:@"yyyy"];
++(NSNumber*)getYear:(NSDate*)date{
+    return [self getDateFormat:date with:@"yyyy"];
 }
 
-+(NSNumber*)getMonth:(NSTimeInterval)seconds{
-    return [self getDateFormat:seconds with:@"MM"];
++(NSNumber*)getMonth:(NSDate*)date{
+    return [self getDateFormat:date with:@"MM"];
 }
 
-+(NSNumber*)getDay:(NSTimeInterval)seconds{
-    return [self getDateFormat:seconds with:@"dd"];
++(NSNumber*)getDay:(NSDate*)date{
+    return [self getDateFormat:date with:@"dd"];
 }
 
-+(NSNumber*)getHour:(NSTimeInterval)seconds{
-    return [self getDateFormat:seconds with:@"HH"];
++(NSNumber*)getHour:(NSDate*)date{
+    return [self getDateFormat:date with:@"HH"];
 }
 
-+(NSNumber*)getMinutes:(NSTimeInterval)seconds{
-    return [self getDateFormat:seconds with:@"mm"];
++(NSNumber*)getMinutes:(NSDate*)date{
+    return [self getDateFormat:date with:@"mm"];
 }
 
 

@@ -10,12 +10,15 @@
 #import "BTConstants.h"
 #import "BTGlobals.h"
 #import "BTBandCentral.h"
+#import "BTAppDelegate.h"
 
 @interface BTBaseViewController : UIViewController{
+    
 }
 
 @property(strong, nonatomic) BTGlobals* globals;
 @property(strong, nonatomic) BTBandCentral* bandCM;
+@property(strong, nonatomic) NSManagedObjectContext* context;
 
 -(void)setViewX:(int)x;
 -(void)setViewHeight:(int)h;

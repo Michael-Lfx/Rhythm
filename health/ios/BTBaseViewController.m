@@ -43,6 +43,11 @@
     //初始化全局变量为私有对象，供子类使用
     self.globals = [BTGlobals sharedGlobals];
     self.bandCM = [BTBandCentral sharedBandCentral];
+    
+    //获取上下文
+    UIApplication *app = [UIApplication sharedApplication];
+    BTAppDelegate *delegate = (BTAppDelegate *)[app delegate];
+    self.context = delegate.managedObjectContext;
 }
 
 - (void)didReceiveMemoryWarning

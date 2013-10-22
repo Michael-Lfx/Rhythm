@@ -103,6 +103,7 @@
         for (BTBleList* old in _localBleLIst) {
             if ([old.name isEqualToString:find.name]){
                 [_cm connectPeripheral:peripheral options:nil];
+                NSLog(@"!!!2222222");
             }
         }
         
@@ -257,8 +258,6 @@
         NSLog(@"UpdateNotificationStateForCharacteristic erroe:%@", error.localizedDescription);
     }
     
-    NSLog(@"%hhd", characteristic.isNotifying);
-    
     if (characteristic.isNotifying) {
         
         NSLog(@"Notification began on %@", characteristic);
@@ -331,15 +330,17 @@
         [characteristic.value getBytes:&count range:NSMakeRange(4, 2)];
         [characteristic.value getBytes:&type range:NSMakeRange(6, 1)];
         
-        NSLog(@"%@, c:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count);
+        NSLog(@"%@, c:%d t:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count, type);
         
         if (count > 0) {
             //分割出年月日小时
-            NSNumber* year = [BTUtils getYear:seconds];
-            NSNumber* month = [BTUtils getMonth:seconds];
-            NSNumber* day = [BTUtils getDay:seconds];
-            NSNumber* hour = [BTUtils getHour:seconds];
-            NSNumber* minute = [BTUtils getMinutes:seconds];
+            NSDate* date = [BTUtils dateWithSeconds:(NSTimeInterval)seconds];
+            
+            NSNumber* year = [BTUtils getYear:date];
+            NSNumber* month = [BTUtils getMonth:date];
+            NSNumber* day = [BTUtils getDay:date];
+            NSNumber* hour = [BTUtils getHour:date];
+            NSNumber* minute = [BTUtils getMinutes:date];
             
             //设置coredata
             NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTRawData" inManagedObjectContext:_context];
@@ -358,8 +359,10 @@
             if (raw.count == 1) {
                 //已经有条目了
                 
-                NSLog(@"ther is ");
+                
                 BTRawData* one = [raw objectAtIndex:0];
+                
+                NSLog(@"ther is %@", one.count);
                 
                 one.count = [NSNumber numberWithInt:[one.count intValue] + count];
                 
@@ -394,6 +397,7 @@
         _currentTrans++;
         
         self.globals.dlPercent = (float)_currentTrans / (float)_dataLength;
+        
     }
     
     //取出缓存中的block并执行
@@ -560,8 +564,10 @@
     
     if (!bp.handle.isConnected) {
         [_cm connectPeripheral:bp.handle options:nil];
+        
+        NSLog(@"!!!connect");
     } else {
-        [_cm cancelPeripheralConnection:bp.handle];
+//        [_cm cancelPeripheralConnection:bp.handle];
     }
     
 }
@@ -579,6 +585,7 @@
     _setupblock = block;
     
     [_cm connectPeripheral:_setupBand.handle options:nil];
+    NSLog(@"!21");
 }
 
 -(void)sync{
@@ -608,20 +615,6 @@
     
     [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]];
     
-//    for (int i = 0; i < length; i++) {
-//        [self readAll:[CBUUID UUIDWithString:UUID_HEALTH_DATA_BODY] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-//            
-//            NSLog(@"v:%@", value);
-//            
-//            uint32_t seconds;
-//            uint16_t count;
-//            
-//            [value getBytes:&seconds range:NSMakeRange(0, 4)];
-//            [value getBytes:&count range:NSMakeRange(4, 2)];
-//            
-//            NSLog(@"%@, c:%d", [BTUtils dateWithSeconds:(NSTimeInterval)seconds], count);
-//        }];
-//    }
 }
 
 @end

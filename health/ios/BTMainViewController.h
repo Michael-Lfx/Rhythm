@@ -15,4 +15,6 @@
     
 }
 
+@property(strong, nonatomic) NSMutableArray* dailyData;
+
 @end
