@@ -89,6 +89,9 @@
 		F49E6D16175F3D5A00E2EDCB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */; };
 		F49E6D1E175F787E00E2EDCB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */; };
 		F49E6D20175F78A800E2EDCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */; };
+		F4BAED1717F171D600C9A8EC /* GraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BAED1617F171D600C9A8EC /* GraphView.m */; };
+		F4C3A83717F5BAC80020FEA2 /* egg-hao-13.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C3A83617F5BAC80020FEA2 /* egg-hao-13.png */; };
+		F4C3A83917F5BB130020FEA2 /* egg-hao-part3.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C3A83817F5BB130020FEA2 /* egg-hao-part3.png */; };
 		F4CE3D8817630E0C00F314D8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CE3D8717630E0C00F314D8 /* Accelerate.framework */; };
 		F4CE3DEC1764B80E00F314D8 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CE3DEB1764B80D00F314D8 /* OpenAL.framework */; };
 /* End PBXBuildFile section */
@@ -218,6 +221,10 @@
 		F49E6D15175F3D5A00E2EDCB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F49E6D1D175F787E00E2EDCB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F49E6D1F175F78A800E2EDCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F4BAED1517F171D600C9A8EC /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
+		F4BAED1617F171D600C9A8EC /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
+		F4C3A83617F5BAC80020FEA2 /* egg-hao-13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "egg-hao-13.png"; sourceTree = SOURCE_ROOT; };
+		F4C3A83817F5BB130020FEA2 /* egg-hao-part3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "egg-hao-part3.png"; sourceTree = SOURCE_ROOT; };
 		F4CE3D8717630E0C00F314D8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F4CE3DEB1764B80D00F314D8 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -375,6 +382,8 @@
 		72893560175DA8D900EED04E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F4C3A83817F5BB130020FEA2 /* egg-hao-part3.png */,
+				F4C3A83617F5BAC80020FEA2 /* egg-hao-13.png */,
 				72E53E2F17CC6302002D2708 /* Health-Info.plist */,
 				72E53E3017CC6302002D2708 /* Health-Prefix.pch */,
 				72910FD917CC7182000F7155 /* InfoPlist.strings */,
@@ -469,9 +478,19 @@
 			name = SportsMoniter;
 			sourceTree = "<group>";
 		};
+		F4BAED1117F171BF00C9A8EC /* DynamicGraphView */ = {
+			isa = PBXGroup;
+			children = (
+				F4BAED1517F171D600C9A8EC /* GraphView.h */,
+				F4BAED1617F171D600C9A8EC /* GraphView.m */,
+			);
+			name = DynamicGraphView;
+			sourceTree = "<group>";
+		};
 		F4CE3E531764C8F000F314D8 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				F4BAED1117F171BF00C9A8EC /* DynamicGraphView */,
 				7232FAA1176339070097CA34 /* asi-http-request */,
 				7277F30717CDED96001EB9E3 /* fishhook.c */,
 				7277F30817CDED96001EB9E3 /* fishhook.h */,
@@ -583,6 +602,7 @@
 				72E53E6E17CC6334002D2708 /* 1136.png in Resources */,
 				72E53E6417CC6334002D2708 /* 60.png in Resources */,
 				72E53E6D17CC6334002D2708 /* 1024.png in Resources */,
+				F4C3A83717F5BAC80020FEA2 /* egg-hao-13.png in Resources */,
 				72E53E6B17CC6334002D2708 /* 512.png in Resources */,
 				72E53E6A17CC6334002D2708 /* 480.png in Resources */,
 				72E53E5C17CC6334002D2708 /* 29.png in Resources */,
@@ -592,6 +612,7 @@
 				72E53E5F17CC6334002D2708 /* 40.png in Resources */,
 				F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */,
 				72E53E5517CC6334002D2708 /* Default-568h@2x.png in Resources */,
+				F4C3A83917F5BB130020FEA2 /* egg-hao-part3.png in Resources */,
 				72E53E5E17CC6334002D2708 /* 30.png in Resources */,
 				72E53E3117CC6302002D2708 /* Health-Info.plist in Resources */,
 			);
@@ -618,6 +639,7 @@
 				72910FBD17CC707D000F7155 /* BTAskViewController.m in Sources */,
 				7232FAF917633ED90097CA34 /* ASIAuthenticationDialog.m in Sources */,
 				72EE455D17CC61FA00751F8A /* BTAppDelegate.m in Sources */,
+				F4BAED1717F171D600C9A8EC /* GraphView.m in Sources */,
 				7232FAFA17633ED90097CA34 /* ASIDataCompressor.m in Sources */,
 				7232FAFB17633ED90097CA34 /* ASIDataDecompressor.m in Sources */,
 				7277F30917CDED96001EB9E3 /* fishhook.c in Sources */,
