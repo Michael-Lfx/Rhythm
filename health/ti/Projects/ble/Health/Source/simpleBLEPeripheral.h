@@ -60,9 +60,10 @@ extern "C"
 #define SBP_ADV_IN_CONNECTION_EVT                         0x0004
 #define BATT_PERIODIC_EVT                                 0x0008
 #define ADXL345_PERIODIC_EVT                              0x0010
+#define LED_CYCLE_EVT                                     0x0020
   
 #if (defined FAC_TEST) && (FAC_TEST == TRUE)
-  #define SBP_LED_STOP_EVT                                0x0020
+  #define SBP_LED_STOP_EVT                                0x0040
 #endif
 
 /*********************************************************************
