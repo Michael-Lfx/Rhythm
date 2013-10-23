@@ -38,11 +38,11 @@
     
     
     //set backcolor & progresscolor
-    UIColor *backColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0];
-    UIColor *progressColor = [UIColor colorWithRed:82.0/255.0 green:135.0/255.0 blue:237.0/255.0 alpha:1.0];
+    UIColor *backColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
+    UIColor *progressColor = [UIColor colorWithRed:255.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
     
     //alloc CircularProgressView instance
-    self.circularProgressView = [[CircularProgressView alloc] initWithFrame:CGRectMake(41, 57, 238, 238) backColor:backColor progressColor:progressColor lineWidth:10];
+    self.circularProgressView = [[CircularProgressView alloc] initWithFrame:CGRectMake(30, 77, 270, 270) backColor:backColor progressColor:progressColor lineWidth:10];
     
     //add CircularProgressView
     [self.view addSubview:self.circularProgressView];
