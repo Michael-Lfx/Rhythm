@@ -21,6 +21,7 @@
 @property(assign, nonatomic) int lastCheckVersionDate;
 @property(assign, nonatomic) int installDate;
 @property(assign, nonatomic) int hasAskGrade;
+@property(assign, nonatomic) int lastSync;
 
 //手环总数和数组
 @property(assign, nonatomic) NSInteger bleListCount;

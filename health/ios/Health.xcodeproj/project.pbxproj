@@ -20,6 +20,7 @@
 		7232FB07176340310097CA34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB06176340300097CA34 /* SystemConfiguration.framework */; };
 		7232FB091763403A0097CA34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB081763403A0097CA34 /* MobileCoreServices.framework */; };
 		7232FB0B1763405A0097CA34 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */; };
+		725C9BAA18177DAB00423E31 /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 725C9BA918177DAB00423E31 /* BTEntity.m */; };
 		725CB5AD1760A5DF0020FC78 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725CB5AC1760A5DF0020FC78 /* CoreData.framework */; };
 		7277F30917CDED96001EB9E3 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30717CDED96001EB9E3 /* fishhook.c */; };
 		7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */; };
@@ -76,7 +77,6 @@
 		72E53E6C17CC6334002D2708 /* 960.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E4F17CC6334002D2708 /* 960.png */; };
 		72E53E6D17CC6334002D2708 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E5017CC6334002D2708 /* 1024.png */; };
 		72E53E6E17CC6334002D2708 /* 1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E5117CC6334002D2708 /* 1136.png */; };
-		72EE455A17CC4C8600751F8A /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455917CC4C8600751F8A /* BTEntity.m */; };
 		72EE455D17CC61FA00751F8A /* BTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455C17CC61FA00751F8A /* BTAppDelegate.m */; };
 		72EE456217CC626F00751F8A /* BTBandCentral.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE455F17CC626F00751F8A /* BTBandCentral.m */; };
 		72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456117CC626F00751F8A /* BTBandPeripheral.m */; };
@@ -124,6 +124,8 @@
 		7232FB06176340300097CA34 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7232FB081763403A0097CA34 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		725C9BA818177DAB00423E31 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
+		725C9BA918177DAB00423E31 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
 		725CB5AC1760A5DF0020FC78 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7277F30717CDED96001EB9E3 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 		7277F30817CDED96001EB9E3 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
@@ -201,8 +203,6 @@
 		72E53E4F17CC6334002D2708 /* 960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 960.png; sourceTree = SOURCE_ROOT; };
 		72E53E5017CC6334002D2708 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024.png; sourceTree = SOURCE_ROOT; };
 		72E53E5117CC6334002D2708 /* 1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1136.png; sourceTree = SOURCE_ROOT; };
-		72EE455817CC4C8600751F8A /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
-		72EE455917CC4C8600751F8A /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
 		72EE455B17CC61FA00751F8A /* BTAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		72EE455C17CC61FA00751F8A /* BTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		72EE455E17CC626F00751F8A /* BTBandCentral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBandCentral.h; sourceTree = SOURCE_ROOT; };
@@ -454,11 +454,11 @@
 			children = (
 				72F044E11785815F0056AA63 /* BTBleList.h */,
 				72F044E21785815F0056AA63 /* BTBleList.m */,
-				72EE455817CC4C8600751F8A /* BTEntity.h */,
-				72EE455917CC4C8600751F8A /* BTEntity.m */,
 				72910FE317CC72C4000F7155 /* Model.xcdatamodeld */,
 				7286D14B18151A2800C6D60B /* BTRawData.h */,
 				7286D14C18151A2800C6D60B /* BTRawData.m */,
+				725C9BA818177DAB00423E31 /* BTEntity.h */,
+				725C9BA918177DAB00423E31 /* BTEntity.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -638,7 +638,6 @@
 				72E53E3317CC630E002D2708 /* main.m in Sources */,
 				72F044E41785815F0056AA63 /* BTBleList.m in Sources */,
 				72910FC617CC70BA000F7155 /* BTSwipeViewController.m in Sources */,
-				72EE455A17CC4C8600751F8A /* BTEntity.m in Sources */,
 				72910FCB17CC70F1000F7155 /* BTBandViewController.m in Sources */,
 				72910FD517CC7130000F7155 /* BTSettingsViewController.m in Sources */,
 				72910FBD17CC707D000F7155 /* BTAskViewController.m in Sources */,
@@ -655,6 +654,7 @@
 				72EE456917CC629000751F8A /* BTConstants.m in Sources */,
 				729BA227180BDC5600C56C89 /* BTUtils.m in Sources */,
 				72910FD817CC714C000F7155 /* BTBaseViewController.m in Sources */,
+				725C9BAA18177DAB00423E31 /* BTEntity.m in Sources */,
 				7232FAFE17633ED90097CA34 /* ASIHTTPRequest.m in Sources */,
 				72910FCC17CC70F1000F7155 /* BTNewsViewController.m in Sources */,
 				7232FAFF17633ED90097CA34 /* ASIInputStream.m in Sources */,

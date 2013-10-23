@@ -42,7 +42,7 @@
         [max setAdjustsFontSizeToFitWidth:YES];
         [max setBackgroundColor:[UIColor clearColor]];
         [max setTextColor:[UIColor blackColor]];
-        [max setText:@"10"];
+        //[max setText:@"10"];
         [self addSubview:max];
         
         zero = [[UILabel alloc] initWithFrame:CGRectMake(2, CGRectGetMidY(self.frame) - 7.5, 25, 16)];
@@ -55,7 +55,7 @@
         [min setAdjustsFontSizeToFitWidth:YES];
         [min setBackgroundColor:[UIColor clearColor]];
         [min setTextColor:[UIColor blackColor]];
-        [min setText:@"0"];
+        //[min setText:@"0"];
         [self addSubview:min];
         
         dx = 50; // number of points shown in graph
@@ -300,18 +300,18 @@
     dy = maxValue + abs(minValue) + spacing;
     
     // set maxValue and round the float
-    [max setText:[NSString stringWithFormat:@"%i", (int)(dy + 0.0) ]];
+    //[max setText:[NSString stringWithFormat:@"%i", (int)(dy + 0.0) ]];
     
     
     // set graphView for values below 0
     if (minValue < 0) {
         setZero = 2;
         [zero setText:@"0"];
-        [min setText:[NSString stringWithFormat:@"-%i", (int)(dy + 0.0) ]];
+        //[min setText:[NSString stringWithFormat:@"-%i", (int)(dy + 0.0) ]];
     }else{
         setZero = 1;
         [zero setText:@""];
-        [min setText:[NSString stringWithFormat:@"0"]];
+        //[min setText:[NSString stringWithFormat:@"0"]];
     }
 }
 

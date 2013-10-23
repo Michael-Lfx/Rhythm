@@ -23,5 +23,7 @@
 @property (strong, nonatomic) GraphView *graphView;
 @property (weak, nonatomic) IBOutlet UILabel *sportNum;
 @property (weak, nonatomic) IBOutlet UIImageView *sportLevel;
+- (IBAction)sync:(id)sender;
+
 
 @end

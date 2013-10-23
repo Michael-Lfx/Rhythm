@@ -25,7 +25,7 @@
     
     [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
-    graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 377, self.view.frame.size.width-20, 100)];
+    graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 100)];
     [graphView setBackgroundColor:[UIColor clearColor]];
     [graphView setSpacing:10];
     [graphView setFill:YES];
@@ -49,7 +49,7 @@
     
     [self.circularProgressView updateProgressCircle:1000 withTotal:12000];
 
-
+    [self buildMain];
 }
 
 //监控参数，更新显示
@@ -62,70 +62,10 @@
         
         if (self.globals.dlPercent == 1) {
             
-            NSLog(@"oh yeah");
+            //更新上次同步时间
+            self.globals.lastSync = [[NSDate date] timeIntervalSince1970];
             
-            //设置数据类型
-            int type = 2;
-            
-            //分割出年月日小时
-            NSDate* date = [NSDate date];
-            NSTimeZone *zone = [NSTimeZone systemTimeZone];
-            NSInteger interval = [zone secondsFromGMTForDate: date];
-            NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
-            
-            NSLog(@"%@", localeDate);
-            
-            NSNumber* year = [BTUtils getYear:localeDate];
-            NSNumber* month = [BTUtils getMonth:localeDate];
-            NSNumber* day = [BTUtils getDay:localeDate];
-            NSNumber* hour = [BTUtils getHour:localeDate];
-            
-            //设置coredata
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTRawData" inManagedObjectContext:self.context];
-            
-            NSFetchRequest* request = [[NSFetchRequest alloc] init];
-            [request setEntity:entity];
-            
-            //设置查询条件
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"year == %@ AND month == %@ AND day = %@ AND hour == %@ AND type == %@",year, month, day, hour, [NSNumber numberWithInt:type]];
-            
-            [request setPredicate:predicate];
-            
-            //排序
-            NSMutableArray *sortDescriptors = [NSMutableArray array];
-            [sortDescriptors addObject:[[NSSortDescriptor alloc] initWithKey:@"minute" ascending:YES] ];
-            
-            [request setSortDescriptors:sortDescriptors];
-            
-            NSError* error;
-            NSArray* raw = [self.context executeFetchRequest:request error:&error];
-            
-            //初始化数据
-            _dailyData = [NSMutableArray arrayWithCapacity:60];
-            
-            for (int i = 0; i < 60; i++) {
-                // 显示好看，空的设1
-                [_dailyData addObject:[NSNumber numberWithInt:1]];
-            }
-            
-            _stepCount = 0;
-            
-            //如果有数据
-
-            for (BTRawData* one in raw) {
-                NSNumber* m = one.minute;
-                [_dailyData insertObject:one.count atIndex:[m integerValue]];
-                
-                _stepCount += [one.count intValue];
-            }
-            
-            //[self.circularProgressView updateProgressCircle:stepCount withTotal:12000];
-            
-
-            NSLog(@"stepCount: %d", _stepCount);
-
-            
-            [graphView setArray:_dailyData];
+            [self buildMain];
 
         }
     }
@@ -134,12 +74,136 @@
 
 -(void) updateValue: (float) value
 {
-    
-
     self.sportNum.text = [NSString stringWithFormat:@"%f.0",value];
-    
 }
 
+// 建立主要区域
+-(void)buildMain{
+    
+    NSLog(@"build graph!!");
+    
+    //设置数据类型
+    int type = 2;
+    
+    //分割出年月日小时
+    NSDate* date = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
+    
+    NSLog(@"%@", localeDate);
+    
+    NSNumber* year = [BTUtils getYear:localeDate];
+    NSNumber* month = [BTUtils getMonth:localeDate];
+    NSNumber* day = [BTUtils getDay:localeDate];
+    NSNumber* hour = [BTUtils getHour:localeDate];
+    
+    //设置coredata
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTRawData" inManagedObjectContext:self.context];
+    
+    NSFetchRequest* request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    
+    //设置查询条件
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"year == %@ AND month == %@ AND day = %@ AND hour == %@ AND type == %@",year, month, day, hour, [NSNumber numberWithInt:type]];
+    
+    [request setPredicate:predicate];
+    
+    //排序
+    NSMutableArray *sortDescriptors = [NSMutableArray array];
+    [sortDescriptors addObject:[[NSSortDescriptor alloc] initWithKey:@"minute" ascending:YES] ];
+    
+    [request setSortDescriptors:sortDescriptors];
+    
+    NSError* error;
+    NSArray* raw = [self.context executeFetchRequest:request error:&error];
+    
+    //初始化数据
+    _dailyData = [NSMutableArray arrayWithCapacity:60];
+    
+    for (int i = 0; i < 60; i++) {
+        // 显示好看，空的设1
+        [_dailyData addObject:[NSNumber numberWithInt:1]];
+    }
+    
+    _stepCount = 0;
+    
+    //如果有数据
+    
+    for (BTRawData* one in raw) {
+        NSNumber* m = one.minute;
+        [_dailyData insertObject:one.count atIndex:59 - [m integerValue]];
+        
+        _stepCount += [one.count intValue];
+    }
+    
+    [self.circularProgressView updateProgressCircle:_stepCount withTotal:200];
+    
+    
+    NSLog(@"stepCount: %d", _stepCount);
+    
+    [graphView setArray:_dailyData];
+    
+    [self buildBottom];
+}
+
+-(void)buildBottom{
+    
+    NSString* syncWords;
+    
+    if (self.globals.lastSync) {
+        
+        NSString* last;
+        
+        int interval = [[NSDate date] timeIntervalSince1970] - self.globals.lastSync;
+        
+        
+        if (interval < 10) {
+            
+            // 10秒以内，刚刚
+            last = @"刚刚";
+            
+        }else if (interval < 60) {
+            
+            // 1分钟以内，xx秒前
+            last = [NSString stringWithFormat:@"%d秒前", interval];
+            
+        }else if(interval < 3600){
+            
+            // 1小时以内，xx分钟前
+            last = [NSString stringWithFormat:@"%d分钟前", interval/60];
+            
+        }else if(interval < 86400){
+            
+            // 1天以内，xx小时前
+            last = [NSString stringWithFormat:@"%d小时前", interval/3600];
+            
+        }else if(interval < 345600){
+            
+            // 4天以内，x天前
+            last = [NSString stringWithFormat:@"%d天前", interval/86400];
+            
+        }else{
+            
+            // 用全日期
+            NSDateFormatter* df = [[NSDateFormatter alloc] init];
+            [df setDateFormat:@"yyyy-MM-dd"];
+            [df setTimeZone:[NSTimeZone localTimeZone]];
+            
+            last = [df stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.globals.lastSync]];
+        }
+        
+        syncWords = [NSString stringWithFormat:@"上次同步:%@", last];
+        
+    }else{
+        
+        //从没同步过
+        syncWords = @"从未同步";
+        
+    }
+    
+    NSLog(@"%@", syncWords);
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -148,4 +212,7 @@
 }
 
 
+- (IBAction)sync:(id)sender {
+    [[BTBandCentral sharedBandCentral] sync];
+}
 @end

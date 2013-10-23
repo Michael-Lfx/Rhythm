@@ -48,6 +48,7 @@ double const kSubdivisionDuration = 0.5;
             _lastCheckVersionDate = (int)[[NSDate date] timeIntervalSince1970];
             _hasAskGrade = 0;
             _installDate = _lastCheckVersionDate;
+            _lastSync = 0;      //表示从没同步过
             
             
             //首次写入即可
@@ -66,6 +67,7 @@ double const kSubdivisionDuration = 0.5;
             _lastCheckVersionDate = [_globalsInEntity.lastCheckVersionDate intValue];
             _hasAskGrade = [_globalsInEntity.hasAskGrade intValue];
             _installDate = [_globalsInEntity.installDate intValue];
+            _lastSync = [_globalsInEntity.lastSync intValue];
             
             
             NSLog(@"%@", _globalsInEntity);
@@ -82,6 +84,7 @@ double const kSubdivisionDuration = 0.5;
 -(void)globalsIntoEntity{
     _globalsInEntity.lastCheckVersionDate = [NSNumber numberWithInt:_lastCheckVersionDate];
     _globalsInEntity.hasAskGrade = [NSNumber numberWithInt:_hasAskGrade];
+    _globalsInEntity.lastSync = [NSNumber numberWithInt:_lastSync];
     
     
     NSError* error;

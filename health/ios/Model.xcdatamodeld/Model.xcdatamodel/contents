@@ -8,6 +8,7 @@
         <attribute name="hasAskGrade" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="installDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="lastCheckVersionDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="lastSync" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="BTRawData" representedClassName="BTRawData" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -19,8 +20,8 @@
         <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BTBleList" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="BTEntity" positionX="-72" positionY="144" width="128" height="90"/>
-        <element name="BTRawData" positionX="160" positionY="192" width="128" height="148"/>
+        <element name="BTBleList" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BTEntity" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BTRawData" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

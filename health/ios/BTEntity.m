@@ -2,7 +2,7 @@
 //  BTEntity.m
 //  Health
 //
-//  Created by kaka' on 13-8-27.
+//  Created by kaka' on 13-10-23.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -14,5 +14,6 @@
 @dynamic hasAskGrade;
 @dynamic installDate;
 @dynamic lastCheckVersionDate;
+@dynamic lastSync;
 
 @end
