@@ -26,6 +26,8 @@
         
         self.setupBand = nil;
         
+        self.syncLocker = NO;
+        
         //获取上下文
         UIApplication *app = [UIApplication sharedApplication];
         BTAppDelegate *delegate = (BTAppDelegate *)[app delegate];
@@ -398,6 +400,11 @@
         
         self.globals.dlPercent = (float)_currentTrans / (float)_dataLength;
         
+        //同步完成
+        if (self.globals.dlPercent == 1) {
+            _syncLocker = NO;
+        }
+        
     }
     
     //取出缓存中的block并执行
@@ -589,31 +596,37 @@
 }
 
 -(void)sync{
-    NSLog(@"wo ca");
     
-    //遍历所有的peripheral
-    NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
-    
-    uint16_t length;
-    
-    for (BTBandPeripheral* bp in enumeratorValue) {
+    if (!_syncLocker) {
         
-        NSLog(@"%@", bp.allValues);
+        _syncLocker = YES;
         
-        NSData* d = [bp.allValues objectForKey:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]];
+        NSLog(@"wo ca");
         
+        //遍历所有的peripheral
+        NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
         
-        [d getBytes:&length];
+        uint16_t length;
         
-        NSLog(@"sync length:%d", length);
+        for (BTBandPeripheral* bp in enumeratorValue) {
+            
+            NSLog(@"%@", bp.allValues);
+            
+            NSData* d = [bp.allValues objectForKey:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]];
+            
+            
+            [d getBytes:&length];
+            
+            NSLog(@"sync length:%d", length);
+            
+        }
         
+        _currentTrans = 0;
+        
+        uint16_t d = SYNC_CODE;
+        
+        [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]];
     }
-    
-    _currentTrans = 0;
-    
-    uint16_t d = SYNC_CODE;
-    
-    [self writeAll:[NSData dataWithBytes:&d length:sizeof(d)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_SYNC]];
     
 }
 

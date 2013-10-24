@@ -18,6 +18,8 @@
 
 @synthesize graphView = _graphView;
 
+float const kUpdateSyncInterval = 10;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -25,13 +27,13 @@
     
     [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
-    graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 100)];
+    graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 340, self.view.frame.size.width-20, 100)];
     [graphView setBackgroundColor:[UIColor clearColor]];
     [graphView setSpacing:10];
     [graphView setFill:YES];
     [graphView setStrokeColor:[UIColor redColor]];
     [graphView setZeroLineStrokeColor:[UIColor greenColor]];
-    [graphView setFillColor:[UIColor orangeColor]];
+    [graphView setFillColor:[UIColor whiteColor]];
     [graphView setLineWidth:0];
     [graphView setCurvedLines:YES];
     [self.view addSubview:graphView];
@@ -42,7 +44,7 @@
     UIColor *progressColor = [UIColor colorWithRed:255.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0];
     
     //alloc CircularProgressView instance
-    self.circularProgressView = [[CircularProgressView alloc] initWithFrame:CGRectMake(30, 77, 270, 270) backColor:backColor progressColor:progressColor lineWidth:10];
+    self.circularProgressView = [[CircularProgressView alloc] initWithFrame:CGRectMake(25, 77, 270, 270) backColor:backColor progressColor:progressColor lineWidth:10];
     
     //add CircularProgressView
     [self.view addSubview:self.circularProgressView];
@@ -50,6 +52,8 @@
     [self.circularProgressView updateProgressCircle:1000 withTotal:12000];
 
     [self buildMain];
+    
+    _updateSycnTimer = [NSTimer scheduledTimerWithTimeInterval:kUpdateSyncInterval target:self selector:@selector(buildBottom:) userInfo:nil repeats:YES];
 }
 
 //监控参数，更新显示
@@ -137,17 +141,25 @@
         _stepCount += [one.count intValue];
     }
     
-    [self.circularProgressView updateProgressCircle:_stepCount withTotal:200];
+    
+    
+    [UIView animateWithDuration:0.5 animations:^(void) {
+        [self.circularProgressView updateProgressCircle:_stepCount withTotal:200];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+    _stepCountDisplay.text = [NSString stringWithFormat:@"%d", _stepCount];
     
     
     NSLog(@"stepCount: %d", _stepCount);
     
     [graphView setArray:_dailyData];
     
-    [self buildBottom];
+    [self buildBottom:Nil];
 }
 
--(void)buildBottom{
+-(void)buildBottom:(NSTimer *)theTimer{
     
     NSString* syncWords;
     
@@ -203,6 +215,8 @@
     }
     
     NSLog(@"%@", syncWords);
+    
+    _syncTime.text = syncWords;
 }
 
 - (void)didReceiveMemoryWarning

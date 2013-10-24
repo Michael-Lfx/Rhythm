@@ -13,17 +13,20 @@
 #import "CircularProgressView.h"
 
 @interface BTMainViewController : BTSwipeViewController{
-    
         GraphView *graphView;
 }
 
-@property(strong, nonatomic) NSMutableArray* dailyData;
-@property(assign, nonatomic) int stepCount;
+@property (strong, nonatomic) NSMutableArray* dailyData;
+@property (assign, nonatomic) int stepCount;
 
 @property (strong, nonatomic) GraphView *graphView;
 @property (weak, nonatomic) IBOutlet UILabel *sportNum;
 @property (weak, nonatomic) IBOutlet UIImageView *sportLevel;
-- (IBAction)sync:(id)sender;
 
+- (IBAction)sync:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *syncTime;
+@property(strong, nonatomic) NSTimer* updateSycnTimer;
+
+@property (weak, nonatomic) IBOutlet UILabel *stepCountDisplay;
 
 @end

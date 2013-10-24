@@ -37,6 +37,8 @@
 @property(assign, nonatomic) uint16_t dataLength;
 @property(assign, nonatomic) uint16_t currentTrans;
 
+@property(assign, nonatomic) Boolean syncLocker;
+
 +(BTBandCentral*)sharedBandCentral;
 
 -(void)write:(NSData*)value withUUID:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid;
