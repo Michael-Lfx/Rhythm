@@ -1199,8 +1199,8 @@ static void adxl345Loop(void)
                 P0_1 = 1;
                 P0_2 = 1;
 
-                P1_0 = 0;
-                P1_1 = 0;
+                // P1_0 = 0;
+                // P1_1 = 0;
 
             }
             else if (cross_count == 2)
@@ -1217,8 +1217,8 @@ static void adxl345Loop(void)
                     P0_1 = 0;
                     P0_2 = 0;
 
-                    P1_0 = 1;
-                    P1_1 = 1;
+                    // P1_0 = 1;
+                    // P1_1 = 1;
 
                     cross_count = 0;
 
@@ -1267,7 +1267,7 @@ static void adxl345Loop(void)
 
     adxl345GetIntData();//read INT registers
 
-    if (INT_STATUS & 0x20)
+    if (INT_STATUS & 0x40)
     {
         //tap happened
         // Serial.print("TAP\r\n");
@@ -1281,7 +1281,7 @@ static void adxl345Loop(void)
 
         eepromWriteStep(TAP_DATA_TYPE);
 
-        P0_3 = !P0_3;
+        // P0_3 = !P0_3;
     }
     time_count++;
 }
