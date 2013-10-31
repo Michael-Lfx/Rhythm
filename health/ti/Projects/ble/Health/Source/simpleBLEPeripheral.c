@@ -57,7 +57,7 @@
 #define LO_UINT32(x)        ((x) & 0xffff)
 
 // How often to perform periodic event
-#define SBP_PERIODIC_EVT_PERIOD                   5000
+#define SBP_PERIODIC_EVT_PERIOD               5000
 
 // What is the advertising interval when device is discoverable (units of 625us, 160=100ms)
 #define DEFAULT_ADVERTISING_INTERVAL          160
@@ -676,10 +676,10 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
         P0_1 = 1;
         P0_2 = 1;
 
-        // P0_3 = 1;
+        P0_3 = 1;
 
-        // P1_0 = 0;
-        // P1_1 = 0;
+        P1_0 = 0;
+        P1_1 = 0;
 
         // HalI2CInit(EEPROM_ADDRESS, I2C_CLOCK_RATE);
 
@@ -1075,19 +1075,19 @@ static void adxl345Init( void )
     uint8 pBuf[2];
 
     pBuf[0] = Reg_thresh_tap;
-    pBuf[1] = 0x40;
+    pBuf[1] = 0x30;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_DUR;
-    pBuf[1] = 0x20;
+    pBuf[1] = 0x30;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_LATENT;
-    pBuf[1] = 0x20;
+    pBuf[1] = 0xC0;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_WINDOW;
-    pBuf[1] = 0x60;
+    pBuf[1] = 0xF0;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_OFSX;
@@ -1127,12 +1127,13 @@ static void adxl345Init( void )
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_TAP_AXES;
-    // pBuf[1] = 0x0f;
-    pBuf[1] = 0x09;
+    pBuf[1] = 0x0f;
+    // pBuf[1] = 0x09;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_BW_RATE;
-    pBuf[1] = 0x17;
+    // pBuf[1] = 0x17;
+    pBuf[1] = 0x0A;
     HalI2CWrite(2, pBuf);
 
     pBuf[0] = Reg_POWER_CTL;
@@ -1195,9 +1196,9 @@ static void adxl345Loop(void)
                 PACE_PEAK = ACC_CUR;
                 PACE_BOTTOM = 0;
                 
-                P0_0 = 1;
-                P0_1 = 1;
-                P0_2 = 1;
+                // P0_0 = 1;
+                // P0_1 = 1;
+                // P0_2 = 1;
 
                 // P1_0 = 0;
                 // P1_1 = 0;
@@ -1216,9 +1217,10 @@ static void adxl345Loop(void)
                     P0_0 = 0;
                     P0_1 = 0;
                     P0_2 = 0;
+                    P1_0 = 1;
+                    P1_1 = 1;
 
-                    // P1_0 = 1;
-                    // P1_1 = 1;
+                    osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, 500 );
 
                     cross_count = 0;
 
@@ -1267,7 +1269,7 @@ static void adxl345Loop(void)
 
     adxl345GetIntData();//read INT registers
 
-    if (INT_STATUS & 0x40)
+    if (INT_STATUS & 0x20)
     {
         //tap happened
         // Serial.print("TAP\r\n");
@@ -1281,7 +1283,9 @@ static void adxl345Loop(void)
 
         eepromWriteStep(TAP_DATA_TYPE);
 
-        // P0_3 = !P0_3;
+        P0_3 = 0;
+
+        osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_LED_STOP_EVT, 1000 );
     }
     time_count++;
 }
