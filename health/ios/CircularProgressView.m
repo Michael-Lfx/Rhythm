@@ -39,8 +39,8 @@
 - (void)drawRect:(CGRect)rect
 {
     //draw background circle
-    UIBezierPath *backCircle = [UIBezierPath bezierPathWithArcCenter:CGPointMake(self.bounds.size.width / 2,self.bounds.size.height / 2) radius:self.bounds.size.width / 2 - self.lineWidth / 2 startAngle:(CGFloat) -M_PI_2 endAngle:(CGFloat)(1.5 * M_PI) clockwise:YES];
-    [self.backColor setStroke];
+   UIBezierPath *backCircle = [UIBezierPath bezierPathWithArcCenter:CGPointMake(self.bounds.size.width / 2,self.bounds.size.height / 2) radius:self.bounds.size.width / 2 - self.lineWidth / 2 startAngle:(CGFloat) -M_PI_2 endAngle:(CGFloat)(1.5 * M_PI) clockwise:YES];
+      [self.backColor setStroke];
     backCircle.lineWidth = self.lineWidth;
     [backCircle stroke];
     

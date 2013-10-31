@@ -29,6 +29,7 @@ float const kUpdateSyncInterval = 10;
     
     [self.globals addObserver:self forKeyPath:@"isConnectedBLE" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
+    // add buttom curve
     graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 340, self.view.frame.size.width-20, 100)];
     [graphView setBackgroundColor:[UIColor clearColor]];
     [graphView setSpacing:10];

@@ -30,7 +30,12 @@
     
     //测试电量时，屏幕常亮
     [UIApplication sharedApplication].idleTimerDisabled=YES;
+    [self configureViewOnRootView];
     
+}
+//configure view on rootView
+- (void)configureViewOnRootView
+{
     int screenWidth = [UIScreen mainScreen].applicationFrame.size.width;
     int screenHeight = [UIScreen mainScreen].applicationFrame.size.height;
     int scrollY, scrollHeight;
@@ -65,12 +70,12 @@
     [band addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:band];
     
-//    UIButton *common = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    common.tag = COMMON_BUTTON_TAG;
-//    [common setFrame:CGRectMake(266, buttonY, 54, 54)];
-//    [common setBackgroundImage:[UIImage imageNamed:@"common-button.png"] forState:UIControlStateNormal];
-//    [common addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
-//    [self.view addSubview:common];
+    //    UIButton *common = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    //    common.tag = COMMON_BUTTON_TAG;
+    //    [common setFrame:CGRectMake(266, buttonY, 54, 54)];
+    //    [common setBackgroundImage:[UIImage imageNamed:@"common-button.png"] forState:UIControlStateNormal];
+    //    [common addTarget:self action:@selector(callSettings:) forControlEvents:UIControlEventTouchDown];
+    //    [self.view addSubview:common];
     
     //初始化滚屏view
     //init时设置一屏的尺寸，这尼玛是大坑啊
@@ -86,17 +91,19 @@
     //把丫放到分页符下面
     [self.view insertSubview:_scrollView belowSubview:_pageControl];
     
-//    _newsViewCtrl = [BTNewsViewController buildView];
-//    _newsViewCtrl.view.tag = NEWS_VIEW_TAG;
-//    [_newsViewCtrl setViewHeight:scrollHeight];
-//    [_scrollView addSubview:_newsViewCtrl.view];
+    //    _newsViewCtrl = [BTNewsViewController buildView];
+    //    _newsViewCtrl.view.tag = NEWS_VIEW_TAG;
+    //    [_newsViewCtrl setViewHeight:scrollHeight];
+    //    [_scrollView addSubview:_newsViewCtrl.view];
     
+    //main viewController
     _mainViewCtrl = [BTMainViewController buildView];
     _mainViewCtrl.view.tag = MAIN_VIEW_TAG;
-//    [_mainViewCtrl setViewX:screenWidth];
+    //    [_mainViewCtrl setViewX:screenWidth];
     [_mainViewCtrl setViewHeight:scrollHeight];
     [_scrollView addSubview:_mainViewCtrl.view];
     
+    //胎动图片界面
     _askViewCtrl = [BTAskViewController buildView];
     _askViewCtrl.view.tag = TEMPO_VIEW_TAG;
     [_askViewCtrl setViewX:screenWidth];
@@ -104,22 +111,23 @@
     [_scrollView addSubview:_askViewCtrl.view];
     
     //这里设置n个屏的总长度
-    _scrollView.contentSize = CGSizeMake(screenWidth * 2, scrollHeight);
-    [_scrollView scrollRectToVisible:CGRectMake(0, 0, screenWidth, scrollHeight) animated:false];
-    
-    //初始化设置页view
-    //放到最上面，出现时遮住分页符、设置按钮神马的
-    _commonViewCtrl = [BTCommonViewController buildView];
-    _commonViewCtrl.view.tag = COMMON_VIEW_TAG;
-    [_commonViewCtrl setViewX:-screenWidth];
-    [self.view addSubview:_commonViewCtrl.view];
-    
-    _bandViewCtrl = [BTBandViewController buildView];
+  _scrollView.contentSize = CGSizeMake(screenWidth * 2, scrollHeight);
+   [_scrollView scrollRectToVisible:CGRectMake(0, 0, screenWidth, scrollHeight) animated:YES];
+//    
+//    //初始化设置页view
+//    //放到最上面，出现时遮住分页符、设置按钮神马的
+//    _commonViewCtrl = [BTCommonViewController buildView];
+//    _commonViewCtrl.view.tag = COMMON_VIEW_TAG;
+//    [_commonViewCtrl setViewX:-screenWidth];
+//    [self.view addSubview:_commonViewCtrl.view];
+   
+    //setting viewController
+   _bandViewCtrl = [BTBandViewController buildView];
     _bandViewCtrl.view.tag = BAND_VIEW_TAG;
-    [_bandViewCtrl setViewX:screenWidth];
-    [self.view addSubview:_bandViewCtrl.view];
-    
-    NSLog(@"%@", self.view.subviews);
+   [_bandViewCtrl setViewX:screenWidth];
+    [self.view  addSubview:_bandViewCtrl.view];
+//    
+//    NSLog(@"%@", self.view.subviews);
     
     //查询最新版本
     _appStore = [[BTAppStore alloc] init];
@@ -127,7 +135,7 @@
     
     //请求给评个分
     [_appStore askGraed];
-    
+
 }
 
 //滚动结束时调用

@@ -41,7 +41,7 @@
     [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
         //回到子类的原点
         [self setViewX:_originX];
-    } completion:^(BOOL finished) {
+           } completion:^(BOOL finished) {
         
     }];
 }
