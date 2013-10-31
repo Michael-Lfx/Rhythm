@@ -225,6 +225,10 @@
             
             self.globals.bleListCount += 0;
             
+            _syncLocker = NO;
+            
+            self.globals.isConnectedBLE = YES;
+            
 //            NSDateFormatter* df = [[NSDateFormatter alloc] init];
 //            [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
 //            // 跟手机设置同一个时区
@@ -440,6 +444,8 @@
     if (self.globals.bleListCount == 0) {
         self.globals.isConnectedBLE = NO;
     }
+    
+    self.globals.isConnectedBLE = NO;
     
     //断开连接后自动重新搜索
     [self scan];

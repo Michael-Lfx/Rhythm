@@ -27,6 +27,8 @@ float const kUpdateSyncInterval = 10;
     
     [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
+    [self.globals addObserver:self forKeyPath:@"isConnectedBLE" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
     graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 340, self.view.frame.size.width-20, 100)];
     [graphView setBackgroundColor:[UIColor clearColor]];
     [graphView setSpacing:10];
@@ -73,6 +75,19 @@ float const kUpdateSyncInterval = 10;
 
         }
     }
+    
+    if([keyPath isEqualToString:@"isConnectedBLE"])
+    {
+        
+        if (self.globals.isConnectedBLE) {
+            
+            _linked.on = YES;
+            
+        }else{
+            _linked.on = NO;
+        }
+    }
+
     
 }
 
@@ -178,7 +193,7 @@ float const kUpdateSyncInterval = 10;
         }else if (interval < 60) {
             
             // 1分钟以内，xx秒前
-            last = [NSString stringWithFormat:@"%d秒前", interval];
+            last = [NSString stringWithFormat:@"%d0秒前", interval/10];
             
         }else if(interval < 3600){
             

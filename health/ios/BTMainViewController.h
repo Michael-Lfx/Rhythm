@@ -28,5 +28,6 @@
 @property(strong, nonatomic) NSTimer* updateSycnTimer;
 
 @property (weak, nonatomic) IBOutlet UILabel *stepCountDisplay;
+@property (weak, nonatomic) IBOutlet UISwitch *linked;
 
 @end

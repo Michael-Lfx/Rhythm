@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		722F9DEA181E3022009A52F2 /* 20Pc-02.png in Resources */ = {isa = PBXBuildFile; fileRef = 722F9DE9181E3021009A52F2 /* 20Pc-02.png */; };
 		7231A1FB1817E33800984D01 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7231A1FA1817E33800984D01 /* icon@2x.png */; };
 		7231A1FD1817E34900984D01 /* 1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 7231A1FC1817E34900984D01 /* 1136.png */; };
 		7232FAF917633ED90097CA34 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7232FAE617633ED90097CA34 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -98,6 +99,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		722F9DE9181E3021009A52F2 /* 20Pc-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20Pc-02.png"; sourceTree = SOURCE_ROOT; };
 		7231A1FA1817E33800984D01 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = SOURCE_ROOT; };
 		7231A1FC1817E34900984D01 /* 1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1136.png; sourceTree = SOURCE_ROOT; };
 		7232FAE517633ED90097CA34 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 		72893560175DA8D900EED04E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				722F9DE9181E3021009A52F2 /* 20Pc-02.png */,
 				F4D9A0C318167C48000EEA01 /* mana-11.png */,
 				F4C3A83817F5BB130020FEA2 /* egg-hao-part3.png */,
 				F4C3A83617F5BAC80020FEA2 /* egg-hao-13.png */,
@@ -596,6 +599,7 @@
 				72E53E5317CC6334002D2708 /* common-button.png in Resources */,
 				72E53E6017CC6334002D2708 /* 44.png in Resources */,
 				72910FDE17CC7182000F7155 /* Localizable.strings in Resources */,
+				722F9DEA181E3022009A52F2 /* 20Pc-02.png in Resources */,
 				72E53E5D17CC6334002D2708 /* 29@2x.png in Resources */,
 				727C7F4917E18FA400D8FF02 /* ask-bg.png in Resources */,
 				72E53E5217CC6334002D2708 /* band-button.png in Resources */,
@@ -782,7 +786,7 @@
 				GCC_PREFIX_HEADER = "Health-Prefix.pch";
 				HEADER_SEARCH_PATHS = TheAmazingAudioEngine/TheAmazingAudioEngine;
 				INFOPLIST_FILE = "Health-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -803,7 +807,7 @@
 				GCC_PREFIX_HEADER = "Health-Prefix.pch";
 				HEADER_SEARCH_PATHS = TheAmazingAudioEngine/TheAmazingAudioEngine;
 				INFOPLIST_FILE = "Health-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
