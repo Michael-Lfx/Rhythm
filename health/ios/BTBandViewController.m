@@ -134,7 +134,7 @@
     
     if (isConnected || [CellIdentifier isEqual:@"bleListCellScan"]) {
         //手环名称
-        UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
+        UILabel* bandName = (UILabel*)[cell.contentView viewWithTag:BAND_NAME_TAG];
         bandName.text = name;
     }
     
@@ -160,7 +160,7 @@
         
         [self pickupSettings:nil];
         
-    }else if([cellId isEqual:@"bleListCellScan"]){
+    }else{
         
         [self.bandCM connectSelectedPeripheral:[indexPath row]];
     }

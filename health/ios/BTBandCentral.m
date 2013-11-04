@@ -26,15 +26,13 @@
         
         self.setupBand = nil;
         
-        self.syncLocker = NO;
+        //没连接上设备之前加锁
+        self.syncLocker = YES;
         
         //获取上下文
         UIApplication *app = [UIApplication sharedApplication];
         BTAppDelegate *delegate = (BTAppDelegate *)[app delegate];
         _context = delegate.managedObjectContext;
-        
-        [self.globals addObserver:self forKeyPath:@"bleShock" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-        [self.globals addObserver:self forKeyPath:@"bleSpark" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     }
     
     return self;
@@ -76,7 +74,9 @@
     //找到了就停止扫描
     [central stopScan];
     
-    if (advertisementData.count) {
+    //排除name=(null)的异常状态
+    if (advertisementData.count && peripheral.name != NULL) {
+        
         //付给私有变量，不然就释放了
         //以peripheral的hash为key，存起来
         //    [self.p setObject:peripheral forKey:[NSString stringWithFormat:@"%d",peripheral.hash]];
@@ -87,6 +87,7 @@
 
         find.name = peripheral.name;
         
+        //没连接上以前，用hash保存
         [_allPeripherals setObject:find forKey:[NSNumber numberWithInt:peripheral.hash]];
         
         //连接上一个以后增加
@@ -223,35 +224,21 @@
             
             NSLog(@"ge zaile ");
             
+            //更新手环状态
             self.globals.bleListCount += 0;
             
+            //同步锁打开
             _syncLocker = NO;
             
             self.globals.isConnectedBLE = YES;
             
-//            NSDateFormatter* df = [[NSDateFormatter alloc] init];
-//            [df setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
-//            // 跟手机设置同一个时区
-//            [df setTimeZone:[NSTimeZone localTimeZone]];
-//            
-//            NSDate* date2000 = [df dateFromString:@"2000/01/01 00:00:00"];
-//            uint32_t seconds = (uint32_t)[[NSDate date] timeIntervalSinceDate:date2000];
-            
+            //取现在距离2000-1-1的秒数
             uint32_t seconds = [BTUtils currentSeconds];
             
             NSLog(@"now:%d", seconds);
             
+            //初始化手环的时间
             [self writeAll:[NSData dataWithBytes:&seconds length:sizeof(seconds)] withUUID:[CBUUID UUIDWithString:UUID_HEALTH_CLOCK]];
-            
-//            [self readAll:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER] withBlock:^(NSData *value, CBCharacteristic *characteristic, CBPeripheral *peripheral) {
-//                
-//                uint16_t length;
-//                
-//                [value getBytes:&length];
-//                
-//                //NSLog(@"length:%d", length);
-//                
-//            }];
             
         }
     }
@@ -268,11 +255,15 @@
         
         NSLog(@"Notification began on %@", characteristic);
         
+        // 发现可以注册notify以后，读取一下数据长度
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]]) {
             [peripheral readValueForCharacteristic:characteristic];
         }
         
-//        [peripheral readValueForCharacteristic:characteristic];
+        // 发现可以注册notify以后，读取一下数据长度
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
 
     } else{
         NSLog(@"Notification stop %@", characteristic);
@@ -312,6 +303,15 @@
         
     }
     
+    //接到电量的通知
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]]) {
+        
+        NSLog(@"Battery: %@", characteristic.value);
+        
+        //更新手环状态
+        self.globals.bleListCount += 0;
+    }
+    
     //接到数据总长度的通知
     if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:UUID_HEALTH_DATA_HEADER]]) {
 
@@ -320,8 +320,6 @@
         [characteristic.value getBytes:&_dataLength];
         
         NSLog(@"length:%d", _dataLength);
-        
-        
     }
     
     //接到数据通知
@@ -363,8 +361,8 @@
             NSArray* raw = [_context executeFetchRequest:request error:&error];
             
             if (raw.count == 1) {
-                //已经有条目了
                 
+                //已经有条目了
                 
                 BTRawData* one = [raw objectAtIndex:0];
                 
@@ -536,8 +534,6 @@
     
     [_cm scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:UUID_HEALTH_SERVICE]] options:nil];
     
-//    [_cm scanForPeripheralsWithServices:nil options:nil];
-    
     NSLog(@"scan ForPeripherals");
 }
 
@@ -561,6 +557,13 @@
     NSString* bandName = bp.name;
     //2 电池电量
     uint8_t d = 0;
+    
+    NSData *battRaw = [bp.allValues objectForKey:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]];
+    
+    if (battRaw) {
+        [battRaw getBytes:&d];
+    }
+    
     NSNumber *batteryLevel = [NSNumber numberWithInt:d];
     
     NSLog(@"%@, %@, %@", isConnected, bandName, batteryLevel);
@@ -576,17 +579,38 @@
     BTBandPeripheral* bp = [[enumeratorValue allObjects] objectAtIndex:index];
     
     if (!bp.handle.isConnected) {
-        [_cm connectPeripheral:bp.handle options:nil];
         
+        [_cm connectPeripheral:bp.handle options:nil];
         NSLog(@"!!!connect");
-    } else {
-//        [_cm cancelPeripheralConnection:bp.handle];
+        
+    }else{
+        
+        //删除coredata里的这条数据
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"BTBleList" inManagedObjectContext:_context];
+        
+        NSFetchRequest* request = [[NSFetchRequest alloc] init];
+        [request setEntity:entity];
+        
+        NSError* error;
+        _localBleLIst = [_context executeFetchRequest:request error:&error];
+        
+        for (BTBleList* old in _localBleLIst) {
+            if ([old.name isEqualToString:bp.handle.name]){
+                [_context deleteObject:old];
+                NSLog(@"!!!2222222");
+            }
+        }
+        
+        //断开连接
+        [_cm cancelPeripheralConnection:bp.handle];
+        NSLog(@"cancel connected");
     }
     
 }
 
 //定位将要进行初始化的peripheral
 -(void)willSetup:(NSUInteger)index{
+    
     //根据index找到对应的peripheral
     NSEnumerator * enumeratorValue = [_allPeripherals objectEnumerator];
     _setupBand = [[enumeratorValue allObjects] objectAtIndex:index];
@@ -594,6 +618,7 @@
 
 //初始化手环
 -(void)setup:(NSData*)data withBlock:(void(^)(int result))block{
+    
     _setupName = data;
     _setupblock = block;
     
