@@ -1,8 +1,8 @@
 //
 //  BTBleList.h
-//  SmartBat
+//  Health
 //
-//  Created by kaka' on 13-7-4.
+//  Created by kaka' on 13-11-5.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -13,6 +13,6 @@
 @interface BTBleList : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * uuid;
+@property (nonatomic, retain) NSNumber * lastSync;
 
 @end

@@ -42,9 +42,10 @@
 #define SHOCK_SETTING_SWITCH_TAG        11
 
 //设备列表数组里索引
-#define IS_CONNECTED_INDEX              0
-#define BAND_NAME_INDEX                 1
-#define BATTERY_LEVEL_INDEX             2
+#define IS_FINDED_INDEX                 0
+#define IS_CONNECTED_INDEX              1
+#define BAND_NAME_INDEX                 2
+#define BATTERY_LEVEL_INDEX             3
 
 //连续设置bpm时的速度参数
 #define BPM_CHANGE_INTERVAL             0.2f

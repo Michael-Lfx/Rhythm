@@ -1,8 +1,8 @@
 //
 //  BTBleList.m
-//  SmartBat
+//  Health
 //
-//  Created by kaka' on 13-7-4.
+//  Created by kaka' on 13-11-5.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -12,6 +12,6 @@
 @implementation BTBleList
 
 @dynamic name;
-@dynamic uuid;
+@dynamic lastSync;
 
 @end

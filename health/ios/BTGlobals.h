@@ -25,7 +25,7 @@
 
 //手环总数和数组
 @property(assign, nonatomic) NSInteger bleListCount;
-@property(strong, nonatomic) NSMutableArray* bleList;
+@property(strong, nonatomic) NSMutableDictionary* allPeripherals;
 
 //手机是否连接设备
 @property(assign, nonatomic) Boolean isConnectedBLE;

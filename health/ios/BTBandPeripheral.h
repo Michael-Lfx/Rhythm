@@ -18,12 +18,13 @@
 @property(strong, nonatomic) CBPeripheral* handle;
 
 @property(strong, nonatomic) NSString* name;
+@property(assign, nonatomic) int lastSync;
+@property(strong, nonatomic) NSNumber* batteryLevel;
+@property(assign, nonatomic) Boolean isConnected;
+@property(assign, nonatomic) Boolean isFinded;
 
 @property(assign, nonatomic) double zero;
 
-@property(assign, nonatomic) uint8_t play;
-//@property(assign, nonatomic) Boolean waitForRestart;
-
--(BTBandPeripheral*)initWithPeripheral:(CBPeripheral*)peripheral;
+-(void)addPeripheral:(CBPeripheral*)peripheral;
 
 @end

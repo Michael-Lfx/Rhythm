@@ -99,6 +99,7 @@
         return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"OYNO"];
     }
     
+    Boolean isFinded = [[bleOne objectAtIndex:IS_FINDED_INDEX] intValue];
     Boolean isConnected = [[bleOne objectAtIndex:IS_CONNECTED_INDEX] intValue];
     NSString* name = [bleOne objectAtIndex:BAND_NAME_INDEX];
     
@@ -108,9 +109,9 @@
         
         CellIdentifier = @"bleListCellConnected";
         
-    }else if([name isEqual:@"YUE"]){
+    }else if(!isFinded){
         
-        CellIdentifier = @"bleListCellSetup";
+        CellIdentifier = @"bleListCellFinded";
         
     }else{
         
