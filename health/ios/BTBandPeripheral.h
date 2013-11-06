@@ -23,6 +23,13 @@
 @property(assign, nonatomic) Boolean isConnected;
 @property(assign, nonatomic) Boolean isFinded;
 
+//同步用
+@property(assign, nonatomic) uint16_t dataLength;
+@property(assign, nonatomic) uint16_t currentBlock;
+
+//进度条
+@property(assign, nonatomic) float dlPercent;
+
 @property(assign, nonatomic) double zero;
 
 -(void)addPeripheral:(CBPeripheral*)peripheral;

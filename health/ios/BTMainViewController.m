@@ -69,9 +69,6 @@ float const kUpdateSyncInterval = 10;
         
         if (self.globals.dlPercent == 1) {
             
-            //更新上次同步时间
-            self.globals.lastSync = [[NSDate date] timeIntervalSince1970];
-            
             [self buildMain];
 
         }
@@ -177,62 +174,7 @@ float const kUpdateSyncInterval = 10;
 
 -(void)buildBottom:(NSTimer *)theTimer{
     
-    NSString* syncWords;
-    
-    if (self.globals.lastSync) {
-        
-        NSString* last;
-        
-        int interval = [[NSDate date] timeIntervalSince1970] - self.globals.lastSync;
-        
-        
-        if (interval < 10) {
-            
-            // 10秒以内，刚刚
-            last = @"刚刚";
-            
-        }else if (interval < 60) {
-            
-            // 1分钟以内，xx秒前
-            last = [NSString stringWithFormat:@"%d0秒前", interval/10];
-            
-        }else if(interval < 3600){
-            
-            // 1小时以内，xx分钟前
-            last = [NSString stringWithFormat:@"%d分钟前", interval/60];
-            
-        }else if(interval < 86400){
-            
-            // 1天以内，xx小时前
-            last = [NSString stringWithFormat:@"%d小时前", interval/3600];
-            
-        }else if(interval < 345600){
-            
-            // 4天以内，x天前
-            last = [NSString stringWithFormat:@"%d天前", interval/86400];
-            
-        }else{
-            
-            // 用全日期
-            NSDateFormatter* df = [[NSDateFormatter alloc] init];
-            [df setDateFormat:@"yyyy-MM-dd"];
-            [df setTimeZone:[NSTimeZone localTimeZone]];
-            
-            last = [df stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.globals.lastSync]];
-        }
-        
-        syncWords = [NSString stringWithFormat:@"上次同步:%@", last];
-        
-    }else{
-        
-        //从没同步过
-        syncWords = @"从未同步";
-        
-    }
-    
-    NSLog(@"%@", syncWords);
-    
-    _syncTime.text = syncWords;
+    _syncTime.text = [self.bandCM getLastSyncDesc:MAM_BAND_MODEL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -243,6 +185,6 @@ float const kUpdateSyncInterval = 10;
 
 
 - (IBAction)sync:(id)sender {
-    [[BTBandCentral sharedBandCentral] sync];
+    [self.bandCM sync:MAM_BAND_MODEL];
 }
 @end

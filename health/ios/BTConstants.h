@@ -47,22 +47,8 @@
 #define BAND_NAME_INDEX                 2
 #define BATTERY_LEVEL_INDEX             3
 
-//连续设置bpm时的速度参数
-#define BPM_CHANGE_INTERVAL             0.2f
-#define BPM_CHANGE_INTERVAL_FASTER      0.02f
-#define BPM_CHANGE_FASTER_COUNT         5
-
-//bpm范围
-#define BPM_MIN                         30
-#define BPM_MAX                         220
-
-//bpm调整指令
-#define BPM_PLUS                        @"plus"
-#define BPM_MINUS                       @"minus"
-
-//noteType范围
-#define NOTETYPE_MIN                    0.03125f
-#define NOTETYPE_MAX                    0.5f
+//设备型号
+#define MAM_BAND_MODEL                  @"A1"
 
 //蓝牙服务uuid
 #define CHARACTERISTICS_COUNT           5
@@ -79,14 +65,11 @@
 
 #define SYNC_CODE                       22
 
-//手环名称最大字节数
-#define DEVICE_NAME_MAX_LENGTH          16
 
 //蓝牙延时传输间隔
 #define BLUETOOTH_DELAY                 0.5
 
 //手环同步设置
-
 #define APP_SOUND_LATENCY               0.030f
 #define SYNC_INTERVAL                   0.067
 #define SYNC_COUNT                      12

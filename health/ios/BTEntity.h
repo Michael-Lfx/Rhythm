@@ -2,7 +2,7 @@
 //  BTEntity.h
 //  Health
 //
-//  Created by kaka' on 13-10-23.
+//  Created by kaka' on 13-11-6.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -15,6 +15,5 @@
 @property (nonatomic, retain) NSNumber * hasAskGrade;
 @property (nonatomic, retain) NSNumber * installDate;
 @property (nonatomic, retain) NSNumber * lastCheckVersionDate;
-@property (nonatomic, retain) NSNumber * lastSync;
 
 @end

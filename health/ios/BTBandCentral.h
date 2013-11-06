@@ -24,18 +24,10 @@
 }
 
 @property(strong, nonatomic) CBCentralManager* cm;
-@property(strong, nonatomic) NSMutableDictionary* p;
-
 
 @property(strong, nonatomic) BTGlobals* globals;
 
-
-@property(strong, nonatomic) BTBandPeripheral* setupBand;
-@property(strong, nonatomic) NSData* setupName;
-@property(strong, nonatomic) void (^setupblock)(int result);
-
-@property(assign, nonatomic) uint16_t dataLength;
-@property(assign, nonatomic) uint16_t currentTrans;
+@property(strong, nonatomic) NSTimer* scanTimer;
 
 @property(assign, nonatomic) Boolean syncLocker;
 
@@ -46,13 +38,10 @@
 
 -(void)scan;
 
--(NSArray*)bleList:(NSUInteger)index;
 -(void)connectSelectedPeripheral:(NSUInteger)index;
 
--(void)willSetup:(NSUInteger)index;
--(void)setup:(NSData*)data withBlock:(void(^)(int result))block;
-
--(void)sync;
+-(void)sync:(NSString*)model;
+-(NSString*)getLastSyncDesc:(NSString*)model;
 
 @end
  

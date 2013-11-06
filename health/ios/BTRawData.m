@@ -2,7 +2,7 @@
 //  BTRawData.m
 //  Health
 //
-//  Created by kaka' on 13-10-21.
+//  Created by kaka' on 13-11-6.
 //  Copyright (c) 2013年 kaka'. All rights reserved.
 //
 
@@ -11,12 +11,13 @@
 
 @implementation BTRawData
 
-@dynamic year;
-@dynamic month;
-@dynamic day;
-@dynamic minute;
-@dynamic hour;
-@dynamic type;
 @dynamic count;
+@dynamic day;
+@dynamic hour;
+@dynamic minute;
+@dynamic month;
+@dynamic type;
+@dynamic year;
+@dynamic from;
 
 @end

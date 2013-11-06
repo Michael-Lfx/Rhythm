@@ -8,11 +8,11 @@
         <attribute name="hasAskGrade" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="installDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="lastCheckVersionDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="lastSync" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="BTRawData" representedClassName="BTRawData" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="from" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="minute" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
