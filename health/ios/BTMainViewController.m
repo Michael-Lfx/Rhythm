@@ -25,9 +25,7 @@ float const kUpdateSyncInterval = 10;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    
-    [self.globals addObserver:self forKeyPath:@"isConnectedBLE" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     
     // add buttom curve
     graphView = [[GraphView alloc]initWithFrame:CGRectMake(10, 340, self.view.frame.size.width-20, 100)];
@@ -67,26 +65,33 @@ float const kUpdateSyncInterval = 10;
     {
         NSLog(@"what");
         
-        if (self.globals.dlPercent == 1) {
+        BTBandPeripheral* bp = [self.bandCM getBpByModel:MAM_BAND_MODEL];
+        
+        if (bp.dlPercent == 1) {
             
             [self buildMain];
 
         }
     }
-    
-    if([keyPath isEqualToString:@"isConnectedBLE"])
+
+    if([keyPath isEqualToString:@"bleListCount"])
     {
-        
-        if (self.globals.isConnectedBLE) {
+        //连接上该型号设备
+        if ([self.bandCM isConnectedByModel:MAM_BAND_MODEL]){
+            
+            [[self.bandCM getBpByModel:MAM_BAND_MODEL] addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
             
             _linked.on = YES;
             
         }else{
+            
             _linked.on = NO;
         }
+        
+        //读取一下更新时间
+        [self buildBottom:Nil];
+        
     }
-
-    
 }
 
 -(void) updateValue: (float) value
@@ -185,6 +190,7 @@ float const kUpdateSyncInterval = 10;
 
 
 - (IBAction)sync:(id)sender {
+    
     [self.bandCM sync:MAM_BAND_MODEL];
 }
 @end

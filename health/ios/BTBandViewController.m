@@ -33,8 +33,7 @@
     
     //监控全局变量beatPerMinute的变化
     [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    //监控全局变量dlPercent的变化
-    [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+
     
     _bleList.delegate = self;
     _bleList.dataSource = self;
@@ -56,23 +55,33 @@
         
         //行数变化时，重新加载列表
         [_bleList reloadData];
+        
+
+        if ([self.bandCM isConnectedByModel:MAM_BAND_MODEL]){
+            NSLog(@"oh oh fuck");
+            
+            [[self.bandCM getBpByModel:MAM_BAND_MODEL] addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+        }
     }
     
     if([keyPath isEqualToString:@"dlPercent"])
     {
-        NSLog(@"dl: %f", self.globals.dlPercent);
+        BTBandPeripheral* bp = [self.bandCM getBpByModel:MAM_BAND_MODEL];
+        
+        NSLog(@"dl: %f", bp.dlPercent);
         
         [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
-            [_dlProgress setProgress:self.globals.dlPercent];
+            [_dlProgress setProgress:bp.dlPercent];
         } completion:^(BOOL finished) {
             
         }];
         
-        [_dlProgress setProgress:self.globals.dlPercent];
+        [_dlProgress setProgress:bp.dlPercent];
         
-        if (self.globals.dlPercent == 1.0) {
+        if (bp.dlPercent == 1.0) {
             [_dlProgress setHidden:YES];
         }
+
     }
 }
 
@@ -85,9 +94,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     //根据index找到对应的peripheral
-    NSArray * ev = [[self.globals.allPeripherals objectEnumerator] allObjects];
-    BTBandPeripheral* bp = [ev objectAtIndex:indexPath.row];
-    
+    BTBandPeripheral*bp  = [self.bandCM getBpByIndex:indexPath.row];
     
     //0 是否连接
     Boolean isFinded = bp.isFinded;
@@ -169,7 +176,7 @@
 
 - (IBAction)sync:(UIButton *)sender {
     
-    [self.bandCM sync:@"A1"];
+    [self.bandCM sync:MAM_BAND_MODEL];
     
     [_dlProgress setHidden:NO];
 }

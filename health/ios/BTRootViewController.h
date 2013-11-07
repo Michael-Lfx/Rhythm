@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BTBandCentral.h"
 #import "BTBaseViewController.h"
 #import "BTMainViewController.h"
 #import "BTAskViewController.h"

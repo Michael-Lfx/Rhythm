@@ -22,20 +22,8 @@
 @property(assign, nonatomic) int installDate;
 @property(assign, nonatomic) int hasAskGrade;
 
-//手环总数和数组
+//手环总数
 @property(assign, nonatomic) NSInteger bleListCount;
-@property(strong, nonatomic) NSMutableDictionary* allPeripherals;
-
-//手机是否连接设备
-@property(assign, nonatomic) Boolean isConnectedBLE;
-
-//进度条
-@property(assign, nonatomic) float dlPercent;
-
-//数据缓存
-@property(strong, nonatomic) NSMutableArray* dataList;
-@property(assign, nonatomic) NSInteger dataListCount;
-
 
 +(BTGlobals*)sharedGlobals;
 -(void)applicationWillResignActive:(NSNotification*) notification;

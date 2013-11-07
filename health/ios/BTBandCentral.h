@@ -24,11 +24,12 @@
 }
 
 @property(strong, nonatomic) CBCentralManager* cm;
-
+@property(strong, nonatomic) NSMutableDictionary* allPeripherals;
 @property(strong, nonatomic) BTGlobals* globals;
 
-@property(strong, nonatomic) NSTimer* scanTimer;
+@property(strong, nonatomic) NSMutableDictionary* connectedList;
 
+@property(strong, nonatomic) NSTimer* scanTimer;
 @property(assign, nonatomic) Boolean syncLocker;
 
 +(BTBandCentral*)sharedBandCentral;
@@ -42,6 +43,11 @@
 
 -(void)sync:(NSString*)model;
 -(NSString*)getLastSyncDesc:(NSString*)model;
+
+-(BTBandPeripheral*)getBpByModel:(NSString*)model;
+-(BTBandPeripheral*)getBpByIndex:(NSInteger)row;
+
+-(Boolean)isConnectedByModel:(NSString*)model;
 
 @end
  
