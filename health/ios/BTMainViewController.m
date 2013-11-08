@@ -39,6 +39,7 @@ float const kUpdateSyncInterval = 10;
     [graphView setFillColor:[UIColor whiteColor]];
     [graphView setLineWidth:0];
     [graphView setCurvedLines:YES];
+    [graphView setArray:[[NSArray alloc] initWithObjects:[NSNumber numberWithFloat:20.0],[NSNumber numberWithFloat:40.0],nil] ];
     [self.view addSubview:graphView];
     
     
@@ -53,12 +54,24 @@ float const kUpdateSyncInterval = 10;
     [self.view addSubview:self.circularProgressView];
     
     [self.circularProgressView updateProgressCircle:1000 withTotal:12000];
-
+    
     [self buildMain];
     
     _updateSycnTimer = [NSTimer scheduledTimerWithTimeInterval:kUpdateSyncInterval target:self selector:@selector(buildBottom:) userInfo:nil repeats:YES];
+    
+    
+    //同步按钮
+    UIButton *buttonSync = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    buttonSync.frame = CGRectMake(20, 400, 50, 20);
+    [buttonSync setTitle:@"同步" forState:UIControlStateNormal];
+    [buttonSync addTarget:self action:@selector(textOutput) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:buttonSync];
 }
-
+- (void)textOutput
+{
+    NSLog(@"测试输出");
+    [[BTBandCentral sharedBandCentral] sync];
+}
 //监控参数，更新显示
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -73,7 +86,7 @@ float const kUpdateSyncInterval = 10;
             self.globals.lastSync = [[NSDate date] timeIntervalSince1970];
             
             [self buildMain];
-
+            
         }
     }
     
@@ -88,7 +101,7 @@ float const kUpdateSyncInterval = 10;
             _linked.on = NO;
         }
     }
-
+    
     
 }
 
@@ -217,7 +230,6 @@ float const kUpdateSyncInterval = 10;
             NSDateFormatter* df = [[NSDateFormatter alloc] init];
             [df setDateFormat:@"yyyy-MM-dd"];
             [df setTimeZone:[NSTimeZone localTimeZone]];
-            
             last = [df stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.globals.lastSync]];
         }
         
@@ -242,7 +254,7 @@ float const kUpdateSyncInterval = 10;
 }
 
 
-- (IBAction)sync:(id)sender {
-    [[BTBandCentral sharedBandCentral] sync];
+- (IBAction)sync:(UIButton *)sender {
+    NSLog(@"点击了同步按钮");
 }
 @end

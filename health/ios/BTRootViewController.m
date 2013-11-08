@@ -115,11 +115,11 @@
    [_scrollView scrollRectToVisible:CGRectMake(0, 0, screenWidth, scrollHeight) animated:YES];
 //    
 //    //初始化设置页view
-//    //放到最上面，出现时遮住分页符、设置按钮神马的
-//    _commonViewCtrl = [BTCommonViewController buildView];
-//    _commonViewCtrl.view.tag = COMMON_VIEW_TAG;
-//    [_commonViewCtrl setViewX:-screenWidth];
-//    [self.view addSubview:_commonViewCtrl.view];
+    //放到最上面，出现时遮住分页符、设置按钮神马的
+    _commonViewCtrl = [BTCommonViewController buildView];
+    _commonViewCtrl.view.tag = COMMON_VIEW_TAG;
+    [_commonViewCtrl setViewX:-screenWidth];
+    [self.view addSubview:_commonViewCtrl.view];
    
     //setting viewController
    _bandViewCtrl = [BTBandViewController buildView];

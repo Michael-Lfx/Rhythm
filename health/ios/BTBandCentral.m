@@ -564,8 +564,17 @@
     NSNumber *batteryLevel = [NSNumber numberWithInt:d];
     
     NSLog(@"%@, %@, %@", isConnected, bandName, batteryLevel);
-    
+     //设备蓝牙未连接时，弹出警告框
+    if (bandName == nil) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"蓝牙连接错误" message:@"亲，蓝牙连接错误" delegate:self cancelButtonTitle:@"Cancle" otherButtonTitles:nil, nil];
+        [alertView  show];
+    }
+    else
+    {
     return @[isConnected, bandName, batteryLevel];
+    }
+   
+    
 }
 
 //连接选中的peripheral
