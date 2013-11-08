@@ -14,6 +14,5 @@
 @property (weak, nonatomic) IBOutlet UITextField *deviceName;
 
 - (IBAction)back:(UIButton *)sender;
-- (IBAction)done:(id)sender;
 
 @end

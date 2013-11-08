@@ -31,13 +31,9 @@
     //设置手环设置页在屏幕左侧隐藏
     _originX = [[UIScreen mainScreen] applicationFrame].size.width;
     
-    //启动蓝牙并扫描连接
-    _cm = [BTBandCentral sharedBandCentral];
-    
     //监控全局变量beatPerMinute的变化
     [self.globals addObserver:self forKeyPath:@"bleListCount" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    //监控全局变量dlPercent的变化
-    [self.globals addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+
     
     _bleList.delegate = self;
     _bleList.dataSource = self;
@@ -47,11 +43,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-//手动查找
-- (IBAction)scan:(UIButton *)sender {
-    [_cm scan];
 }
 
 //监控参数，更新显示
@@ -64,23 +55,33 @@
         
         //行数变化时，重新加载列表
         [_bleList reloadData];
+        
+
+        if ([self.bandCM isConnectedByModel:MAM_BAND_MODEL]){
+            NSLog(@"oh oh fuck");
+            
+            [[self.bandCM getBpByModel:MAM_BAND_MODEL] addObserver:self forKeyPath:@"dlPercent" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+        }
     }
     
     if([keyPath isEqualToString:@"dlPercent"])
     {
-        NSLog(@"dl: %f", self.globals.dlPercent);
+        BTBandPeripheral* bp = [self.bandCM getBpByModel:MAM_BAND_MODEL];
+        
+        NSLog(@"dl: %f", bp.dlPercent);
         
         [UIView animateWithDuration:THRESHOLD_2_COMPLETE_DURETION animations:^(void) {
-            [_dlProgress setProgress:self.globals.dlPercent];
+            [_dlProgress setProgress:bp.dlPercent];
         } completion:^(BOOL finished) {
             
         }];
         
-        [_dlProgress setProgress:self.globals.dlPercent];
+        [_dlProgress setProgress:bp.dlPercent];
         
-        if (self.globals.dlPercent == 1.0) {
+        if (bp.dlPercent == 1.0) {
             [_dlProgress setHidden:YES];
         }
+
     }
 }
 
@@ -92,15 +93,32 @@
 //渲染每行数据的代理
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSArray* bleOne = [self.bandCM bleList:indexPath.row];
-    NSLog(@"wo ca");
-    if (bleOne == NULL) {
+    //根据index找到对应的peripheral
+    BTBandPeripheral*bp  = [self.bandCM getBpByIndex:indexPath.row];
+    
+    //0 是否连接
+    Boolean isFinded = bp.isFinded;
+    //0 是否连接
+    Boolean isConnected = bp.isConnected;
+    //1 设备名称
+    NSString* name = bp.name;
+    //2 电池电量
+    uint8_t d = 0;
+    
+    NSData *battRaw = [bp.allValues objectForKey:[CBUUID UUIDWithString:UUID_BATTERY_LEVEL]];
+    
+    if (battRaw) {
+        [battRaw getBytes:&d];
+    }
+    
+    NSNumber *bl = [NSNumber numberWithInt:d];
+    
+    NSLog(@"%hhu, %hhu, %@, %@", isFinded, isConnected, name, bl);
+    
+    if (bp == NULL) {
         
         return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"OYNO"];
     }
-    
-    Boolean isConnected = [[bleOne objectAtIndex:IS_CONNECTED_INDEX] intValue];
-    NSString* name = [bleOne objectAtIndex:BAND_NAME_INDEX];
     
     NSString *CellIdentifier;
     
@@ -108,9 +126,9 @@
         
         CellIdentifier = @"bleListCellConnected";
         
-    }else if([name isEqual:@"YUE"]){
+    }else if(!isFinded){
         
-        CellIdentifier = @"bleListCellSetup";
+        CellIdentifier = @"bleListCellFinded";
         
     }else{
         
@@ -128,13 +146,13 @@
     if (isConnected) {
         //连接后显示电量
         UILabel* batteryLevel = (UILabel*)[cell.contentView viewWithTag:BATTERY_LEVEL_TAG];
-        batteryLevel.text = [NSString stringWithFormat:@"%@%%", [bleOne objectAtIndex:BATTERY_LEVEL_INDEX]];
+        batteryLevel.text = [NSString stringWithFormat:@"%@%%", bl];
         batteryLevel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
     }
     
     if (isConnected || [CellIdentifier isEqual:@"bleListCellScan"]) {
         //手环名称
-        UITextField* bandName = (UITextField*)[cell.contentView viewWithTag:BAND_NAME_TAG];
+        UILabel* bandName = (UILabel*)[cell.contentView viewWithTag:BAND_NAME_TAG];
         bandName.text = name;
     }
     
@@ -149,25 +167,16 @@
     
     NSLog(@"%@", cellId);
     
-    if ([cellId isEqual:@"bleListCellSetup"]) {
-        
-        [self.bandCM willSetup:[indexPath row]];
-        
-        _setupViewCtrl = nil;
-        _setupViewCtrl = [BTSetupViewController buildView];
-        _setupViewCtrl.view.tag = SETUP_VIEW_TAG;
-        [self.view.superview insertSubview:_setupViewCtrl.view belowSubview:self.view];
-        
-        [self pickupSettings:nil];
-        
-    }else if([cellId isEqual:@"bleListCellScan"]){
+    if ([cellId isEqual:@"bleListCellConnected"] || [cellId isEqual:@"bleListCellScan"]) {
         
         [self.bandCM connectSelectedPeripheral:[indexPath row]];
+        
     }
-    
 }
+
 - (IBAction)sync:(UIButton *)sender {
-    [[BTBandCentral sharedBandCentral] sync];
+    
+    [self.bandCM sync:MAM_BAND_MODEL];
     
     [_dlProgress setHidden:NO];
 }

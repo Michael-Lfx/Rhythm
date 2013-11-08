@@ -24,38 +24,30 @@
 }
 
 @property(strong, nonatomic) CBCentralManager* cm;
-@property(strong, nonatomic) NSMutableDictionary* p;
-
-
-@property(strong, nonatomic) BTGlobals* globals;
 @property(strong, nonatomic) NSMutableDictionary* allPeripherals;
+@property(strong, nonatomic) BTGlobals* globals;
 
-@property(strong, nonatomic) BTBandPeripheral* setupBand;
-@property(strong, nonatomic) NSData* setupName;
-@property(strong, nonatomic) void (^setupblock)(int result);
+@property(strong, nonatomic) NSMutableDictionary* connectedList;
 
-@property(assign, nonatomic) uint16_t dataLength;
-@property(assign, nonatomic) uint16_t currentTrans;
-
+@property(strong, nonatomic) NSTimer* scanTimer;
 @property(assign, nonatomic) Boolean syncLocker;
 
 +(BTBandCentral*)sharedBandCentral;
 
--(void)write:(NSData*)value withUUID:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid;
 -(void)writeAll:(NSData*)value withUUID:(CBUUID*)cuuid;
-
--(void)read:(CBUUID*)cuuid fromPeripheral:(CBUUID*)puuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
 -(void)readAll:(CBUUID*)cuuid withBlock:(void (^)(NSData* value, CBCharacteristic* characteristic, CBPeripheral* peripheral))block;
 
 -(void)scan;
 
--(NSArray*)bleList:(NSUInteger)index;
 -(void)connectSelectedPeripheral:(NSUInteger)index;
 
--(void)willSetup:(NSUInteger)index;
--(void)setup:(NSData*)data withBlock:(void(^)(int result))block;
+-(void)sync:(NSString*)model;
+-(NSString*)getLastSyncDesc:(NSString*)model;
 
--(void)sync;
+-(BTBandPeripheral*)getBpByModel:(NSString*)model;
+-(BTBandPeripheral*)getBpByIndex:(NSInteger)row;
+
+-(Boolean)isConnectedByModel:(NSString*)model;
 
 @end
  

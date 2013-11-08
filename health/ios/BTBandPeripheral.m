@@ -10,22 +10,14 @@
 
 @implementation BTBandPeripheral
 
--(BTBandPeripheral*)initWithPeripheral:(CBPeripheral*)peripheral{
-    self = [super init];
+-(void)addPeripheral:(CBPeripheral*)peripheral{
     
-    if (self) {
-        
-        self.allCharacteristics = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
-        self.allValues = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
-        self.allCallback = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
-        
-        self.handle = peripheral;
-        
-        self.play = 0;
-//        self.waitForRestart = NO;
-    }
+    self.allCharacteristics = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
+    self.allValues = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
+    self.allCallback = [NSMutableDictionary dictionaryWithCapacity:CHARACTERISTICS_COUNT];
     
-    return self;
+    self.handle = peripheral;
+
 }
 
 @end

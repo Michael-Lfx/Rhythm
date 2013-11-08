@@ -59,4 +59,12 @@
     return [self getDateFormat:date with:@"mm"];
 }
 
++(NSString*)getModel:(NSString *)name{
+    return [name substringWithRange:NSMakeRange(7, 2)];
+}
+
++(NSString*)getSN:(NSString *)name{
+    return [name substringWithRange:NSMakeRange(10, 6)];
+}
+
 @end

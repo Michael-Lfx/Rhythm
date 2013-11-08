@@ -52,19 +52,4 @@
     }];
 }
 
-- (IBAction)done:(id)sender {
-    NSData* data = [_deviceName.text dataUsingEncoding:NSASCIIStringEncoding];
-    
-    NSLog(@"len:%lu", (unsigned long)data.length);
-    
-    if (data.length > DEVICE_NAME_MAX_LENGTH) {
-        
-    }else{
-        [[BTBandCentral sharedBandCentral] setup:data withBlock:^(int result) {
-            if (result == 0) {
-                [self back:nil];
-            }
-        }];
-    }
-}
 @end

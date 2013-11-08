@@ -23,14 +23,12 @@
 		7232FB07176340310097CA34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB06176340300097CA34 /* SystemConfiguration.framework */; };
 		7232FB091763403A0097CA34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB081763403A0097CA34 /* MobileCoreServices.framework */; };
 		7232FB0B1763405A0097CA34 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */; };
-		725C9BAA18177DAB00423E31 /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 725C9BA918177DAB00423E31 /* BTEntity.m */; };
 		725CB5AD1760A5DF0020FC78 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725CB5AC1760A5DF0020FC78 /* CoreData.framework */; };
 		7277F30917CDED96001EB9E3 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30717CDED96001EB9E3 /* fishhook.c */; };
 		7277F30B17CDEDCF001EB9E3 /* QuietAssertMacros.c in Sources */ = {isa = PBXBuildFile; fileRef = 7277F30A17CDEDCF001EB9E3 /* QuietAssertMacros.c */; };
 		727C7F4717E1893200D8FF02 /* main-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4617E1893200D8FF02 /* main-bg.png */; };
 		727C7F4917E18FA400D8FF02 /* ask-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4817E18FA400D8FF02 /* ask-bg.png */; };
 		727C7F4B17E18FAC00D8FF02 /* news-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 727C7F4A17E18FAC00D8FF02 /* news-bg.png */; };
-		7286D14D18151A2800C6D60B /* BTRawData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7286D14C18151A2800C6D60B /* BTRawData.m */; };
 		7289355A175DA8D900EED04E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72893559175DA8D900EED04E /* UIKit.framework */; };
 		7289355C175DA8D900EED04E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355B175DA8D900EED04E /* Foundation.framework */; };
 		7289355E175DA8D900EED04E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7289355D175DA8D900EED04E /* CoreGraphics.framework */; };
@@ -49,6 +47,9 @@
 		72910FDE17CC7182000F7155 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 72910FDB17CC7182000F7155 /* Localizable.strings */; };
 		72910FE517CC72C4000F7155 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72910FE317CC72C4000F7155 /* Model.xcdatamodeld */; };
 		729BA227180BDC5600C56C89 /* BTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 729BA226180BDC5600C56C89 /* BTUtils.m */; };
+		72AB0A0918290E0A00383214 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AB0A0818290E0A00383214 /* BTBleList.m */; };
+		72AB0A0F1829F29E00383214 /* BTRawData.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AB0A0E1829F29E00383214 /* BTRawData.m */; };
+		72AB0A12182A1CCE00383214 /* BTEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AB0A11182A1CCE00383214 /* BTEntity.m */; };
 		72E53E3117CC6302002D2708 /* Health-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E2F17CC6302002D2708 /* Health-Info.plist */; };
 		72E53E3317CC630E002D2708 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E53E3217CC630E002D2708 /* main.m */; };
 		72E53E5217CC6334002D2708 /* band-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E53E3517CC6334002D2708 /* band-button.png */; };
@@ -82,7 +83,6 @@
 		72EE456317CC626F00751F8A /* BTBandPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456117CC626F00751F8A /* BTBandPeripheral.m */; };
 		72EE456617CC628700751F8A /* BTGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456517CC628700751F8A /* BTGlobals.m */; };
 		72EE456917CC629000751F8A /* BTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EE456817CC629000751F8A /* BTConstants.m */; };
-		72F044E41785815F0056AA63 /* BTBleList.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F044E21785815F0056AA63 /* BTBleList.m */; };
 		72F5537B1768AA4A00615B61 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */; };
 		F450FF5117E84BB6005AB96C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F450FF4F17E84BB6005AB96C /* MainStoryboard.storyboard */; };
 		F48E95A117E84D7600EBCDB0 /* BTHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = F48E95A017E84D7600EBCDB0 /* BTHistogram.m */; };
@@ -128,8 +128,6 @@
 		7232FB06176340300097CA34 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7232FB081763403A0097CA34 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7232FB0A1763405A0097CA34 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
-		725C9BA818177DAB00423E31 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
-		725C9BA918177DAB00423E31 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
 		725CB5AC1760A5DF0020FC78 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7277F30717CDED96001EB9E3 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 		7277F30817CDED96001EB9E3 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
@@ -137,8 +135,6 @@
 		727C7F4617E1893200D8FF02 /* main-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-bg.png"; sourceTree = SOURCE_ROOT; };
 		727C7F4817E18FA400D8FF02 /* ask-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ask-bg.png"; sourceTree = SOURCE_ROOT; };
 		727C7F4A17E18FAC00D8FF02 /* news-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "news-bg.png"; sourceTree = SOURCE_ROOT; };
-		7286D14B18151A2800C6D60B /* BTRawData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRawData.h; sourceTree = "<group>"; };
-		7286D14C18151A2800C6D60B /* BTRawData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRawData.m; sourceTree = "<group>"; };
 		72893556175DA8D900EED04E /* Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72893559175DA8D900EED04E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7289355B175DA8D900EED04E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -174,6 +170,12 @@
 		72910FE417CC72C4000F7155 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		729BA225180BDC5600C56C89 /* BTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUtils.h; sourceTree = SOURCE_ROOT; };
 		729BA226180BDC5600C56C89 /* BTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUtils.m; sourceTree = SOURCE_ROOT; };
+		72AB0A0718290E0A00383214 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBleList.h; sourceTree = "<group>"; };
+		72AB0A0818290E0A00383214 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBleList.m; sourceTree = "<group>"; };
+		72AB0A0D1829F29E00383214 /* BTRawData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRawData.h; sourceTree = "<group>"; };
+		72AB0A0E1829F29E00383214 /* BTRawData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRawData.m; sourceTree = "<group>"; };
+		72AB0A10182A1CCE00383214 /* BTEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEntity.h; sourceTree = "<group>"; };
+		72AB0A11182A1CCE00383214 /* BTEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEntity.m; sourceTree = "<group>"; };
 		72E53E2F17CC6302002D2708 /* Health-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Health-Info.plist"; sourceTree = SOURCE_ROOT; };
 		72E53E3017CC6302002D2708 /* Health-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Health-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		72E53E3217CC630E002D2708 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
@@ -214,8 +216,6 @@
 		72EE456517CC628700751F8A /* BTGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTGlobals.m; sourceTree = SOURCE_ROOT; };
 		72EE456717CC629000751F8A /* BTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTConstants.h; sourceTree = SOURCE_ROOT; };
 		72EE456817CC629000751F8A /* BTConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTConstants.m; sourceTree = SOURCE_ROOT; };
-		72F044E11785815F0056AA63 /* BTBleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBleList.h; sourceTree = "<group>"; };
-		72F044E21785815F0056AA63 /* BTBleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBleList.m; sourceTree = "<group>"; };
 		72F5537A1768AA4A00615B61 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		F450FF5017E84BB6005AB96C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
 		F48E959F17E84D7600EBCDB0 /* BTHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHistogram.h; sourceTree = SOURCE_ROOT; };
@@ -455,13 +455,13 @@
 		72F044E8178581860056AA63 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				72F044E11785815F0056AA63 /* BTBleList.h */,
-				72F044E21785815F0056AA63 /* BTBleList.m */,
 				72910FE317CC72C4000F7155 /* Model.xcdatamodeld */,
-				7286D14B18151A2800C6D60B /* BTRawData.h */,
-				7286D14C18151A2800C6D60B /* BTRawData.m */,
-				725C9BA818177DAB00423E31 /* BTEntity.h */,
-				725C9BA918177DAB00423E31 /* BTEntity.m */,
+				72AB0A0718290E0A00383214 /* BTBleList.h */,
+				72AB0A0818290E0A00383214 /* BTBleList.m */,
+				72AB0A0D1829F29E00383214 /* BTRawData.h */,
+				72AB0A0E1829F29E00383214 /* BTRawData.m */,
+				72AB0A10182A1CCE00383214 /* BTEntity.h */,
+				72AB0A11182A1CCE00383214 /* BTEntity.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -640,7 +640,6 @@
 				72EE456217CC626F00751F8A /* BTBandCentral.m in Sources */,
 				72EE456617CC628700751F8A /* BTGlobals.m in Sources */,
 				72E53E3317CC630E002D2708 /* main.m in Sources */,
-				72F044E41785815F0056AA63 /* BTBleList.m in Sources */,
 				72910FC617CC70BA000F7155 /* BTSwipeViewController.m in Sources */,
 				72910FCB17CC70F1000F7155 /* BTBandViewController.m in Sources */,
 				72910FD517CC7130000F7155 /* BTSettingsViewController.m in Sources */,
@@ -655,10 +654,12 @@
 				72910FE517CC72C4000F7155 /* Model.xcdatamodeld in Sources */,
 				7232FAFC17633ED90097CA34 /* ASIDownloadCache.m in Sources */,
 				7232FAFD17633ED90097CA34 /* ASIFormDataRequest.m in Sources */,
+				72AB0A0F1829F29E00383214 /* BTRawData.m in Sources */,
 				72EE456917CC629000751F8A /* BTConstants.m in Sources */,
 				729BA227180BDC5600C56C89 /* BTUtils.m in Sources */,
 				72910FD817CC714C000F7155 /* BTBaseViewController.m in Sources */,
-				725C9BAA18177DAB00423E31 /* BTEntity.m in Sources */,
+				72AB0A12182A1CCE00383214 /* BTEntity.m in Sources */,
+				72AB0A0918290E0A00383214 /* BTBleList.m in Sources */,
 				7232FAFE17633ED90097CA34 /* ASIHTTPRequest.m in Sources */,
 				72910FCC17CC70F1000F7155 /* BTNewsViewController.m in Sources */,
 				7232FAFF17633ED90097CA34 /* ASIInputStream.m in Sources */,
@@ -667,7 +668,6 @@
 				7232FB0017633ED90097CA34 /* ASINetworkQueue.m in Sources */,
 				7232FB0317633FE40097CA34 /* Reachability.m in Sources */,
 				72910FC317CC70B2000F7155 /* BTRootViewController.m in Sources */,
-				7286D14D18151A2800C6D60B /* BTRawData.m in Sources */,
 				F4D9A0C218166FE6000EEA01 /* CircularProgressView.m in Sources */,
 				F48E95A117E84D7600EBCDB0 /* BTHistogram.m in Sources */,
 			);
@@ -788,7 +788,11 @@
 				GCC_PREFIX_HEADER = "Health-Prefix.pch";
 				HEADER_SEARCH_PATHS = TheAmazingAudioEngine/TheAmazingAudioEngine;
 				INFOPLIST_FILE = "Health-Info.plist";
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+>>>>>>> d41f4e004e620462abdb80345d590150764c9021
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -809,7 +813,11 @@
 				GCC_PREFIX_HEADER = "Health-Prefix.pch";
 				HEADER_SEARCH_PATHS = TheAmazingAudioEngine/TheAmazingAudioEngine;
 				INFOPLIST_FILE = "Health-Info.plist";
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+>>>>>>> d41f4e004e620462abdb80345d590150764c9021
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

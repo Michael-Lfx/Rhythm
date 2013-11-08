@@ -19,4 +19,8 @@
 +(NSNumber*)getHour:(NSDate*)date;
 +(NSNumber*)getMinutes:(NSDate*)date;
 
+//通过蓝牙设备名获得产品型号和具体编号
++(NSString*)getModel:(NSString*)name;
++(NSString*)getSN:(NSString*)name;
+
 @end
